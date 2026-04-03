@@ -1,4 +1,5 @@
-!DOCTYPE html>
+
+<!DOCTYPE html>
 <html lang="he" dir="rtl">
 <head>
     <meta charset="UTF-8">
@@ -249,6 +250,9 @@
                 <button class="auth-submit" id="auth-submit-btn" onclick="handleAuth()">התחבר</button>
             </div>
             <div class="auth-error" id="auth-error"></div>
+            <div id="forgot-password-link" style="text-align:center;margin-top:10px;">
+                <button onclick="handleForgotPassword()" style="background:none;border:none;color:rgba(255,255,255,0.4);font-size:13px;cursor:pointer;text-decoration:underline;">שכחתי סיסמה</button>
+            </div>
         </div>
     </div>
 
@@ -415,9 +419,32 @@
             if (tab === 'register') {
                 registerFields.style.display = 'block';
                 submitBtn.textContent = 'הרשמה';
+                document.getElementById('forgot-password-link').style.display = 'none';
             } else {
                 registerFields.style.display = 'none';
                 submitBtn.textContent = 'התחברות';
+                document.getElementById('forgot-password-link').style.display = 'block';
+            }
+        }
+
+        async function handleForgotPassword() {
+            const email = document.getElementById('auth-email').value;
+            const errorDiv = document.getElementById('auth-error');
+            if (!email) {
+                errorDiv.textContent = 'נא להזין אימייל תחילה';
+                errorDiv.style.color = '#f075a8';
+                return;
+            }
+            try {
+                const { error } = await db.auth.resetPasswordForEmail(email, {
+                    redirectTo: 'https://heifait-batahtit.vercel.app'
+                });
+                if (error) throw error;
+                errorDiv.style.color = '#d4e034';
+                errorDiv.textContent = 'נשלח קישור לאיפוס סיסמה למייל שלך ✓';
+            } catch (error) {
+                errorDiv.style.color = '#f075a8';
+                errorDiv.textContent = error.message;
             }
         }
 
