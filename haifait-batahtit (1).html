@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>חיפאית בתחתית - אירועים קהילתיים</title>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@700;900&family=Cascadia+Code:wght@700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
+    <style>
+        *{box-sizing:border-box;margin:0;padding:0;}
+        body{font-family:'Segoe UI',sans-serif;background:#1a0505;color:#f5ede8;direction:rtl;}
+
+        /* Auth Modal */
+        .auth-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.8);z-index:500;align-items:center;justify-content:center;padding:1rem;}
+        .auth-overlay.open{display:flex;}
+        .auth-modal{background:#2e0c0c;border:1px solid rgba(255,255,255,0.12);border-radius:20px;padding:2rem;width:100%;max-width:400px;}
+        .auth-modal h2{font-family:'Segoe UI',sans-serif;font-size:1.4rem;font-weight:700;margin-bottom:.8rem;color:#d4e034;text-align:center;}
+        .auth-subtitle{font-size:14px;color:rgba(255,255,255,0.6);text-align:center;margin-bottom:1.5rem;}
+        .auth-tabs{display:flex;gap:4px;margin-bottom:1.2rem;background:rgba(0,0,0,0.2);border-radius:10px;padding:4px;}
+        .auth-tab{flex:1;padding:8px;text-align:center;font-size:13px;border:none;background:transparent;color:rgba(255,255,255,0.5);border-radius:8px;cursor:pointer;transition:all .2s;}
+        .auth-tab.active{background:#d4e034;color:#1a0505;font-weight:600;}
+        .auth-form{display:flex;flex-direction:column;gap:12px;}
+        .auth-input{width:100%;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);color:#f5ede8;font-family:'Segoe UI',sans-serif;font-size:14px;padding:10px 14px;border-radius:10px;outline:none;direction:rtl;}
+        .auth-input:focus{border-color:#d4e034;}
+        .auth-submit{background:#d4e034;color:#1a0505;border:none;font-family:'Segoe UI',sans-serif;font-size:14px;font-weight:600;padding:11px;border-radius:10px;cursor:pointer;}
+        .auth-submit:hover{background:#e2ec6a;}
+        .auth-error{color:#f075a8;font-size:13px;margin-top:.5rem;min-height:18px;}
+        .btn-close-auth{position:absolute;top:1rem;left:1rem;background:none;border:none;color:rgba(255,255,255,0.5);font-size:18px;cursor:pointer;width:30px;height:30px;display:flex;align-items:center;justify-content:center;border-radius:50%;transition:all .2s;}
+        .btn-close-auth:hover{background:rgba(255,255,255,0.1);color:#fff;}
+
+        /* User Bar */
+        .user-bar{display:none;padding:.6rem 2rem;background:#1a0505;border-bottom:1px solid rgba(255,255,255,0.05);font-size:13px;color:rgba(255,255,255,0.5);justify-content:space-between;align-items:center;}
+        .user-bar.show{display:flex;}
+        .user-info{display:flex;align-items:center;gap:10px;}
+        .user-info strong{color:#d4e034;}
+        .role-badge{font-size:11px;padding:2px 8px;border-radius:20px;font-weight:500;}
+        .role-admin{background:rgba(212,224,52,0.2);color:#d4e034;border:1px solid rgba(212,224,52,0.3);}
+        .role-editor{background:rgba(107,143,168,0.2);color:#6b8fa8;border:1px solid rgba(107,143,168,0.3);}
+        .btn-logout{background:none;border:1px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.4);font-size:12px;padding:4px 12px;border-radius:8px;cursor:pointer;}
+        .btn-logout:hover{border-color:rgba(255,255,255,0.3);color:rgba(255,255,255,0.7);}
+
+        /* Hero */
+        .hero{position:relative;background:linear-gradient(160deg,#3d0a0a 0%,#7a1515 50%,#c8232c 100%);padding:2.5rem 2rem 2rem;overflow:hidden;border-bottom:1px solid rgba(255,255,255,0.07);}
+        .hero-bg{position:absolute;inset:0;background-size:cover;background-position:center 30%;filter:blur(2px) saturate(1.2);transform:scale(1.08);opacity:0.9;z-index:0;}
+        .hero::before{content:'';position:absolute;inset:0;background:linear-gradient(160deg,rgba(61,10,10,0.25) 0%,rgba(122,21,21,0.15) 50%,rgba(200,35,44,0.1) 100%);z-index:1;}
+        .hero>*:not(.hero-bg){position:relative;z-index:2;}
+        .hero-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.13);border-radius:20px;padding:5px 14px;font-size:12px;color:#d4e034;letter-spacing:1px;text-transform:uppercase;margin-bottom:.75rem;}
+        .hero-title{font-family:'Cascadia Code','Courier New',monospace !important;font-size:clamp(2rem,5vw,3.5rem);font-weight:900;line-height:1.1;background:linear-gradient(135deg,#fff 0%,#d4e034 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+        .hero-sub{font-size:.95rem;color:rgba(255,255,255,0.5);margin-top:.5rem;font-weight:300;}
+
+        /* Tabs */
+        .tab-bar{display:flex;gap:4px;border-bottom:1px solid rgba(255,255,255,0.06);padding:0 2rem;background:#2a0808;}
+        .tab{padding:10px 18px;font-size:13px;cursor:pointer;color:rgba(255,255,255,0.4);border-bottom:2px solid transparent;transition:all .2s;white-space:nowrap;}
+        .tab.active{color:#d4e034;border-bottom-color:#d4e034;}
+
+        /* Toolbar */
+        .toolbar{display:flex;flex-wrap:wrap;gap:8px;padding:1rem 2rem;background:#2a0808;border-bottom:1px solid rgba(255,255,255,0.06);position:sticky;top:0;z-index:10;align-items:center;}
+        .filter-btn{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.6);font-family:'Segoe UI',sans-serif;font-size:13px;padding:6px 14px;border-radius:20px;cursor:pointer;transition:all .2s;}
+        .filter-btn:hover{background:rgba(212,224,52,0.12);border-color:#d4e034;color:#d4e034;}
+        .filter-btn.active{background:#d4e034;border-color:#d4e034;color:#1a0505;font-weight:500;}
+        .date-input{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);color:#f5ede8;font-family:'Segoe UI',sans-serif;font-size:13px;padding:6px 12px;border-radius:20px;outline:none;transition:border-color .2s;cursor:pointer;}
+        .date-input:focus{border-color:#d4e034;}
+        .date-input::-webkit-calendar-picker-indicator{filter:invert(0.6);}
+        .btn-clear-date{background:none;border:none;color:rgba(255,255,255,0.35);font-size:18px;cursor:pointer;padding:0 2px;line-height:1;}
+        .btn-clear-date:hover{color:#d4e034;}
+        .btn-add{margin-right:auto;background:#d4e034;color:#1a0505;border:none;font-family:'Segoe UI',sans-serif;font-size:13px;font-weight:500;padding:7px 18px;border-radius:20px;cursor:pointer;transition:background .2s;}
+        .btn-add:hover{background:#e2ec6a;}
+
+        /* Events Grid */
+        .events-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(285px,1fr));gap:1.5rem;padding:2rem;max-width:1200px;margin:0 auto;}
+        .card{background:#6b8fa8;border:1px solid rgba(255,255,255,0.07);border-radius:16px;overflow:hidden;transition:transform .25s,box-shadow .25s,border-color .25s;position:relative;animation:fadeIn .3s ease;}
+        .card[data-cat="music"]{background:linear-gradient(145deg,#2d1a40,#3d2255);border-color:rgba(167,105,221,0.25);}
+        .card[data-cat="theater"]{background:linear-gradient(145deg,#2e2e08,#3d3a10);border-color:rgba(212,224,52,0.25);}
+        .card[data-cat="cinema"]{background:linear-gradient(145deg,#0f2030,#1a3045);border-color:rgba(107,143,168,0.25);}
+        .card[data-cat="lectures"]{background:linear-gradient(145deg,#2d0a0a,#3d1010);border-color:rgba(200,35,44,0.25);}
+        .card[data-cat="kids"]{background:linear-gradient(145deg,#2d0a1a,#3d1228);border-color:rgba(230,60,120,0.25);}
+        .card[data-cat="spirit"]{background:linear-gradient(145deg,#0a2520,#122e28);border-color:rgba(80,200,180,0.25);}
+        .card[data-cat="workshops"]{background:linear-gradient(145deg,#2a1a05,#382208);border-color:rgba(240,160,50,0.25);}
+        .card[data-cat="literature"]{background:linear-gradient(145deg,#1a1a2e,#252545);border-color:rgba(130,110,210,0.25);}
+        .card[data-cat="exhibition"]{background:linear-gradient(145deg,#0d2020,#183030);border-color:rgba(60,180,160,0.25);}
+        .card[data-cat="standup"]{background:linear-gradient(145deg,#2a1800,#3d2500);border-color:rgba(255,170,0,0.25);}
+        .card[data-cat="games"]{background:linear-gradient(145deg,#0a1a30,#102540);border-color:rgba(50,150,255,0.25);}
+        .card[data-cat="party"]{background:linear-gradient(145deg,#2a0a25,#3d1038);border-color:rgba(220,80,220,0.25);}
+        .card[data-cat="drag"]{background:linear-gradient(145deg,#300a20,#4a1030);border-color:rgba(255,80,160,0.25);}
+        .card[data-cat="openmic"]{background:linear-gradient(145deg,#1a1000,#2a1a00);border-color:rgba(200,160,40,0.25);}
+        .card[data-cat="karaoke"]{background:linear-gradient(145deg,#001a2a,#002a40);border-color:rgba(0,180,220,0.25);}
+        .card[data-cat="workshop"]{background:linear-gradient(145deg,#1a0a00,#2a1500);border-color:rgba(210,100,40,0.25);}
+        .card[data-cat="other"]{background:linear-gradient(145deg,#1a1a1a,#282828);border-color:rgba(150,150,150,0.25);}
+        @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+        .card:hover{transform:translateY(-4px);box-shadow:0 16px 40px rgba(0,0,0,0.4);}
+        .card[data-cat="music"]:hover{border-color:rgba(167,105,221,0.6);box-shadow:0 16px 40px rgba(167,105,221,0.15);}
+        .card[data-cat="theater"]:hover{border-color:rgba(212,224,52,0.6);box-shadow:0 16px 40px rgba(212,224,52,0.15);}
+        .card[data-cat="cinema"]:hover{border-color:rgba(107,143,168,0.6);box-shadow:0 16px 40px rgba(107,143,168,0.15);}
+        .card[data-cat="lectures"]:hover{border-color:rgba(200,35,44,0.6);box-shadow:0 16px 40px rgba(200,35,44,0.15);}
+        .card[data-cat="kids"]:hover{border-color:rgba(230,60,120,0.6);box-shadow:0 16px 40px rgba(230,60,120,0.15);}
+        .card[data-cat="spirit"]:hover{border-color:rgba(80,200,180,0.6);box-shadow:0 16px 40px rgba(80,200,180,0.15);}
+        .card[data-cat="workshops"]:hover{border-color:rgba(240,160,50,0.6);box-shadow:0 16px 40px rgba(240,160,50,0.15);}
+        .card-actions{position:absolute;top:10px;left:10px;display:flex;gap:6px;z-index:2;}
+        .edit-btn,.del-btn{background:rgba(0,0,0,0.5);border:none;border-radius:50%;width:32px;height:32px;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;transition:transform .15s,background .15s;display:none;}
+        .card.user-event .edit-btn,.card.user-event .del-btn{display:flex;}
+        .edit-btn:hover{transform:scale(1.18);background:rgba(0,0,0,0.7);}
+        .del-btn:hover{transform:scale(1.18);background:rgba(200,35,44,0.7);}
+        .card-img{width:100%;height:200px;display:flex;align-items:center;justify-content:center;font-size:3.5rem;background:#4a1010;overflow:hidden;}
+        .card-img img{width:100%;height:100%;object-fit:cover;}
+        .card-body{padding:.75rem;}
+        .card-cat{display:inline-block;font-size:10px;font-weight:500;letter-spacing:.5px;padding:2px 8px;border-radius:20px;margin-bottom:.35rem;text-transform:uppercase;}
+        .cat-music{background:rgba(167,105,221,0.2);color:#c98ff0;border:1px solid rgba(167,105,221,0.25);}
+        .cat-theater{background:rgba(212,224,52,0.2);color:#d4e034;border:1px solid rgba(212,224,52,0.25);}
+        .cat-cinema{background:rgba(107,143,168,0.2);color:#6b8fa8;border:1px solid rgba(107,143,168,0.25);}
+        .cat-lectures{background:rgba(200,35,44,0.2);color:#e06060;border:1px solid rgba(200,35,44,0.25);}
+        .cat-kids{background:rgba(230,60,120,0.2);color:#f075a8;border:1px solid rgba(230,60,120,0.25);}
+        .cat-spirit{background:rgba(80,200,180,0.2);color:#50c8b4;border:1px solid rgba(80,200,180,0.25);}
+        .cat-workshops{background:rgba(240,160,50,0.2);color:#f0a032;border:1px solid rgba(240,160,50,0.25);}
+        .cat-literature{background:rgba(130,110,210,0.2);color:#a090e0;border:1px solid rgba(130,110,210,0.25);}
+        .cat-exhibition{background:rgba(60,180,160,0.2);color:#3cc8b0;border:1px solid rgba(60,180,160,0.25);}
+        .cat-standup{background:rgba(255,170,0,0.2);color:#ffaa00;border:1px solid rgba(255,170,0,0.25);}
+        .cat-games{background:rgba(50,150,255,0.2);color:#4090ff;border:1px solid rgba(50,150,255,0.25);}
+        .cat-party{background:rgba(220,80,220,0.2);color:#e060e0;border:1px solid rgba(220,80,220,0.25);}
+        .cat-drag{background:rgba(255,80,160,0.2);color:#ff60b0;border:1px solid rgba(255,80,160,0.25);}
+        .cat-openmic{background:rgba(200,160,40,0.2);color:#c8a030;border:1px solid rgba(200,160,40,0.25);}
+        .cat-karaoke{background:rgba(0,180,220,0.2);color:#00b8e0;border:1px solid rgba(0,180,220,0.25);}
+        .cat-workshop{background:rgba(210,100,40,0.2);color:#d06030;border:1px solid rgba(210,100,40,0.25);}
+        .cat-other{background:rgba(150,150,150,0.2);color:#aaaaaa;border:1px solid rgba(150,150,150,0.25);}
+        .card-title{font-family:'Segoe UI',sans-serif;font-size:1rem;font-weight:700;line-height:1.3;margin-bottom:.3rem;}
+        .card-desc{font-size:.75rem;color:rgba(255,255,255,0.45);line-height:1.5;margin-bottom:.6rem;}
+        .card-meta{display:flex;flex-direction:column;gap:3px;}
+        .meta-item{display:flex;align-items:center;gap:5px;font-size:11px;color:rgba(255,255,255,0.4);}
+        .card-links{display:flex;gap:8px;padding:.6rem .75rem;border-top:1px solid rgba(255,255,255,0.06);}
+        .link-btn{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:500;padding:6px 12px;border-radius:8px;text-decoration:none;transition:background .2s;flex:1;justify-content:center;}
+        .link-tickets{background:rgba(212,224,52,0.12);color:#d4e034;border:1px solid rgba(212,224,52,0.25);}
+        .link-tickets:hover{background:rgba(212,224,52,0.22);}
+        .link-materials{background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.55);border:1px solid rgba(255,255,255,0.1);}
+        .link-materials:hover{background:rgba(255,255,255,0.11);}
+        .link-none{opacity:.3;cursor:default;pointer-events:none;}
+        .new-badge{position:absolute;top:10px;right:10px;background:#d4e034;color:#1a0505;font-size:11px;font-weight:500;padding:3px 9px;border-radius:20px;}
+        .empty{text-align:center;padding:4rem 2rem;color:rgba(255,255,255,0.3);grid-column:1/-1;}
+
+        /* Modal */
+        .overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.72);z-index:200;align-items:center;justify-content:center;padding:1rem;}
+        .overlay.open{display:flex;}
+        .modal{background:#2e0c0c;border:1px solid rgba(255,255,255,0.12);border-radius:20px;padding:2rem;width:100%;max-width:480px;max-height:90vh;overflow-y:auto;}
+        .modal h2{font-family:'Segoe UI',sans-serif;font-size:1.4rem;font-weight:700;margin-bottom:1.2rem;color:#d4e034;}
+        .form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+        .form-group{margin-bottom:.85rem;}
+        .form-group label{display:block;font-size:12px;color:rgba(255,255,255,0.45);margin-bottom:5px;}
+        .form-group input,.form-group textarea,.form-group select{width:100%;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);color:#f5ede8;font-family:'Segoe UI',sans-serif;font-size:14px;padding:9px 12px;border-radius:10px;outline:none;transition:border-color .2s;direction:rtl;}
+        .form-group input:focus,.form-group textarea:focus,.form-group select:focus{border-color:#d4e034;}
+        .form-group textarea{resize:vertical;min-height:70px;}
+        .form-group select option{background:#2e0c0c;}
+        .modal-btns{display:flex;gap:10px;margin-top:1.1rem;}
+        .btn-submit{flex:1;background:#d4e034;color:#1a0505;border:none;font-family:'Segoe UI',sans-serif;font-size:14px;font-weight:500;padding:10px;border-radius:10px;cursor:pointer;}
+        .btn-submit:hover{background:#e2ec6a;}
+        .btn-cancel{background:rgba(255,255,255,0.07);color:rgba(255,255,255,0.55);border:1px solid rgba(255,255,255,0.1);font-family:'Segoe UI',sans-serif;font-size:14px;padding:10px 20px;border-radius:10px;cursor:pointer;}
+
+        /* Image upload area */
+        .img-upload-area{border:1.5px dashed rgba(255,255,255,0.18);border-radius:12px;padding:1.2rem;text-align:center;cursor:pointer;transition:border-color .2s,background .2s;position:relative;overflow:hidden;}
+        .img-upload-area:hover{border-color:#7ec8d8;background:rgba(126,200,216,0.05);}
+        .img-upload-area.has-image{padding:0;border-style:solid;border-color:rgba(126,200,216,0.35);}
+        .img-upload-area input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;}
+        .img-preview{width:100%;height:150px;object-fit:cover;border-radius:10px;display:block;}
+        .img-placeholder{pointer-events:none;}
+        .img-placeholder-icon{font-size:1.8rem;margin-bottom:.4rem;}
+        .img-placeholder-text{font-size:13px;color:rgba(255,255,255,0.4);}
+        .img-placeholder-sub{font-size:11px;color:rgba(255,255,255,0.25);margin-top:3px;}
+        .btn-remove-img{position:absolute;top:6px;left:6px;background:rgba(0,0,0,0.6);border:none;border-radius:50%;width:26px;height:26px;color:#fff;font-size:13px;cursor:pointer;display:none;align-items:center;justify-content:center;z-index:3;}
+        .img-upload-area.has-image .btn-remove-img{display:flex;}
+
+        /* Footer */
+        .site-footer{background:#100303;border-top:1px solid rgba(255,255,255,0.07);overflow:hidden;position:relative;}
+        .footer-bottom{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;padding:1.5rem 2rem 2rem;gap:.4rem;}
+        .footer-copy{font-size:11px;color:rgba(255,255,255,0.2);}
+
+        /* Responsive */
+        @media(max-width:768px){
+            .tab-bar{padding:0 1rem;overflow-x:auto;}
+            .toolbar{padding:1rem;}
+            .events-grid{padding:1rem;}
+            .form-row{grid-template-columns:1fr;}
+        }
+    </style>
+</head>
+<body>
+    <!-- User Bar -->
+    <div class="user-bar" id="user-bar">
+        <div class="user-info">
+            שלום <strong id="user-name">-</strong>
+            <span class="role-badge" id="user-role">-</span>
+        </div>
+        <button class="btn-logout" onclick="logout()">יציאה</button>
+    </div>
+
+    <!-- Hero -->
+    <div class="hero">
+        <div class="hero-bg" id="hero-bg"></div>
+        <div class="hero-badge">✦ אירועי העיר</div>
+        <div class="hero-title">חיפאית בתחתית</div>
+        <div class="hero-sub">כל האירועים, כל הבילויים — במקום אחד</div>
+    </div>
+
+    <!-- Tabs -->
+    <div class="tab-bar">
+        <div class="tab active" onclick="switchTab('all',this)">כל האירועים</div>
+    </div>
+
+    <!-- Toolbar -->
+    <div class="toolbar">
+        <button class="filter-btn active" data-cat="all">הכל</button>
+        <button class="filter-btn" data-cat="music">🎵 מוזיקה</button>
+        <button class="filter-btn" data-cat="theater">🎭 תאטרון</button>
+        <button class="filter-btn" data-cat="cinema">🎬 קולנוע</button>
+        <button class="filter-btn" data-cat="lectures">🎤 הרצאות</button>
+        <button class="filter-btn" data-cat="kids">🧒 ילדים</button>
+        <button class="filter-btn" data-cat="spirit">✨ רוח</button>
+        <button class="filter-btn" data-cat="workshops">🛠️ סדנאות</button>
+        <input type="date" class="date-input" id="date-filter">
+        <button class="btn-clear-date" onclick="clearDate()">×</button>
+        <button class="btn-add" onclick="handleAddEvent()">+ הוסף אירוע</button>
+    </div>
+
+    <!-- Events Grid -->
+    <div class="events-grid" id="grid"></div>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="footer-bottom">
+            <div class="footer-copy">חיפאית בתחתית · © 2026 כל הזכויות שמורות</div>
+        </div>
+    </footer>
+
+    <!-- Auth Modal -->
+    <div class="auth-overlay" id="auth-overlay">
+        <div class="auth-modal">
+            <button class="btn-close-auth" onclick="closeAuth()">×</button>
+            <h2>הצטרפי לקהילה</h2>
+            <p class="auth-subtitle">כדי להוסיף אירוע, נרשמי למערכת</p>
+            
+            <div class="auth-tabs">
+                <button class="auth-tab active" onclick="setAuthTab('login')">התחברות</button>
+                <button class="auth-tab" onclick="setAuthTab('register')">הרשמה</button>
+            </div>
+            
+            <div class="auth-form">
+                <input type="email" class="auth-input" id="auth-email" placeholder="אימייל" required>
+                <input type="password" class="auth-input" id="auth-password" placeholder="סיסמה" required>
+                <div id="register-fields" style="display:none;">
+                    <input type="text" class="auth-input" id="auth-name" placeholder="שם מלא">
+                </div>
+                <button class="auth-submit" id="auth-submit-btn" onclick="handleAuth()">התחבר</button>
+            </div>
+            <div class="auth-error" id="auth-error"></div>
+        </div>
+    </div>
+
+    <!-- Event Modal -->
+    <div class="overlay" id="overlay" onclick="overlayClick(event)">
+        <div class="modal">
+            <h2 id="modal-title">✦ הוסף אירוע חדש</h2>
+            
+            <div class="form-group">
+                <label>קטגוריה</label>
+                <select id="f-cat">
+                    <option value="music">מוזיקה</option>
+                    <option value="theater">תיאטרון</option>
+                    <option value="cinema">קולנוע</option>
+                    <option value="lectures">הרצאות</option>
+                    <option value="kids">ילדים</option>
+                    <option value="spirit">רוחניות</option>
+                    <option value="workshops">סדנאות</option>
+                    <option value="literature">ספרות</option>
+                    <option value="exhibition">תערוכות</option>
+                    <option value="standup">סטנד-אפ</option>
+                    <option value="games">משחקים</option>
+                    <option value="party">מסיבות</option>
+                    <option value="drag">דראג</option>
+                    <option value="openmic">מיקרופון פתוח</option>
+                    <option value="karaoke">קריוקי</option>
+                    <option value="workshop">סדנה</option>
+                    <option value="other">אחר</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>כותרת *</label>
+                <input type="text" id="f-title" required>
+            </div>
+
+            <div class="form-group">
+                <label>תיאור</label>
+                <textarea id="f-desc" placeholder="תאר את האירוע..."></textarea>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>תאריך</label>
+                    <input type="date" id="f-date">
+                </div>
+                <div class="form-group">
+                    <label>שעה</label>
+                    <input type="text" id="f-time" placeholder="20:00">
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>מקום</label>
+                    <input type="text" id="f-loc" placeholder="חיפה">
+                </div>
+                <div class="form-group">
+                    <label>מחיר</label>
+                    <input type="text" id="f-price" placeholder="כניסה חופשית">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>קישור לכרטיסים</label>
+                <input type="url" id="f-tickets" placeholder="https://...">
+            </div>
+
+            <div class="form-group">
+                <label>חומרים נדרשים</label>
+                <input type="text" id="f-materials" placeholder="מה להביא...">
+            </div>
+
+            <div class="form-group">
+                <label>תמונה</label>
+                <div class="img-upload-area" onclick="document.getElementById('f-image').click()">
+                    <img id="img-preview" style="display:none">
+                    <div class="img-placeholder" id="img-placeholder">
+                        <div class="img-placeholder-icon">📷</div>
+                        <div class="img-placeholder-text">לחץ להעלאת תמונה</div>
+                        <div class="img-placeholder-sub">(אופציונלי)</div>
+                    </div>
+                    <button type="button" class="btn-remove-img" onclick="removeImage(event)">×</button>
+                </div>
+                <input type="file" id="f-image" accept="image/*" style="display:none" onchange="handleImageUpload(event)">
+            </div>
+
+            <div class="modal-btns">
+                <button class="btn-cancel" onclick="closeModal()">ביטול</button>
+                <button class="btn-submit" onclick="saveEvent()">שמור אירוע</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Configuration
+        const SUPABASE_URL = 'https://sgeuvghemmscvwtpbgdo.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNnZXV2Z2hlbW1zY3Z3dHBiZ2RvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQwOTY2ODAsImV4cCI6MjA4OTY3MjY4MH0.yKPpUuZgyZKug9NDiuSugXswS2SUvN2IKr2x0hJ3Fz4';
+        
+        const db = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        
+        // Global state
+        let currentUser = null;
+        let currentRole = null;
+        let events = [];
+        let filteredEvents = [];
+        let currentFilter = 'all';
+        let editingId = null;
+        let currentImageData = null;
+        let pendingAction = null;
+
+        // Initialize app
+        async function init() {
+            await checkAuth();
+            await loadEvents();
+            setupEventListeners();
+        }
+
+        // Auth functions
+        async function checkAuth() {
+            try {
+                const { data: { user } } = await db.auth.getUser();
+                if (user) {
+                    currentUser = user;
+                    const { data: profile } = await db.from('user_profiles').select('role').eq('id', user.id).single();
+                    currentRole = profile?.role || 'user';
+                    
+                    document.getElementById('user-name').textContent = user.user_metadata.name || user.email;
+                    document.getElementById('user-role').textContent = currentRole === 'admin' ? 'מנהל' : 'עורך';
+                    document.getElementById('user-role').className = `role-badge role-${currentRole}`;
+                    document.getElementById('user-bar').classList.add('show');
+                }
+            } catch (error) {
+                console.error('Auth error:', error);
+            }
+        }
+
+        function handleAddEvent() {
+            if (currentUser) {
+                openModal();
+            } else {
+                pendingAction = 'addEvent';
+                openAuth();
+            }
+        }
+
+        function openAuth() {
+            document.getElementById('auth-overlay').classList.add('open');
+        }
+
+        function closeAuth() {
+            document.getElementById('auth-overlay').classList.remove('open');
+            pendingAction = null;
+        }
+
+        function setAuthTab(tab) {
+            const tabs = document.querySelectorAll('.auth-tab');
+            tabs.forEach(t => t.classList.remove('active'));
+            document.querySelector(`[onclick="setAuthTab('${tab}')"]`).classList.add('active');
+            
+            const registerFields = document.getElementById('register-fields');
+            const submitBtn = document.getElementById('auth-submit-btn');
+            
+            if (tab === 'register') {
+                registerFields.style.display = 'block';
+                submitBtn.textContent = 'הרשמה';
+            } else {
+                registerFields.style.display = 'none';
+                submitBtn.textContent = 'התחברות';
+            }
+        }
+
+        async function handleAuth() {
+            const email = document.getElementById('auth-email').value;
+            const password = document.getElementById('auth-password').value;
+            const name = document.getElementById('auth-name').value;
+            const isRegister = document.querySelector('.auth-tab.active').textContent === 'הרשמה';
+            
+            const errorDiv = document.getElementById('auth-error');
+            errorDiv.textContent = '';
+            
+            try {
+                let result;
+                if (isRegister) {
+                    result = await db.auth.signUp({
+                        email,
+                        password,
+                        options: {
+                            data: { name }
+                        }
+                    });
+                    if (result.data.user && !result.data.user.email_confirmed_at) {
+                        errorDiv.textContent = 'נשלח קישור אישור למייל שלך';
+                        return;
+                    }
+                } else {
+                    result = await db.auth.signInWithPassword({ email, password });
+                }
+                
+                if (result.error) throw result.error;
+                
+                await checkAuth();
+                closeAuth();
+                
+                if (pendingAction === 'addEvent') {
+                    openModal();
+                }
+            } catch (error) {
+                errorDiv.textContent = error.message;
+            }
+        }
+
+        async function logout() {
+            await db.auth.signOut();
+            currentUser = null;
+            currentRole = null;
+            document.getElementById('user-bar').classList.remove('show');
+            await loadEvents();
+        }
+
+        // Events management
+        async function loadEvents() {
+            try {
+                const { data, error } = await db.from('events').select('*').order('date_raw', { ascending: true });
+                if (error) throw error;
+                
+                events = data || [];
+                applyFilter();
+            } catch (error) {
+                console.error('Error loading events:', error);
+                document.getElementById('grid').innerHTML = '<div class="empty">שגיאה בטעינת האירועים</div>';
+            }
+        }
+
+        function applyFilter() {
+            let filtered = events;
+            
+            if (currentFilter !== 'all') {
+                filtered = events.filter(e => e.cat === currentFilter);
+            }
+            
+            const dateFilter = document.getElementById('date-filter').value;
+            if (dateFilter) {
+                filtered = filtered.filter(e => e.date_raw === dateFilter);
+            }
+            
+            filteredEvents = filtered;
+            renderEvents();
+        }
+
+        function renderEvents() {
+            const grid = document.getElementById('grid');
+            
+            if (filteredEvents.length === 0) {
+                grid.innerHTML = '<div class="empty">אין אירועים להציג</div>';
+                return;
+            }
+            
+            grid.innerHTML = filteredEvents.map(renderEventCard).join('');
+        }
+
+        function renderEventCard(event) {
+            const isUserEvent = currentUser && (currentUser.id === event.user_id || currentRole === 'admin');
+            const userEventClass = isUserEvent ? 'user-event' : '';
+            
+            const ticketsLink = event.tickets ? 
+                `<a href="${event.tickets}" target="_blank" class="link-btn link-tickets">🎫 כרטיסים</a>` :
+                `<span class="link-btn link-none">🎫 כרטיסים</span>`;
+                
+            const materialsLink = event.materials ? 
+                `<span class="link-btn link-materials">📦 ${event.materials}</span>` :
+                `<span class="link-btn link-none">📦 חומרים</span>`;
+            
+            return `
+                <div class="card ${userEventClass}" data-cat="${event.cat}">
+                    <div class="card-actions">
+                        <button class="edit-btn" onclick="editEvent(${event.id})" title="ערוך">✏️</button>
+                        <button class="del-btn" onclick="deleteEvent(${event.id}, event)" title="מחק">🗑️</button>
+                    </div>
+                    <div class="card-img">
+                        ${event.image ? `<img src="${event.image}" alt="${event.title}">` : getCategoryIcon(event.cat)}
+                    </div>
+                    <div class="card-body">
+                        <div class="card-cat cat-${event.cat}">${getCategoryName(event.cat)}</div>
+                        <div class="card-title">${event.title}</div>
+                        <div class="card-desc">${event.description || ''}</div>
+                        <div class="card-meta">
+                            <div class="meta-item">📅 ${event.date_display}</div>
+                            <div class="meta-item">⏰ ${event.time}</div>
+                            <div class="meta-item">📍 ${event.location}</div>
+                            <div class="meta-item">💰 ${event.price}</div>
+                        </div>
+                    </div>
+                    <div class="card-links">
+                        ${ticketsLink}
+                        ${materialsLink}
+                    </div>
+                </div>
+            `;
+        }
+
+        function getCategoryName(cat) {
+            const names = {
+                music: 'מוזיקה', theater: 'תיאטרון', cinema: 'קולנוע', lectures: 'הרצאות',
+                kids: 'ילדים', spirit: 'רוחניות', workshops: 'סדנאות', literature: 'ספרות',
+                exhibition: 'תערוכות', standup: 'סטנד-אפ', games: 'משחקים', party: 'מסיבות',
+                drag: 'דראג', openmic: 'מיקרופון פתוח', karaoke: 'קריוקי', workshop: 'סדנה', other: 'אחר'
+            };
+            return names[cat] || cat;
+        }
+
+        function getCategoryIcon(cat) {
+            const icons = {
+                music: '🎵', theater: '🎭', cinema: '🎬', lectures: '🎤',
+                kids: '🧒', spirit: '✨', workshops: '🛠️', literature: '📚',
+                exhibition: '🖼️', standup: '😂', games: '🎮', party: '🎉',
+                drag: '💃', openmic: '🎙️', karaoke: '🎤', workshop: '🔧', other: '🎭'
+            };
+            return icons[cat] || '🎭';
+        }
+
+        function switchTab(tab, element) {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            element.classList.add('active');
+        }
+
+        // Event listeners
+        function setupEventListeners() {
+            // Filter buttons
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    currentFilter = btn.dataset.cat;
+                    applyFilter();
+                });
+            });
+
+            // Date filter
+            document.getElementById('date-filter').addEventListener('change', applyFilter);
+        }
+
+        function clearDate() {
+            document.getElementById('date-filter').value = '';
+            applyFilter();
+        }
+
+        // Modal functions
+        function openModal() {
+            if (!currentUser) {
+                handleAddEvent();
+                return;
+            }
+            
+            document.getElementById('modal-title').textContent = editingId ? '✦ ערוך אירוע' : '✦ הוסף אירוע חדש';
+            if (!editingId) {
+                resetForm();
+            }
+            document.getElementById('overlay').classList.add('open');
+        }
+
+        function closeModal() {
+            document.getElementById('overlay').classList.remove('open');
+            editingId = null;
+        }
+
+        function overlayClick(e) {
+            if (e.target === document.getElementById('overlay')) closeModal();
+        }
+
+        function resetForm() {
+            document.getElementById('f-cat').value = 'music';
+            document.getElementById('f-title').value = '';
+            document.getElementById('f-desc').value = '';
+            document.getElementById('f-date').value = '';
+            document.getElementById('f-time').value = '';
+            document.getElementById('f-loc').value = '';
+            document.getElementById('f-price').value = '';
+            document.getElementById('f-tickets').value = '';
+            document.getElementById('f-materials').value = '';
+            currentImageData = null;
+            document.getElementById('img-preview').style.display = 'none';
+            document.getElementById('img-placeholder').style.display = 'block';
+            document.querySelector('.img-upload-area').classList.remove('has-image');
+        }
+
+        function editEvent(id) {
+            editingId = id;
+            const event = events.find(e => e.id === id);
+            if (!event) return;
+            
+            document.getElementById('f-cat').value = event.cat;
+            document.getElementById('f-title').value = event.title;
+            document.getElementById('f-desc').value = event.description || '';
+            document.getElementById('f-date').value = event.date_raw;
+            document.getElementById('f-time').value = event.time === '-' ? '' : event.time;
+            document.getElementById('f-loc').value = event.location === 'חיפה' ? '' : event.location;
+            document.getElementById('f-price').value = event.price === 'כניסה חופשית' ? '' : event.price;
+            document.getElementById('f-tickets').value = event.tickets || '';
+            document.getElementById('f-materials').value = event.materials || '';
+            
+            if (event.image) {
+                currentImageData = event.image;
+                document.getElementById('img-preview').src = event.image;
+                document.getElementById('img-preview').style.display = 'block';
+                document.getElementById('img-placeholder').style.display = 'none';
+                document.querySelector('.img-upload-area').classList.add('has-image');
+            }
+            
+            openModal();
+        }
+
+        async function saveEvent() {
+            if (!currentUser) {
+                handleAddEvent();
+                return;
+            }
+            
+            const title = document.getElementById('f-title').value.trim();
+            if (!title) {
+                document.getElementById('f-title').style.borderColor = '#f075a8';
+                setTimeout(() => document.getElementById('f-title').style.borderColor = '', 1500);
+                return;
+            }
+            
+            const cat = document.getElementById('f-cat').value;
+            const dateRaw = document.getElementById('f-date').value;
+            const dateDisplay = dateRaw ? new Date(dateRaw + 'T12:00:00').toLocaleDateString('he-IL', {
+                day: 'numeric',
+                month: 'long',
+                year: 'numeric'
+            }) : '-';
+            
+            const payload = {
+                cat,
+                title,
+                description: document.getElementById('f-desc').value.trim(),
+                date_raw: dateRaw,
+                date_display: dateDisplay,
+                time: document.getElementById('f-time').value || '-',
+                location: document.getElementById('f-loc').value || 'חיפה',
+                price: document.getElementById('f-price').value || 'כניסה חופשית',
+                tickets: document.getElementById('f-tickets').value.trim(),
+                materials: document.getElementById('f-materials').value.trim(),
+                image: currentImageData || null
+            };
+            
+            try {
+                let error;
+                if (editingId !== null) {
+                    const event = events.find(e => e.id === editingId);
+                    if (!event) return;
+                    if (currentRole !== 'admin' && event.user_id !== currentUser.id) {
+                        alert('אין לך הרשאה לערוך אירוע זה');
+                        return;
+                    }
+                    const res = await db.from('events').update(payload).eq('id', editingId);
+                    error = res.error;
+                } else {
+                    const res = await db.from('events').insert({ ...payload, user_id: currentUser.id });
+                    error = res.error;
+                }
+                
+                if (error) throw error;
+                
+                closeModal();
+                await loadEvents();
+            } catch (error) {
+                alert('שגיאה: ' + error.message);
+            }
+        }
+
+        async function deleteEvent(id, ev) {
+            ev.stopPropagation();
+            const event = events.find(e => e.id === id);
+            if (!event) return;
+            
+            if (currentRole !== 'admin' && event.user_id !== currentUser.id) {
+                alert('אין לך הרשאה למחוק אירוע זה');
+                return;
+            }
+            
+            if (!confirm(`למחוק את "${event.title}"?`)) return;
+            
+            try {
+                const { error } = await db.from('events').delete().eq('id', id);
+                if (error) throw error;
+                await loadEvents();
+            } catch (error) {
+                alert('שגיאה: ' + error.message);
+            }
+        }
+
+        // Image upload
+        function handleImageUpload(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = ev => {
+                currentImageData = ev.target.result;
+                document.getElementById('img-preview').src = currentImageData;
+                document.getElementById('img-preview').style.display = 'block';
+                document.getElementById('img-placeholder').style.display = 'none';
+                document.querySelector('.img-upload-area').classList.add('has-image');
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function removeImage(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            currentImageData = null;
+            document.getElementById('img-preview').src = '';
+            document.getElementById('img-preview').style.display = 'none';
+            document.getElementById('img-placeholder').style.display = 'block';
+            document.querySelector('.img-upload-area').classList.remove('has-image');
+            document.getElementById('f-image').value = '';
+        }
+
+        // Start the app
+        init();
+    </script>
+</body>
+</html>
