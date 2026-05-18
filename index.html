@@ -44,11 +44,12 @@ body{font-family:'Segoe UI',sans-serif;background:#1a0505;color:#f5ede8;directio
 .btn-logout:hover{border-color:rgba(255,255,255,0.3);color:rgba(255,255,255,0.7);}
 
 /* Hero */
-.hero{position:relative;background:linear-gradient(160deg,#3d0a0a 0%,#7a1515 50%,#c8232c 100%);padding:2.5rem 2rem 2rem;overflow:hidden;border-bottom:1px solid rgba(255,255,255,0.07);}
-.hero-bg{position:absolute;inset:0;background-size:cover;background-position:center 30%;filter:blur(2px) saturate(1.2);transform:scale(1.08);opacity:0.9;z-index:0;}
-.hero::before{content:'';position:absolute;inset:0;background:linear-gradient(160deg,rgba(61,10,10,0.25) 0%,rgba(122,21,21,0.15) 50%,rgba(200,35,44,0.1) 100%);z-index:1;}
+.hero{position:relative;background:linear-gradient(160deg,#3d0a0a 0%,#7a1515 50%,#c8232c 100%);padding:0;overflow:hidden;border-bottom:1px solid rgba(255,255,255,0.07);min-height:320px;}
+.hero-bg{position:absolute;inset:0;background-size:cover;background-position:center 30%;filter:saturate(1.2);transform:scale(1.08);opacity:0.85;z-index:0;}
+.hero::before{content:'';position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,0.1) 0%,rgba(26,5,5,0.75) 100%);z-index:1;}
 .hero>*:not(.hero-bg){position:relative;z-index:2;}
-.hero-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.13);border-radius:20px;padding:5px 14px;font-size:12px;color:#d4e034;letter-spacing:1px;text-transform:uppercase;margin-bottom:.75rem;}
+.hero-content{position:relative;z-index:2;padding:2.5rem 2rem 2rem;}
+.hero-badge{display:none;}
 .hero-title{font-family:'Secular One',sans-serif !important;font-size:clamp(2rem,5vw,3.5rem);font-weight:900;line-height:1.1;background:linear-gradient(135deg,#fff 0%,#d4e034 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
 .hero-sub{font-size:.95rem;color:rgba(255,255,255,0.5);margin-top:.5rem;font-weight:300;}
 
@@ -62,22 +63,22 @@ body{font-family:'Segoe UI',sans-serif;background:#1a0505;color:#f5ede8;directio
 .filter-btn{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.6);font-family:'Segoe UI',sans-serif;font-size:13px;padding:6px 14px;border-radius:20px;cursor:pointer;transition:all .2s;}
 .filter-btn:hover{opacity:0.85;}
 .filter-btn.active{font-weight:500;opacity:1;}
-.filter-btn[data-cat="all"]{border-color:rgba(255,255,255,0.2);}
+.filter-btn[data-cat="all"]{background:rgba(255,255,255,0.1);border-color:rgba(255,255,255,0.3);color:#fff;}
 .filter-btn[data-cat="all"].active{background:#fff;color:#1a0505;border-color:#fff;}
-.filter-btn[data-cat="music"]{color:#c98ff0;border-color:rgba(167,105,221,0.4);}
-.filter-btn[data-cat="music"].active{background:rgba(167,105,221,0.8);color:#fff;border-color:#c98ff0;}
-.filter-btn[data-cat="theater"]{color:#d4e034;border-color:rgba(212,224,52,0.4);}
-.filter-btn[data-cat="theater"].active{background:rgba(212,224,52,0.8);color:#1a0505;border-color:#d4e034;}
-.filter-btn[data-cat="cinema"]{color:#6b8fa8;border-color:rgba(107,143,168,0.4);}
-.filter-btn[data-cat="cinema"].active{background:rgba(107,143,168,0.8);color:#fff;border-color:#6b8fa8;}
-.filter-btn[data-cat="lectures"]{color:#e06060;border-color:rgba(200,35,44,0.4);}
-.filter-btn[data-cat="lectures"].active{background:rgba(200,35,44,0.8);color:#fff;border-color:#e06060;}
-.filter-btn[data-cat="kids"]{color:#f075a8;border-color:rgba(230,60,120,0.4);}
-.filter-btn[data-cat="kids"].active{background:rgba(230,60,120,0.8);color:#fff;border-color:#f075a8;}
-.filter-btn[data-cat="spirit"]{color:#50c8b4;border-color:rgba(80,200,180,0.4);}
-.filter-btn[data-cat="spirit"].active{background:rgba(80,200,180,0.8);color:#1a0505;border-color:#50c8b4;}
-.filter-btn[data-cat="workshops"]{color:#f0a032;border-color:rgba(240,160,50,0.4);}
-.filter-btn[data-cat="workshops"].active{background:rgba(240,160,50,0.8);color:#1a0505;border-color:#f0a032;}
+.filter-btn[data-cat="music"]{background:rgba(167,105,221,0.25);color:#e0b8ff;border-color:rgba(167,105,221,0.5);}
+.filter-btn[data-cat="music"].active{background:rgba(167,105,221,0.9);color:#fff;border-color:#c98ff0;}
+.filter-btn[data-cat="theater"]{background:rgba(212,224,52,0.2);color:#d4e034;border-color:rgba(212,224,52,0.5);}
+.filter-btn[data-cat="theater"].active{background:rgba(212,224,52,0.9);color:#1a0505;border-color:#d4e034;}
+.filter-btn[data-cat="cinema"]{background:rgba(107,143,168,0.25);color:#9ac4de;border-color:rgba(107,143,168,0.5);}
+.filter-btn[data-cat="cinema"].active{background:rgba(107,143,168,0.9);color:#fff;border-color:#6b8fa8;}
+.filter-btn[data-cat="lectures"]{background:rgba(200,35,44,0.25);color:#ff9090;border-color:rgba(200,35,44,0.5);}
+.filter-btn[data-cat="lectures"].active{background:rgba(200,35,44,0.9);color:#fff;border-color:#e06060;}
+.filter-btn[data-cat="kids"]{background:rgba(230,60,120,0.25);color:#ffb0d0;border-color:rgba(230,60,120,0.5);}
+.filter-btn[data-cat="kids"].active{background:rgba(230,60,120,0.9);color:#fff;border-color:#f075a8;}
+.filter-btn[data-cat="spirit"]{background:rgba(80,200,180,0.2);color:#70e0cc;border-color:rgba(80,200,180,0.5);}
+.filter-btn[data-cat="spirit"].active{background:rgba(80,200,180,0.9);color:#1a0505;border-color:#50c8b4;}
+.filter-btn[data-cat="workshops"]{background:rgba(240,160,50,0.25);color:#ffc870;border-color:rgba(240,160,50,0.5);}
+.filter-btn[data-cat="workshops"].active{background:rgba(240,160,50,0.9);color:#1a0505;border-color:#f0a032;}
 .btn-login{background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.25);color:#fff;font-family:'Segoe UI',sans-serif;font-size:13px;font-weight:500;padding:7px 18px;border-radius:20px;cursor:pointer;transition:all .2s;margin-right:auto;}
 .btn-login:hover{background:rgba(255,255,255,0.2);}
 .date-input{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);color:#f5ede8;font-family:'Segoe UI',sans-serif;font-size:13px;padding:6px 12px;border-radius:20px;outline:none;transition:border-color .2s;cursor:pointer;}
@@ -202,9 +203,10 @@ body{font-family:'Segoe UI',sans-serif;background:#1a0505;color:#f5ede8;directio
 <div class="hero">
     <div class="hero-bg" id="hero-bg"></div>
     <button class="hero-login-btn" id="hero-login-btn" onclick="openAuth()">התחברות</button>
-    <div class="hero-badge">✦ אירועי העיר</div>
-    <div class="hero-title">חיפאית בתחתית</div>
-    <div class="hero-sub">כל האירועים, כל הבילויים — במקום אחד</div>
+    <div class="hero-content">
+        <div class="hero-title">חיפאית בתחתית</div>
+        <div class="hero-sub">כל האירועים, כל הבילויים — במקום אחד</div>
+    </div>
 </div>
 
 <!-- Tabs -->
@@ -228,8 +230,7 @@ body{font-family:'Segoe UI',sans-serif;background:#1a0505;color:#f5ede8;directio
     <div style="margin-right:auto;display:flex;gap:8px;align-items:center;">
         <button class="btn-login" id="btn-login-toolbar" onclick="openAuth()" style="display:none;">התחברות</button>
         <button class="btn-add" onclick="handleAddEvent()">+ הוסף אירוע</button>
-    </div>
-</div>
+    </div></div>
 
 <!-- Events Grid -->
 <div class="events-grid" id="grid"></div>
