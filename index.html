@@ -100,7 +100,7 @@ body{font-family:'Segoe UI',sans-serif;background:#1a0505;color:#f5ede8;directio
 .del-btn:hover{transform:scale(1.18);background:rgba(200,35,44,0.7);}
 .del-btn{display:none;}
 .card.user-event .del-btn{display:flex;}
-.card-img{width:100%;height:210px;display:flex;align-items:center;justify-content:center;font-size:3rem;background:#4a1010;overflow:hidden;}
+.card-img{width:100%;height:260px;display:flex;align-items:center;justify-content:center;font-size:3rem;background:#4a1010;overflow:hidden;}
 .card-img img{width:100%;height:100%;object-fit:cover;}
 .card-body{padding:1.1rem;}
 .card-cat{display:inline-block;font-size:11px;font-weight:500;letter-spacing:.5px;padding:3px 10px;border-radius:20px;margin-bottom:.5rem;text-transform:uppercase;}
@@ -202,7 +202,6 @@ body{font-family:'Segoe UI',sans-serif;background:#1a0505;color:#f5ede8;directio
 <!-- Hero -->
 <div class="hero">
     <div class="hero-bg" id="hero-bg"></div>
-    <button class="hero-login-btn" id="hero-login-btn" onclick="openAuth()">התחברות</button>
     <div class="hero-content">
         <div class="hero-title">חיפאית בתחתית</div>
         <div class="hero-sub">כל האירועים, כל הבילויים — במקום אחד</div>
@@ -352,10 +351,8 @@ async function checkAuth() {
             document.getElementById('user-role-badge').className = `role-badge role-${currentRole === 'admin' ? 'admin' : 'editor'}`;
             document.getElementById('user-bar').classList.add('show');
             document.getElementById('btn-login-toolbar').style.display = 'none';
-            document.getElementById('hero-login-btn').classList.add('hidden');
         } else {
             document.getElementById('btn-login-toolbar').style.display = 'inline-flex';
-            document.getElementById('hero-login-btn').classList.remove('hidden');
         }
     } catch(e) { console.error(e); }
 }
@@ -439,7 +436,6 @@ async function logout() {
     currentUser = null; currentRole = null;
     document.getElementById('user-bar').classList.remove('show');
     document.getElementById('btn-login-toolbar').style.display = 'inline-flex';
-    document.getElementById('hero-login-btn').classList.remove('hidden');
     await loadEvents();
 }
 
