@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>חיפאית בתחתית - אירועים קהילתיים</title>
-    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@700;900&family=Cascadia+Code:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Secular+One&family=Rubik:wght@700;900&family=Cascadia+Code:wght@700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
 *{box-sizing:border-box;margin:0;padding:0;}
@@ -49,7 +49,7 @@ body{font-family:'Segoe UI',sans-serif;background:#1a0505;color:#f5ede8;directio
 .hero::before{content:'';position:absolute;inset:0;background:linear-gradient(160deg,rgba(61,10,10,0.25) 0%,rgba(122,21,21,0.15) 50%,rgba(200,35,44,0.1) 100%);z-index:1;}
 .hero>*:not(.hero-bg){position:relative;z-index:2;}
 .hero-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.13);border-radius:20px;padding:5px 14px;font-size:12px;color:#d4e034;letter-spacing:1px;text-transform:uppercase;margin-bottom:.75rem;}
-.hero-title{font-family:'Cascadia Code','Courier New',monospace !important;font-size:clamp(2rem,5vw,3.5rem);font-weight:900;line-height:1.1;background:linear-gradient(135deg,#fff 0%,#d4e034 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.hero-title{font-family:'Secular One',sans-serif !important;font-size:clamp(2rem,5vw,3.5rem);font-weight:900;line-height:1.1;background:linear-gradient(135deg,#fff 0%,#d4e034 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
 .hero-sub{font-size:.95rem;color:rgba(255,255,255,0.5);margin-top:.5rem;font-weight:300;}
 
 /* Tabs */
@@ -60,14 +60,32 @@ body{font-family:'Segoe UI',sans-serif;background:#1a0505;color:#f5ede8;directio
 /* Toolbar */
 .toolbar{display:flex;flex-wrap:wrap;gap:8px;padding:1rem 2rem;background:#2a0808;border-bottom:1px solid rgba(255,255,255,0.06);position:sticky;top:0;z-index:10;align-items:center;}
 .filter-btn{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.6);font-family:'Segoe UI',sans-serif;font-size:13px;padding:6px 14px;border-radius:20px;cursor:pointer;transition:all .2s;}
-.filter-btn:hover{background:rgba(212,224,52,0.12);border-color:#d4e034;color:#d4e034;}
-.filter-btn.active{background:#d4e034;border-color:#d4e034;color:#1a0505;font-weight:500;}
+.filter-btn:hover{opacity:0.85;}
+.filter-btn.active{font-weight:500;opacity:1;}
+.filter-btn[data-cat="all"]{border-color:rgba(255,255,255,0.2);}
+.filter-btn[data-cat="all"].active{background:#fff;color:#1a0505;border-color:#fff;}
+.filter-btn[data-cat="music"]{color:#c98ff0;border-color:rgba(167,105,221,0.4);}
+.filter-btn[data-cat="music"].active{background:rgba(167,105,221,0.8);color:#fff;border-color:#c98ff0;}
+.filter-btn[data-cat="theater"]{color:#d4e034;border-color:rgba(212,224,52,0.4);}
+.filter-btn[data-cat="theater"].active{background:rgba(212,224,52,0.8);color:#1a0505;border-color:#d4e034;}
+.filter-btn[data-cat="cinema"]{color:#6b8fa8;border-color:rgba(107,143,168,0.4);}
+.filter-btn[data-cat="cinema"].active{background:rgba(107,143,168,0.8);color:#fff;border-color:#6b8fa8;}
+.filter-btn[data-cat="lectures"]{color:#e06060;border-color:rgba(200,35,44,0.4);}
+.filter-btn[data-cat="lectures"].active{background:rgba(200,35,44,0.8);color:#fff;border-color:#e06060;}
+.filter-btn[data-cat="kids"]{color:#f075a8;border-color:rgba(230,60,120,0.4);}
+.filter-btn[data-cat="kids"].active{background:rgba(230,60,120,0.8);color:#fff;border-color:#f075a8;}
+.filter-btn[data-cat="spirit"]{color:#50c8b4;border-color:rgba(80,200,180,0.4);}
+.filter-btn[data-cat="spirit"].active{background:rgba(80,200,180,0.8);color:#1a0505;border-color:#50c8b4;}
+.filter-btn[data-cat="workshops"]{color:#f0a032;border-color:rgba(240,160,50,0.4);}
+.filter-btn[data-cat="workshops"].active{background:rgba(240,160,50,0.8);color:#1a0505;border-color:#f0a032;}
+.btn-login{background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.25);color:#fff;font-family:'Segoe UI',sans-serif;font-size:13px;font-weight:500;padding:7px 18px;border-radius:20px;cursor:pointer;transition:all .2s;margin-right:auto;}
+.btn-login:hover{background:rgba(255,255,255,0.2);}
 .date-input{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);color:#f5ede8;font-family:'Segoe UI',sans-serif;font-size:13px;padding:6px 12px;border-radius:20px;outline:none;transition:border-color .2s;cursor:pointer;}
 .date-input:focus{border-color:#d4e034;}
 .date-input::-webkit-calendar-picker-indicator{filter:invert(0.6);}
 .btn-clear-date{background:none;border:none;color:rgba(255,255,255,0.35);font-size:18px;cursor:pointer;padding:0 2px;line-height:1;}
 .btn-clear-date:hover{color:#d4e034;}
-.btn-add{margin-right:auto;background:#d4e034;color:#1a0505;border:none;font-family:'Segoe UI',sans-serif;font-size:13px;font-weight:500;padding:7px 18px;border-radius:20px;cursor:pointer;transition:background .2s;}
+.btn-add{background:#d4e034;color:#1a0505;border:none;font-family:'Segoe UI',sans-serif;font-size:13px;font-weight:500;padding:7px 18px;border-radius:20px;cursor:pointer;transition:background .2s;}
 .btn-add:hover{background:#e2ec6a;}
 
 /* Cards */
@@ -81,7 +99,7 @@ body{font-family:'Segoe UI',sans-serif;background:#1a0505;color:#f5ede8;directio
 .del-btn:hover{transform:scale(1.18);background:rgba(200,35,44,0.7);}
 .del-btn{display:none;}
 .card.user-event .del-btn{display:flex;}
-.card-img{width:100%;height:155px;display:flex;align-items:center;justify-content:center;font-size:3rem;background:#4a1010;overflow:hidden;}
+.card-img{width:100%;height:210px;display:flex;align-items:center;justify-content:center;font-size:3rem;background:#4a1010;overflow:hidden;}
 .card-img img{width:100%;height:100%;object-fit:cover;}
 .card-body{padding:1.1rem;}
 .card-cat{display:inline-block;font-size:11px;font-weight:500;letter-spacing:.5px;padding:3px 10px;border-radius:20px;margin-bottom:.5rem;text-transform:uppercase;}
@@ -106,7 +124,26 @@ body{font-family:'Segoe UI',sans-serif;background:#1a0505;color:#f5ede8;directio
 .new-badge{position:absolute;top:10px;right:10px;background:#d4e034;color:#1a0505;font-size:11px;font-weight:500;padding:3px 9px;border-radius:20px;}
 .empty{text-align:center;padding:4rem 2rem;color:rgba(255,255,255,0.3);grid-column:1/-1;}
 
-/* Image upload */
+/* Card category backgrounds */
+.card[data-cat="music"]{border-color:rgba(167,105,221,0.3);}
+.card[data-cat="music"] .card-img{background:linear-gradient(135deg,#2d1a4a,#4a2a6e);}
+.card[data-cat="theater"]{border-color:rgba(212,224,52,0.3);}
+.card[data-cat="theater"] .card-img{background:linear-gradient(135deg,#2a2800,#4a4a00);}
+.card[data-cat="cinema"]{border-color:rgba(107,143,168,0.3);}
+.card[data-cat="cinema"] .card-img{background:linear-gradient(135deg,#0d1f2d,#1a3a50);}
+.card[data-cat="lectures"]{border-color:rgba(200,35,44,0.3);}
+.card[data-cat="lectures"] .card-img{background:linear-gradient(135deg,#2d0808,#5a1010);}
+.card[data-cat="kids"]{border-color:rgba(230,60,120,0.3);}
+.card[data-cat="kids"] .card-img{background:linear-gradient(135deg,#2d0a1a,#5a1035);}
+.card[data-cat="spirit"]{border-color:rgba(80,200,180,0.3);}
+.card[data-cat="spirit"] .card-img{background:linear-gradient(135deg,#0a2d2a,#105a50);}
+.card[data-cat="workshops"]{border-color:rgba(240,160,50,0.3);}
+.card[data-cat="workshops"] .card-img{background:linear-gradient(135deg,#2d1a00,#5a3500);}
+
+/* Hero login button */
+.hero-login-btn{position:absolute;top:1.2rem;right:1.5rem;z-index:3;background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);color:#fff;font-family:'Segoe UI',sans-serif;font-size:13px;font-weight:500;padding:7px 18px;border-radius:20px;cursor:pointer;transition:all .2s;backdrop-filter:blur(4px);}
+.hero-login-btn:hover{background:rgba(255,255,255,0.25);}
+.hero-login-btn.hidden{display:none;}
 .img-upload-area{border:1.5px dashed rgba(255,255,255,0.18);border-radius:12px;padding:1.2rem;text-align:center;cursor:pointer;transition:border-color .2s,background .2s;position:relative;overflow:hidden;}
 .img-upload-area:hover{border-color:#7ec8d8;background:rgba(126,200,216,0.05);}
 .img-upload-area.has-image{padding:0;border-style:solid;border-color:rgba(126,200,216,0.35);}
@@ -164,6 +201,7 @@ body{font-family:'Segoe UI',sans-serif;background:#1a0505;color:#f5ede8;directio
 <!-- Hero -->
 <div class="hero">
     <div class="hero-bg" id="hero-bg"></div>
+    <button class="hero-login-btn" id="hero-login-btn" onclick="openAuth()">התחברות</button>
     <div class="hero-badge">✦ אירועי העיר</div>
     <div class="hero-title">חיפאית בתחתית</div>
     <div class="hero-sub">כל האירועים, כל הבילויים — במקום אחד</div>
@@ -187,7 +225,10 @@ body{font-family:'Segoe UI',sans-serif;background:#1a0505;color:#f5ede8;directio
     <button class="filter-btn" data-cat="workshops">🛠️ סדנאות</button>
     <input type="date" class="date-input" id="date-filter">
     <button class="btn-clear-date" onclick="clearDate()">×</button>
-    <button class="btn-add" onclick="handleAddEvent()">+ הוסף אירוע</button>
+    <div style="margin-right:auto;display:flex;gap:8px;align-items:center;">
+        <button class="btn-login" id="btn-login-toolbar" onclick="openAuth()" style="display:none;">התחברות</button>
+        <button class="btn-add" onclick="handleAddEvent()">+ הוסף אירוע</button>
+    </div>
 </div>
 
 <!-- Events Grid -->
@@ -309,6 +350,11 @@ async function checkAuth() {
             document.getElementById('user-role-badge').textContent = currentRole === 'admin' ? 'מנהל' : 'עורך';
             document.getElementById('user-role-badge').className = `role-badge role-${currentRole === 'admin' ? 'admin' : 'editor'}`;
             document.getElementById('user-bar').classList.add('show');
+            document.getElementById('btn-login-toolbar').style.display = 'none';
+            document.getElementById('hero-login-btn').classList.add('hidden');
+        } else {
+            document.getElementById('btn-login-toolbar').style.display = 'inline-flex';
+            document.getElementById('hero-login-btn').classList.remove('hidden');
         }
     } catch(e) { console.error(e); }
 }
@@ -391,6 +437,8 @@ async function logout() {
     await db.auth.signOut();
     currentUser = null; currentRole = null;
     document.getElementById('user-bar').classList.remove('show');
+    document.getElementById('btn-login-toolbar').style.display = 'inline-flex';
+    document.getElementById('hero-login-btn').classList.remove('hidden');
     await loadEvents();
 }
 
@@ -442,7 +490,7 @@ function render() {
     grid.innerHTML = filteredEvents.map(e => {
         const isUserEvent = currentUser && (currentUser.id === e.user_id || currentRole === 'admin');
         return `
-        <div class="card${isUserEvent?' user-event':''}" data-id="${e.id}">
+        <div class="card${isUserEvent?' user-event':''}" data-id="${e.id}" data-cat="${e.cat}">
             ${e.id && !isNaN(e.id) ? '' : '<div class="new-badge">חדש ✦</div>'}
             <div class="card-actions">
                 <button class="fav-btn" onclick="toggleFav('${e.id}',event)">${favs.has(e.id)?'❤️':'🤍'}</button>
