@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="חיפאית בתחתית — כל האירועים והבילויים בחיפה במקום אחד. קונצרטים, תיאטרון, קולנוע, הרצאות, סדנאות ועוד.">
+    <meta name="keywords" content="אירועים בחיפה, בילויים חיפה, חיפאית בתחתית, מה לעשות בחיפה, קונצרטים חיפה">
     <title>חיפאית בתחתית - אירועי העיר</title>
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGRlZnM+CjxsaW5lYXJHcmFkaWVudCBpZD0iY2xvY2siIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPgo8c3RvcCBvZmZzZXQ9IjAlIiBzdHlsZT0ic3RvcC1jb2xvcjojYzhhMDMwO3N0b3Atb3BhY2l0eToxIiAvPgo8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0eWxlPSJzdG9wLWNvbG9yOiM5OTc4MTA7c3RvcC1vcGFjaXR5OjEiIC8+CjwvbGluZWFyR3JhZGllbnQ+CjwvZGVmcz4KPGNpcmNsZSBjeD0iMTYiIGN5PSIxNiIgcj0iMTUiIGZpbGw9InVybCgjY2xvY2spIiBzdHJva2U9IiM3MzVhMGMiIHN0cm9rZS13aWR0aD0iMiIvPgo8Y2lyY2xlIGN4PSIxNiIgY3k9IjE2IiByPSIxMCIgZmlsbD0iI2ZmZiIgc3Ryb2tlPSIjOTk3ODEwIiBzdHJva2Utd2lkdGg9IjEiLz4KPCEtLSBIb3VyIG1hcmtzIC0tPgo8cmVjdCB4PSIxNSIgeT0iNCIgd2lkdGg9IjIiIGhlaWdodD0iNCIgZmlsbD0iIzMzMyIvPgo8cmVjdCB4PSIyNiIgeT0iMTUiIHdpZHRoPSI0IiBoZWlnaHQ9IjIiIGZpbGw9IiMzMzMiLz4KPHJlY3QgeD0iMTUiIHk9IjI0IiB3aWR0aD0iMiIgaGVpZ2h0PSI0IiBmaWxsPSIjMzMzIi8+CjxyZWN0IHg9IjIiIHk9IjE1IiB3aWR0aD0iNCIgaGVpZ2h0PSIyIiBmaWxsPSIjMzMzIi8+CjwhLS0gSG91ciBoYW5kIChwb2ludGluZyB0byA4KSAtLT4KPGxpbmUgeDE9IjE2IiB5MT0iMTYiIHgyPSIxMCIgeTI9IjEwIiBzdHJva2U9IiM1MGM4YjQiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+CjwhLS0gTWludXRlIGhhbmQgKHBvaW50aW5nIHRvIDEyKSAtLT4KPGxpbmUgeDE9IjE2IiB5MT0iMTYiIHgyPSIxNiIgeTI9IjciIHN0cm9rZT0iIzUwYzhiNCIgc3Ryb2tlLXdpZHRoPSIxIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz4KPCEtLSBDZW50ZXIgZG90IC0tPgo8Y2lyY2xlIGN4PSIxNiIgY3k9IjE2IiByPSIyIiBmaWxsPSIjNTBjOGI0Ii8+Cjwvc3ZnPgo=">
     <link href="https://fonts.googleapis.com/css2?family=Secular+One&family=Rubik:wght@700;900&family=Cascadia+Code:wght@700&display=swap" rel="stylesheet">
@@ -80,6 +82,30 @@ body{font-family:'Segoe UI',sans-serif;background:#1a0505;color:#f5ede8;directio
 .filter-btn[data-cat="spirit"].active{background:rgba(80,200,180,0.9);color:#1a0505;border-color:#50c8b4;}
 .filter-btn[data-cat="workshops"]{background:rgba(240,160,50,0.25);color:#ffc870;border-color:rgba(240,160,50,0.5);}
 .filter-btn[data-cat="workshops"].active{background:rgba(240,160,50,0.9);color:#1a0505;border-color:#f0a032;}
+.filter-btn[data-cat="literature"]{background:rgba(100,180,100,0.25);color:#90e090;border-color:rgba(100,180,100,0.5);}
+.filter-btn[data-cat="literature"].active{background:rgba(100,180,100,0.9);color:#1a0505;border-color:#64b464;}
+.filter-btn[data-cat="art"]{background:rgba(255,140,0,0.25);color:#ffb84d;border-color:rgba(255,140,0,0.5);}
+.filter-btn[data-cat="art"].active{background:rgba(255,140,0,0.9);color:#1a0505;border-color:#ff8c00;}
+.filter-btn[data-cat="parties"]{background:rgba(255,80,180,0.25);color:#ff80c0;border-color:rgba(255,80,180,0.5);}
+.filter-btn[data-cat="parties"].active{background:rgba(255,80,180,0.9);color:#fff;border-color:#ff50b4;}
+.filter-btn[data-cat="games"]{background:rgba(50,200,255,0.25);color:#60d8ff;border-color:rgba(50,200,255,0.5);}
+.filter-btn[data-cat="games"].active{background:rgba(50,200,255,0.9);color:#1a0505;border-color:#32c8ff;}
+.filter-btn[data-cat="fairs"]{background:rgba(200,150,50,0.25);color:#f0c870;border-color:rgba(200,150,50,0.5);}
+.filter-btn[data-cat="fairs"].active{background:rgba(200,150,50,0.9);color:#1a0505;border-color:#c89632;}
+.filter-btn[data-cat="community"]{background:rgba(150,200,100,0.25);color:#a0e070;border-color:rgba(150,200,100,0.5);}
+.filter-btn[data-cat="community"].active{background:rgba(150,200,100,0.9);color:#1a0505;border-color:#96c864;}
+.filter-btn[data-cat="standup"]{background:rgba(255,220,50,0.25);color:#ffe060;border-color:rgba(255,220,50,0.5);}
+.filter-btn[data-cat="standup"].active{background:rgba(255,220,50,0.9);color:#1a0505;border-color:#ffdc32;}
+.filter-btn[data-cat="tours"]{background:rgba(100,200,200,0.25);color:#70e0e0;border-color:rgba(100,200,200,0.5);}
+.filter-btn[data-cat="tours"].active{background:rgba(100,200,200,0.9);color:#1a0505;border-color:#64c8c8;}
+.filter-btn[data-cat="performance"]{background:rgba(180,100,255,0.25);color:#d080ff;border-color:rgba(180,100,255,0.5);}
+.filter-btn[data-cat="performance"].active{background:rgba(180,100,255,0.9);color:#fff;border-color:#b464ff;}
+.filter-btn[data-cat="fringe"]{background:rgba(255,100,100,0.25);color:#ff8080;border-color:rgba(255,100,100,0.5);}
+.filter-btn[data-cat="fringe"].active{background:rgba(255,100,100,0.9);color:#fff;border-color:#ff6464;}
+.filter-btn[data-cat="festivals"]{background:rgba(255,180,0,0.25);color:#ffcc40;border-color:rgba(255,180,0,0.5);}
+.filter-btn[data-cat="festivals"].active{background:rgba(255,180,0,0.9);color:#1a0505;border-color:#ffb400;}
+.filter-btn[data-cat="general"]{background:rgba(180,180,180,0.15);color:#c8c8c8;border-color:rgba(180,180,180,0.4);}
+.filter-btn[data-cat="general"].active{background:rgba(180,180,180,0.8);color:#1a0505;border-color:#b4b4b4;}
 .btn-login{background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.25);color:#fff;font-family:'Segoe UI',sans-serif;font-size:13px;font-weight:500;padding:7px 18px;border-radius:20px;cursor:pointer;transition:all .2s;margin-right:auto;}
 .btn-login:hover{background:rgba(255,255,255,0.2);}
 .date-input{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);color:#f5ede8;font-family:'Segoe UI',sans-serif;font-size:13px;padding:6px 12px;border-radius:20px;outline:none;transition:border-color .2s;cursor:pointer;}
@@ -87,11 +113,16 @@ body{font-family:'Segoe UI',sans-serif;background:#1a0505;color:#f5ede8;directio
 .date-input::-webkit-calendar-picker-indicator{filter:invert(0.6);}
 .btn-clear-date{background:none;border:none;color:rgba(255,255,255,0.35);font-size:18px;cursor:pointer;padding:0 2px;line-height:1;}
 .btn-clear-date:hover{color:#d4e034;}
+.btn-today,.btn-tomorrow{background:rgba(212,224,52,0.15);border:1px solid rgba(212,224,52,0.4);color:#d4e034;font-family:'Segoe UI',sans-serif;font-size:12px;padding:5px 10px;border-radius:20px;cursor:pointer;transition:all .2s;}
+.btn-today:hover,.btn-tomorrow:hover{background:rgba(212,224,52,0.3);}
+.search-input{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);color:#f5ede8;font-family:'Segoe UI',sans-serif;font-size:13px;padding:6px 14px;border-radius:20px;outline:none;transition:border-color .2s;min-width:160px;}
+.search-input:focus{border-color:#d4e034;}
+.search-input::placeholder{color:rgba(255,255,255,0.3);}
 .btn-add{background:#d4e034;color:#1a0505;border:none;font-family:'Segoe UI',sans-serif;font-size:13px;font-weight:500;padding:7px 18px;border-radius:20px;cursor:pointer;transition:background .2s;}
 .btn-add:hover{background:#e2ec6a;}
 
 /* Cards */
-.events-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(285px,1fr));gap:1.5rem;padding:2rem;max-width:1200px;margin:0 auto;}
+.events-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1.2rem;padding:1.5rem 2rem;max-width:1400px;margin:0 auto;}
 .card{background:#2a0a0a;border:1px solid rgba(255,255,255,0.07);border-radius:16px;overflow:hidden;transition:transform .25s,box-shadow .25s,border-color .25s;position:relative;animation:fadeIn .3s ease;}
 @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
 .card:hover{transform:translateY(-4px);box-shadow:0 16px 40px rgba(0,0,0,0.4);border-color:rgba(212,224,52,0.3);}
@@ -101,7 +132,7 @@ body{font-family:'Segoe UI',sans-serif;background:#1a0505;color:#f5ede8;directio
 .del-btn:hover{transform:scale(1.18);background:rgba(200,35,44,0.7);}
 .del-btn{display:none;}
 .card.user-event .del-btn{display:flex;}
-.card-img{width:100%;height:340px;display:flex;align-items:center;justify-content:center;font-size:3rem;background:#4a1010;overflow:hidden;}
+.card-img{width:100%;height:160px;display:flex;align-items:center;justify-content:center;font-size:3rem;background:#4a1010;overflow:hidden;}
 .card-img img{width:100%;height:100%;object-fit:cover;}
 .card-body{padding:1.1rem;}
 .card-cat{display:inline-block;font-size:11px;font-weight:500;letter-spacing:.5px;padding:3px 10px;border-radius:20px;margin-bottom:.5rem;text-transform:uppercase;}
@@ -141,6 +172,18 @@ body{font-family:'Segoe UI',sans-serif;background:#1a0505;color:#f5ede8;directio
 .card[data-cat="spirit"] .card-img{background:linear-gradient(135deg,#0a2d2a,#105a50);}
 .card[data-cat="workshops"]{border-color:rgba(240,160,50,0.3);}
 .card[data-cat="workshops"] .card-img{background:linear-gradient(135deg,#2d1a00,#5a3500);}
+.card[data-cat="literature"] .card-img{background:linear-gradient(135deg,#0a2d0a,#1a5a1a);}
+.card[data-cat="art"] .card-img{background:linear-gradient(135deg,#2d1a00,#5a3000);}
+.card[data-cat="parties"] .card-img{background:linear-gradient(135deg,#2d0a2a,#5a1050);}
+.card[data-cat="games"] .card-img{background:linear-gradient(135deg,#002d3a,#005a70);}
+.card[data-cat="fairs"] .card-img{background:linear-gradient(135deg,#2d2000,#5a4000);}
+.card[data-cat="community"] .card-img{background:linear-gradient(135deg,#1a2d0a,#355a1a);}
+.card[data-cat="standup"] .card-img{background:linear-gradient(135deg,#2d2a00,#5a5000);}
+.card[data-cat="tours"] .card-img{background:linear-gradient(135deg,#002d2d,#005a5a);}
+.card[data-cat="performance"] .card-img{background:linear-gradient(135deg,#1a0a2d,#3a1a5a);}
+.card[data-cat="fringe"] .card-img{background:linear-gradient(135deg,#2d0808,#5a1010);}
+.card[data-cat="festivals"] .card-img{background:linear-gradient(135deg,#2d1a00,#5a3500);}
+.card[data-cat="general"] .card-img{background:linear-gradient(135deg,#1a1a1a,#3a3a3a);}
 
 /* Hero login button */
 .hero-login-btn{position:absolute;top:1.2rem;right:1.5rem;z-index:3;background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);color:#fff;font-family:'Segoe UI',sans-serif;font-size:13px;font-weight:500;padding:7px 18px;border-radius:20px;cursor:pointer;transition:all .2s;backdrop-filter:blur(4px);}
@@ -225,8 +268,23 @@ body{font-family:'Segoe UI',sans-serif;background:#1a0505;color:#f5ede8;directio
     <button class="filter-btn" data-cat="kids">🧒 ילדים</button>
     <button class="filter-btn" data-cat="spirit">✨ רוח</button>
     <button class="filter-btn" data-cat="workshops">🛠️ סדנאות</button>
+    <button class="filter-btn" data-cat="literature">📚 ספרות</button>
+    <button class="filter-btn" data-cat="art">🎨 אמנות</button>
+    <button class="filter-btn" data-cat="parties">🎉 מסיבות</button>
+    <button class="filter-btn" data-cat="games">🎮 משחקים</button>
+    <button class="filter-btn" data-cat="fairs">🏪 ירידים</button>
+    <button class="filter-btn" data-cat="community">🤝 קהילתי</button>
+    <button class="filter-btn" data-cat="standup">🎙️ סטנדאפ</button>
+    <button class="filter-btn" data-cat="tours">🗺️ סיורים</button>
+    <button class="filter-btn" data-cat="performance">💃 פרפורמנס</button>
+    <button class="filter-btn" data-cat="fringe">🌀 פרינג'</button>
+    <button class="filter-btn" data-cat="festivals">🎪 פסטיבלים</button>
+    <button class="filter-btn" data-cat="general">📌 כללי</button>
     <input type="date" class="date-input" id="date-filter">
+    <button class="btn-today" onclick="setToday()">היום</button>
+    <button class="btn-tomorrow" onclick="setTomorrow()">מחר</button>
     <button class="btn-clear-date" onclick="clearDate()">×</button>
+    <input type="text" class="search-input" id="search-input" placeholder="🔍 חיפוש חופשי..." oninput="applyFilter()">
     <div style="margin-right:auto;display:flex;gap:8px;align-items:center;">
         <button class="btn-login" id="btn-login-toolbar" onclick="openAuth()" style="display:none;">התחברות</button>
         <button class="btn-add" onclick="handleAddEvent()">+ הוסף אירוע</button>
@@ -239,6 +297,7 @@ body{font-family:'Segoe UI',sans-serif;background:#1a0505;color:#f5ede8;directio
 <footer class="site-footer">
     <div class="footer-bottom">
         <div class="footer-copy">חיפאית בתחתית · © 2026 כל הזכויות שמורות</div>
+        <div style="font-size:10px;color:rgba(255,255,255,0.12);text-align:center;max-width:600px;line-height:1.5;margin-top:.3rem;">האתר "חיפאית בתחתית" שומר לעצמו את הזכות לערוך, לשנות, להסיר או למחוק כל תוכן, מידע או אירוע המתפרסם באתר, בכל עת וללא הודעה מוקדמת, על פי שיקול דעתו הבלעדי.</div>
     </div>
 </footer>
 
@@ -283,7 +342,7 @@ body{font-family:'Segoe UI',sans-serif;background:#1a0505;color:#f5ede8;directio
                 <div class="img-placeholder" id="img-placeholder">
                     <div class="img-placeholder-icon">🖼</div>
                     <div class="img-placeholder-text">לחץ להעלאת תמונה</div>
-                    <div class="img-placeholder-sub">JPG, PNG, WEBP עד 5MB</div>
+                    <div class="img-placeholder-sub">JPG, PNG, WEBP עד 5MB · מומלץ: 800×500 פיקסלים</div>
                 </div>
                 <img id="img-preview" class="img-preview" src="" alt="" style="display:none;">
             </div>
@@ -298,18 +357,31 @@ body{font-family:'Segoe UI',sans-serif;background:#1a0505;color:#f5ede8;directio
                 <option value="kids">🧒 ילדים</option>
                 <option value="spirit">✨ רוח</option>
                 <option value="workshops">🛠️ סדנאות</option>
+                <option value="literature">📚 ספרות</option>
+                <option value="art">🎨 אמנות</option>
+                <option value="parties">🎉 מסיבות</option>
+                <option value="games">🎮 משחקים</option>
+                <option value="fairs">🏪 ירידים</option>
+                <option value="community">🤝 קהילתי</option>
+                <option value="standup">🎙️ סטנדאפ</option>
+                <option value="tours">🗺️ סיורים</option>
+                <option value="performance">💃 פרפורמנס</option>
+                <option value="fringe">🌀 פרינג'</option>
+                <option value="festivals">🎪 פסטיבלים</option>
+                <option value="general">📌 כללי</option>
             </select>
         </div>
         <div class="form-group"><label>תיאור</label><textarea id="f-desc" placeholder="תאר את האירוע..."></textarea></div>
         <div class="form-row">
             <div class="form-group"><label>תאריך</label><input type="date" id="f-date"></div>
+            <div class="form-group"><label>תאריך סיום (אופציונלי)</label><input type="date" id="f-date-end"></div>
             <div class="form-group"><label>שעה</label><input type="text" id="f-time" placeholder="20:00–23:00"></div>
         </div>
         <div class="form-group"><label>מיקום</label><input type="text" id="f-loc" placeholder="כתובת או שם המקום"></div>
         <div class="form-group"><label>מחיר</label><input type="text" id="f-price" placeholder="₪50 / כניסה חופשית"></div>
         <div class="form-divider">קישורים</div>
         <div class="form-group"><label>🎟 קישור לכרטיסים</label><input type="url" id="f-tickets" placeholder="https://..."></div>
-        <div class="form-group"><label>📎 קישור לחומרים</label><input type="url" id="f-materials" placeholder="https://..."></div>
+        <div class="form-group"><label>▶️ יוטיוב / 🎧 ספוטיפיי / 🔗 קישור נוסף</label><input type="url" id="f-materials" placeholder="https://..."></div>
         <div class="modal-btns">
             <button class="btn-submit" id="modal-submit-btn" onclick="saveEvent()">פרסם אירוע</button>
             <button class="btn-cancel" onclick="closeModal()">ביטול</button>
@@ -324,8 +396,8 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
 const db = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 // ── State ──
-const CAT_EMOJI = {music:'🎵',theater:'🎭',cinema:'🎬',lectures:'🎤',kids:'🧒',spirit:'✨',workshops:'🛠️'};
-const CAT_LABEL = {music:'מוזיקה',theater:'תאטרון',cinema:'קולנוע',lectures:'הרצאות',kids:'ילדים',spirit:'רוח',workshops:'סדנאות'};
+const CAT_EMOJI = {music:'🎵',theater:'🎭',cinema:'🎬',lectures:'🎤',kids:'🧒',spirit:'✨',workshops:'🛠️',literature:'📚',art:'🎨',parties:'🎉',games:'🎮',fairs:'🏪',community:'🤝',standup:'🎙️',tours:'🗺️',performance:'💃',fringe:'🌀',festivals:'🎪',general:'📌'};
+const CAT_LABEL = {music:'מוזיקה',theater:'תאטרון',cinema:'קולנוע',lectures:'הרצאות',kids:'ילדים',spirit:'רוח',workshops:'סדנאות',literature:'ספרות',art:'אמנות',parties:'מסיבות',games:'משחקים',fairs:'ירידים',community:'קהילתי',standup:'סטנדאפ',tours:'סיורים',performance:'פרפורמנס',fringe:"פרינג'",festivals:'פסטיבלים',general:'כללי'};
 
 let currentUser = null, currentRole = null;
 let events = [], filteredEvents = [];
@@ -445,13 +517,19 @@ async function loadEvents() {
     try {
         const { data, error } = await db.from('events').select('*').order('date_raw', { ascending: true });
         if (error) throw error;
-        events = (data || []).map(e => ({
+        const today = new Date().toISOString().split('T')[0];
+        events = (data || []).filter(e => {
+            if (!e.date_raw) return true; // ללא תאריך - מציגים
+            const endDate = e.date_end_raw || e.date_raw;
+            return endDate >= today;
+        }).map(e => ({
             id: e.id,
             cat: e.cat,
             emoji: CAT_EMOJI[e.cat] || '📌',
             title: e.title,
             desc: e.description || '',
             dateRaw: e.date_raw || '',
+            dateEndRaw: e.date_end_raw || '',
             date: e.date_display || '-',
             time: e.time || '-',
             location: e.location || 'חיפה',
@@ -469,10 +547,16 @@ async function loadEvents() {
 }
 
 function applyFilter() {
+    const searchVal = (document.getElementById('search-input')?.value || '').trim().toLowerCase();
     let list = [...events];
     if (activeTab === 'favs') list = list.filter(e => favs.has(e.id));
     if (activeCat !== 'all') list = list.filter(e => e.cat === activeCat);
-    if (dateFilter) list = list.filter(e => e.dateRaw === dateFilter);
+    if (dateFilter) list = list.filter(e => e.dateRaw === dateFilter || (e.dateEndRaw && e.dateRaw <= dateFilter && e.dateEndRaw >= dateFilter));
+    if (searchVal) list = list.filter(e =>
+        e.title.toLowerCase().includes(searchVal) ||
+        e.desc.toLowerCase().includes(searchVal) ||
+        e.location.toLowerCase().includes(searchVal)
+    );
     filteredEvents = list;
     render();
 }
@@ -511,7 +595,7 @@ function render() {
             </div>
             <div class="card-links">
                 <a class="link-btn link-tickets${e.tickets?'':' link-none'}" href="${e.tickets||'#'}" ${e.tickets?'target="_blank"':''}>🎟 כרטיסים</a>
-                <a class="link-btn link-materials${e.materials?'':' link-none'}" href="${e.materials||'#'}" ${e.materials?'target="_blank"':''}>📎 חומרים</a>
+                <a class="link-btn link-materials${e.materials?'':' link-none'}" href="${e.materials||'#'}" ${e.materials?'target="_blank"':''}>${e.materials?(e.materials.includes('youtube')||e.materials.includes('youtu.be')?'▶️ יוטיוב':e.materials.includes('spotify')?'🎧 ספוטיפיי':'🔗 קישור'):'🔗 קישור'}</a>
             </div>
         </div>`;
     }).join('');
@@ -547,6 +631,8 @@ function setupFilters() {
 }
 
 function clearDate() { document.getElementById('date-filter').value = ''; dateFilter = ''; applyFilter(); }
+function setToday() { const t=new Date().toISOString().split('T')[0]; document.getElementById('date-filter').value=t; dateFilter=t; applyFilter(); }
+function setTomorrow() { const t=new Date(Date.now()+86400000).toISOString().split('T')[0]; document.getElementById('date-filter').value=t; dateFilter=t; applyFilter(); }
 function switchTab(t, el) { activeTab = t; document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active')); el.classList.add('active'); applyFilter(); }
 
 // ── Modal ──
@@ -562,7 +648,7 @@ function openModal(id) {
     if (id === null) {
         document.getElementById('modal-title').textContent = '✦ הוסף אירוע חדש';
         document.getElementById('modal-submit-btn').textContent = 'פרסם אירוע';
-        ['title','desc','date','time','loc','price','tickets','materials'].forEach(f => document.getElementById('f-'+f).value = '');
+        ['title','desc','date','date-end','time','loc','price','tickets','materials'].forEach(f => document.getElementById('f-'+f).value = '');
         document.getElementById('f-cat').value = 'music';
     } else {
         const e = events.find(ev => String(ev.id) === String(id));
@@ -573,6 +659,7 @@ function openModal(id) {
         document.getElementById('f-cat').value = e.cat;
         document.getElementById('f-desc').value = e.desc;
         document.getElementById('f-date').value = e.dateRaw || '';
+        document.getElementById('f-date-end').value = e.dateEndRaw || '';
         document.getElementById('f-time').value = e.time;
         document.getElementById('f-loc').value = e.location;
         document.getElementById('f-price').value = e.price;
@@ -599,6 +686,7 @@ async function saveEvent() {
 
     const cat = document.getElementById('f-cat').value;
     const dateRaw = document.getElementById('f-date').value;
+    const dateEndRaw = document.getElementById('f-date-end').value;
     const dateDisplay = dateRaw ? new Date(dateRaw + 'T12:00:00').toLocaleDateString('he-IL', {day:'numeric',month:'long',year:'numeric'}) : '-';
 
     const payload = {
@@ -611,6 +699,7 @@ async function saveEvent() {
         price: document.getElementById('f-price').value || 'כניסה חופשית',
         tickets: document.getElementById('f-tickets').value.trim(),
         materials: document.getElementById('f-materials').value.trim(),
+        date_end_raw: dateEndRaw || null,
         image: currentImageData || null
     };
 
