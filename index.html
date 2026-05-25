@@ -241,13 +241,25 @@ body{font-family:'Segoe UI',sans-serif;background:#1a0505;color:#f5ede8;directio
 /* Footer */
 .site-footer{background:#100303;border-top:1px solid rgba(255,255,255,0.07);overflow:hidden;position:relative;}
 .footer-bottom{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;padding:1.5rem 2rem 2rem;gap:.4rem;}
-.footer-copy{font-size:11px;color:rgba(255,255,255,0.2);}
+.footer-copy{font-size:13px;color:rgba(255,255,255,0.45);}
 
 /* Event Modal */
 .overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.72);z-index:200;align-items:center;justify-content:center;padding:1rem;}
 .overlay.open{display:flex;}
 .modal{background:#2e0c0c;border:1px solid rgba(255,255,255,0.12);border-radius:20px;padding:2rem;width:100%;max-width:480px;max-height:90vh;overflow-y:auto;}
 .modal h2{font-size:1.4rem;font-weight:700;margin-bottom:1.2rem;color:#d4e034;}
+.view-modal{background:#2e0c0c;border:1px solid rgba(255,255,255,0.12);border-radius:20px;width:100%;max-width:600px;max-height:90vh;overflow-y:auto;position:relative;animation:fadeIn .2s ease;}
+.view-modal-img{width:100%;max-height:280px;object-fit:cover;border-radius:14px 14px 0 0;display:block;}
+.view-modal-img-placeholder{width:100%;height:180px;display:flex;align-items:center;justify-content:center;font-size:4rem;border-radius:14px 14px 0 0;background:#4a1010;}
+.view-modal-body{padding:1.5rem;}
+.view-modal-cats{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:.7rem;}
+.view-modal-title{font-family:'Rubik',sans-serif;font-size:1.5rem;font-weight:900;color:#f5ede8;margin-bottom:.8rem;line-height:1.3;}
+.view-modal-desc{font-size:.9rem;color:rgba(255,255,255,0.6);line-height:1.7;margin-bottom:1rem;white-space:pre-wrap;}
+.view-modal-meta{display:flex;flex-direction:column;gap:7px;margin-bottom:1.2rem;}
+.view-modal-meta .meta-item{font-size:.9rem;}
+.view-modal-links{display:flex;gap:8px;}
+.view-modal-close{position:absolute;top:12px;left:12px;background:rgba(0,0,0,0.5);border:none;color:#fff;font-size:18px;width:32px;height:32px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:2;}
+.view-modal-close:hover{background:rgba(0,0,0,0.8);}
 .form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
 .form-group{margin-bottom:.85rem;}
 .form-group label{display:block;font-size:12px;color:rgba(255,255,255,0.45);margin-bottom:5px;}
@@ -351,7 +363,7 @@ body{font-family:'Segoe UI',sans-serif;background:#1a0505;color:#f5ede8;directio
 <footer class="site-footer">
     <div class="footer-bottom">
         <div class="footer-copy">חיפאית בתחתית · © 2026 כל הזכויות שמורות</div>
-        <div style="font-size:10px;color:rgba(255,255,255,0.12);text-align:center;max-width:600px;line-height:1.5;margin-top:.3rem;">האתר "חיפאית בתחתית" שומר לעצמו את הזכות לערוך, לשנות, להסיר או למחוק כל תוכן, מידע או אירוע המתפרסם באתר, בכל עת וללא הודעה מוקדמת, על פי שיקול דעתו הבלעדי.</div>
+        <div style="font-size:12px;color:rgba(255,255,255,0.3);text-align:center;max-width:600px;line-height:1.6;margin-top:.3rem;">האתר "חיפאית בתחתית" שומר לעצמו את הזכות לערוך, לשנות, להסיר או למחוק כל תוכן, מידע או אירוע המתפרסם באתר, בכל עת וללא הודעה מוקדמת, על פי שיקול דעתו הבלעדי.</div>
     </div>
 </footer>
 
@@ -441,6 +453,19 @@ body{font-family:'Segoe UI',sans-serif;background:#1a0505;color:#f5ede8;directio
             <button class="btn-cancel" onclick="closeModal()">ביטול</button>
         </div>
     </div>
+
+    <!-- מודאל תצוגת אירוע -->
+    <div class="view-modal" id="view-modal" style="display:none;">
+        <button class="view-modal-close" onclick="closeViewModal()">✕</button>
+        <div id="view-modal-img-wrap"></div>
+        <div class="view-modal-body">
+            <div class="view-modal-cats" id="view-modal-cats"></div>
+            <div class="view-modal-title" id="view-modal-title"></div>
+            <div class="view-modal-desc" id="view-modal-desc"></div>
+            <div class="view-modal-meta" id="view-modal-meta"></div>
+            <div class="view-modal-links" id="view-modal-links"></div>
+        </div>
+    </div>
 </div>
 
 <script>
@@ -473,7 +498,7 @@ async function checkAuth() {
             currentUser = user;
             const { data: profile } = await db.from('user_profiles').select('role').eq('id', user.id).single();
             currentRole = profile?.role || 'user';
-            document.getElementById('user-name').textContent = user.user_metadata?.full_name || user.user_metadata?.name || 'משתמש';
+            document.getElementById('user-name').textContent = user.user_metadata?.full_name || user.user_metadata?.name || user.email?.split('@')[0] || 'משתמש';
             document.getElementById('user-role-badge').textContent = currentRole === 'admin' ? 'מנהל' : 'עורך';
             document.getElementById('user-role-badge').className = `role-badge role-${currentRole === 'admin' ? 'admin' : 'editor'}`;
             document.getElementById('user-bar').classList.add('show');
@@ -628,11 +653,11 @@ function render() {
     grid.innerHTML = filteredEvents.map(e => {
         const isUserEvent = currentUser && (currentUser.id === e.user_id || currentRole === 'admin');
         return `
-        <div class="card${isUserEvent?' user-event':''}" data-id="${e.id}" data-cat="${e.cat}">
+        <div class="card${isUserEvent?' user-event':''}" data-id="${e.id}" data-cat="${e.cat}" onclick="openViewModal('${e.id}')" style="cursor:pointer;">
             ${e.id && !isNaN(e.id) ? '' : '<div class="new-badge">חדש ✦</div>'}
             <div class="card-actions">
                 <button class="fav-btn" onclick="toggleFav('${e.id}',event)">${favs.has(e.id)?'❤️':'🤍'}</button>
-                ${isUserEvent ? `<button class="edit-btn" onclick="openModal('${e.id}')">✏️</button>` : ''}
+                ${isUserEvent ? `<button class="edit-btn" onclick="event.stopPropagation();openModal('${e.id}')">✏️</button>` : ''}
                 ${isUserEvent ? `<button class="del-btn" onclick="deleteEvent('${e.id}',event)">🗑️</button>` : ''}
             </div>
             <div class="card-img">
@@ -662,6 +687,46 @@ function toggleFav(id, ev) {
     ev.stopPropagation();
     if (favs.has(id)) favs.delete(id); else favs.add(id);
     applyFilter();
+}
+
+function openViewModal(id) {
+    const e = events.find(x => x.id == id);
+    if (!e) return;
+    // תמונה
+    const imgWrap = document.getElementById('view-modal-img-wrap');
+    imgWrap.innerHTML = e.image
+        ? `<img class="view-modal-img" src="${e.image}" alt="${e.title}">`
+        : `<div class="view-modal-img-placeholder">${e.emoji}</div>`;
+    // קטגוריות
+    document.getElementById('view-modal-cats').innerHTML =
+        (e.cats||[e.cat]).map(c=>`<span class="card-cat cat-${c}">${CAT_LABEL[c]||c}</span>`).join('');
+    // כותרת
+    document.getElementById('view-modal-title').textContent = e.title;
+    // תיאור
+    document.getElementById('view-modal-desc').textContent = e.desc || '';
+    // מטא
+    document.getElementById('view-modal-meta').innerHTML = `
+        <div class="meta-item"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" style="opacity:.5;flex-shrink:0;margin-left:6px"><rect x="2" y="3" width="12" height="11" rx="2"/><path d="M2 7h12M5 1v4M11 1v4"/></svg>${e.date}${e.dateEndRaw&&e.dateEndRaw!==e.dateRaw?' — '+e.dateEndRaw:''}</div>
+        <div class="meta-item"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" style="opacity:.5;flex-shrink:0;margin-left:6px"><circle cx="8" cy="8" r="6"/><path d="M8 5v3l2 2"/></svg>${e.time}</div>
+        <div class="meta-item"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" style="opacity:.5;flex-shrink:0;margin-left:6px"><path d="M8 2C5.8 2 4 3.8 4 6c0 3.5 4 8 4 8s4-4.5 4-8c0-2.2-1.8-4-4-4z"/><circle cx="8" cy="6" r="1.5"/></svg>${e.location}</div>
+        <div class="meta-item"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" style="opacity:.5;flex-shrink:0;margin-left:6px"><path d="M2 4h12v8a2 2 0 01-2 2H4a2 2 0 01-2-2V4zM2 4l2-2h8l2 2"/></svg>${e.price}</div>`;
+    // כפתורים
+    const matIcon = e.materials?(e.materials.includes('youtube')||e.materials.includes('youtu.be')?'▶️ יוטיוב':e.materials.includes('spotify')?'🎧 ספוטיפיי':'🔗 קישור'):'🔗 קישור';
+    document.getElementById('view-modal-links').innerHTML = `
+        <a class="link-btn link-tickets${e.tickets?'':' link-none'}" href="${e.tickets||'#'}" ${e.tickets?'target="_blank"':''}>🎟 כרטיסים</a>
+        <a class="link-btn link-materials${e.materials?'':' link-none'}" href="${e.materials||'#'}" ${e.materials?'target="_blank"':''}>${matIcon}</a>`;
+    // פתיחת overlay
+    document.getElementById('view-modal').style.display = 'block';
+    document.getElementById('overlay').classList.add('open');
+    // החלפת תוכן ה-overlay
+    const overlay = document.getElementById('overlay');
+    overlay._viewMode = true;
+}
+
+function closeViewModal() {
+    document.getElementById('view-modal').style.display = 'none';
+    document.getElementById('overlay').classList.remove('open');
+    document.getElementById('overlay')._viewMode = false;
 }
 
 function toggleDesc(id, ev) {
@@ -760,7 +825,12 @@ function openModal(id) {
 }
 
 function closeModal() { document.getElementById('overlay').classList.remove('open'); editingId = null; }
-function overlayClick(e) { if (e.target === document.getElementById('overlay')) closeModal(); }
+function overlayClick(e) {
+    if (e.target === document.getElementById('overlay')) {
+        if (document.getElementById('overlay')._viewMode) closeViewModal();
+        else closeModal();
+    }
+}
 
 async function saveEvent() {
     if (!currentUser) { openAuth(); return; }
