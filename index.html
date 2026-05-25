@@ -259,7 +259,7 @@ body{font-family:'Segoe UI',sans-serif;background:#1a0505;color:#f5ede8;directio
 .view-modal-meta .meta-item{font-size:.9rem;}
 .view-modal-links{display:flex;gap:8px;}
 .view-modal-close{position:absolute;top:12px;left:12px;background:rgba(0,0,0,0.5);border:none;color:#fff;font-size:18px;width:32px;height:32px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:2;}
-.view-modal-close:hover{background:rgba(0,0,0,0.8);}
+#view-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.75);display:none;align-items:center;justify-content:center;z-index:1000;padding:1rem;}
 .form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
 .form-group{margin-bottom:.85rem;}
 .form-group label{display:block;font-size:12px;color:rgba(255,255,255,0.45);margin-bottom:5px;}
@@ -454,8 +454,11 @@ body{font-family:'Segoe UI',sans-serif;background:#1a0505;color:#f5ede8;directio
         </div>
     </div>
 
-    <!-- מודאל תצוגת אירוע -->
-    <div class="view-modal" id="view-modal" style="display:none;">
+</div>
+
+<!-- View Event Overlay -->
+<div class="overlay" id="view-overlay" onclick="if(event.target===this)closeViewModal()" style="display:none;">
+    <div class="view-modal" id="view-modal">
         <button class="view-modal-close" onclick="closeViewModal()">✕</button>
         <div id="view-modal-img-wrap"></div>
         <div class="view-modal-body">
@@ -677,7 +680,7 @@ function render() {
             </div>
             <div class="card-links">
                 <a class="link-btn link-tickets${e.tickets?'':' link-none'}" href="${e.tickets||'#'}" ${e.tickets?'target="_blank"':''}>🎟 כרטיסים</a>
-                <a class="link-btn link-materials${e.materials?'':' link-none'}" href="${e.materials||'#'}" ${e.materials?'target="_blank"':''}>${e.materials?(e.materials.includes('youtube')||e.materials.includes('youtu.be')?'▶️ יוטיוב':e.materials.includes('spotify')?'🎧 ספוטיפיי':'🔗 קישור'):'🔗 קישור'}</a>
+                <a class="link-btn link-materials${e.materials?'':' link-none'}" href="${e.materials||'#'}" ${e.materials?'target="_blank"':''}>${e.materials?(e.materials.includes('youtube')||e.materials.includes('youtu.be')?`<svg width="20" height="14" viewBox="0 0 20 14" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="20" height="14" rx="3.5" fill="#FF0000"/><path d="M8 10V4L14 7L8 10Z" fill="white"/></svg>`:e.materials.includes('spotify')?`<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="8" cy="8" r="8" fill="#1DB954"/><path d="M11.5 10.5C9.5 9.2 6.3 9 4 9.7" stroke="white" stroke-width="1.2" stroke-linecap="round"/><path d="M12 8C9.5 6.5 5.8 6.3 3.5 7.2" stroke="white" stroke-width="1.2" stroke-linecap="round"/><path d="M12.5 5.5C9.5 3.8 5.2 3.7 3 4.7" stroke="white" stroke-width="1.2" stroke-linecap="round"/></svg>`:'🔗 קישור'):'🔗 קישור'}</a>
             </div>
         </div>`;
     }).join('');
@@ -711,22 +714,19 @@ function openViewModal(id) {
         <div class="meta-item"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" style="opacity:.5;flex-shrink:0;margin-left:6px"><path d="M8 2C5.8 2 4 3.8 4 6c0 3.5 4 8 4 8s4-4.5 4-8c0-2.2-1.8-4-4-4z"/><circle cx="8" cy="6" r="1.5"/></svg>${e.location}</div>
         <div class="meta-item"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" style="opacity:.5;flex-shrink:0;margin-left:6px"><path d="M2 4h12v8a2 2 0 01-2 2H4a2 2 0 01-2-2V4zM2 4l2-2h8l2 2"/></svg>${e.price}</div>`;
     // כפתורים
-    const matIcon = e.materials?(e.materials.includes('youtube')||e.materials.includes('youtu.be')?'▶️ יוטיוב':e.materials.includes('spotify')?'🎧 ספוטיפיי':'🔗 קישור'):'🔗 קישור';
+    const matIcon = e.materials?(e.materials.includes('youtube')||e.materials.includes('youtu.be')?`<svg width="20" height="14" viewBox="0 0 20 14" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="20" height="14" rx="3.5" fill="#FF0000"/><path d="M8 10V4L14 7L8 10Z" fill="white"/></svg>`:e.materials.includes('spotify')?`<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="8" cy="8" r="8" fill="#1DB954"/><path d="M11.5 10.5C9.5 9.2 6.3 9 4 9.7" stroke="white" stroke-width="1.2" stroke-linecap="round"/><path d="M12 8C9.5 6.5 5.8 6.3 3.5 7.2" stroke="white" stroke-width="1.2" stroke-linecap="round"/><path d="M12.5 5.5C9.5 3.8 5.2 3.7 3 4.7" stroke="white" stroke-width="1.2" stroke-linecap="round"/></svg>`:'🔗 קישור'):'🔗 קישור';
     document.getElementById('view-modal-links').innerHTML = `
         <a class="link-btn link-tickets${e.tickets?'':' link-none'}" href="${e.tickets||'#'}" ${e.tickets?'target="_blank"':''}>🎟 כרטיסים</a>
         <a class="link-btn link-materials${e.materials?'':' link-none'}" href="${e.materials||'#'}" ${e.materials?'target="_blank"':''}>${matIcon}</a>`;
-    // פתיחת overlay
-    document.getElementById('view-modal').style.display = 'block';
-    document.getElementById('overlay').classList.add('open');
-    // החלפת תוכן ה-overlay
-    const overlay = document.getElementById('overlay');
-    overlay._viewMode = true;
+    // פתיחת overlay נפרד לתצוגה
+    const vo = document.getElementById('view-overlay');
+    vo.style.display = 'flex';
+    setTimeout(() => vo.style.opacity = '1', 10);
 }
 
 function closeViewModal() {
-    document.getElementById('view-modal').style.display = 'none';
-    document.getElementById('overlay').classList.remove('open');
-    document.getElementById('overlay')._viewMode = false;
+    const vo = document.getElementById('view-overlay');
+    vo.style.display = 'none';
 }
 
 function toggleDesc(id, ev) {
@@ -825,12 +825,7 @@ function openModal(id) {
 }
 
 function closeModal() { document.getElementById('overlay').classList.remove('open'); editingId = null; }
-function overlayClick(e) {
-    if (e.target === document.getElementById('overlay')) {
-        if (document.getElementById('overlay')._viewMode) closeViewModal();
-        else closeModal();
-    }
-}
+function overlayClick(e) { if (e.target === document.getElementById('overlay')) closeModal(); }
 
 async function saveEvent() {
     if (!currentUser) { openAuth(); return; }
