@@ -184,6 +184,15 @@ body{font-family:'Segoe UI',sans-serif;background:#1a0505;color:#f5ede8;directio
 .card-cats{display:flex;flex-wrap:wrap;gap:3px;margin-bottom:.25rem;}
 .new-badge{position:absolute;top:10px;right:10px;background:#d4e034;color:#1a0505;font-size:11px;font-weight:500;padding:3px 9px;border-radius:20px;}
 .empty{text-align:center;padding:4rem 2rem;color:rgba(255,255,255,0.3);grid-column:1/-1;}
+.skeleton-card{background:#2a0a0a;border:1px solid rgba(255,255,255,0.07);border-radius:14px;overflow:hidden;display:flex;flex-direction:column;}
+.skeleton-img{width:100%;min-height:130px;max-height:200px;background:linear-gradient(90deg,#2a0a0a 25%,#3a1010 50%,#2a0a0a 75%);background-size:200% 100%;animation:shimmer 1.4s infinite;}
+.skeleton-body{padding:.7rem .85rem .5rem;display:flex;flex-direction:column;gap:8px;}
+.skeleton-line{height:10px;border-radius:6px;background:linear-gradient(90deg,#2a0a0a 25%,#3a1010 50%,#2a0a0a 75%);background-size:200% 100%;animation:shimmer 1.4s infinite;}
+.skeleton-line.short{width:45%;}
+.skeleton-line.med{width:70%;}
+.skeleton-line.full{width:100%;}
+.skeleton-line.title{height:14px;width:85%;}
+@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
 
 /* Card category backgrounds */
 .card[data-cat="music"]{border-color:rgba(167,105,221,0.3);}
@@ -319,6 +328,25 @@ body{font-family:'Segoe UI',sans-serif;background:#1a0505;color:#f5ede8;directio
 <!-- Events Grid -->
 <div class="events-grid" id="grid"></div>
 
+<script>
+// Show skeleton cards immediately before JS loads
+(function(){
+    const g = document.getElementById('grid');
+    const s = Array(8).fill(0).map(()=>`
+        <div class="skeleton-card">
+            <div class="skeleton-img"></div>
+            <div class="skeleton-body">
+                <div class="skeleton-line short"></div>
+                <div class="skeleton-line title"></div>
+                <div class="skeleton-line med"></div>
+                <div class="skeleton-line full"></div>
+                <div class="skeleton-line short"></div>
+            </div>
+        </div>`).join('');
+    g.innerHTML = s;
+})();
+</script>
+
 <!-- Footer -->
 <footer class="site-footer">
     <div class="footer-bottom">
@@ -445,7 +473,7 @@ async function checkAuth() {
             currentUser = user;
             const { data: profile } = await db.from('user_profiles').select('role').eq('id', user.id).single();
             currentRole = profile?.role || 'user';
-            document.getElementById('user-name').textContent = user.user_metadata?.name || user.email;
+            document.getElementById('user-name').textContent = user.user_metadata?.name || 'משתמש';
             document.getElementById('user-role-badge').textContent = currentRole === 'admin' ? 'מנהל' : 'עורך';
             document.getElementById('user-role-badge').className = `role-badge role-${currentRole === 'admin' ? 'admin' : 'editor'}`;
             document.getElementById('user-bar').classList.add('show');
