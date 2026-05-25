@@ -122,9 +122,9 @@ body{font-family:'Segoe UI',sans-serif;background:#1a0505;color:#f5ede8;directio
 .btn-clear-date:hover{color:#d4e034;}
 
 
-.search-input{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);color:#f5ede8;font-family:'Segoe UI',sans-serif;font-size:13px;padding:6px 14px;border-radius:20px;outline:none;transition:border-color .2s;min-width:160px;}
+.search-input{background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.3);color:#fff;font-family:'Segoe UI',sans-serif;font-size:13px;padding:6px 14px;border-radius:20px;outline:none;transition:border-color .2s;min-width:160px;}
 .search-input:focus{border-color:#d4e034;}
-.search-input::placeholder{color:rgba(255,255,255,0.3);}
+.search-input::placeholder{color:rgba(255,255,255,0.7);}
 .btn-add{background:#d4e034;color:#1a0505;border:none;font-family:'Segoe UI',sans-serif;font-size:13px;font-weight:500;padding:7px 18px;border-radius:20px;cursor:pointer;transition:background .2s;}
 .btn-add:hover{background:#e2ec6a;}
 
@@ -151,7 +151,7 @@ body{font-family:'Segoe UI',sans-serif;background:#1a0505;color:#f5ede8;directio
 .cat-spirit{background:rgba(80,200,180,0.2);color:#50c8b4;border:1px solid rgba(80,200,180,0.25);}
 .cat-workshops{background:rgba(240,160,50,0.2);color:#f0a032;border:1px solid rgba(240,160,50,0.25);}
 .card-title{font-size:.92rem;font-weight:700;line-height:1.25;margin-bottom:.2rem;overflow:hidden;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;}
-.card-desc{font-size:.74rem;color:rgba(255,255,255,0.45);line-height:1.4;margin-bottom:.25rem;display:-webkit-box;-webkit-line-clamp:6;-webkit-box-orient:vertical;overflow:hidden;}
+.card-desc{font-size:.85rem;color:rgba(255,255,255,0.45);line-height:1.4;margin-bottom:.25rem;display:-webkit-box;-webkit-line-clamp:6;-webkit-box-orient:vertical;overflow:hidden;}
 .card-desc.expanded{display:block;-webkit-line-clamp:unset;overflow:visible;}
 .btn-more{background:none;border:none;color:rgba(212,224,52,0.75);font-size:.7rem;cursor:pointer;padding:0 0 .25rem;text-decoration:underline;display:inline-block;}
 .btn-more:hover{color:#d4e034;}
@@ -291,6 +291,7 @@ body{font-family:'Segoe UI',sans-serif;background:#1a0505;color:#f5ede8;directio
     .toolbar{padding:1rem;}
     .events-grid{padding:1rem;}
     .form-row{grid-template-columns:1fr;}
+    .hero-bg{background-position:center 40%;transform:scale(1.6);}
 }
     </style>
 </head>
@@ -344,12 +345,14 @@ body{font-family:'Segoe UI',sans-serif;background:#1a0505;color:#f5ede8;directio
     <button class="filter-btn" data-cat="jazz">🎷 ג'אז</button>
     <button class="filter-btn" data-cat="dance">💃 מחול</button>
     <button class="filter-btn" data-cat="classic">🎻 קלאסי</button>
-    <label style="display:flex;align-items:center;gap:4px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);border-radius:20px;padding:6px 12px;cursor:pointer;font-size:13px;color:rgba(255,255,255,0.5);" onclick="document.getElementById('date-filter').showPicker && document.getElementById('date-filter').showPicker()">
-        📅 <span id="date-label-text">סינון לפי תאריך</span>
-        <input type="date" class="date-input" id="date-filter" style="position:absolute;opacity:0;width:0;height:0;">
-    </label>
-    <button class="btn-clear-date" onclick="clearDate()">×</button>
-    <input type="text" class="search-input" id="search-input" placeholder="🔍 חיפוש חופשי..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" readonly onfocus="this.removeAttribute('readonly')" oninput="applyFilter()">
+    <div style="display:flex;align-items:center;gap:6px;flex-wrap:nowrap;">
+        <label style="display:flex;align-items:center;gap:4px;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.3);border-radius:20px;padding:6px 12px;cursor:pointer;font-size:13px;color:#fff;white-space:nowrap;" onclick="document.getElementById('date-filter').showPicker && document.getElementById('date-filter').showPicker()">
+            📅 <span id="date-label-text">סינון לפי תאריך</span>
+            <input type="date" class="date-input" id="date-filter" style="position:absolute;opacity:0;width:0;height:0;">
+        </label>
+        <button class="btn-clear-date" onclick="clearDate()">×</button>
+        <input type="text" class="search-input" id="search-input" placeholder="🔍 חיפוש חופשי..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" readonly onfocus="this.removeAttribute('readonly')" oninput="applyFilter()" style="flex:1;min-width:120px;">
+    </div>
     <div style="margin-right:auto;display:flex;gap:8px;align-items:center;">
         <button class="btn-login" id="btn-login-toolbar" onclick="openAuth()" style="display:none;">התחברות</button>
         <button class="btn-add" onclick="handleAddEvent()">+ הוסף אירוע</button>
