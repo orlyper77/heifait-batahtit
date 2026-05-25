@@ -319,7 +319,7 @@ body{font-family:'Segoe UI',sans-serif;background:#1a0505;color:#f5ede8;directio
     <button class="filter-btn" data-cat="general">📌 כללי</button>
     <input type="date" class="date-input" id="date-filter">
     <button class="btn-clear-date" onclick="clearDate()">×</button>
-    <input type="text" class="search-input" id="search-input" placeholder="🔍 חיפוש חופשי..." oninput="applyFilter()">
+    <input type="text" class="search-input" id="search-input" placeholder="🔍 חיפוש חופשי..." oninput="applyFilter()" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
     <div style="margin-right:auto;display:flex;gap:8px;align-items:center;">
         <button class="btn-login" id="btn-login-toolbar" onclick="openAuth()" style="display:none;">התחברות</button>
         <button class="btn-add" onclick="handleAddEvent()">+ הוסף אירוע</button>
@@ -473,7 +473,7 @@ async function checkAuth() {
             currentUser = user;
             const { data: profile } = await db.from('user_profiles').select('role').eq('id', user.id).single();
             currentRole = profile?.role || 'user';
-            document.getElementById('user-name').textContent = user.user_metadata?.name || 'משתמש';
+            document.getElementById('user-name').textContent = user.user_metadata?.full_name || user.user_metadata?.name || 'משתמש';
             document.getElementById('user-role-badge').textContent = currentRole === 'admin' ? 'מנהל' : 'עורך';
             document.getElementById('user-role-badge').className = `role-badge role-${currentRole === 'admin' ? 'admin' : 'editor'}`;
             document.getElementById('user-bar').classList.add('show');
