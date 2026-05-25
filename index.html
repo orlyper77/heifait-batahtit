@@ -344,7 +344,10 @@ body{font-family:'Segoe UI',sans-serif;background:#1a0505;color:#f5ede8;directio
     <button class="filter-btn" data-cat="jazz">🎷 ג'אז</button>
     <button class="filter-btn" data-cat="dance">💃 מחול</button>
     <button class="filter-btn" data-cat="classic">🎻 קלאסי</button>
-    <input type="date" class="date-input" id="date-filter">
+    <label style="display:flex;align-items:center;gap:4px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);border-radius:20px;padding:6px 12px;cursor:pointer;font-size:13px;color:rgba(255,255,255,0.5);" onclick="document.getElementById('date-filter').showPicker && document.getElementById('date-filter').showPicker()">
+        📅 <span id="date-label-text">סינון לפי תאריך</span>
+        <input type="date" class="date-input" id="date-filter" style="position:absolute;opacity:0;width:0;height:0;">
+    </label>
     <button class="btn-clear-date" onclick="clearDate()">×</button>
     <input type="text" class="search-input" id="search-input" placeholder="🔍 חיפוש חופשי..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" readonly onfocus="this.removeAttribute('readonly')" oninput="applyFilter()">
     <div style="margin-right:auto;display:flex;gap:8px;align-items:center;">
@@ -786,10 +789,21 @@ function setupFilters() {
             applyFilter();
         });
     });
-    document.getElementById('date-filter').addEventListener('change', e => { dateFilter = e.target.value; applyFilter(); });
+    document.getElementById('date-filter').addEventListener('change', e => {
+        dateFilter = e.target.value;
+        const lbl = document.getElementById('date-label-text');
+        if (lbl) lbl.textContent = dateFilter ? new Date(dateFilter + 'T12:00:00').toLocaleDateString('he-IL', {day:'numeric',month:'long'}) : 'סינון לפי תאריך';
+        applyFilter();
+    });
 }
 
-function clearDate() { document.getElementById('date-filter').value = ''; dateFilter = ''; applyFilter(); }
+function clearDate() {
+    document.getElementById('date-filter').value = '';
+    dateFilter = '';
+    const lbl = document.getElementById('date-label-text');
+    if (lbl) lbl.textContent = 'סינון לפי תאריך';
+    applyFilter();
+}
 
 function toggleCatPick(btn) {
     btn.classList.toggle('selected');
