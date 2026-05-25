@@ -113,8 +113,8 @@ body{font-family:'Segoe UI',sans-serif;background:#1a0505;color:#f5ede8;directio
 .date-input::-webkit-calendar-picker-indicator{filter:invert(0.6);}
 .btn-clear-date{background:none;border:none;color:rgba(255,255,255,0.35);font-size:18px;cursor:pointer;padding:0 2px;line-height:1;}
 .btn-clear-date:hover{color:#d4e034;}
-.btn-today,.btn-tomorrow{background:rgba(212,224,52,0.15);border:1px solid rgba(212,224,52,0.4);color:#d4e034;font-family:'Segoe UI',sans-serif;font-size:12px;padding:5px 10px;border-radius:20px;cursor:pointer;transition:all .2s;}
-.btn-today:hover,.btn-tomorrow:hover{background:rgba(212,224,52,0.3);}
+
+
 .search-input{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);color:#f5ede8;font-family:'Segoe UI',sans-serif;font-size:13px;padding:6px 14px;border-radius:20px;outline:none;transition:border-color .2s;min-width:160px;}
 .search-input:focus{border-color:#d4e034;}
 .search-input::placeholder{color:rgba(255,255,255,0.3);}
@@ -123,19 +123,19 @@ body{font-family:'Segoe UI',sans-serif;background:#1a0505;color:#f5ede8;directio
 
 /* Cards */
 .events-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1.2rem;padding:1.5rem 2rem;max-width:1400px;margin:0 auto;}
-.card{background:#2a0a0a;border:1px solid rgba(255,255,255,0.07);border-radius:16px;overflow:hidden;transition:transform .25s,box-shadow .25s,border-color .25s;position:relative;animation:fadeIn .3s ease;}
+.card{background:#2a0a0a;border:1px solid rgba(255,255,255,0.07);border-radius:14px;overflow:hidden;transition:transform .25s,box-shadow .25s,border-color .25s;position:relative;animation:fadeIn .3s ease;display:flex;flex-direction:column;}
 @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-.card:hover{transform:translateY(-4px);box-shadow:0 16px 40px rgba(0,0,0,0.4);border-color:rgba(212,224,52,0.3);}
-.card-actions{position:absolute;top:10px;left:10px;display:flex;gap:6px;z-index:2;}
-.fav-btn,.edit-btn,.del-btn{background:rgba(0,0,0,0.5);border:none;border-radius:50%;width:32px;height:32px;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;transition:transform .15s,background .15s;}
+.card:hover{transform:translateY(-3px);box-shadow:0 12px 30px rgba(0,0,0,0.4);border-color:rgba(212,224,52,0.3);}
+.card-actions{position:absolute;top:8px;left:8px;display:flex;gap:5px;z-index:2;}
+.fav-btn,.edit-btn,.del-btn{background:rgba(0,0,0,0.5);border:none;border-radius:50%;width:28px;height:28px;cursor:pointer;font-size:13px;display:flex;align-items:center;justify-content:center;transition:transform .15s,background .15s;}
 .fav-btn:hover,.edit-btn:hover{transform:scale(1.18);background:rgba(0,0,0,0.7);}
 .del-btn:hover{transform:scale(1.18);background:rgba(200,35,44,0.7);}
 .del-btn{display:none;}
 .card.user-event .del-btn{display:flex;}
-.card-img{width:100%;height:160px;display:flex;align-items:center;justify-content:center;font-size:3rem;background:#4a1010;overflow:hidden;}
+.card-img{width:100%;flex:0 0 66.666%;aspect-ratio:unset;display:flex;align-items:center;justify-content:center;font-size:2.5rem;background:#4a1010;overflow:hidden;min-height:130px;max-height:200px;}
 .card-img img{width:100%;height:100%;object-fit:cover;}
-.card-body{padding:1.1rem;}
-.card-cat{display:inline-block;font-size:11px;font-weight:500;letter-spacing:.5px;padding:3px 10px;border-radius:20px;margin-bottom:.5rem;text-transform:uppercase;}
+.card-body{padding:.7rem .85rem .5rem;flex:1;display:flex;flex-direction:column;min-height:0;}
+.card-cat{display:inline-block;font-size:10px;font-weight:500;letter-spacing:.5px;padding:2px 8px;border-radius:20px;margin-bottom:.3rem;text-transform:uppercase;}
 .cat-music{background:rgba(167,105,221,0.2);color:#c98ff0;border:1px solid rgba(167,105,221,0.25);}
 .cat-theater{background:rgba(212,224,52,0.2);color:#d4e034;border:1px solid rgba(212,224,52,0.25);}
 .cat-cinema{background:rgba(107,143,168,0.2);color:#6b8fa8;border:1px solid rgba(107,143,168,0.25);}
@@ -143,17 +143,45 @@ body{font-family:'Segoe UI',sans-serif;background:#1a0505;color:#f5ede8;directio
 .cat-kids{background:rgba(230,60,120,0.2);color:#f075a8;border:1px solid rgba(230,60,120,0.25);}
 .cat-spirit{background:rgba(80,200,180,0.2);color:#50c8b4;border:1px solid rgba(80,200,180,0.25);}
 .cat-workshops{background:rgba(240,160,50,0.2);color:#f0a032;border:1px solid rgba(240,160,50,0.25);}
-.card-title{font-size:1.15rem;font-weight:700;line-height:1.3;margin-bottom:.4rem;}
-.card-desc{font-size:.82rem;color:rgba(255,255,255,0.45);line-height:1.6;margin-bottom:.8rem;}
-.card-meta{display:flex;flex-direction:column;gap:4px;}
-.meta-item{display:flex;align-items:center;gap:6px;font-size:12px;color:rgba(255,255,255,0.4);}
-.card-links{display:flex;gap:8px;padding:.85rem 1.1rem;border-top:1px solid rgba(255,255,255,0.06);}
-.link-btn{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:500;padding:6px 12px;border-radius:8px;text-decoration:none;transition:background .2s;flex:1;justify-content:center;}
+.card-title{font-size:.92rem;font-weight:700;line-height:1.25;margin-bottom:.2rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.card-desc{font-size:.74rem;color:rgba(255,255,255,0.45);line-height:1.4;margin-bottom:.25rem;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+.card-desc.expanded{display:block;-webkit-line-clamp:unset;overflow:visible;}
+.btn-more{background:none;border:none;color:rgba(212,224,52,0.75);font-size:.7rem;cursor:pointer;padding:0 0 .25rem;text-decoration:underline;display:inline-block;}
+.btn-more:hover{color:#d4e034;}
+.card-meta{display:flex;flex-direction:column;gap:2px;}
+.meta-item{display:flex;align-items:center;gap:5px;font-size:11px;color:rgba(255,255,255,0.4);}
+.card-links{display:flex;gap:5px;padding:.5rem .85rem;border-top:1px solid rgba(255,255,255,0.06);}
+.link-btn{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:500;padding:4px 8px;border-radius:7px;text-decoration:none;transition:background .2s;flex:1;justify-content:center;}
 .link-tickets{background:rgba(212,224,52,0.12);color:#d4e034;border:1px solid rgba(212,224,52,0.25);}
 .link-tickets:hover{background:rgba(212,224,52,0.22);}
 .link-materials{background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.55);border:1px solid rgba(255,255,255,0.1);}
 .link-materials:hover{background:rgba(255,255,255,0.11);}
 .link-none{opacity:.3;cursor:default;pointer-events:none;}
+.cat-picker{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px;}
+.cat-pick-btn{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);color:rgba(255,255,255,0.5);font-size:11px;padding:4px 10px;border-radius:20px;cursor:pointer;transition:all .15s;user-select:none;}
+.cat-pick-btn:hover{border-color:rgba(255,255,255,0.3);color:rgba(255,255,255,0.8);}
+.cat-pick-btn.selected{font-weight:500;opacity:1;}
+.cat-pick-btn[data-c="music"].selected{background:rgba(167,105,221,0.35);color:#e0b8ff;border-color:rgba(167,105,221,0.6);}
+.cat-pick-btn[data-c="theater"].selected{background:rgba(212,224,52,0.25);color:#d4e034;border-color:rgba(212,224,52,0.6);}
+.cat-pick-btn[data-c="cinema"].selected{background:rgba(107,143,168,0.35);color:#9ac4de;border-color:rgba(107,143,168,0.6);}
+.cat-pick-btn[data-c="lectures"].selected{background:rgba(200,35,44,0.3);color:#ff9090;border-color:rgba(200,35,44,0.6);}
+.cat-pick-btn[data-c="kids"].selected{background:rgba(230,60,120,0.3);color:#ffb0d0;border-color:rgba(230,60,120,0.6);}
+.cat-pick-btn[data-c="spirit"].selected{background:rgba(80,200,180,0.25);color:#70e0cc;border-color:rgba(80,200,180,0.6);}
+.cat-pick-btn[data-c="workshops"].selected{background:rgba(240,160,50,0.3);color:#ffc870;border-color:rgba(240,160,50,0.6);}
+.cat-pick-btn[data-c="literature"].selected{background:rgba(100,180,100,0.3);color:#90e090;border-color:rgba(100,180,100,0.6);}
+.cat-pick-btn[data-c="art"].selected{background:rgba(255,140,0,0.3);color:#ffb84d;border-color:rgba(255,140,0,0.6);}
+.cat-pick-btn[data-c="parties"].selected{background:rgba(255,80,180,0.3);color:#ff80c0;border-color:rgba(255,80,180,0.6);}
+.cat-pick-btn[data-c="games"].selected{background:rgba(50,200,255,0.3);color:#60d8ff;border-color:rgba(50,200,255,0.6);}
+.cat-pick-btn[data-c="fairs"].selected{background:rgba(200,150,50,0.3);color:#f0c870;border-color:rgba(200,150,50,0.6);}
+.cat-pick-btn[data-c="community"].selected{background:rgba(150,200,100,0.3);color:#a0e070;border-color:rgba(150,200,100,0.6);}
+.cat-pick-btn[data-c="standup"].selected{background:rgba(255,220,50,0.3);color:#ffe060;border-color:rgba(255,220,50,0.6);}
+.cat-pick-btn[data-c="tours"].selected{background:rgba(100,200,200,0.3);color:#70e0e0;border-color:rgba(100,200,200,0.6);}
+.cat-pick-btn[data-c="performance"].selected{background:rgba(180,100,255,0.3);color:#d080ff;border-color:rgba(180,100,255,0.6);}
+.cat-pick-btn[data-c="fringe"].selected{background:rgba(255,100,100,0.3);color:#ff8080;border-color:rgba(255,100,100,0.6);}
+.cat-pick-btn[data-c="festivals"].selected{background:rgba(255,180,0,0.3);color:#ffcc40;border-color:rgba(255,180,0,0.6);}
+.cat-pick-btn[data-c="general"].selected{background:rgba(180,180,180,0.2);color:#c8c8c8;border-color:rgba(180,180,180,0.5);}
+.cat-pick-hint{font-size:10px;color:rgba(255,255,255,0.25);margin-top:4px;}
+.card-cats{display:flex;flex-wrap:wrap;gap:3px;margin-bottom:.25rem;}
 .new-badge{position:absolute;top:10px;right:10px;background:#d4e034;color:#1a0505;font-size:11px;font-weight:500;padding:3px 9px;border-radius:20px;}
 .empty{text-align:center;padding:4rem 2rem;color:rgba(255,255,255,0.3);grid-column:1/-1;}
 
@@ -281,8 +309,6 @@ body{font-family:'Segoe UI',sans-serif;background:#1a0505;color:#f5ede8;directio
     <button class="filter-btn" data-cat="festivals">🎪 פסטיבלים</button>
     <button class="filter-btn" data-cat="general">📌 כללי</button>
     <input type="date" class="date-input" id="date-filter">
-    <button class="btn-today" onclick="setToday()">היום</button>
-    <button class="btn-tomorrow" onclick="setTomorrow()">מחר</button>
     <button class="btn-clear-date" onclick="clearDate()">×</button>
     <input type="text" class="search-input" id="search-input" placeholder="🔍 חיפוש חופשי..." oninput="applyFilter()">
     <div style="margin-right:auto;display:flex;gap:8px;align-items:center;">
@@ -348,28 +374,28 @@ body{font-family:'Segoe UI',sans-serif;background:#1a0505;color:#f5ede8;directio
             </div>
         </div>
         <div class="form-group"><label>שם האירוע *</label><input type="text" id="f-title" placeholder="למשל: קונצרט בגן הבהאים"></div>
-        <div class="form-group"><label>קטגוריה</label>
-            <select id="f-cat">
-                <option value="music">🎵 מוזיקה</option>
-                <option value="theater">🎭 תאטרון</option>
-                <option value="cinema">🎬 קולנוע</option>
-                <option value="lectures">🎤 הרצאות</option>
-                <option value="kids">🧒 ילדים</option>
-                <option value="spirit">✨ רוח</option>
-                <option value="workshops">🛠️ סדנאות</option>
-                <option value="literature">📚 ספרות</option>
-                <option value="art">🎨 אמנות</option>
-                <option value="parties">🎉 מסיבות</option>
-                <option value="games">🎮 משחקים</option>
-                <option value="fairs">🏪 ירידים</option>
-                <option value="community">🤝 קהילתי</option>
-                <option value="standup">🎙️ סטנדאפ</option>
-                <option value="tours">🗺️ סיורים</option>
-                <option value="performance">💃 פרפורמנס</option>
-                <option value="fringe">🌀 פרינג'</option>
-                <option value="festivals">🎪 פסטיבלים</option>
-                <option value="general">📌 כללי</option>
-            </select>
+        <div class="form-group"><label>קטגוריות <span class="cat-pick-hint">(בחרי אחת או יותר)</span></label>
+            <div class="cat-picker" id="f-cats">
+                <button type="button" class="cat-pick-btn" data-c="music" onclick="toggleCatPick(this)">🎵 מוזיקה</button>
+                <button type="button" class="cat-pick-btn" data-c="theater" onclick="toggleCatPick(this)">🎭 תאטרון</button>
+                <button type="button" class="cat-pick-btn" data-c="cinema" onclick="toggleCatPick(this)">🎬 קולנוע</button>
+                <button type="button" class="cat-pick-btn" data-c="lectures" onclick="toggleCatPick(this)">🎤 הרצאות</button>
+                <button type="button" class="cat-pick-btn" data-c="kids" onclick="toggleCatPick(this)">🧒 ילדים</button>
+                <button type="button" class="cat-pick-btn" data-c="spirit" onclick="toggleCatPick(this)">✨ רוח</button>
+                <button type="button" class="cat-pick-btn" data-c="workshops" onclick="toggleCatPick(this)">🛠️ סדנאות</button>
+                <button type="button" class="cat-pick-btn" data-c="literature" onclick="toggleCatPick(this)">📚 ספרות</button>
+                <button type="button" class="cat-pick-btn" data-c="art" onclick="toggleCatPick(this)">🎨 אמנות</button>
+                <button type="button" class="cat-pick-btn" data-c="parties" onclick="toggleCatPick(this)">🎉 מסיבות</button>
+                <button type="button" class="cat-pick-btn" data-c="games" onclick="toggleCatPick(this)">🎮 משחקים</button>
+                <button type="button" class="cat-pick-btn" data-c="fairs" onclick="toggleCatPick(this)">🏪 ירידים</button>
+                <button type="button" class="cat-pick-btn" data-c="community" onclick="toggleCatPick(this)">🤝 קהילתי</button>
+                <button type="button" class="cat-pick-btn" data-c="standup" onclick="toggleCatPick(this)">🎙️ סטנדאפ</button>
+                <button type="button" class="cat-pick-btn" data-c="tours" onclick="toggleCatPick(this)">🗺️ סיורים</button>
+                <button type="button" class="cat-pick-btn" data-c="performance" onclick="toggleCatPick(this)">💃 פרפורמנס</button>
+                <button type="button" class="cat-pick-btn" data-c="fringe" onclick="toggleCatPick(this)">🌀 פרינג'</button>
+                <button type="button" class="cat-pick-btn" data-c="festivals" onclick="toggleCatPick(this)">🎪 פסטיבלים</button>
+                <button type="button" class="cat-pick-btn" data-c="general" onclick="toggleCatPick(this)">📌 כללי</button>
+            </div>
         </div>
         <div class="form-group"><label>תיאור</label><textarea id="f-desc" placeholder="תאר את האירוע..."></textarea></div>
         <div class="form-row">
@@ -525,6 +551,7 @@ async function loadEvents() {
         }).map(e => ({
             id: e.id,
             cat: e.cat,
+            cats: e.cats ? (Array.isArray(e.cats) ? e.cats : JSON.parse(e.cats)) : [e.cat],
             emoji: CAT_EMOJI[e.cat] || '📌',
             title: e.title,
             desc: e.description || '',
@@ -550,7 +577,7 @@ function applyFilter() {
     const searchVal = (document.getElementById('search-input')?.value || '').trim().toLowerCase();
     let list = [...events];
     if (activeTab === 'favs') list = list.filter(e => favs.has(e.id));
-    if (activeCat !== 'all') list = list.filter(e => e.cat === activeCat);
+    if (activeCat !== 'all') list = list.filter(e => (e.cats||[e.cat]).includes(activeCat));
     if (dateFilter) list = list.filter(e => e.dateRaw === dateFilter || (e.dateEndRaw && e.dateRaw <= dateFilter && e.dateEndRaw >= dateFilter));
     if (searchVal) list = list.filter(e =>
         e.title.toLowerCase().includes(searchVal) ||
@@ -559,6 +586,7 @@ function applyFilter() {
     );
     filteredEvents = list;
     render();
+    setTimeout(hideUnnecessaryMoreBtns, 50);
 }
 
 function render() {
@@ -583,14 +611,15 @@ function render() {
                 ${e.image ? `<img src="${e.image}" alt="${e.title}">` : `<span>${e.emoji}</span>`}
             </div>
             <div class="card-body">
-                <span class="card-cat cat-${e.cat}">${CAT_LABEL[e.cat]||e.cat}</span>
-                <div class="card-title">${e.title}</div>
-                <div class="card-desc">${e.desc}</div>
+                <div class="card-cats">${(e.cats||[e.cat]).map(c=>`<span class="card-cat cat-${c}">${CAT_LABEL[c]||c}</span>`).join('')}</div>
+                <div class="card-title" title="${e.title}">${e.title}</div>
+                ${e.desc ? `<div class="card-desc" id="desc-${e.id}">${e.desc}</div>
+                <button class="btn-more" id="more-${e.id}" onclick="toggleDesc('${e.id}',event)">עוד ▾</button>` : ''}
                 <div class="card-meta">
-                    <div class="meta-item"><svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" style="opacity:.5;flex-shrink:0"><rect x="2" y="3" width="12" height="11" rx="2"/><path d="M2 7h12M5 1v4M11 1v4"/></svg>${e.date}</div>
-                    <div class="meta-item"><svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" style="opacity:.5;flex-shrink:0"><circle cx="8" cy="8" r="6"/><path d="M8 5v3l2 2"/></svg>${e.time}</div>
-                    <div class="meta-item"><svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" style="opacity:.5;flex-shrink:0"><path d="M8 2C5.8 2 4 3.8 4 6c0 3.5 4 8 4 8s4-4.5 4-8c0-2.2-1.8-4-4-4z"/><circle cx="8" cy="6" r="1.5"/></svg>${e.location}</div>
-                    <div class="meta-item"><svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" style="opacity:.5;flex-shrink:0"><path d="M2 4h12v8a2 2 0 01-2 2H4a2 2 0 01-2-2V4zM2 4l2-2h8l2 2"/></svg>${e.price}</div>
+                    <div class="meta-item"><svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" style="opacity:.5;flex-shrink:0"><rect x="2" y="3" width="12" height="11" rx="2"/><path d="M2 7h12M5 1v4M11 1v4"/></svg>${e.date}</div>
+                    <div class="meta-item"><svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" style="opacity:.5;flex-shrink:0"><circle cx="8" cy="8" r="6"/><path d="M8 5v3l2 2"/></svg>${e.time}</div>
+                    <div class="meta-item"><svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" style="opacity:.5;flex-shrink:0"><path d="M8 2C5.8 2 4 3.8 4 6c0 3.5 4 8 4 8s4-4.5 4-8c0-2.2-1.8-4-4-4z"/><circle cx="8" cy="6" r="1.5"/></svg>${e.location}</div>
+                    <div class="meta-item"><svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" style="opacity:.5;flex-shrink:0"><path d="M2 4h12v8a2 2 0 01-2 2H4a2 2 0 01-2-2V4zM2 4l2-2h8l2 2"/></svg>${e.price}</div>
                 </div>
             </div>
             <div class="card-links">
@@ -605,6 +634,25 @@ function toggleFav(id, ev) {
     ev.stopPropagation();
     if (favs.has(id)) favs.delete(id); else favs.add(id);
     applyFilter();
+}
+
+function toggleDesc(id, ev) {
+    ev.stopPropagation();
+    const desc = document.getElementById('desc-'+id);
+    const btn = document.getElementById('more-'+id);
+    if (!desc) return;
+    const expanded = desc.classList.toggle('expanded');
+    btn.textContent = expanded ? 'פחות ▴' : 'עוד ▾';
+}
+
+function hideUnnecessaryMoreBtns() {
+    document.querySelectorAll('.card-desc').forEach(desc => {
+        const id = desc.id.replace('desc-','');
+        const btn = document.getElementById('more-'+id);
+        if (!btn) return;
+        // hide button if content is not actually clamped
+        if (desc.scrollHeight <= desc.clientHeight + 2) btn.style.display='none';
+    });
 }
 
 async function deleteEvent(id, ev) {
@@ -631,8 +679,11 @@ function setupFilters() {
 }
 
 function clearDate() { document.getElementById('date-filter').value = ''; dateFilter = ''; applyFilter(); }
-function setToday() { const t=new Date().toISOString().split('T')[0]; document.getElementById('date-filter').value=t; dateFilter=t; applyFilter(); }
-function setTomorrow() { const t=new Date(Date.now()+86400000).toISOString().split('T')[0]; document.getElementById('date-filter').value=t; dateFilter=t; applyFilter(); }
+
+function toggleCatPick(btn) {
+    btn.classList.toggle('selected');
+}
+
 function switchTab(t, el) { activeTab = t; document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active')); el.classList.add('active'); applyFilter(); }
 
 // ── Modal ──
@@ -649,14 +700,18 @@ function openModal(id) {
         document.getElementById('modal-title').textContent = '✦ הוסף אירוע חדש';
         document.getElementById('modal-submit-btn').textContent = 'פרסם אירוע';
         ['title','desc','date','date-end','time','loc','price','tickets','materials'].forEach(f => document.getElementById('f-'+f).value = '');
-        document.getElementById('f-cat').value = 'music';
+        document.querySelectorAll('.cat-pick-btn').forEach(b => b.classList.remove('selected'));
+        document.querySelector('.cat-pick-btn[data-c="general"]').classList.add('selected');
     } else {
         const e = events.find(ev => String(ev.id) === String(id));
         if (!e) return;
         document.getElementById('modal-title').textContent = '✏️ עריכת אירוע';
         document.getElementById('modal-submit-btn').textContent = 'שמור שינויים';
         document.getElementById('f-title').value = e.title;
-        document.getElementById('f-cat').value = e.cat;
+        const editCats = e.cats || [e.cat];
+        document.querySelectorAll('.cat-pick-btn').forEach(b => {
+            b.classList.toggle('selected', editCats.includes(b.dataset.c));
+        });
         document.getElementById('f-desc').value = e.desc;
         document.getElementById('f-date').value = e.dateRaw || '';
         document.getElementById('f-date-end').value = e.dateEndRaw || '';
@@ -684,13 +739,16 @@ async function saveEvent() {
     const title = document.getElementById('f-title').value.trim();
     if (!title) { document.getElementById('f-title').style.borderColor = '#f075a8'; setTimeout(() => document.getElementById('f-title').style.borderColor = '', 1500); return; }
 
-    const cat = document.getElementById('f-cat').value;
+    const selectedCats = [...document.querySelectorAll('.cat-pick-btn.selected')].map(b => b.dataset.c);
+    if (!selectedCats.length) selectedCats.push('general');
+    const cat = selectedCats[0];
+    const cats = selectedCats;
     const dateRaw = document.getElementById('f-date').value;
     const dateEndRaw = document.getElementById('f-date-end').value;
     const dateDisplay = dateRaw ? new Date(dateRaw + 'T12:00:00').toLocaleDateString('he-IL', {day:'numeric',month:'long',year:'numeric'}) : '-';
 
     const payload = {
-        cat, title,
+        cat, cats: JSON.stringify(cats), title,
         description: document.getElementById('f-desc').value.trim(),
         date_raw: dateRaw,
         date_display: dateDisplay,
