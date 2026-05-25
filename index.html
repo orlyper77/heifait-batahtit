@@ -631,7 +631,7 @@ async function loadEvents() {
             desc: e.description || '',
             dateRaw: e.date_raw || '',
             dateEndRaw: e.date_end_raw || '',
-            date: e.date_display || '-',
+            date: e.date_display || (e.date_raw ? new Date(e.date_raw + 'T12:00:00').toLocaleDateString('he-IL', {weekday:'long',day:'numeric',month:'long',year:'numeric'}) : '-'),
             time: e.time || '-',
             location: e.location || 'חיפה',
             price: e.price || 'כניסה חופשית',
@@ -812,7 +812,6 @@ function openModal(id) {
         document.getElementById('modal-submit-btn').textContent = 'פרסם אירוע';
         ['title','desc','date','date-end','time','loc','price','tickets','materials'].forEach(f => document.getElementById('f-'+f).value = '');
         document.querySelectorAll('.cat-pick-btn').forEach(b => b.classList.remove('selected'));
-        document.querySelector('.cat-pick-btn[data-c="general"]').classList.add('selected');
     } else {
         const e = events.find(ev => String(ev.id) === String(id));
         if (!e) return;
@@ -856,7 +855,7 @@ async function saveEvent() {
     const cats = selectedCats;
     const dateRaw = document.getElementById('f-date').value;
     const dateEndRaw = document.getElementById('f-date-end').value;
-    const dateDisplay = dateRaw ? new Date(dateRaw + 'T12:00:00').toLocaleDateString('he-IL', {day:'numeric',month:'long',year:'numeric'}) : '-';
+    const dateDisplay = dateRaw ? new Date(dateRaw + 'T12:00:00').toLocaleDateString('he-IL', {weekday:'long',day:'numeric',month:'long',year:'numeric'}) : '-';
 
     const payload = {
         cat, cats: JSON.stringify(cats), title,
