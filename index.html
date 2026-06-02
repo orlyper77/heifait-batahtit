@@ -105,8 +105,8 @@ body{font-family:'Segoe UI',sans-serif;background:#1a0505;color:#f5ede8;directio
 .filter-btn[data-cat="fringe"].active{background:rgba(255,100,100,0.9);color:#fff;border-color:#ff6464;}
 .filter-btn[data-cat="festivals"]{background:rgba(255,180,0,0.25);color:#ffcc40;border-color:rgba(255,180,0,0.5);}
 .filter-btn[data-cat="festivals"].active{background:rgba(255,180,0,0.9);color:#1a0505;border-color:#ffb400;}
-.filter-btn[data-cat="general"]{background:rgba(180,180,180,0.15);color:#c8c8c8;border-color:rgba(180,180,180,0.4);}
-.filter-btn[data-cat="general"].active{background:rgba(180,180,180,0.8);color:#1a0505;border-color:#b4b4b4;}
+.filter-btn[data-cat="laughs"]{background:rgba(255,200,50,0.2);color:#ffd040;border-color:rgba(255,200,50,0.5);}
+.filter-btn[data-cat="laughs"].active{background:rgba(255,200,50,0.9);color:#1a0505;border-color:#ffc820;}
 .filter-btn[data-cat="jazz"]{background:rgba(180,120,60,0.25);color:#f0a060;border-color:rgba(180,120,60,0.5);}
 .filter-btn[data-cat="jazz"].active{background:rgba(180,120,60,0.9);color:#1a0505;border-color:#b47830;}
 .filter-btn[data-cat="dance"]{background:rgba(220,80,160,0.25);color:#f080c0;border-color:rgba(220,80,160,0.5);}
@@ -186,7 +186,7 @@ body{font-family:'Segoe UI',sans-serif;background:#1a0505;color:#f5ede8;directio
 .cat-pick-btn[data-c="performance"].selected{background:rgba(180,100,255,0.3);color:#d080ff;border-color:rgba(180,100,255,0.6);}
 .cat-pick-btn[data-c="fringe"].selected{background:rgba(255,100,100,0.3);color:#ff8080;border-color:rgba(255,100,100,0.6);}
 .cat-pick-btn[data-c="festivals"].selected{background:rgba(255,180,0,0.3);color:#ffcc40;border-color:rgba(255,180,0,0.6);}
-.cat-pick-btn[data-c="general"].selected{background:rgba(180,180,180,0.2);color:#c8c8c8;border-color:rgba(180,180,180,0.5);}
+.cat-pick-btn[data-c="laughs"].selected{background:rgba(255,200,50,0.25);color:#ffd040;border-color:rgba(255,200,50,0.6);}
 .cat-pick-btn[data-c="jazz"].selected{background:rgba(180,120,60,0.3);color:#f0a060;border-color:rgba(180,120,60,0.6);}
 .cat-pick-btn[data-c="dance"].selected{background:rgba(220,80,160,0.3);color:#f080c0;border-color:rgba(220,80,160,0.6);}
 .cat-pick-btn[data-c="classic"].selected{background:rgba(140,100,200,0.3);color:#c090f0;border-color:rgba(140,100,200,0.6);}
@@ -230,7 +230,7 @@ body{font-family:'Segoe UI',sans-serif;background:#1a0505;color:#f5ede8;directio
 .card[data-cat="performance"] .card-img{background:linear-gradient(135deg,#1a0a2d,#3a1a5a);}
 .card[data-cat="fringe"] .card-img{background:linear-gradient(135deg,#2d0808,#5a1010);}
 .card[data-cat="festivals"] .card-img{background:linear-gradient(135deg,#2d1a00,#5a3500);}
-.card[data-cat="general"] .card-img{background:linear-gradient(135deg,#1a1a1a,#3a3a3a);}
+.card[data-cat="laughs"] .card-img{background:linear-gradient(135deg,#2d2000,#5a4400);}
 .card[data-cat="jazz"] .card-img{background:linear-gradient(135deg,#2d1500,#5a3000);}
 .card[data-cat="dance"] .card-img{background:linear-gradient(135deg,#2d0020,#5a0040);}
 .card[data-cat="classic"] .card-img{background:linear-gradient(135deg,#1a0a2d,#3a1a5a);}
@@ -273,6 +273,37 @@ body{font-family:'Segoe UI',sans-serif;background:#1a0505;color:#f5ede8;directio
 .view-modal-links{display:flex;gap:8px;}
 .view-modal-close{position:absolute;top:12px;left:12px;background:rgba(0,0,0,0.5);border:none;color:#fff;font-size:18px;width:32px;height:32px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:2;}
 #view-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.75);display:none;align-items:center;justify-content:center;z-index:1000;padding:1rem;}
+.approval-panel{position:fixed;inset:0;background:#1a0505;z-index:2000;overflow-y:auto;display:none;padding:1.5rem;}
+.approval-panel.open{display:block;}
+.approval-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;border-bottom:1px solid rgba(255,255,255,0.1);padding-bottom:1rem;}
+.approval-header h2{font-size:1.3rem;color:#d4e034;font-family:'Rubik',sans-serif;}
+.btn-close-approval{background:none;border:1px solid rgba(255,255,255,0.2);color:#fff;padding:6px 14px;border-radius:12px;cursor:pointer;font-size:13px;}
+.btn-close-approval:hover{border-color:#d4e034;color:#d4e034;}
+.approval-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1rem;}
+.approval-card{background:#2a0a0a;border:1px solid rgba(255,255,255,0.1);border-radius:14px;overflow:hidden;}
+.approval-card-img{width:100%;height:160px;object-fit:cover;display:block;background:#3a1010;display:flex;align-items:center;justify-content:center;font-size:2.5rem;}
+.approval-card-body{padding:1rem;}
+.approval-card-title{font-size:1rem;font-weight:700;color:#f5ede8;margin-bottom:.4rem;}
+.approval-card-meta{font-size:.8rem;color:rgba(255,255,255,0.4);margin-bottom:.3rem;}
+.approval-card-desc{font-size:.8rem;color:rgba(255,255,255,0.5);line-height:1.5;margin-bottom:.8rem;max-height:80px;overflow:hidden;}
+.approval-btns{display:flex;gap:8px;}
+.btn-approve{flex:1;background:rgba(100,200,80,0.2);border:1px solid rgba(100,200,80,0.5);color:#80e060;padding:7px;border-radius:8px;cursor:pointer;font-size:13px;font-weight:600;transition:all .15s;}
+.btn-approve:hover{background:rgba(100,200,80,0.4);}
+.btn-reject{flex:1;background:rgba(200,50,50,0.2);border:1px solid rgba(200,50,50,0.4);color:#f08080;padding:7px;border-radius:8px;cursor:pointer;font-size:13px;font-weight:600;transition:all .15s;}
+.btn-reject:hover{background:rgba(200,50,50,0.4);}
+.approval-empty{text-align:center;color:rgba(255,255,255,0.3);padding:4rem;grid-column:1/-1;}
+.btn-approval-panel{background:rgba(212,224,52,0.15);border:1px solid rgba(212,224,52,0.4);color:#d4e034;font-size:12px;padding:5px 12px;border-radius:20px;cursor:pointer;transition:all .2s;display:none;}
+.btn-approval-panel:hover{background:rgba(212,224,52,0.3);}
+.approval-badge{background:#f08080;color:#fff;border-radius:50%;font-size:10px;padding:1px 5px;margin-right:4px;}
+.trusted-toggle{display:flex;align-items:center;gap:6px;font-size:.8rem;color:rgba(255,255,255,0.5);margin-top:.5rem;}
+.trusted-toggle input{cursor:pointer;}
+.trusted-section{margin-top:2rem;border-top:1px solid rgba(255,255,255,0.08);padding-top:1.5rem;}
+.trusted-section h3{color:#d4e034;font-size:1rem;margin-bottom:1rem;}
+.trusted-user-row{display:flex;align-items:center;justify-content:space-between;padding:.6rem .8rem;background:rgba(255,255,255,0.04);border-radius:8px;margin-bottom:.4rem;}
+.trusted-user-email{font-size:.85rem;color:rgba(255,255,255,0.6);}
+.btn-trust{background:rgba(100,200,80,0.15);border:1px solid rgba(100,200,80,0.4);color:#80e060;padding:4px 10px;border-radius:8px;cursor:pointer;font-size:12px;}
+.btn-trust.trusted{background:rgba(100,200,80,0.35);}
+.btn-trust:hover{background:rgba(100,200,80,0.35);}
 .form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
 .form-group{margin-bottom:.85rem;}
 .form-group label{display:block;font-size:12px;color:rgba(255,255,255,0.45);margin-bottom:5px;}
@@ -303,7 +334,24 @@ body{font-family:'Segoe UI',sans-serif;background:#1a0505;color:#f5ede8;directio
         שלום <strong id="user-name">-</strong>
         <span class="role-badge" id="user-role-badge">-</span>
     </div>
+    <button class="btn-approval-panel" id="btn-approval-panel" onclick="openApprovalPanel()">
+        ✦ בקשות פרסום <span class="approval-badge" id="approval-badge" style="display:none">0</span>
+    </button>
     <button class="btn-logout" onclick="logout()">יציאה</button>
+</div>
+
+<!-- Approval Panel -->
+<div class="approval-panel" id="approval-panel">
+    <div class="approval-header">
+        <h2>✦ בקשות פרסום ממתינות לאישור</h2>
+        <button class="btn-close-approval" onclick="closeApprovalPanel()">✕ סגור</button>
+    </div>
+    <div class="approval-grid" id="approval-grid"></div>
+
+    <div class="trusted-section">
+        <h3>👤 משתמשים מאושרים מראש</h3>
+        <div id="trusted-users-list"></div>
+    </div>
 </div>
 
 <!-- Hero -->
@@ -341,7 +389,7 @@ body{font-family:'Segoe UI',sans-serif;background:#1a0505;color:#f5ede8;directio
     <button class="filter-btn" data-cat="performance">💃 פרפורמנס</button>
     <button class="filter-btn" data-cat="fringe">🌀 פרינג'</button>
     <button class="filter-btn" data-cat="festivals">🎪 פסטיבלים</button>
-    <button class="filter-btn" data-cat="general">📌 כללי</button>
+    <button class="filter-btn" data-cat="laughs">😂 צחוקים</button>
     <button class="filter-btn" data-cat="jazz">🎷 ג'אז</button>
     <button class="filter-btn" data-cat="dance">💃 מחול</button>
     <button class="filter-btn" data-cat="classic">🎻 קלאסי</button>
@@ -455,7 +503,7 @@ body{font-family:'Segoe UI',sans-serif;background:#1a0505;color:#f5ede8;directio
                 <button type="button" class="cat-pick-btn" data-c="performance" onclick="toggleCatPick(this)">💃 פרפורמנס</button>
                 <button type="button" class="cat-pick-btn" data-c="fringe" onclick="toggleCatPick(this)">🌀 פרינג'</button>
                 <button type="button" class="cat-pick-btn" data-c="festivals" onclick="toggleCatPick(this)">🎪 פסטיבלים</button>
-                <button type="button" class="cat-pick-btn" data-c="general" onclick="toggleCatPick(this)">📌 כללי</button>
+                <button type="button" class="cat-pick-btn" data-c="laughs" onclick="toggleCatPick(this)">😂 צחוקים</button>
                 <button type="button" class="cat-pick-btn" data-c="jazz" onclick="toggleCatPick(this)">🎷 ג'אז</button>
                 <button type="button" class="cat-pick-btn" data-c="dance" onclick="toggleCatPick(this)">💃 מחול</button>
                 <button type="button" class="cat-pick-btn" data-c="classic" onclick="toggleCatPick(this)">🎻 קלאסי</button>
@@ -470,8 +518,10 @@ body{font-family:'Segoe UI',sans-serif;background:#1a0505;color:#f5ede8;directio
         <div class="form-group"><label>מיקום</label><input type="text" id="f-loc" placeholder="כתובת או שם המקום"></div>
         <div class="form-group"><label>מחיר</label><input type="text" id="f-price" placeholder="₪50 / כניסה חופשית"></div>
         <div class="form-divider">קישורים</div>
-        <div class="form-group"><label>🎟 קישור לכרטיסים</label><input type="url" id="f-tickets" placeholder="https://..."></div>
-        <div class="form-group"><label>▶️ יוטיוב / 🎧 ספוטיפיי / 🔗 קישור נוסף</label><input type="url" id="f-materials" placeholder="https://..."></div>
+        <div class="form-group"><label>🎟 קישור לכרטיסים 1</label><input type="url" id="f-tickets" placeholder="https://..."></div>
+        <div class="form-group"><label>🎟 קישור לכרטיסים 2</label><input type="url" id="f-tickets2" placeholder="https://..."></div>
+        <div class="form-group"><label>▶️ יוטיוב / 🎧 ספוטיפיי / 🔗 קישור נוסף 1</label><input type="url" id="f-materials" placeholder="https://..."></div>
+        <div class="form-group"><label>▶️ יוטיוב / 🎧 ספוטיפיי / 🔗 קישור נוסף 2</label><input type="url" id="f-materials2" placeholder="https://..."></div>
         <div class="modal-btns">
             <button class="btn-submit" id="modal-submit-btn" onclick="saveEvent()">פרסם אירוע</button>
             <button class="btn-cancel" onclick="closeModal()">ביטול</button>
@@ -502,12 +552,12 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
 const db = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 // ── State ──
-const CAT_EMOJI = {music:'🎵',theater:'🎭',cinema:'🎬',lectures:'🎤',kids:'🧒',spirit:'✨',workshops:'🛠️',literature:'📚',art:'🎨',parties:'🎉',games:'🎮',fairs:'🏪',community:'🤝',standup:'🎙️',tours:'🗺️',performance:'💃',fringe:'🌀',festivals:'🎪',general:'📌',jazz:'🎷',dance:'💃',classic:'🎻'};
-const CAT_LABEL = {music:'מוזיקה',theater:'תאטרון',cinema:'קולנוע',lectures:'הרצאות',kids:'ילדים',spirit:'רוח',workshops:'סדנאות',literature:'ספרות',art:'אמנות',parties:'מסיבות',games:'משחקים',fairs:'ירידים',community:'קהילתי',standup:'סטנדאפ',tours:'סיורים',performance:'פרפורמנס',fringe:"פרינג'",festivals:'פסטיבלים',general:'כללי',jazz:"ג'אז",dance:'מחול',classic:'קלאסי'};
+const CAT_EMOJI = {music:'🎵',theater:'🎭',cinema:'🎬',lectures:'🎤',kids:'🧒',spirit:'✨',workshops:'🛠️',literature:'📚',art:'🎨',parties:'🎉',games:'🎮',fairs:'🏪',community:'🤝',standup:'🎙️',tours:'🗺️',performance:'💃',fringe:'🌀',festivals:'🎪',laughs:'😂',jazz:'🎷',dance:'💃',classic:'🎻'};
+const CAT_LABEL = {music:'מוזיקה',theater:'תאטרון',cinema:'קולנוע',lectures:'הרצאות',kids:'ילדים',spirit:'רוח',workshops:'סדנאות',literature:'ספרות',art:'אמנות',parties:'מסיבות',games:'משחקים',fairs:'ירידים',community:'קהילתי',standup:'סטנדאפ',tours:'סיורים',performance:'פרפורמנס',fringe:"פרינג'",festivals:'פסטיבלים',laughs:'צחוקים',jazz:"ג'אז",dance:'מחול',classic:'קלאסי'};
 
-let currentUser = null, currentRole = null;
+let currentUser = null, currentRole = null, currentTrusted = false;
 let events = [], filteredEvents = [];
-let favs = new Set(), activeTab = 'all', activeCat = 'all', dateFilter = '';
+let favs = new Set(), activeTab = 'all', activeCats = new Set(), dateFilter = '';
 let editingId = null, currentImageData = null, pendingAction = null;
 
 // ── Init ──
@@ -523,13 +573,18 @@ async function checkAuth() {
         const { data: { user } } = await db.auth.getUser();
         if (user) {
             currentUser = user;
-            const { data: profile } = await db.from('user_profiles').select('role').eq('id', user.id).single();
+            const { data: profile } = await db.from('user_profiles').select('role,trusted').eq('id', user.id).single();
             currentRole = profile?.role || 'user';
+            currentTrusted = profile?.trusted || false;
             document.getElementById('user-name').textContent = user.user_metadata?.full_name || user.user_metadata?.name || user.email?.split('@')[0] || 'משתמש';
             document.getElementById('user-role-badge').textContent = currentRole === 'admin' ? 'מנהל' : 'עורך';
             document.getElementById('user-role-badge').className = `role-badge role-${currentRole === 'admin' ? 'admin' : 'editor'}`;
             document.getElementById('user-bar').classList.add('show');
             document.getElementById('btn-login-toolbar').style.display = 'none';
+            if (currentRole === 'admin') {
+                document.getElementById('btn-approval-panel').style.display = 'inline-flex';
+                updateApprovalBadge();
+            }
         } else {
             document.getElementById('btn-login-toolbar').style.display = 'inline-flex';
         }
@@ -625,9 +680,14 @@ async function loadEvents() {
         if (error) throw error;
         const today = new Date().toISOString().split('T')[0];
         events = (data || []).filter(e => {
-            if (!e.date_raw) return true; // ללא תאריך - מציגים
+            if (!e.date_raw) return true;
             const endDate = e.date_end_raw || e.date_raw;
-            return endDate >= today;
+            if (endDate < today) return false;
+            // הצג רק מאושרים, או של המשתמש הנוכחי, או אם admin
+            if (currentRole === 'admin') return true;
+            if (e.status === 'approved' || !e.status) return true;
+            if (currentUser && e.user_id === currentUser.id) return true;
+            return false;
         }).map(e => ({
             id: e.id,
             cat: e.cat,
@@ -642,7 +702,9 @@ async function loadEvents() {
             location: e.location || 'חיפה',
             price: e.price || 'כניסה חופשית',
             tickets: e.tickets || '',
+            tickets2: e.tickets2 || '',
             materials: e.materials || '',
+            materials2: e.materials2 || '',
             image: e.image || null,
             user_id: e.user_id
         }));
@@ -657,7 +719,7 @@ function applyFilter() {
     const searchVal = (document.getElementById('search-input')?.value || '').trim().toLowerCase();
     let list = [...events];
     if (activeTab === 'favs') list = list.filter(e => favs.has(e.id));
-    if (activeCat !== 'all') list = list.filter(e => (e.cats||[e.cat]).includes(activeCat));
+    if (activeCats.size > 0) list = list.filter(e => (e.cats||[e.cat]).some(c => activeCats.has(c)));
     if (dateFilter) list = list.filter(e => e.dateRaw === dateFilter || (e.dateEndRaw && e.dateRaw <= dateFilter && e.dateEndRaw >= dateFilter));
     if (searchVal) list = list.filter(e =>
         e.title.toLowerCase().includes(searchVal) ||
@@ -704,7 +766,9 @@ function render() {
             </div>
             <div class="card-links">
                 <a class="link-btn link-tickets${e.tickets?'':' link-none'}" href="${e.tickets||'#'}" ${e.tickets?'target="_blank"':''}>🎟 כרטיסים</a>
+                ${e.tickets2?`<a class="link-btn link-tickets" href="${e.tickets2}" target="_blank">🎟 כרטיסים 2</a>`:''}
                 <a class="link-btn link-materials${e.materials?'':' link-none'}" href="${e.materials||'#'}" ${e.materials?'target="_blank"':''}>${e.materials?(e.materials.includes('youtube')||e.materials.includes('youtu.be')?`<svg width="20" height="14" viewBox="0 0 20 14" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="20" height="14" rx="3.5" fill="#FF0000"/><path d="M8 10V4L14 7L8 10Z" fill="white"/></svg>`:e.materials.includes('spotify')?`<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="8" cy="8" r="8" fill="#1DB954"/><path d="M11.5 10.5C9.5 9.2 6.3 9 4 9.7" stroke="white" stroke-width="1.2" stroke-linecap="round"/><path d="M12 8C9.5 6.5 5.8 6.3 3.5 7.2" stroke="white" stroke-width="1.2" stroke-linecap="round"/><path d="M12.5 5.5C9.5 3.8 5.2 3.7 3 4.7" stroke="white" stroke-width="1.2" stroke-linecap="round"/></svg>`:'🔗 קישור'):'🔗 קישור'}</a>
+                ${e.materials2?`<a class="link-btn link-materials" href="${e.materials2}" target="_blank">${e.materials2.includes('youtube')||e.materials2.includes('youtu.be')?`<svg width="20" height="14" viewBox="0 0 20 14" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="20" height="14" rx="3.5" fill="#FF0000"/><path d="M8 10V4L14 7L8 10Z" fill="white"/></svg>`:e.materials2.includes('spotify')?`<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="8" cy="8" r="8" fill="#1DB954"/><path d="M11.5 10.5C9.5 9.2 6.3 9 4 9.7" stroke="white" stroke-width="1.2" stroke-linecap="round"/><path d="M12 8C9.5 6.5 5.8 6.3 3.5 7.2" stroke="white" stroke-width="1.2" stroke-linecap="round"/><path d="M12.5 5.5C9.5 3.8 5.2 3.7 3 4.7" stroke="white" stroke-width="1.2" stroke-linecap="round"/></svg>`:'🔗 קישור 2'}</a>`:''}
             </div>
         </div>`;
     }).join('');
@@ -741,7 +805,9 @@ function openViewModal(id) {
     const matIcon = e.materials?(e.materials.includes('youtube')||e.materials.includes('youtu.be')?`<svg width="20" height="14" viewBox="0 0 20 14" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="20" height="14" rx="3.5" fill="#FF0000"/><path d="M8 10V4L14 7L8 10Z" fill="white"/></svg>`:e.materials.includes('spotify')?`<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="8" cy="8" r="8" fill="#1DB954"/><path d="M11.5 10.5C9.5 9.2 6.3 9 4 9.7" stroke="white" stroke-width="1.2" stroke-linecap="round"/><path d="M12 8C9.5 6.5 5.8 6.3 3.5 7.2" stroke="white" stroke-width="1.2" stroke-linecap="round"/><path d="M12.5 5.5C9.5 3.8 5.2 3.7 3 4.7" stroke="white" stroke-width="1.2" stroke-linecap="round"/></svg>`:'🔗 קישור'):'🔗 קישור';
     document.getElementById('view-modal-links').innerHTML = `
         <a class="link-btn link-tickets${e.tickets?'':' link-none'}" href="${e.tickets||'#'}" ${e.tickets?'target="_blank"':''}>🎟 כרטיסים</a>
-        <a class="link-btn link-materials${e.materials?'':' link-none'}" href="${e.materials||'#'}" ${e.materials?'target="_blank"':''}>${matIcon}</a>`;
+        ${e.tickets2?`<a class="link-btn link-tickets" href="${e.tickets2}" target="_blank">🎟 כרטיסים 2</a>`:''}
+        <a class="link-btn link-materials${e.materials?'':' link-none'}" href="${e.materials||'#'}" ${e.materials?'target="_blank"':''}>${matIcon}</a>
+        ${e.materials2?`<a class="link-btn link-materials" href="${e.materials2}" target="_blank">${e.materials2.includes('youtube')||e.materials2.includes('youtu.be')?'▶️ יוטיוב 2':e.materials2.includes('spotify')?'🎧 ספוטיפיי 2':'🔗 קישור 2'}</a>`:''}`;
     // פתיחת overlay נפרד לתצוגה
     const vo = document.getElementById('view-overlay');
     vo.style.display = 'flex';
@@ -786,9 +852,26 @@ async function deleteEvent(id, ev) {
 function setupFilters() {
     document.querySelectorAll('.filter-btn').forEach(btn => {
         btn.addEventListener('click', () => {
-            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            activeCat = btn.dataset.cat;
+            const cat = btn.dataset.cat;
+            if (cat === 'all') {
+                // הכל — מנקה בחירות
+                activeCats.clear();
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+            } else {
+                // מרובה בחירה
+                document.querySelector('.filter-btn[data-cat="all"]').classList.remove('active');
+                if (activeCats.has(cat)) {
+                    activeCats.delete(cat);
+                    btn.classList.remove('active');
+                    if (activeCats.size === 0) {
+                        document.querySelector('.filter-btn[data-cat="all"]').classList.add('active');
+                    }
+                } else {
+                    activeCats.add(cat);
+                    btn.classList.add('active');
+                }
+            }
             applyFilter();
         });
     });
@@ -798,6 +881,83 @@ function setupFilters() {
         if (lbl) lbl.textContent = dateFilter ? new Date(dateFilter + 'T12:00:00').toLocaleDateString('he-IL', {day:'numeric',month:'long'}) : 'סינון לפי תאריך';
         applyFilter();
     });
+}
+
+async function updateApprovalBadge() {
+    const { data } = await db.from('events').select('id').eq('status','pending');
+    const count = data?.length || 0;
+    const badge = document.getElementById('approval-badge');
+    if (badge) { badge.textContent = count; badge.style.display = count > 0 ? 'inline' : 'none'; }
+}
+
+async function openApprovalPanel() {
+    document.getElementById('approval-panel').classList.add('open');
+    await loadPendingEvents();
+    await loadAllUsers();
+}
+
+function closeApprovalPanel() {
+    document.getElementById('approval-panel').classList.remove('open');
+}
+
+async function loadPendingEvents() {
+    const { data, error } = await db.from('events').select('*').eq('status','pending').order('created_at', {ascending:false});
+    const grid = document.getElementById('approval-grid');
+    if (!data || data.length === 0) {
+        grid.innerHTML = '<div class="approval-empty">✓ אין בקשות ממתינות</div>';
+        return;
+    }
+    grid.innerHTML = data.map(e => `
+        <div class="approval-card" id="acard-${e.id}">
+            ${e.image ? `<img class="approval-card-img" src="${e.image}" alt="">` : `<div class="approval-card-img">${CAT_EMOJI[e.cat]||'📌'}</div>`}
+            <div class="approval-card-body">
+                <div class="approval-card-title">${e.title}</div>
+                <div class="approval-card-meta">📅 ${e.date_display||e.date_raw||'-'} · 📍 ${e.location||'חיפה'}</div>
+                <div class="approval-card-meta">👤 ${e.user_id||'לא ידוע'}</div>
+                <div class="approval-card-desc">${e.description||''}</div>
+                <div class="approval-btns">
+                    <button class="btn-approve" onclick="approveEvent('${e.id}')">✓ אשרי</button>
+                    <button class="btn-reject" onclick="rejectEvent('${e.id}')">✕ דחי</button>
+                </div>
+            </div>
+        </div>`).join('');
+}
+
+async function approveEvent(id) {
+    await db.from('events').update({status:'approved'}).eq('id', id);
+    document.getElementById('acard-'+id)?.remove();
+    updateApprovalBadge();
+    await loadEvents();
+    const grid = document.getElementById('approval-grid');
+    if (!grid.querySelector('.approval-card')) grid.innerHTML = '<div class="approval-empty">✓ אין בקשות ממתינות</div>';
+}
+
+async function rejectEvent(id) {
+    if (!confirm('למחוק את האירוע הזה לגמרי?')) return;
+    await db.from('events').delete().eq('id', id);
+    document.getElementById('acard-'+id)?.remove();
+    updateApprovalBadge();
+    const grid = document.getElementById('approval-grid');
+    if (!grid.querySelector('.approval-card')) grid.innerHTML = '<div class="approval-empty">✓ אין בקשות ממתינות</div>';
+}
+
+async function loadAllUsers() {
+    const { data } = await db.from('user_profiles').select('id,role,trusted');
+    const { data: authUsers } = await db.auth.admin?.listUsers() || {data:null};
+    const list = document.getElementById('trusted-users-list');
+    if (!data || data.length === 0) { list.innerHTML = '<div style="color:rgba(255,255,255,0.3);font-size:.85rem;">אין משתמשים רשומים עדיין</div>'; return; }
+    list.innerHTML = data.filter(u => u.role !== 'admin').map(u => `
+        <div class="trusted-user-row">
+            <span class="trusted-user-email">${u.id}</span>
+            <button class="btn-trust ${u.trusted?'trusted':''}" onclick="toggleTrust('${u.id}',${!u.trusted})">
+                ${u.trusted ? '✓ מאושר מראש' : 'אשרי מראש'}
+            </button>
+        </div>`).join('');
+}
+
+async function toggleTrust(userId, trust) {
+    await db.from('user_profiles').update({trusted: trust}).eq('id', userId);
+    await loadAllUsers();
 }
 
 function clearDate() {
@@ -827,7 +987,7 @@ function openModal(id) {
     if (id === null) {
         document.getElementById('modal-title').textContent = '✦ הוסף אירוע חדש';
         document.getElementById('modal-submit-btn').textContent = 'פרסם אירוע';
-        ['title','desc','date','date-end','time','loc','price','tickets','materials'].forEach(f => document.getElementById('f-'+f).value = '');
+        ['title','desc','date','date-end','time','loc','price','tickets','tickets2','materials','materials2'].forEach(f => document.getElementById('f-'+f).value = '');
         document.querySelectorAll('.cat-pick-btn').forEach(b => b.classList.remove('selected'));
     } else {
         const e = events.find(ev => String(ev.id) === String(id));
@@ -846,7 +1006,9 @@ function openModal(id) {
         document.getElementById('f-loc').value = e.location;
         document.getElementById('f-price').value = e.price;
         document.getElementById('f-tickets').value = e.tickets || '';
+        document.getElementById('f-tickets2').value = e.tickets2 || '';
         document.getElementById('f-materials').value = e.materials || '';
+        document.getElementById('f-materials2').value = e.materials2 || '';
         if (e.image) {
             currentImageData = e.image;
             document.getElementById('img-preview').src = e.image;
@@ -883,9 +1045,12 @@ async function saveEvent() {
         location: document.getElementById('f-loc').value || 'חיפה',
         price: document.getElementById('f-price').value || 'כניסה חופשית',
         tickets: document.getElementById('f-tickets').value.trim(),
+        tickets2: document.getElementById('f-tickets2').value.trim(),
         materials: document.getElementById('f-materials').value.trim(),
+        materials2: document.getElementById('f-materials2').value.trim(),
         date_end_raw: dateEndRaw || null,
-        image: currentImageData || null
+        image: currentImageData || null,
+        status: (currentRole === 'admin' || currentTrusted) ? 'approved' : 'pending'
     };
 
     try {
@@ -899,6 +1064,9 @@ async function saveEvent() {
         }
         if (error) throw error;
         closeModal();
+        if (currentRole !== 'admin' && !currentTrusted && !editingId) {
+            alert('האירוע שלך התקבל ויפורסם לאחר אישור המנהלת 🙏');
+        }
         await loadEvents();
     } catch(e) { alert('שגיאה: ' + e.message); }
 }
