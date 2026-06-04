@@ -979,7 +979,8 @@ async function approveEvent(id) {
     if (ev) ev.status = 'approved';
     document.getElementById('acard-'+id)?.remove();
     updateApprovalBadge();
-    render();
+    applyFilter();
+    await loadPendingEvents();
     const grid = document.getElementById('approval-grid');
     if (!grid.querySelector('.approval-card')) grid.innerHTML = '<div class="approval-empty">✓ אין בקשות ממתינות</div>';
 }
