@@ -977,12 +977,14 @@ async function approveEvent(id) {
     // עדכון מיידי ב-array המקומי
     const ev = events.find(e => e.id == id);
     if (ev) ev.status = 'approved';
+    // הסרה מהפאנל
     document.getElementById('acard-'+id)?.remove();
     updateApprovalBadge();
+    // עדכון תצוגה ראשית
     applyFilter();
-    await loadPendingEvents();
+    // בדיקה אם הפאנל ריק
     const grid = document.getElementById('approval-grid');
-    if (!grid.querySelector('.approval-card')) grid.innerHTML = '<div class="approval-empty">✓ אין בקשות ממתינות</div>';
+    if (grid && !grid.querySelector('.approval-card')) grid.innerHTML = '<div class="approval-empty">✓ אין בקשות ממתינות</div>';
 }
 
 async function rejectEvent(id) {
