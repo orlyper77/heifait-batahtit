@@ -575,6 +575,8 @@ async function checkAuth() {
             currentUser = user;
             const { data: profile } = await db.from('user_profiles').select('role,trusted').eq('id', user.id).single();
             currentRole = profile?.role || 'user';
+            // רק חשבון הג'ימייל הוא מנהל
+            if (user.email === 'orlyper77@gmail.com') currentRole = 'admin';
             currentTrusted = profile?.trusted || false;
             document.getElementById('user-name').textContent = user.user_metadata?.full_name || user.user_metadata?.name || user.email?.split('@')[0] || 'משתמש';
             document.getElementById('user-role-badge').textContent = currentRole === 'admin' ? 'מנהל' : 'עורך';
