@@ -156,7 +156,7 @@ body{font-family:'Segoe UI',sans-serif;background:#1a0505;color:#f5ede8;directio
 .btn-more{background:none;border:none;color:rgba(212,224,52,0.75);font-size:.7rem;cursor:pointer;padding:0 0 .25rem;text-decoration:underline;display:inline-block;}
 .btn-more:hover{color:#d4e034;}
 .card-meta{display:flex;flex-direction:column;gap:2px;}
-.meta-item{display:flex;align-items:center;gap:5px;font-size:11px;color:rgba(255,255,255,0.4);}
+.meta-item{display:flex;align-items:center;gap:5px;font-size:12px;color:rgba(255,255,255,0.75);font-weight:600;}
 .card-links{display:flex;gap:5px;padding:.5rem .85rem;border-top:1px solid rgba(255,255,255,0.06);}
 .link-btn{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:500;padding:4px 8px;border-radius:7px;text-decoration:none;transition:background .2s;flex:1;justify-content:center;}
 .link-tickets{background:rgba(212,224,52,0.12);color:#d4e034;border:1px solid rgba(212,224,52,0.25);}
@@ -734,7 +734,8 @@ async function loadEvents() {
             materials: e.materials || '',
             materials2: e.materials2 || '',
             image: e.image || null,
-            user_id: e.user_id
+            user_id: e.user_id,
+            status: e.status || 'approved'
         }));
         applyFilter();
     } catch(e) {
@@ -781,7 +782,7 @@ function render() {
                 ${e.image ? `<img src="${e.image}" alt="${e.title}">` : `<span>${e.emoji}</span>`}
             </div>
             <div class="card-body">
-                <div class="card-cats">${(e.cats||[e.cat]).map(c=>`<span class="card-cat cat-${c}">${CAT_LABEL[c]||c}</span>`).join('')}</div>
+                <div class="card-cats">${(e.cats||[e.cat]).map(c=>`<span class="card-cat cat-${c}">${CAT_LABEL[c]||c}</span>`).join('')}${e.status==='pending'&&currentRole==='admin'?'<span style="background:rgba(255,100,100,0.3);color:#ff8080;border:1px solid rgba(255,100,100,0.5);font-size:10px;padding:2px 7px;border-radius:20px;">⏳ ממתין לאישור</span>':''}</div>
                 <div class="card-title" title="${e.title}">${e.title}</div>
                 ${e.desc ? `<div class="card-desc" id="desc-${e.id}">${e.desc}</div>
                 <button class="btn-more" id="more-${e.id}" onclick="toggleDesc('${e.id}',event)">עוד ▾</button>` : ''}
