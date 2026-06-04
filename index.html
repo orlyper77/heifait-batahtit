@@ -680,13 +680,14 @@ async function loadEvents() {
         console.log('loadEvents:', { count: data?.length, error, currentRole });
         if (error) throw error;
         const today = new Date().toISOString().split('T')[0];
+        console.log('today:', today, 'events sample:', data?.slice(0,3).map(e=>({date:e.date_raw,end:e.date_end_raw,status:e.status})));
         events = (data || []).filter(e => {
             if (!e.date_raw) return true;
             const endDate = e.date_end_raw || e.date_raw;
             if (endDate < today) return false;
             // הצג רק מאושרים, או של המשתמש הנוכחי, או אם admin
             if (currentRole === 'admin') return true;
-            if (e.status === 'approved' || !e.status) return true;
+            if (!e.status || e.status === 'approved' || e.status === '') return true;
             if (currentUser && e.user_id === currentUser.id) return true;
             return false;
         }).map(e => ({
