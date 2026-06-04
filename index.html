@@ -974,9 +974,12 @@ async function fetchUserEmails(events) {
 async function approveEvent(id) {
     const { error } = await db.from('events').update({status:'approved'}).eq('id', id);
     if (error) { alert('שגיאה: ' + error.message); return; }
+    // עדכון מיידי ב-array המקומי
+    const ev = events.find(e => e.id == id);
+    if (ev) ev.status = 'approved';
     document.getElementById('acard-'+id)?.remove();
     updateApprovalBadge();
-    await loadEvents();
+    render();
     const grid = document.getElementById('approval-grid');
     if (!grid.querySelector('.approval-card')) grid.innerHTML = '<div class="approval-empty">✓ אין בקשות ממתינות</div>';
 }
