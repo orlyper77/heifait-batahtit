@@ -449,7 +449,10 @@ body{font-family:'Segoe UI',sans-serif;background:#1a0505;color:#f5ede8;directio
         </div>
         <div class="auth-form">
             <input type="email" class="auth-input" id="auth-email" placeholder="אימייל">
-            <input type="password" class="auth-input" id="auth-password" placeholder="סיסמה">
+            <div style="position:relative;">
+                <input type="password" class="auth-input" id="auth-password" placeholder="סיסמה" style="padding-left:40px;">
+                <button type="button" onclick="togglePassVis()" style="position:absolute;left:10px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:16px;color:rgba(255,255,255,0.4);" id="btn-pass-vis">👁</button>
+            </div>
             <div id="register-fields" style="display:none;">
                 <input type="text" class="auth-input" id="auth-name" placeholder="שם מלא" style="margin-top:12px;">
             </div>
@@ -670,6 +673,13 @@ async function handleForgotPassword() {
         msgEl.className = 'auth-success';
         msgEl.textContent = '✓ נשלח קישור לאיפוס סיסמה למייל שלך';
     } catch(e) { msgEl.textContent = e.message; }
+}
+
+function togglePassVis() {
+    const inp = document.getElementById('auth-password');
+    const btn = document.getElementById('btn-pass-vis');
+    if (inp.type === 'password') { inp.type = 'text'; btn.style.color = 'rgba(255,255,255,0.8)'; }
+    else { inp.type = 'password'; btn.style.color = 'rgba(255,255,255,0.4)'; }
 }
 
 async function changePassword() {
