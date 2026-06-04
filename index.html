@@ -578,6 +578,10 @@ async function checkAuth() {
             // רק חשבון הג'ימייל הוא מנהל
             if (user.email === 'orlyper77@gmail.com') currentRole = 'admin';
             currentTrusted = profile?.trusted || false;
+            // שמירת מייל בפרופיל אם חסר
+            if (!profile?.email) {
+                await db.from('user_profiles').upsert({ id: user.id, email: user.email }, { onConflict: 'id' });
+            }
             document.getElementById('user-name').textContent = user.user_metadata?.full_name || user.user_metadata?.name || user.email?.split('@')[0] || 'משתמש';
             document.getElementById('user-role-badge').textContent = currentRole === 'admin' ? 'מנהל' : 'עורך';
             document.getElementById('user-role-badge').className = `role-badge role-${currentRole === 'admin' ? 'admin' : 'editor'}`;
@@ -911,13 +915,20 @@ async function loadPendingEvents() {
         grid.innerHTML = '<div class="approval-empty">✓ אין בקשות ממתינות</div>';
         return;
     }
+    // שליפת מיילים של משתמשים מטבלת user_profiles
+    const userIds = [...new Set(data.map(e => e.user_id).filter(Boolean))];
+    const userEmails = {};
+    for (const uid of userIds) {
+        const { data: profile } = await db.from('user_profiles').select('id,email,trusted').eq('id', uid).single();
+        userEmails[uid] = profile?.email || uid.substring(0,8)+'...';
+    }
     grid.innerHTML = data.map(e => `
         <div class="approval-card" id="acard-${e.id}">
             ${e.image ? `<img class="approval-card-img" src="${e.image}" alt="">` : `<div class="approval-card-img">${CAT_EMOJI[e.cat]||'📌'}</div>`}
             <div class="approval-card-body">
                 <div class="approval-card-title">${e.title}</div>
                 <div class="approval-card-meta">📅 ${e.date_display||e.date_raw||'-'} · 📍 ${e.location||'חיפה'}</div>
-                <div class="approval-card-meta">👤 ${e.user_id||'לא ידוע'}</div>
+                <div class="approval-card-meta">👤 <span id="user-email-${e.id}">${userEmails[e.user_id]||'לא ידוע'}</span></div>
                 <div class="approval-card-desc">${e.description||''}</div>
                 <div class="approval-btns">
                     <button class="btn-approve" onclick="approveEvent('${e.id}')">✓ אשרי</button>
@@ -925,10 +936,23 @@ async function loadPendingEvents() {
                 </div>
             </div>
         </div>`).join('');
+    // נסיון לשלוף מיילים אמיתיים
+    fetchUserEmails(data);
+}
+
+async function fetchUserEmails(events) {
+    for (const e of events) {
+        if (!e.user_id) continue;
+        try {
+            const { data } = await db.from('user_profiles').select('id,trusted').eq('id', e.user_id).single();
+            // חיפוש המייל — נשתמש ב-supabase admin API אם זמין
+        } catch(err) {}
+    }
 }
 
 async function approveEvent(id) {
-    await db.from('events').update({status:'approved'}).eq('id', id);
+    const { error } = await db.from('events').update({status:'approved'}).eq('id', id);
+    if (error) { alert('שגיאה: ' + error.message); return; }
     document.getElementById('acard-'+id)?.remove();
     updateApprovalBadge();
     await loadEvents();
@@ -946,13 +970,13 @@ async function rejectEvent(id) {
 }
 
 async function loadAllUsers() {
-    const { data } = await db.from('user_profiles').select('id,role,trusted');
+    const { data } = await db.from('user_profiles').select('id,role,trusted,email');
     const { data: authUsers } = await db.auth.admin?.listUsers() || {data:null};
     const list = document.getElementById('trusted-users-list');
     if (!data || data.length === 0) { list.innerHTML = '<div style="color:rgba(255,255,255,0.3);font-size:.85rem;">אין משתמשים רשומים עדיין</div>'; return; }
     list.innerHTML = data.filter(u => u.role !== 'admin').map(u => `
         <div class="trusted-user-row">
-            <span class="trusted-user-email">${u.id}</span>
+            <span class="trusted-user-email">${u.email || u.id.substring(0,8)+'...'}</span>
             <button class="btn-trust ${u.trusted?'trusted':''}" onclick="toggleTrust('${u.id}',${!u.trusted})">
                 ${u.trusted ? '✓ מאושר מראש' : 'אשרי מראש'}
             </button>
