@@ -337,6 +337,7 @@ body{font-family:'Segoe UI',sans-serif;background:#1a0505;color:#f5ede8;directio
     <button class="btn-approval-panel" id="btn-approval-panel" onclick="openApprovalPanel()">
         ✦ בקשות פרסום <span class="approval-badge" id="approval-badge" style="display:none">0</span>
     </button>
+    <button class="btn-logout" onclick="changePassword()">שנה סיסמה</button>
     <button class="btn-logout" onclick="logout()">יציאה</button>
 </div>
 
@@ -669,6 +670,15 @@ async function handleForgotPassword() {
         msgEl.className = 'auth-success';
         msgEl.textContent = '✓ נשלח קישור לאיפוס סיסמה למייל שלך';
     } catch(e) { msgEl.textContent = e.message; }
+}
+
+async function changePassword() {
+    const newPass = prompt('הכניסי סיסמה חדשה (לפחות 6 תווים):');
+    if (!newPass) return;
+    if (newPass.length < 6) { alert('הסיסמה חייבת להיות לפחות 6 תווים'); return; }
+    const { error } = await db.auth.updateUser({ password: newPass });
+    if (error) alert('שגיאה: ' + error.message);
+    else alert('✓ הסיסמה עודכנה בהצלחה!');
 }
 
 async function logout() {
