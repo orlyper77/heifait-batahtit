@@ -676,12 +676,8 @@ async function logout() {
 // ── Events ──
 async function loadEvents() {
     try {
-        let query = db.from('events').select('*').order('date_raw', { ascending: true });
-        // אם לא admin — סנן ישירות ב-DB רק אירועים מאושרים
-        if (currentRole !== 'admin') {
-            query = query.or('status.eq.approved,status.is.null');
-        }
-        const { data, error } = await query;
+        const { data, error } = await db.from('events').select('*').order('date_raw', { ascending: true });
+        console.log('loadEvents:', { count: data?.length, error, currentRole });
         if (error) throw error;
         const today = new Date().toISOString().split('T')[0];
         events = (data || []).filter(e => {
