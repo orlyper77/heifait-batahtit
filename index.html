@@ -980,10 +980,16 @@ async function approveEvent(id) {
     // הסרה מהפאנל
     const card = document.getElementById('acard-'+id);
     if (card) card.remove();
-    // עדכון ה-badge
-    await updateApprovalBadge();
-    // עדכון תצוגה ראשית — טעינה מחדש מ-DB כדי לוודא שה-status מעודכן
-    await loadEvents();
+    // עדכון ה-badge מיידי (הורד 1)
+    const badge = document.getElementById('approval-badge');
+    if (badge) {
+        const cur = parseInt(badge.textContent) || 0;
+        const next = Math.max(0, cur - 1);
+        badge.textContent = next;
+        badge.style.display = next > 0 ? 'inline' : 'none';
+    }
+    // רינדור מחדש מיידי — בלי לטעון מה-DB
+    applyFilter();
     // בדיקה אם הפאנל ריק
     const grid = document.getElementById('approval-grid');
     if (grid && !grid.querySelector('.approval-card')) grid.innerHTML = '<div class="approval-empty">✓ אין בקשות ממתינות</div>';
@@ -992,10 +998,20 @@ async function approveEvent(id) {
 async function rejectEvent(id) {
     if (!confirm('למחוק את האירוע הזה לגמרי?')) return;
     await db.from('events').delete().eq('id', id);
+    // הסרה מה-array המקומי
+    const idx = events.findIndex(e => e.id == id || e.id == String(id));
+    if (idx !== -1) events.splice(idx, 1);
     const card = document.getElementById('acard-'+id);
     if (card) card.remove();
-    await updateApprovalBadge();
-    await loadEvents();
+    // עדכון badge מיידי
+    const badge = document.getElementById('approval-badge');
+    if (badge) {
+        const cur = parseInt(badge.textContent) || 0;
+        const next = Math.max(0, cur - 1);
+        badge.textContent = next;
+        badge.style.display = next > 0 ? 'inline' : 'none';
+    }
+    applyFilter();
     const grid = document.getElementById('approval-grid');
     if (!grid.querySelector('.approval-card')) grid.innerHTML = '<div class="approval-empty">✓ אין בקשות ממתינות</div>';
 }
