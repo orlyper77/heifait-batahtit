@@ -588,10 +588,9 @@ async function checkAuth() {
             if (user.email === 'orlyper77@gmail.com') currentRole = 'admin';
             currentTrusted = profile?.trusted || false;
             currentBlocked = profile?.blocked || false;
-            // שמירת מייל בפרופיל אם חסר
-            if (!profile?.email) {
-                await db.from('user_profiles').upsert({ id: user.id, email: user.email }, { onConflict: 'id' });
-            }
+            // שמירת מייל+שם בפרופיל תמיד
+            const userName = user.user_metadata?.full_name || user.user_metadata?.name || user.email?.split('@')[0] || '';
+            await db.from('user_profiles').upsert({ id: user.id, email: user.email, name: userName }, { onConflict: 'id' });
             document.getElementById('user-name').textContent = user.user_metadata?.full_name || user.user_metadata?.name || user.email?.split('@')[0] || 'משתמש';
             document.getElementById('user-role-badge').textContent = currentRole === 'admin' ? 'מנהל' : 'עורך';
             document.getElementById('user-role-badge').className = `role-badge role-${currentRole === 'admin' ? 'admin' : 'editor'}`;
@@ -948,7 +947,7 @@ async function loadPendingEvents() {
     const userEmails = {};
     for (const uid of userIds) {
         const { data: profile } = await db.from('user_profiles').select('id,email,trusted').eq('id', uid).single();
-        userEmails[uid] = profile?.email || uid.substring(0,8)+'...';
+        userEmails[uid] = (profile?.name ? profile.name + ' · ' : '') + (profile?.email || uid.substring(0,8)+'...');
     }
     grid.innerHTML = data.map(e => `
         <div class="approval-card" id="acard-${e.id}">
@@ -1040,9 +1039,12 @@ async function loadAllUsers() {
     const users = Object.values(profileMap).filter(u => u.role !== 'admin');
     if (users.length === 0) { list.innerHTML = '<div style="color:rgba(255,255,255,0.3);font-size:.85rem;">אין משתמשים רשומים עדיין</div>'; return; }
 
-    list.innerHTML = users.map(u => `
+    list.innerHTML = users.map(u => {
+        const displayName = u.name ? `<strong style="color:#f5ede8;">${u.name}</strong> ` : '';
+        const displayEmail = u.email ? `<span style="color:rgba(255,255,255,0.45);font-size:.8rem;">${u.email}</span>` : `<span style="color:rgba(255,255,255,0.3);font-size:.8rem;">${u.id.substring(0,8)}...</span>`;
+        return `
         <div class="trusted-user-row">
-            <span class="trusted-user-email">${u.email || u.id.substring(0,8)+'...'}</span>
+            <span class="trusted-user-email">${displayName}${displayEmail}</span>
             <div style="display:flex;gap:6px;">
                 <button class="btn-trust ${u.trusted?'trusted':''}" onclick="toggleTrust('${u.id}',${!u.trusted})">
                     ${u.trusted ? '✓ מאושר' : 'אשרי מראש'}
@@ -1051,7 +1053,8 @@ async function loadAllUsers() {
                     ${u.blocked ? '🚫 חסום' : 'חסמי'}
                 </button>
             </div>
-        </div>`).join('');
+        </div>`;
+    }).join('');
 }
 
 async function toggleTrust(userId, trust) {
