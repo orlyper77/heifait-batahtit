@@ -975,13 +975,15 @@ async function approveEvent(id) {
     const { error } = await db.from('events').update({status:'approved'}).eq('id', id);
     if (error) { alert('שגיאה: ' + error.message); return; }
     // עדכון מיידי ב-array המקומי
-    const ev = events.find(e => e.id == id);
+    const ev = events.find(e => e.id == id || e.id == String(id));
     if (ev) ev.status = 'approved';
     // הסרה מהפאנל
-    document.getElementById('acard-'+id)?.remove();
-    updateApprovalBadge();
-    // עדכון תצוגה ראשית
-    applyFilter();
+    const card = document.getElementById('acard-'+id);
+    if (card) card.remove();
+    // עדכון ה-badge
+    await updateApprovalBadge();
+    // עדכון תצוגה ראשית — טעינה מחדש מ-DB כדי לוודא שה-status מעודכן
+    await loadEvents();
     // בדיקה אם הפאנל ריק
     const grid = document.getElementById('approval-grid');
     if (grid && !grid.querySelector('.approval-card')) grid.innerHTML = '<div class="approval-empty">✓ אין בקשות ממתינות</div>';
@@ -990,8 +992,10 @@ async function approveEvent(id) {
 async function rejectEvent(id) {
     if (!confirm('למחוק את האירוע הזה לגמרי?')) return;
     await db.from('events').delete().eq('id', id);
-    document.getElementById('acard-'+id)?.remove();
-    updateApprovalBadge();
+    const card = document.getElementById('acard-'+id);
+    if (card) card.remove();
+    await updateApprovalBadge();
+    await loadEvents();
     const grid = document.getElementById('approval-grid');
     if (!grid.querySelector('.approval-card')) grid.innerHTML = '<div class="approval-empty">✓ אין בקשות ממתינות</div>';
 }
