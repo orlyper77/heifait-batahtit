@@ -303,6 +303,11 @@ body{font-family:'Segoe UI',sans-serif;background:#1a0505;color:#f5ede8;directio
 .trusted-user-email{font-size:.85rem;color:rgba(255,255,255,0.6);}
 .btn-trust{background:rgba(100,200,80,0.15);border:1px solid rgba(100,200,80,0.4);color:#80e060;padding:4px 10px;border-radius:8px;cursor:pointer;font-size:12px;}
 .btn-trust.trusted{background:rgba(100,200,80,0.35);}
+.btn-trust.blocked{background:rgba(200,50,50,0.35);border-color:rgba(200,50,50,0.6);color:#ff8080;}
+.btn-trust.blocked:hover{background:rgba(200,50,50,0.5);}
+.btn-block{background:rgba(200,50,50,0.15);border:1px solid rgba(200,50,50,0.4);color:#ff8080;padding:4px 10px;border-radius:8px;cursor:pointer;font-size:12px;margin-right:4px;}
+.btn-block:hover{background:rgba(200,50,50,0.35);}
+.btn-block.blocked{background:rgba(200,50,50,0.35);}
 .btn-trust:hover{background:rgba(100,200,80,0.35);}
 .form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
 .form-group{margin-bottom:.85rem;}
@@ -559,7 +564,7 @@ const db = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 const CAT_EMOJI = {music:'🎵',theater:'🎭',cinema:'🎬',lectures:'🎤',kids:'🧒',spirit:'✨',workshops:'🛠️',literature:'📚',art:'🎨',parties:'🎉',games:'🎮',fairs:'🏪',community:'🤝',standup:'🎙️',tours:'🗺️',performance:'💃',fringe:'🌀',festivals:'🎪',laughs:'😂',jazz:'🎷',dance:'💃',classic:'🎻'};
 const CAT_LABEL = {music:'מוזיקה',theater:'תאטרון',cinema:'קולנוע',lectures:'הרצאות',kids:'ילדים',spirit:'רוח',workshops:'סדנאות',literature:'ספרות',art:'אמנות',parties:'מסיבות',games:'משחקים',fairs:'ירידים',community:'קהילתי',standup:'סטנדאפ',tours:'סיורים',performance:'פרפורמנס',fringe:"פרינג'",festivals:'פסטיבלים',laughs:'צחוקים',jazz:"ג'אז",dance:'מחול',classic:'קלאסי'};
 
-let currentUser = null, currentRole = null, currentTrusted = false;
+let currentUser = null, currentRole = null, currentTrusted = false, currentBlocked = false;
 let events = [], filteredEvents = [];
 let favs = new Set(), activeTab = 'all', activeCats = new Set(), dateFilter = '';
 let editingId = null, currentImageData = null, pendingAction = null;
@@ -577,11 +582,12 @@ async function checkAuth() {
         const { data: { user } } = await db.auth.getUser();
         if (user) {
             currentUser = user;
-            const { data: profile } = await db.from('user_profiles').select('role,trusted').eq('id', user.id).single();
+            const { data: profile } = await db.from('user_profiles').select('role,trusted,blocked').eq('id', user.id).single();
             currentRole = profile?.role || 'user';
             // רק חשבון הג'ימייל הוא מנהל
             if (user.email === 'orlyper77@gmail.com') currentRole = 'admin';
             currentTrusted = profile?.trusted || false;
+            currentBlocked = profile?.blocked || false;
             // שמירת מייל בפרופיל אם חסר
             if (!profile?.email) {
                 await db.from('user_profiles').upsert({ id: user.id, email: user.email }, { onConflict: 'id' });
@@ -602,8 +608,9 @@ async function checkAuth() {
 }
 
 function handleAddEvent() {
-    if (currentUser) openModal(null);
-    else { pendingAction = 'addEvent'; openAuth(); }
+    if (!currentUser) { pendingAction = 'addEvent'; openAuth(); return; }
+    if (currentBlocked) { alert('החשבון שלך חסום ואינו יכול לפרסם אירועים.'); return; }
+    openModal(null);
 }
 
 function openAuth() { document.getElementById('auth-overlay').classList.add('open'); }
@@ -1017,21 +1024,43 @@ async function rejectEvent(id) {
 }
 
 async function loadAllUsers() {
-    const { data } = await db.from('user_profiles').select('id,role,trusted,email');
-    const { data: authUsers } = await db.auth.admin?.listUsers() || {data:null};
+    // שליפת כל הפרופילים
+    const { data: profiles } = await db.from('user_profiles').select('id,role,trusted,blocked,email');
+    // שליפת user_ids מאירועים ממתינים שאולי אין להם פרופיל
+    const { data: pendingEvs } = await db.from('events').select('user_id').eq('status','pending');
     const list = document.getElementById('trusted-users-list');
-    if (!data || data.length === 0) { list.innerHTML = '<div style="color:rgba(255,255,255,0.3);font-size:.85rem;">אין משתמשים רשומים עדיין</div>'; return; }
-    list.innerHTML = data.filter(u => u.role !== 'admin').map(u => `
+
+    // מיזוג — כל המשתמשים עם פרופיל + כל user_id מבקשות ממתינות
+    const profileMap = {};
+    (profiles || []).forEach(p => { profileMap[p.id] = p; });
+    (pendingEvs || []).forEach(e => {
+        if (e.user_id && !profileMap[e.user_id]) profileMap[e.user_id] = { id: e.user_id, email: null, trusted: false, blocked: false };
+    });
+
+    const users = Object.values(profileMap).filter(u => u.role !== 'admin');
+    if (users.length === 0) { list.innerHTML = '<div style="color:rgba(255,255,255,0.3);font-size:.85rem;">אין משתמשים רשומים עדיין</div>'; return; }
+
+    list.innerHTML = users.map(u => `
         <div class="trusted-user-row">
             <span class="trusted-user-email">${u.email || u.id.substring(0,8)+'...'}</span>
-            <button class="btn-trust ${u.trusted?'trusted':''}" onclick="toggleTrust('${u.id}',${!u.trusted})">
-                ${u.trusted ? '✓ מאושר מראש' : 'אשרי מראש'}
-            </button>
+            <div style="display:flex;gap:6px;">
+                <button class="btn-trust ${u.trusted?'trusted':''}" onclick="toggleTrust('${u.id}',${!u.trusted})">
+                    ${u.trusted ? '✓ מאושר' : 'אשרי מראש'}
+                </button>
+                <button class="btn-block ${u.blocked?'blocked':''}" onclick="toggleBlock('${u.id}',${!u.blocked})">
+                    ${u.blocked ? '🚫 חסום' : 'חסמי'}
+                </button>
+            </div>
         </div>`).join('');
 }
 
 async function toggleTrust(userId, trust) {
-    await db.from('user_profiles').update({trusted: trust}).eq('id', userId);
+    await db.from('user_profiles').upsert({id: userId, trusted: trust}, {onConflict:'id'});
+    await loadAllUsers();
+}
+
+async function toggleBlock(userId, block) {
+    await db.from('user_profiles').upsert({id: userId, blocked: block}, {onConflict:'id'});
     await loadAllUsers();
 }
 
