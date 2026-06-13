@@ -574,6 +574,23 @@ async function init() {
     await checkAuth();
     await loadEvents();
     setupFilters();
+    setupRealtime();
+}
+
+function setupRealtime() {
+    // האזנה לאירועים חדשים/שינויים בזמן אמת
+    db.channel('events-changes')
+        .on('postgres_changes', { event: '*', schema: 'public', table: 'events' }, async (payload) => {
+            await loadEvents();
+            if (currentRole === 'admin') {
+                await updateApprovalBadge();
+                // אם פאנל האישורים פתוח — רענן אותו
+                if (document.getElementById('approval-panel').classList.contains('open')) {
+                    await loadPendingEvents();
+                }
+            }
+        })
+        .subscribe();
 }
 
 // ── Auth ──
