@@ -11,7 +11,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
 *{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:'Segoe UI',sans-serif;background:#1a0505;color:#f5ede8;direction:rtl;}
+body{font-family:'Secular One',sans-serif;background:#1a0505;color:#f5ede8;direction:rtl;}
 
 /* Auth Modal */
 .auth-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.8);z-index:500;align-items:center;justify-content:center;padding:1rem;}
@@ -23,9 +23,9 @@ body{font-family:'Segoe UI',sans-serif;background:#1a0505;color:#f5ede8;directio
 .auth-tab{flex:1;padding:8px;text-align:center;font-size:13px;border:none;background:transparent;color:rgba(255,255,255,0.5);border-radius:8px;cursor:pointer;transition:all .2s;}
 .auth-tab.active{background:#d4e034;color:#1a0505;font-weight:600;}
 .auth-form{display:flex;flex-direction:column;gap:12px;}
-.auth-input{width:100%;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);color:#f5ede8;font-family:'Segoe UI',sans-serif;font-size:14px;padding:10px 14px;border-radius:10px;outline:none;direction:rtl;}
+.auth-input{width:100%;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);color:#f5ede8;font-family:'Secular One',sans-serif;font-size:14px;padding:10px 14px;border-radius:10px;outline:none;direction:rtl;}
 .auth-input:focus{border-color:#d4e034;}
-.auth-submit{background:#d4e034;color:#1a0505;border:none;font-family:'Segoe UI',sans-serif;font-size:14px;font-weight:600;padding:11px;border-radius:10px;cursor:pointer;}
+.auth-submit{background:#d4e034;color:#1a0505;border:none;font-family:'Secular One',sans-serif;font-size:14px;font-weight:600;padding:11px;border-radius:10px;cursor:pointer;}
 .auth-submit:hover{background:#e2ec6a;}
 .auth-error{color:#f075a8;font-size:13px;margin-top:.5rem;min-height:18px;}
 .auth-success{color:#d4e034;font-size:13px;margin-top:.5rem;}
@@ -64,7 +64,7 @@ body{font-family:'Segoe UI',sans-serif;background:#1a0505;color:#f5ede8;directio
 
 /* Toolbar */
 .toolbar{display:flex;flex-wrap:wrap;gap:8px;padding:1rem 2rem;background:#2a0808;border-bottom:1px solid rgba(255,255,255,0.06);position:sticky;top:0;z-index:10;align-items:center;}
-.filter-btn{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.6);font-family:'Segoe UI',sans-serif;font-size:13px;padding:6px 14px;border-radius:20px;cursor:pointer;transition:all .2s;}
+.filter-btn{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.6);font-family:'Secular One',sans-serif;font-size:13px;padding:6px 14px;border-radius:4px;cursor:pointer;transition:all .2s;}
 .filter-btn:hover{opacity:0.85;}
 .filter-btn.active{font-weight:500;opacity:1;}
 .filter-btn[data-cat="all"]{background:rgba(255,255,255,0.1);border-color:rgba(255,255,255,0.3);color:#fff;}
@@ -113,19 +113,19 @@ body{font-family:'Segoe UI',sans-serif;background:#1a0505;color:#f5ede8;directio
 .filter-btn[data-cat="dance"].active{background:rgba(220,80,160,0.9);color:#fff;border-color:#dc50a0;}
 .filter-btn[data-cat="classic"]{background:rgba(140,100,200,0.25);color:#c090f0;border-color:rgba(140,100,200,0.5);}
 .filter-btn[data-cat="classic"].active{background:rgba(140,100,200,0.9);color:#fff;border-color:#8c64c8;}
-.btn-login{background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.25);color:#fff;font-family:'Segoe UI',sans-serif;font-size:13px;font-weight:500;padding:7px 18px;border-radius:20px;cursor:pointer;transition:all .2s;margin-right:auto;}
+.btn-login{background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.25);color:#fff;font-family:'Secular One',sans-serif;font-size:13px;font-weight:500;padding:7px 18px;border-radius:20px;cursor:pointer;transition:all .2s;margin-right:auto;}
 .btn-login:hover{background:rgba(255,255,255,0.2);}
-.date-input{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);color:#f5ede8;font-family:'Segoe UI',sans-serif;font-size:13px;padding:6px 12px;border-radius:20px;outline:none;transition:border-color .2s;cursor:pointer;}
+.date-input{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);color:#f5ede8;font-family:'Secular One',sans-serif;font-size:13px;padding:6px 12px;border-radius:20px;outline:none;transition:border-color .2s;cursor:pointer;}
 .date-input:focus{border-color:#d4e034;}
 .date-input::-webkit-calendar-picker-indicator{filter:invert(0.6);}
 .btn-clear-date{background:none;border:none;color:rgba(255,255,255,0.35);font-size:18px;cursor:pointer;padding:0 2px;line-height:1;}
 .btn-clear-date:hover{color:#d4e034;}
 
 
-.search-input{background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.3);color:#fff;font-family:'Segoe UI',sans-serif;font-size:13px;padding:6px 14px;border-radius:20px;outline:none;transition:border-color .2s;min-width:160px;}
+.search-input{background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.3);color:#fff;font-family:'Secular One',sans-serif;font-size:13px;padding:6px 14px;border-radius:20px;outline:none;transition:border-color .2s;min-width:160px;}
 .search-input:focus{border-color:#d4e034;}
 .search-input::placeholder{color:rgba(255,255,255,0.7);}
-.btn-add{background:#d4e034;color:#1a0505;border:none;font-family:'Segoe UI',sans-serif;font-size:13px;font-weight:500;padding:7px 18px;border-radius:20px;cursor:pointer;transition:background .2s;}
+.btn-add{background:#d4e034;color:#1a0505;border:none;font-family:'Secular One',sans-serif;font-size:13px;font-weight:500;padding:7px 18px;border-radius:20px;cursor:pointer;transition:background .2s;}
 .btn-add:hover{background:#e2ec6a;}
 
 /* Cards */
@@ -236,7 +236,7 @@ body{font-family:'Segoe UI',sans-serif;background:#1a0505;color:#f5ede8;directio
 .card[data-cat="classic"] .card-img{background:linear-gradient(135deg,#1a0a2d,#3a1a5a);}
 
 /* Hero login button */
-.hero-login-btn{position:absolute;top:1.2rem;right:1.5rem;z-index:3;background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);color:#fff;font-family:'Segoe UI',sans-serif;font-size:13px;font-weight:500;padding:7px 18px;border-radius:20px;cursor:pointer;transition:all .2s;backdrop-filter:blur(4px);}
+.hero-login-btn{position:absolute;top:1.2rem;right:1.5rem;z-index:3;background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);color:#fff;font-family:'Secular One',sans-serif;font-size:13px;font-weight:500;padding:7px 18px;border-radius:20px;cursor:pointer;transition:all .2s;backdrop-filter:blur(4px);}
 .hero-login-btn:hover{background:rgba(255,255,255,0.25);}
 .hero-login-btn.hidden{display:none;}
 .img-upload-area{border:1.5px dashed rgba(255,255,255,0.18);border-radius:12px;padding:1.2rem;text-align:center;cursor:pointer;transition:border-color .2s,background .2s;position:relative;overflow:hidden;}
@@ -312,15 +312,15 @@ body{font-family:'Segoe UI',sans-serif;background:#1a0505;color:#f5ede8;directio
 .form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
 .form-group{margin-bottom:.85rem;}
 .form-group label{display:block;font-size:12px;color:rgba(255,255,255,0.45);margin-bottom:5px;}
-.form-group input,.form-group textarea,.form-group select{width:100%;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);color:#f5ede8;font-family:'Segoe UI',sans-serif;font-size:14px;padding:9px 12px;border-radius:10px;outline:none;transition:border-color .2s;direction:rtl;}
+.form-group input,.form-group textarea,.form-group select{width:100%;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);color:#f5ede8;font-family:'Secular One',sans-serif;font-size:14px;padding:9px 12px;border-radius:10px;outline:none;transition:border-color .2s;direction:rtl;}
 .form-group input:focus,.form-group textarea:focus,.form-group select:focus{border-color:#d4e034;}
 .form-group textarea{resize:vertical;min-height:70px;}
 .form-group select option{background:#2e0c0c;}
 .form-divider{font-size:11px;color:rgba(255,255,255,0.25);letter-spacing:.5px;text-transform:uppercase;margin:.4rem 0 .8rem;padding-bottom:.5rem;border-bottom:1px solid rgba(255,255,255,0.07);}
 .modal-btns{display:flex;gap:10px;margin-top:1.1rem;}
-.btn-submit{flex:1;background:#d4e034;color:#1a0505;border:none;font-family:'Segoe UI',sans-serif;font-size:14px;font-weight:500;padding:10px;border-radius:10px;cursor:pointer;}
+.btn-submit{flex:1;background:#d4e034;color:#1a0505;border:none;font-family:'Secular One',sans-serif;font-size:14px;font-weight:500;padding:10px;border-radius:10px;cursor:pointer;}
 .btn-submit:hover{background:#e2ec6a;}
-.btn-cancel{background:rgba(255,255,255,0.07);color:rgba(255,255,255,0.55);border:1px solid rgba(255,255,255,0.1);font-family:'Segoe UI',sans-serif;font-size:14px;padding:10px 20px;border-radius:10px;cursor:pointer;}
+.btn-cancel{background:rgba(255,255,255,0.07);color:rgba(255,255,255,0.55);border:1px solid rgba(255,255,255,0.1);font-family:'Secular One',sans-serif;font-size:14px;padding:10px 20px;border-radius:10px;cursor:pointer;}
 
 @media(max-width:768px){
     .tab-bar{padding:0 1rem;overflow-x:auto;}
@@ -329,7 +329,61 @@ body{font-family:'Segoe UI',sans-serif;background:#1a0505;color:#f5ede8;directio
     .form-row{grid-template-columns:1fr;}
     .hero-bg{background-position:center 57%;transform:scale(1.8);}
 }
-    </style>
+    
+/* ===== נגישות ===== */
+#accessibility-btn{position:fixed;bottom:24px;left:24px;z-index:9999;width:52px;height:52px;border-radius:50%;background:#2e0c0c;color:#f5ede8;border:1px solid rgba(255,255,255,0.15);font-size:24px;cursor:pointer;box-shadow:0 4px 20px rgba(0,0,0,0.5);display:flex;align-items:center;justify-content:center;transition:transform .2s;}
+#accessibility-btn:hover{transform:scale(1.1);}
+#accessibility-panel{position:fixed;bottom:86px;left:24px;z-index:9999;background:#2e0c0c;border:1px solid rgba(212,224,52,0.3);border-radius:16px;padding:1.2rem;width:230px;display:none;flex-direction:column;gap:10px;box-shadow:0 8px 32px rgba(0,0,0,0.6);}
+#accessibility-panel.open{display:flex;}
+#accessibility-panel h3{color:#d4e034;font-size:14px;font-weight:700;border-bottom:1px solid rgba(255,255,255,0.1);padding-bottom:8px;margin-bottom:2px;}
+.a11y-btn{background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);color:#f5ede8;font-family:'Secular One',sans-serif;font-size:13px;padding:9px 14px;border-radius:10px;cursor:pointer;text-align:right;transition:all .2s;display:flex;align-items:center;gap:8px;}
+.a11y-btn:hover{background:rgba(212,224,52,0.15);border-color:rgba(212,224,52,0.4);}
+.a11y-btn.active{background:rgba(212,224,52,0.2);border-color:#d4e034;color:#d4e034;}
+.a11y-divider{height:1px;background:rgba(255,255,255,0.08);margin:2px 0;}
+.a11y-link{color:rgba(255,255,255,0.4);font-size:11px;text-align:center;text-decoration:underline;cursor:pointer;background:none;border:none;width:100%;}
+.a11y-link:hover{color:#d4e034;}
+/* אפקטי נגישות */
+body.a11y-big-text{font-size:120%;}
+body.a11y-high-contrast{filter:contrast(1.5) brightness(1.1);}
+body.a11y-grayscale{filter:grayscale(1);}
+body.a11y-no-animations *{animation:none!important;transition:none!important;}
+body.a11y-big-cursor *{cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Cpolygon points='0,0 0,28 8,22 14,32 18,30 12,20 22,20' fill='white' stroke='black' stroke-width='2'/%3E%3C/svg%3E") 0 0,auto!important;}
+
+/* הצהרת נגישות */
+#a11y-statement{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:10000;align-items:center;justify-content:center;padding:1rem;}
+#a11y-statement.open{display:flex;}
+#a11y-statement-box{background:#2e0c0c;border:1px solid rgba(212,224,52,0.3);border-radius:20px;padding:2rem;max-width:520px;width:100%;max-height:80vh;overflow-y:auto;direction:rtl;}
+#a11y-statement-box h2{color:#d4e034;font-size:1.3rem;margin-bottom:1rem;}
+#a11y-statement-box p,#a11y-statement-box li{color:rgba(255,255,255,0.75);font-size:14px;line-height:1.7;margin-bottom:.6rem;}
+#a11y-statement-box ul{padding-right:1.2rem;margin-bottom:.8rem;}
+#a11y-statement-box a{color:#d4e034;}
+#a11y-close-stmt{background:#d4e034;color:#1a0505;border:none;padding:9px 22px;border-radius:10px;cursor:pointer;font-weight:600;margin-top:1rem;}
+
+
+/* ===== פוטר ===== */
+.site-footer{background:#0f0303;border-top:1px solid rgba(255,255,255,0.06);padding:1.5rem 2rem;text-align:center;font-size:12px;color:rgba(255,255,255,0.3);display:flex;flex-direction:column;gap:8px;font-family:'Secular One',sans-serif;}
+.footer-links{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;}
+.footer-link{background:none;border:none;color:rgba(255,255,255,0.35);font-size:12px;cursor:pointer;text-decoration:underline;font-family:'Secular One',sans-serif;}
+.footer-link:hover{color:#d4e034;}
+
+/* ===== מודל חוקי ===== */
+#legal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:9998;align-items:center;justify-content:center;padding:1rem;}
+#legal-overlay.open{display:flex;}
+#legal-box{background:#1e0606;border:1px solid rgba(255,255,255,0.1);border-radius:20px;padding:2rem;max-width:600px;width:100%;max-height:85vh;overflow-y:auto;direction:rtl;position:relative;}
+#legal-box h2{color:#d4e034;font-size:1.2rem;margin-bottom:1.2rem;padding-bottom:.8rem;border-bottom:1px solid rgba(255,255,255,0.08);}
+#legal-box h3{color:#f5ede8;font-size:.95rem;font-weight:700;margin:1.2rem 0 .5rem;}
+#legal-box p,#legal-box li{color:rgba(255,255,255,0.65);font-size:13.5px;line-height:1.8;margin-bottom:.4rem;}
+#legal-box ul{padding-right:1.2rem;margin-bottom:.8rem;}
+#legal-box a{color:#d4e034;}
+#legal-tabs{display:flex;gap:4px;margin-bottom:1.5rem;background:rgba(0,0,0,0.3);border-radius:10px;padding:4px;}
+#legal-tabs button{flex:1;padding:8px;text-align:center;font-size:13px;border:none;background:transparent;color:rgba(255,255,255,0.5);border-radius:8px;cursor:pointer;font-family:'Secular One',sans-serif;transition:all .2s;}
+#legal-tabs button.active{background:#d4e034;color:#1a0505;font-weight:600;}
+.legal-section{display:none;}
+.legal-section.active{display:block;}
+#btn-close-legal{position:absolute;top:1rem;left:1rem;background:none;border:none;color:rgba(255,255,255,0.4);font-size:20px;cursor:pointer;}
+#btn-close-legal:hover{color:#fff;}
+
+</style>
 </head>
 <body>
 
@@ -1230,5 +1284,192 @@ setTimeout(clearSearchAutofill, 100);
 setTimeout(clearSearchAutofill, 500);
 setTimeout(clearSearchAutofill, 1000);
 </script>
+
+<!-- כפתור נגישות -->
+<button id="accessibility-btn" aria-label="תפריט נגישות" title="נגישות" onclick="toggleA11yPanel()">♿</button>
+
+<div id="accessibility-panel" role="dialog" aria-label="כלי נגישות">
+  <h3>🌐 כלי נגישות</h3>
+  <button class="a11y-btn" id="btn-big-text" onclick="toggleA11y('big-text','btn-big-text')">🔠 הגדלת טקסט</button>
+  <button class="a11y-btn" id="btn-high-contrast" onclick="toggleA11y('high-contrast','btn-high-contrast')">🔆 ניגודיות גבוהה</button>
+  <button class="a11y-btn" id="btn-grayscale" onclick="toggleA11y('grayscale','btn-grayscale')">🩶 גווני אפור</button>
+  <button class="a11y-btn" id="btn-no-animations" onclick="toggleA11y('no-animations','btn-no-animations')">⏸ עצירת אנימציות</button>
+  <button class="a11y-btn" id="btn-big-cursor" onclick="toggleA11y('big-cursor','btn-big-cursor')">🖱 סמן גדול</button>
+  <div class="a11y-divider"></div>
+  <button class="a11y-btn" onclick="resetA11y()">🔄 איפוס הגדרות</button>
+  <div class="a11y-divider"></div>
+  <button class="a11y-link" onclick="openA11yStatement()">הצהרת נגישות</button>
+</div>
+
+<!-- הצהרת נגישות -->
+<div id="a11y-statement" role="dialog" aria-modal="true" aria-label="הצהרת נגישות">
+  <div id="a11y-statement-box">
+    <h2>♿ הצהרת נגישות</h2>
+    <p><strong>חיפאית בתחתית</strong> פועלת להנגשת האתר לאנשים עם מוגבלויות, בהתאם לחוק שוויון זכויות לאנשים עם מוגבלות (תשנ"ח–1998) ותקנות הנגישות.</p>
+    <p>האתר שואף לעמוד ברמת התאמה <strong>AA</strong> של תקן WCAG 2.0.</p>
+    <p><strong>נגישויות קיימות באתר:</strong></p>
+    <ul>
+      <li>תפריט נגישות עם כלים להגדלת טקסט, ניגודיות וגווני אפור</li>
+      <li>תמיכה בניווט מקלדת</li>
+      <li>טקסטים חלופיים לתמונות</li>
+      <li>הגדרת שפה ברמת הדף (עברית)</li>
+      <li>כותרות ומבנה היררכי ברור</li>
+    </ul>
+    <p><strong>פניות בנושא נגישות:</strong><br>
+    נתקלתם בבעיה? נשמח לשמוע.<br>
+    מייל: <a href="mailto:orlyper77@gmail.com">orlyper77@gmail.com</a></p>
+    <p style="color:rgba(255,255,255,0.4);font-size:12px;">הצהרה זו עודכנה בספטמבר 2026.</p>
+    <button id="a11y-close-stmt" onclick="closeA11yStatement()">סגירה</button>
+  </div>
+</div>
+
+<script>
+function toggleA11yPanel(){
+    const p=document.getElementById('accessibility-panel');
+    p.classList.toggle('open');
+}
+function toggleA11y(cls,btnId){
+    document.body.classList.toggle('a11y-'+cls);
+    document.getElementById(btnId).classList.toggle('active');
+    saveA11yPrefs();
+}
+function resetA11y(){
+    ['big-text','high-contrast','grayscale','no-animations','big-cursor'].forEach(cls=>{
+        document.body.classList.remove('a11y-'+cls);
+        const btn=document.getElementById('btn-'+cls);
+        if(btn) btn.classList.remove('active');
+    });
+    localStorage.removeItem('a11y');
+}
+function saveA11yPrefs(){
+    const active=['big-text','high-contrast','grayscale','no-animations','big-cursor']
+        .filter(c=>document.body.classList.contains('a11y-'+c));
+    localStorage.setItem('a11y',JSON.stringify(active));
+}
+function loadA11yPrefs(){
+    try{
+        const saved=JSON.parse(localStorage.getItem('a11y')||'[]');
+        saved.forEach(cls=>{
+            document.body.classList.add('a11y-'+cls);
+            const btn=document.getElementById('btn-'+cls);
+            if(btn) btn.classList.add('active');
+        });
+    }catch(e){}
+}
+function openA11yStatement(){
+    document.getElementById('a11y-statement').classList.add('open');
+    document.getElementById('accessibility-panel').classList.remove('open');
+}
+function closeA11yStatement(){
+    document.getElementById('a11y-statement').classList.remove('open');
+}
+// סגירת פאנל בלחיצה מחוץ
+document.addEventListener('click',function(e){
+    const panel=document.getElementById('accessibility-panel');
+    const btn=document.getElementById('accessibility-btn');
+    if(panel.classList.contains('open')&&!panel.contains(e.target)&&e.target!==btn){
+        panel.classList.remove('open');
+    }
+});
+loadA11yPrefs();
+</script>
+
+
+<!-- פוטר -->
+<footer class="site-footer">
+  <div class="footer-links">
+    <button class="footer-link" onclick="openLegal('privacy')">מדיניות פרטיות</button>
+    <button class="footer-link" onclick="openLegal('terms')">תנאי שימוש</button>
+    <button class="footer-link" onclick="openA11yStatement()">הצהרת נגישות</button>
+  </div>
+  <div>© 2026 חיפאית בתחתית · כל הזכויות שמורות</div>
+  <div style="font-size:11px;color:rgba(255,255,255,0.2);max-width:560px;margin:0 auto;line-height:1.6;font-family:'Secular One',sans-serif;">התוכן המפורסם באתר הוא באחריות המפרסמים בלבד. האתר אינו אחראי לדיוק, נכונות או חוקיות המידע המפורסם. האתר "חיפאית בתחתית" שומר לעצמו את הזכות לערוך, להסיר, לשנות, למחוק כל תוכן, מידע או אירוע המתפרסם באתר, בכל עת וללא הודעה מוקדמת, על פי שיקול דעתו הבלעדי.</div>
+</footer>
+
+<!-- מודל חוקי -->
+<div id="legal-overlay" role="dialog" aria-modal="true">
+  <div id="legal-box">
+    <button id="btn-close-legal" onclick="closeLegal()" aria-label="סגירה">✕</button>
+    <div id="legal-tabs">
+      <button id="tab-privacy" class="active" onclick="switchLegalTab('privacy')">מדיניות פרטיות</button>
+      <button id="tab-terms" onclick="switchLegalTab('terms')">תנאי שימוש</button>
+    </div>
+
+    <!-- מדיניות פרטיות -->
+    <div id="legal-privacy" class="legal-section active">
+      <h2>🔒 מדיניות פרטיות</h2>
+      <p>עדכון אחרון: ספטמבר 2026</p>
+      <h3>מי אנחנו</h3>
+      <p>חיפאית בתחתית הוא אתר קהילתי לפרסום אירועים ובילויים בחיפה. האתר מופעל על ידי אורלי פרץ (orlyper77@gmail.com).</p>
+      <h3>מה אנחנו אוספים</h3>
+      <ul>
+        <li><strong>כתובת מייל ושם משתמש</strong> — בעת יצירת חשבון באתר</li>
+        <li><strong>תוכן שפרסמתם</strong> — אירועים, תמונות ותיאורים שהוספתם</li>
+        <li><strong>נתוני שימוש בסיסיים</strong> — לצורך תפעול האתר בלבד</li>
+      </ul>
+      <h3>למה אנחנו משתמשים במידע</h3>
+      <ul>
+        <li>ניהול חשבון המשתמש שלכם</li>
+        <li>שליחת מייל אישור הרשמה בלבד</li>
+        <li>תפעול ושיפור האתר</li>
+      </ul>
+      <h3>שיתוף מידע עם צד שלישי</h3>
+      <p>האתר משתמש בשירות <strong>Supabase</strong> (supabase.com) לאחסון נתונים ואימות משתמשים. המידע שלכם מאוחסן בשרתי Supabase בהתאם <a href="https://supabase.com/privacy" target="_blank">למדיניות הפרטיות שלהם</a>. איננו מוכרים או משתפים את המידע שלכם עם כל גורם אחר.</p>
+      <h3>עוגיות</h3>
+      <p>האתר משתמש בעוגיות טכניות בלבד לצורך שמירת פרטי ההתחברות שלכם. אין שימוש בעוגיות פרסומיות או מעקב.</p>
+      <h3>זכויותיכם</h3>
+      <ul>
+        <li>זכות לעיין במידע שנאסף עליכם</li>
+        <li>זכות לתקן מידע שגוי</li>
+        <li>זכות למחוק את החשבון והמידע שלכם</li>
+      </ul>
+      <p>לכל פנייה בנושא פרטיות: <a href="mailto:orlyper77@gmail.com">orlyper77@gmail.com</a></p>
+    </div>
+
+    <!-- תנאי שימוש -->
+    <div id="legal-terms" class="legal-section">
+      <h2>📋 תנאי שימוש</h2>
+      <p>עדכון אחרון: ספטמבר 2026</p>
+      <h3>ברוכים הבאים</h3>
+      <p>השימוש באתר חיפאית בתחתית מהווה הסכמה לתנאים המפורטים להלן.</p>
+      <h3>תוכן המשתמשים</h3>
+      <ul>
+        <li>אתם אחראים בלעדית על התוכן שאתם מפרסמים</li>
+        <li>יש לפרסם אירועים אמיתיים בלבד המתקיימים בחיפה והסביבה</li>
+        <li>אסור לפרסם תוכן פוגעני, מטעה, מפלה או בלתי חוקי</li>
+        <li>אסור לפרסם תוכן שיש בו הפרת זכויות יוצרים</li>
+        <li>בעלי האתר רשאים להסיר כל תוכן לפי שיקול דעתם</li>
+      </ul>
+      <h3>אחריות</h3>
+      <p>האתר משמש כפלטפורמה לפרסום אירועים בלבד. חיפאית בתחתית אינה אחראית לדיוק המידע על האירועים, לביטולים או לשינויים. מומלץ לוודא פרטים ישירות עם מארגני האירוע.</p>
+      <h3>קניין רוחני</h3>
+      <p>עיצוב האתר ותכניו המקוריים שייכים לחיפאית בתחתית. תוכן שמפרסמים משתמשים שייך למפרסמים.</p>
+      <h3>שינויים בתנאים</h3>
+      <p>אנו רשאים לעדכן תנאים אלו מעת לעת. המשך השימוש באתר לאחר עדכון מהווה הסכמה לתנאים החדשים.</p>
+      <h3>יצירת קשר</h3>
+      <p><a href="mailto:orlyper77@gmail.com">orlyper77@gmail.com</a></p>
+    </div>
+  </div>
+</div>
+
+<script>
+function openLegal(tab){
+  document.getElementById('legal-overlay').classList.add('open');
+  switchLegalTab(tab||'privacy');
+}
+function closeLegal(){
+  document.getElementById('legal-overlay').classList.remove('open');
+}
+function switchLegalTab(tab){
+  ['privacy','terms'].forEach(t=>{
+    document.getElementById('legal-'+t).classList.toggle('active',t===tab);
+    document.getElementById('tab-'+t).classList.toggle('active',t===tab);
+  });
+}
+document.getElementById('legal-overlay').addEventListener('click',function(e){
+  if(e.target===this) closeLegal();
+});
+</script>
+
 </body>
 </html>
