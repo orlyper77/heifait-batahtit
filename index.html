@@ -26,6 +26,10 @@ body{font-family:'Secular One',sans-serif;background:#1a0505;color:#f5ede8;direc
 .auth-input{width:100%;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);color:#f5ede8;font-family:'Secular One',sans-serif;font-size:14px;padding:10px 14px;border-radius:10px;outline:none;direction:rtl;}
 .auth-input:focus{border-color:#d4e034;}
 .auth-submit{background:#d4e034;color:#1a0505;border:none;font-family:'Secular One',sans-serif;font-size:14px;font-weight:600;padding:11px;border-radius:10px;cursor:pointer;}
+.rules-check-wrap{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:14px 16px;margin-bottom:12px;display:flex;flex-direction:column;gap:10px;}
+.rules-check-item{display:flex;align-items:flex-start;gap:10px;font-size:13px;color:rgba(255,255,255,0.65);line-height:1.5;cursor:pointer;}
+.rules-check-item input[type=checkbox]{width:16px;height:16px;min-width:16px;accent-color:#d4e034;cursor:pointer;margin-top:2px;}
+.rules-check-item a{color:#d4e034;text-decoration:underline;}
 .auth-submit:hover{background:#e2ec6a;}
 .auth-error{color:#f075a8;font-size:13px;margin-top:.5rem;min-height:18px;}
 .auth-success{color:#d4e034;font-size:13px;margin-top:.5rem;}
@@ -36,8 +40,18 @@ body{font-family:'Secular One',sans-serif;background:#1a0505;color:#f5ede8;direc
 .forgot-link button:hover{color:#d4e034;}
 
 /* User Bar */
-.user-bar{display:none;padding:.6rem 2rem;background:#1a0505;border-bottom:1px solid rgba(255,255,255,0.05);font-size:13px;color:rgba(255,255,255,0.5);justify-content:space-between;align-items:center;}
+.user-bar{display:none;padding:.5rem 1.5rem;background:#0f0202;border-bottom:1px solid rgba(255,255,255,0.06);font-size:13px;color:rgba(255,255,255,0.5);justify-content:space-between;align-items:center;position:sticky;top:0;z-index:300;}
 .user-bar.show{display:flex;}
+.user-menu-wrap{position:relative;}
+.user-avatar-btn{background:rgba(212,224,52,0.15);border:1px solid rgba(212,224,52,0.35);color:#d4e034;font-family:'Secular One',sans-serif;font-size:13px;padding:5px 14px;border-radius:8px;cursor:pointer;display:flex;align-items:center;gap:6px;transition:all .2s;}
+.user-avatar-btn:hover{background:rgba(212,224,52,0.25);}
+.user-dropdown{display:none;position:absolute;top:calc(100% + 8px);left:0;background:#1e0606;border:1px solid rgba(255,255,255,0.1);border-radius:12px;min-width:180px;box-shadow:0 8px 32px rgba(0,0,0,0.5);z-index:400;overflow:hidden;}
+.user-dropdown.open{display:block;}
+.user-dropdown-item{display:block;width:100%;padding:10px 16px;background:none;border:none;color:rgba(255,255,255,0.65);font-family:'Secular One',sans-serif;font-size:13px;text-align:right;cursor:pointer;transition:background .15s;}
+.user-dropdown-item:hover{background:rgba(255,255,255,0.07);color:#fff;}
+.user-dropdown-item.danger{color:#ff8080;}
+.user-dropdown-item.danger:hover{background:rgba(255,80,80,0.1);}
+.user-dropdown-divider{height:1px;background:rgba(255,255,255,0.07);margin:4px 0;}
 .user-info{display:flex;align-items:center;gap:10px;}
 .user-info strong{color:#d4e034;}
 .role-badge{font-size:11px;padding:2px 8px;border-radius:20px;font-weight:500;}
@@ -49,7 +63,7 @@ body{font-family:'Secular One',sans-serif;background:#1a0505;color:#f5ede8;direc
 /* Hero */
 .hero{position:relative;background:linear-gradient(160deg,#3d0a0a 0%,#7a1515 50%,#c8232c 100%);padding:0;overflow:hidden;border-bottom:1px solid rgba(255,255,255,0.07);min-height:320px;}
 .hero-bg{position:absolute;inset:0;background-size:cover;background-position:center 65%;transform:scale(1.08);opacity:1;z-index:0;}
-.hero::before{content:'';position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,0.1) 0%,rgba(26,5,5,0.75) 100%);z-index:1;}
+.hero::before{content:'';position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,0.0) 0%,rgba(26,5,5,0.15) 100%);z-index:1;}
 .hero>*:not(.hero-bg){position:relative;z-index:2;}
 .hero-content{position:relative;z-index:2;padding:2.5rem 2rem 2rem;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;height:100%;}
 .hero-badge{display:none;}
@@ -58,7 +72,7 @@ body{font-family:'Secular One',sans-serif;background:#1a0505;color:#f5ede8;direc
 .hero-sub{font-size:.95rem;color:rgba(255,255,255,0.65);font-weight:300;letter-spacing:.3px;}
 
 /* Tabs */
-.tab-bar{display:flex;gap:4px;border-bottom:1px solid rgba(255,255,255,0.06);padding:0 2rem;background:#2a0808;}
+.tab-bar{display:flex;gap:4px;border-bottom:1px solid rgba(255,255,255,0.06);padding:0 1.5rem;background:#2a0808;align-items:center;}
 .tab{padding:10px 18px;font-size:13px;cursor:pointer;color:rgba(255,255,255,0.4);border-bottom:2px solid transparent;transition:all .2s;white-space:nowrap;}
 .tab.active{color:#d4e034;border-bottom-color:#d4e034;}
 
@@ -113,7 +127,7 @@ body{font-family:'Secular One',sans-serif;background:#1a0505;color:#f5ede8;direc
 .filter-btn[data-cat="dance"].active{background:rgba(220,80,160,0.9);color:#fff;border-color:#dc50a0;}
 .filter-btn[data-cat="classic"]{background:rgba(140,100,200,0.25);color:#c090f0;border-color:rgba(140,100,200,0.5);}
 .filter-btn[data-cat="classic"].active{background:rgba(140,100,200,0.9);color:#fff;border-color:#8c64c8;}
-.btn-login{background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.25);color:#fff;font-family:'Secular One',sans-serif;font-size:13px;font-weight:500;padding:7px 18px;border-radius:20px;cursor:pointer;transition:all .2s;margin-right:auto;}
+.btn-login{background:rgba(212,224,52,0.12);border:1px solid rgba(212,224,52,0.35);color:#d4e034;font-family:'Secular One',sans-serif;font-size:13px;font-weight:500;padding:7px 18px;border-radius:4px;cursor:pointer;transition:all .2s;}
 .btn-login:hover{background:rgba(255,255,255,0.2);}
 .date-input{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);color:#f5ede8;font-family:'Secular One',sans-serif;font-size:13px;padding:6px 12px;border-radius:20px;outline:none;transition:border-color .2s;cursor:pointer;}
 .date-input:focus{border-color:#d4e034;}
@@ -125,7 +139,7 @@ body{font-family:'Secular One',sans-serif;background:#1a0505;color:#f5ede8;direc
 .search-input{background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.3);color:#fff;font-family:'Secular One',sans-serif;font-size:13px;padding:6px 14px;border-radius:20px;outline:none;transition:border-color .2s;min-width:160px;}
 .search-input:focus{border-color:#d4e034;}
 .search-input::placeholder{color:rgba(255,255,255,0.7);}
-.btn-add{background:#d4e034;color:#1a0505;border:none;font-family:'Secular One',sans-serif;font-size:13px;font-weight:500;padding:7px 18px;border-radius:20px;cursor:pointer;transition:background .2s;}
+.btn-add{background:#d4e034;color:#1a0505;border:none;font-family:'Secular One',sans-serif;font-size:13px;font-weight:500;padding:7px 18px;border-radius:4px;cursor:pointer;transition:background .2s;}
 .btn-add:hover{background:#e2ec6a;}
 
 /* Cards */
@@ -389,15 +403,21 @@ body.a11y-big-cursor *{cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w
 
 <!-- User Bar -->
 <div class="user-bar" id="user-bar">
-    <div class="user-info">
-        שלום <strong id="user-name">-</strong>
-        <span class="role-badge" id="user-role-badge">-</span>
+    <div style="display:flex;align-items:center;gap:10px;">
+        <button class="btn-approval-panel" id="btn-approval-panel" onclick="openApprovalPanel()">
+            ✦ בקשות פרסום <span class="approval-badge" id="approval-badge" style="display:none">0</span>
+        </button>
     </div>
-    <button class="btn-approval-panel" id="btn-approval-panel" onclick="openApprovalPanel()">
-        ✦ בקשות פרסום <span class="approval-badge" id="approval-badge" style="display:none">0</span>
-    </button>
-    <button class="btn-logout" onclick="changePassword()">שנה סיסמה</button>
-    <button class="btn-logout" onclick="logout()">יציאה</button>
+    <div class="user-menu-wrap">
+        <button class="user-avatar-btn" onclick="toggleUserMenu()">
+            👤 <span id="user-name">-</span> <span id="user-role-badge" class="role-badge"></span> ▾
+        </button>
+        <div class="user-dropdown" id="user-dropdown">
+            <button class="user-dropdown-item" onclick="changePassword();closeUserMenu()">🔑 שנה סיסמה</button>
+            <div class="user-dropdown-divider"></div>
+            <button class="user-dropdown-item danger" onclick="logout()">יציאה ←</button>
+        </div>
+    </div>
 </div>
 
 <!-- Approval Panel -->
@@ -426,6 +446,10 @@ body.a11y-big-cursor *{cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w
 <div class="tab-bar">
     <div class="tab active" onclick="switchTab('all',this)">כל האירועים</div>
     <div class="tab" onclick="switchTab('favs',this)">❤️ מועדפים <span id="fav-count"></span></div>
+    <div style="margin-right:auto;display:flex;gap:8px;align-items:center;padding:6px 0;">
+        <button class="btn-login" id="btn-login-toolbar" onclick="openAuth()" style="display:none;">התחברות</button>
+        <button class="btn-add" onclick="handleAddEvent()">+ הוסף אירוע</button>
+    </div>
 </div>
 
 <!-- Toolbar -->
@@ -461,10 +485,7 @@ body.a11y-big-cursor *{cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w
         <button class="btn-clear-date" onclick="clearDate()">×</button>
         <input type="text" class="search-input" id="search-input" placeholder="🔍 חיפוש חופשי..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" readonly onfocus="this.removeAttribute('readonly')" oninput="applyFilter()" style="flex:1;min-width:120px;">
     </div>
-    <div style="margin-right:auto;display:flex;gap:8px;align-items:center;">
-        <button class="btn-login" id="btn-login-toolbar" onclick="openAuth()" style="display:none;">התחברות</button>
-        <button class="btn-add" onclick="handleAddEvent()">+ הוסף אירוע</button>
-    </div></div>
+</div>
 
 <!-- Events Grid -->
 <div class="events-grid" id="grid"></div>
@@ -489,12 +510,7 @@ body.a11y-big-cursor *{cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w
 </script>
 
 <!-- Footer -->
-<footer class="site-footer">
-    <div class="footer-bottom">
-        <div class="footer-copy">חיפאית בתחתית · © 2026 כל הזכויות שמורות</div>
-        <div style="font-size:12px;color:rgba(255,255,255,0.3);text-align:center;max-width:600px;line-height:1.6;margin-top:.3rem;">האתר "חיפאית בתחתית" שומר לעצמו את הזכות לערוך, לשנות, להסיר או למחוק כל תוכן, מידע או אירוע המתפרסם באתר, בכל עת וללא הודעה מוקדמת, על פי שיקול דעתו הבלעדי.</div>
-    </div>
-</footer>
+
 
 <!-- Auth Modal -->
 <div class="auth-overlay" id="auth-overlay">
@@ -585,6 +601,16 @@ body.a11y-big-cursor *{cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w
         <div class="form-group"><label>🎟 קישור לכרטיסים 2</label><input type="url" id="f-tickets2" placeholder="https://..."></div>
         <div class="form-group"><label>▶️ יוטיוב / 🎧 ספוטיפיי / 🔗 קישור נוסף 1</label><input type="url" id="f-materials" placeholder="https://..."></div>
         <div class="form-group"><label>▶️ יוטיוב / 🎧 ספוטיפיי / 🔗 קישור נוסף 2</label><input type="url" id="f-materials2" placeholder="https://..."></div>
+        <div class="rules-check-wrap">
+            <label class="rules-check-item">
+                <input type="checkbox" id="check-accurate">
+                <span>אני מאשר/ת שכל הפרטים נכונים ומדויקים, ואני האחראי/ת הבלעדי/ת לתוכן, לסדנה ולהתקשרות עם הנרשמים.</span>
+            </label>
+            <label class="rules-check-item">
+                <input type="checkbox" id="check-rules">
+                <span>קראתי ואני מאשר/ת שהאירוע עומד ב<a href="#" onclick="openLegal('rules');return false;">כללי הפרסום</a>.</span>
+            </label>
+        </div>
         <div class="modal-btns">
             <button class="btn-submit" id="modal-submit-btn" onclick="saveEvent()">פרסם אירוע</button>
             <button class="btn-cancel" onclick="closeModal()">ביטול</button>
@@ -1205,6 +1231,10 @@ async function saveEvent() {
     if (!currentUser) { openAuth(); return; }
     const title = document.getElementById('f-title').value.trim();
     if (!title) { document.getElementById('f-title').style.borderColor = '#f075a8'; setTimeout(() => document.getElementById('f-title').style.borderColor = '', 1500); return; }
+    if (!document.getElementById('check-accurate').checked || !document.getElementById('check-rules').checked) {
+        alert('יש לאשר את שני הסעיפים לפני פרסום האירוע.');
+        return;
+    }
 
     const selectedCats = [...document.querySelectorAll('.cat-pick-btn.selected')].map(b => b.dataset.c);
     if (!selectedCats.length) selectedCats.push('general');
@@ -1380,6 +1410,7 @@ loadA11yPrefs();
   <div class="footer-links">
     <button class="footer-link" onclick="openLegal('privacy')">מדיניות פרטיות</button>
     <button class="footer-link" onclick="openLegal('terms')">תנאי שימוש</button>
+    <button class="footer-link" onclick="openLegal('rules')">כללי פרסום</button>
     <button class="footer-link" onclick="openA11yStatement()">הצהרת נגישות</button>
   </div>
   <div>© 2026 חיפאית בתחתית · כל הזכויות שמורות</div>
@@ -1393,6 +1424,7 @@ loadA11yPrefs();
     <div id="legal-tabs">
       <button id="tab-privacy" class="active" onclick="switchLegalTab('privacy')">מדיניות פרטיות</button>
       <button id="tab-terms" onclick="switchLegalTab('terms')">תנאי שימוש</button>
+      <button id="tab-rules" onclick="switchLegalTab('rules')">כללי פרסום</button>
     </div>
 
     <!-- מדיניות פרטיות -->
@@ -1448,6 +1480,23 @@ loadA11yPrefs();
       <p>אנו רשאים לעדכן תנאים אלו מעת לעת. המשך השימוש באתר לאחר עדכון מהווה הסכמה לתנאים החדשים.</p>
       <h3>יצירת קשר</h3>
       <p><a href="mailto:orlyper77@gmail.com">orlyper77@gmail.com</a></p>
+    <!-- כללי פרסום -->
+    <div id="legal-rules" class="legal-section">
+      <h2>📋 כללי פרסום</h2>
+      <p>כדי לשמור על איכות התוכן ורלוונטיות האירועים לקהילה, כל אירוע המפורסם באתר חייב לעמוד בכללים הבאים:</p>
+      <ul>
+        <li><strong>אירוע מקומי</strong> — האירוע חייב להתקיים בחיפה והסביבה.</li>
+        <li><strong>לא מסחרי</strong> — אסור פרסום מסחרי, קידום מכירות או פרסומות.</li>
+        <li><strong>תמונה רלוונטית</strong> — חייבת להיות תמונה הקשורה לאירוע עצמו.</li>
+        <li><strong>תוכן הולם</strong> — אסור לפרסם תוכן פוגעני, מפלה, גזעני או בלתי חוקי.</li>
+        <li><strong>פרטים מדויקים</strong> — חייב לכלול תאריך, שעה ומיקום מדויקים.</li>
+        <li><strong>ללא כפילויות</strong> — אסור לפרסם את אותו אירוע יותר מפעם אחת.</li>
+        <li><strong>כותרת אמיתית</strong> — הכותרת חייבת להתאים לתוכן האירוע, ללא הטעיה.</li>
+        <li><strong>אחריות המפרסם</strong> — המפרסם אחראי לעדכן את האירוע אם הוא בוטל או שונה.</li>
+      </ul>
+      <p>האתר שומר לעצמו את הזכות להסיר כל אירוע שאינו עומד בכללים אלו, ללא הודעה מוקדמת.</p>
+      <p>לפניות: <a href="mailto:orlyper77@gmail.com">orlyper77@gmail.com</a></p>
+    </div>
     </div>
   </div>
 </div>
@@ -1461,7 +1510,7 @@ function closeLegal(){
   document.getElementById('legal-overlay').classList.remove('open');
 }
 function switchLegalTab(tab){
-  ['privacy','terms'].forEach(t=>{
+  ['privacy','terms','rules'].forEach(t=>{
     document.getElementById('legal-'+t).classList.toggle('active',t===tab);
     document.getElementById('tab-'+t).classList.toggle('active',t===tab);
   });
@@ -1471,5 +1520,32 @@ document.getElementById('legal-overlay').addEventListener('click',function(e){
 });
 </script>
 
+
+<script>
+function toggleUserMenu() {
+    document.getElementById('user-dropdown').classList.toggle('open');
+}
+function closeUserMenu() {
+    document.getElementById('user-dropdown').classList.remove('open');
+}
+document.addEventListener('click', function(e) {
+    const wrap = document.querySelector('.user-menu-wrap');
+    if (wrap && !wrap.contains(e.target)) closeUserMenu();
+});
+</script>
+
 </body>
 </html>
+
+<script>
+function toggleUserMenu() {
+    document.getElementById('user-dropdown').classList.toggle('open');
+}
+function closeUserMenu() {
+    document.getElementById('user-dropdown').classList.remove('open');
+}
+document.addEventListener('click', function(e) {
+    const wrap = document.querySelector('.user-menu-wrap');
+    if (wrap && !wrap.contains(e.target)) closeUserMenu();
+});
+</script>
