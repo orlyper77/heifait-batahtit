@@ -657,6 +657,9 @@ const db = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 const CAT_EMOJI = {music:'🎵',theater:'🎭',cinema:'🎬',lectures:'🎤',kids:'🧒',spirit:'✨',workshops:'🛠️',literature:'📚',art:'🎨',parties:'🎉',games:'🎮',fairs:'🏪',community:'🤝',standup:'🎙️',tours:'🗺️',performance:'💃',fringe:'🌀',festivals:'🎪',laughs:'😂',jazz:'🎷',dance:'💃',classic:'🎻'};
 const CAT_LABEL = {music:'מוזיקה',theater:'תאטרון',cinema:'קולנוע',lectures:'הרצאות',kids:'ילדים',spirit:'רוח',workshops:'סדנאות',literature:'ספרות',art:'אמנות',parties:'מסיבות',games:'משחקים',fairs:'ירידים',community:'קהילתי',standup:'סטנדאפ',tours:'סיורים',performance:'פרפורמנס',fringe:"פרינג'",festivals:'פסטיבלים',laughs:'צחוקים',jazz:"ג'אז",dance:'מחול',classic:'קלאסי'};
 
+// מיילים של מנהלות האתר
+const ADMIN_EMAILS = ['heifait.batahtit@gmail.com', 'orlyper77@gmail.com'];
+
 let currentUser = null, currentRole = null, currentTrusted = false, currentBlocked = false;
 let events = [], filteredEvents = [];
 let favs = new Set(), activeTab = 'all', activeCats = new Set(), dateFilter = '';
@@ -699,7 +702,7 @@ async function checkAuth() {
             const { data: profile } = await db.from('user_profiles').select('role,trusted,blocked').eq('id', user.id).single();
             currentRole = profile?.role || 'user';
             // רק חשבון הג'ימייל הוא מנהל
-            if (user.email === 'orlyper77@gmail.com') currentRole = 'admin';
+            if (ADMIN_EMAILS.includes((user.email || '').toLowerCase())) currentRole = 'admin';
             currentTrusted = profile?.trusted || false;
             currentBlocked = profile?.blocked || false;
             // שמירת מייל+שם בפרופיל תמיד
@@ -1434,7 +1437,7 @@ setTimeout(clearSearchAutofill, 1000);
     </ul>
     <p><strong>פניות בנושא נגישות:</strong><br>
     נתקלתם בבעיה? נשמח לשמוע.<br>
-    מייל: <a href="mailto:orlyper77@gmail.com">orlyper77@gmail.com</a></p>
+    מייל: <a href="mailto:heifait.batahtit@gmail.com">heifait.batahtit@gmail.com</a></p>
     <p style="color:rgba(255,255,255,0.4);font-size:12px;">הצהרה זו עודכנה בספטמבר 2026.</p>
     <button id="a11y-close-stmt" onclick="closeA11yStatement()">סגירה</button>
   </div>
@@ -1519,7 +1522,7 @@ loadA11yPrefs();
       <h2>🔒 מדיניות פרטיות</h2>
       <p>עדכון אחרון: ספטמבר 2026</p>
       <h3>מי אנחנו</h3>
-      <p>חיפאית בתחתית הוא אתר קהילתי לפרסום אירועים ובילויים בחיפה. האתר מופעל על ידי אורלי פרץ (orlyper77@gmail.com).</p>
+      <p>חיפאית בתחתית הוא אתר קהילתי לפרסום אירועים ובילויים בחיפה. האתר מופעל על ידי אורלי פרץ (heifait.batahtit@gmail.com).</p>
       <h3>מה אנחנו אוספים</h3>
       <ul>
         <li><strong>כתובת מייל ושם משתמש</strong> — בעת יצירת חשבון באתר</li>
@@ -1542,7 +1545,7 @@ loadA11yPrefs();
         <li>זכות לתקן מידע שגוי</li>
         <li>זכות למחוק את החשבון והמידע שלכם</li>
       </ul>
-      <p>לכל פנייה בנושא פרטיות: <a href="mailto:orlyper77@gmail.com">orlyper77@gmail.com</a></p>
+      <p>לכל פנייה בנושא פרטיות: <a href="mailto:heifait.batahtit@gmail.com">heifait.batahtit@gmail.com</a></p>
     </div>
 
     <!-- תנאי שימוש -->
@@ -1566,7 +1569,7 @@ loadA11yPrefs();
       <h3>שינויים בתנאים</h3>
       <p>אנו רשאים לעדכן תנאים אלו מעת לעת. המשך השימוש באתר לאחר עדכון מהווה הסכמה לתנאים החדשים.</p>
       <h3>יצירת קשר</h3>
-      <p><a href="mailto:orlyper77@gmail.com">orlyper77@gmail.com</a></p>
+      <p><a href="mailto:heifait.batahtit@gmail.com">heifait.batahtit@gmail.com</a></p>
     <!-- כללי פרסום -->
     <div id="legal-rules" class="legal-section">
       <h2>📋 כללי פרסום</h2>
@@ -1582,7 +1585,7 @@ loadA11yPrefs();
         <li><strong>אחריות המפרסם</strong> — המפרסם אחראי לעדכן את האירוע אם הוא בוטל או שונה.</li>
       </ul>
       <p>האתר שומר לעצמו את הזכות להסיר כל אירוע שאינו עומד בכללים אלו, ללא הודעה מוקדמת.</p>
-      <p>לפניות: <a href="mailto:orlyper77@gmail.com">orlyper77@gmail.com</a></p>
+      <p>לפניות: <a href="mailto:heifait.batahtit@gmail.com">heifait.batahtit@gmail.com</a></p>
     </div>
     </div>
   </div>
