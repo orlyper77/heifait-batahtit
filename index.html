@@ -1439,7 +1439,7 @@ function matLinkHtml(url, n) {
     let icon, label;
     if (u.includes('youtube.com') || u.includes('youtu.be')) { icon = ICON_YT; label = 'צפייה ביוטיוב'; }
     else if (u.includes('spotify.com') || u.includes('spotify.link')) { icon = ICON_SP; label = 'האזנה בספוטיפיי'; }
-    else { icon = ICON_LINK; label = 'קישור נוסף'; }
+    else { icon = ICON_YT + ICON_SP; label = 'קישור נוסף'; }
     return `<a class="link-btn link-materials link-brand" href="${url}" target="_blank" rel="noopener" aria-label="${label}${n === 2 ? ' 2' : ''}" title="${label}">${icon}</a>`;
 }
 
