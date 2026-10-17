@@ -194,6 +194,24 @@ body{font-family:'Secular One',sans-serif;background:#1a0505;color:#f5ede8;direc
 .cat-kids{background:rgba(230,60,120,0.2);color:#f075a8;border:1px solid rgba(230,60,120,0.25);}
 .cat-spirit{background:rgba(80,200,180,0.2);color:#50c8b4;border:1px solid rgba(80,200,180,0.25);}
 .cat-workshops{background:rgba(240,160,50,0.2);color:#f0a032;border:1px solid rgba(240,160,50,0.25);}
+.cat-literature{background:rgba(100,180,100,0.2);color:#90e090;border:1px solid rgba(100,180,100,0.25);}
+.cat-art{background:rgba(255,140,0,0.2);color:#ffb84d;border:1px solid rgba(255,140,0,0.25);}
+.cat-parties{background:rgba(255,80,180,0.2);color:#ff80c0;border:1px solid rgba(255,80,180,0.25);}
+.cat-games{background:rgba(50,200,255,0.2);color:#60d8ff;border:1px solid rgba(50,200,255,0.25);}
+.cat-fairs{background:rgba(200,150,50,0.2);color:#f0c870;border:1px solid rgba(200,150,50,0.25);}
+.cat-community{background:rgba(150,200,100,0.2);color:#a0e070;border:1px solid rgba(150,200,100,0.25);}
+.cat-standup{background:rgba(255,220,50,0.2);color:#ffe060;border:1px solid rgba(255,220,50,0.25);}
+.cat-tours{background:rgba(100,200,200,0.2);color:#70e0e0;border:1px solid rgba(100,200,200,0.25);}
+.cat-performance{background:rgba(180,100,255,0.2);color:#d080ff;border:1px solid rgba(180,100,255,0.25);}
+.cat-fringe{background:rgba(255,100,100,0.2);color:#ff8080;border:1px solid rgba(255,100,100,0.25);}
+.cat-festivals{background:rgba(255,180,0,0.2);color:#ffcc40;border:1px solid rgba(255,180,0,0.25);}
+.cat-laughs{background:rgba(255,200,50,0.2);color:#ffd040;border:1px solid rgba(255,200,50,0.25);}
+.cat-jazz{background:rgba(180,120,60,0.2);color:#f0a060;border:1px solid rgba(180,120,60,0.25);}
+.cat-dance{background:rgba(220,80,160,0.2);color:#f080c0;border:1px solid rgba(220,80,160,0.25);}
+.cat-classic{background:rgba(140,100,200,0.2);color:#c090f0;border:1px solid rgba(140,100,200,0.25);}
+.cat-poetry{background:rgba(240,130,170,0.2);color:#f4a0c0;border:1px solid rgba(240,130,170,0.25);}
+.cat-openstage{background:rgba(255,150,100,0.2);color:#ffb080;border:1px solid rgba(255,150,100,0.25);}
+.cat-general{background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.7);border:1px solid rgba(255,255,255,0.15);}
 .card-title{font-size:.92rem;font-weight:700;line-height:1.25;margin-bottom:.2rem;overflow:hidden;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;}
 .card-desc{font-size:.85rem;color:rgba(255,255,255,0.45);line-height:1.4;margin-bottom:.25rem;display:-webkit-box;-webkit-line-clamp:6;-webkit-box-orient:vertical;overflow:hidden;}
 .card-desc.expanded{display:block;-webkit-line-clamp:unset;overflow:visible;}
@@ -206,6 +224,8 @@ body{font-family:'Secular One',sans-serif;background:#1a0505;color:#f5ede8;direc
 .link-tickets{background:rgba(212,224,52,0.12);color:#d4e034;border:1px solid rgba(212,224,52,0.25);}
 .link-tickets:hover{background:rgba(212,224,52,0.22);}
 .link-materials{background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.55);border:1px solid rgba(255,255,255,0.1);}
+.link-brand{display:inline-flex;align-items:center;justify-content:center;gap:8px;}
+.link-brand.link-none svg{filter:grayscale(1);opacity:.5;}
 .link-materials:hover{background:rgba(255,255,255,0.11);}
 .link-none{opacity:.3;cursor:default;pointer-events:none;}
 .cat-picker{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px;}
@@ -309,7 +329,13 @@ body{font-family:'Secular One',sans-serif;background:#1a0505;color:#f5ede8;direc
 /* Event Modal */
 .overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.72);z-index:200;align-items:center;justify-content:center;padding:1rem;}
 .overlay.open{display:flex;}
-.modal{background:#2e0c0c;border:1px solid rgba(255,255,255,0.12);border-radius:20px;padding:2rem;width:100%;max-width:480px;max-height:90vh;overflow-y:auto;}
+.modal{background:#2e0c0c;border:1px solid rgba(255,255,255,0.12);border-radius:20px;padding:2rem;width:100%;max-width:640px;max-height:92vh;overflow-y:auto;}
+.modal-rules{background:rgba(212,224,52,0.06);border:1px solid rgba(212,224,52,0.25);border-radius:10px;padding:14px 16px;margin-bottom:12px;}
+.modal-rules h4{color:#d4e034;font-size:14px;margin-bottom:8px;}
+.modal-rules ul{padding-right:1.1rem;margin:0;}
+.modal-rules li{color:rgba(255,255,255,0.7);font-size:13px;line-height:1.65;margin-bottom:3px;}
+.modal-rules li strong{color:#f5ede8;}
+.modal-rules p{color:rgba(255,255,255,0.5);font-size:12px;margin-top:8px;}
 .modal h2{font-size:1.4rem;font-weight:700;margin-bottom:1.2rem;color:#d4e034;}
 .view-modal{background:#2e0c0c;border:1px solid rgba(255,255,255,0.12);border-radius:20px;width:100%;max-width:600px;max-height:90vh;overflow-y:auto;position:relative;animation:fadeIn .2s ease;}
 .view-modal-img{width:100%;max-height:280px;object-fit:cover;border-radius:14px 14px 0 0;display:block;}
@@ -647,6 +673,9 @@ body.a11y-big-cursor *{cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w
         <div class="form-group"><label>🎟 קישור לכרטיסים 2</label><input type="url" id="f-tickets2" placeholder="https://..."></div>
         <div class="form-group"><label class="brand-label"><svg class="brand-ico" viewBox="0 0 28 20" width="26" height="18" aria-label="YouTube" role="img"><rect width="28" height="20" rx="5" fill="#FF0000"/><path d="M11 5.5v9l7.5-4.5z" fill="#fff"/></svg><svg class="brand-ico" viewBox="0 0 24 24" width="20" height="20" aria-label="Spotify" role="img"><circle cx="12" cy="12" r="12" fill="#1DB954"/><path d="M6 9.2c4-1.2 8.6-.9 12.2 1.1M6.6 12.5c3.3-1 7.1-.7 10 .9M7.2 15.6c2.7-.7 5.6-.5 7.9.8" fill="none" stroke="#121212" stroke-width="1.7" stroke-linecap="round"/></svg><span>יוטיוב / ספוטיפיי 1</span></label><input type="url" id="f-materials" placeholder="https://..."></div>
         <div class="form-group"><label class="brand-label"><svg class="brand-ico" viewBox="0 0 28 20" width="26" height="18" aria-label="YouTube" role="img"><rect width="28" height="20" rx="5" fill="#FF0000"/><path d="M11 5.5v9l7.5-4.5z" fill="#fff"/></svg><svg class="brand-ico" viewBox="0 0 24 24" width="20" height="20" aria-label="Spotify" role="img"><circle cx="12" cy="12" r="12" fill="#1DB954"/><path d="M6 9.2c4-1.2 8.6-.9 12.2 1.1M6.6 12.5c3.3-1 7.1-.7 10 .9M7.2 15.6c2.7-.7 5.6-.5 7.9.8" fill="none" stroke="#121212" stroke-width="1.7" stroke-linecap="round"/></svg><span>יוטיוב / ספוטיפיי 2</span></label><input type="url" id="f-materials2" placeholder="https://..."></div>
+        <div class="modal-rules" id="modal-rules">
+            <h4>📋 כללי הפרסום</h4>
+        </div>
         <div class="rules-check-wrap">
             <label class="rules-check-item">
                 <input type="checkbox" id="check-accurate">
@@ -654,7 +683,7 @@ body.a11y-big-cursor *{cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w
             </label>
             <label class="rules-check-item">
                 <input type="checkbox" id="check-rules">
-                <span>קראתי ואני מאשר/ת שהאירוע עומד ב<a href="#" onclick="openLegal('rules');return false;">כללי הפרסום</a>.</span>
+                <span>קראתי ואני מאשר/ת שהאירוע עומד בכללי הפרסום שלמעלה.</span>
             </label>
         </div>
         <div class="modal-btns">
@@ -688,7 +717,7 @@ const db = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 // ── State ──
 const CAT_EMOJI = {music:'🎵',theater:'🎭',cinema:'🎬',lectures:'🎤',kids:'🧒',spirit:'✨',workshops:'🛠️',literature:'📚',art:'🎨',parties:'🎉',games:'🎮',fairs:'🏪',community:'🤝',standup:'🎙️',tours:'🗺️',performance:'💃',fringe:'🌀',festivals:'🎪',laughs:'😂',jazz:'🎷',dance:'💃',classic:'🎻',poetry:'✒️',openstage:'🗣️'};
-const CAT_LABEL = {music:'מוזיקה',theater:'תאטרון',cinema:'קולנוע',lectures:'הרצאות',kids:'ילדים',spirit:'רוח',workshops:'סדנאות',literature:'ספרות',art:'אמנות',parties:'מסיבות',games:'משחקים',fairs:'ירידים',community:'קהילתי',standup:'סטנדאפ',tours:'סיורים',performance:'פרפורמנס',fringe:"פרינג'",festivals:'פסטיבלים',laughs:'צחוקים',jazz:"ג'אז",dance:'מחול',classic:'קלאסי',poetry:'שירה',openstage:'במה פתוחה'};
+const CAT_LABEL = {music:'מוזיקה',theater:'תאטרון',cinema:'קולנוע',lectures:'הרצאות',kids:'ילדים',spirit:'רוח',workshops:'סדנאות',literature:'ספרות',art:'אמנות',parties:'מסיבות',games:'משחקים',fairs:'ירידים',community:'קהילתי',standup:'סטנדאפ',tours:'סיורים',performance:'פרפורמנס',fringe:"פרינג'",festivals:'פסטיבלים',laughs:'צחוקים',jazz:"ג'אז",dance:'מחול',classic:'קלאסי',poetry:'שירה',openstage:'במה פתוחה',general:'כללי'};
 
 // מיילים של מנהלות האתר
 const ADMIN_EMAILS = ['heifait.batahtit@gmail.com', 'orlyper77@gmail.com'];
@@ -1018,8 +1047,8 @@ function render() {
             <div class="card-links">
                 <a class="link-btn link-tickets${e.tickets?'':' link-none'}" href="${e.tickets||'#'}" ${e.tickets?'target="_blank"':''}>🎟 כרטיסים</a>
                 ${e.tickets2?`<a class="link-btn link-tickets" href="${e.tickets2}" target="_blank">🎟 כרטיסים 2</a>`:''}
-                <a class="link-btn link-materials${e.materials?'':' link-none'}" href="${e.materials||'#'}" ${e.materials?'target="_blank"':''}>${e.materials?(e.materials.includes('youtube')||e.materials.includes('youtu.be')?`<svg width="20" height="14" viewBox="0 0 20 14" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="20" height="14" rx="3.5" fill="#FF0000"/><path d="M8 10V4L14 7L8 10Z" fill="white"/></svg>`:e.materials.includes('spotify')?`<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="8" cy="8" r="8" fill="#1DB954"/><path d="M11.5 10.5C9.5 9.2 6.3 9 4 9.7" stroke="white" stroke-width="1.2" stroke-linecap="round"/><path d="M12 8C9.5 6.5 5.8 6.3 3.5 7.2" stroke="white" stroke-width="1.2" stroke-linecap="round"/><path d="M12.5 5.5C9.5 3.8 5.2 3.7 3 4.7" stroke="white" stroke-width="1.2" stroke-linecap="round"/></svg>`:'🔗 קישור'):'🔗 קישור'}</a>
-                ${e.materials2?`<a class="link-btn link-materials" href="${e.materials2}" target="_blank">${e.materials2.includes('youtube')||e.materials2.includes('youtu.be')?`<svg width="20" height="14" viewBox="0 0 20 14" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="20" height="14" rx="3.5" fill="#FF0000"/><path d="M8 10V4L14 7L8 10Z" fill="white"/></svg>`:e.materials2.includes('spotify')?`<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="8" cy="8" r="8" fill="#1DB954"/><path d="M11.5 10.5C9.5 9.2 6.3 9 4 9.7" stroke="white" stroke-width="1.2" stroke-linecap="round"/><path d="M12 8C9.5 6.5 5.8 6.3 3.5 7.2" stroke="white" stroke-width="1.2" stroke-linecap="round"/><path d="M12.5 5.5C9.5 3.8 5.2 3.7 3 4.7" stroke="white" stroke-width="1.2" stroke-linecap="round"/></svg>`:'🔗 קישור 2'}</a>`:''}
+                ${matLinkHtml(e.materials, 1)}
+                ${e.materials2?matLinkHtml(e.materials2, 2):''}
             </div>
         </div>`;
     }).join('');
@@ -1053,12 +1082,12 @@ function openViewModal(id) {
         <div class="meta-item"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" style="opacity:.5;flex-shrink:0;margin-left:6px"><path d="M8 2C5.8 2 4 3.8 4 6c0 3.5 4 8 4 8s4-4.5 4-8c0-2.2-1.8-4-4-4z"/><circle cx="8" cy="6" r="1.5"/></svg>${e.location}</div>
         <div class="meta-item"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" style="opacity:.5;flex-shrink:0;margin-left:6px"><path d="M2 4h12v8a2 2 0 01-2 2H4a2 2 0 01-2-2V4zM2 4l2-2h8l2 2"/></svg>${e.price}</div>`;
     // כפתורים
-    const matIcon = e.materials?(e.materials.includes('youtube')||e.materials.includes('youtu.be')?`<svg width="20" height="14" viewBox="0 0 20 14" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="20" height="14" rx="3.5" fill="#FF0000"/><path d="M8 10V4L14 7L8 10Z" fill="white"/></svg>`:e.materials.includes('spotify')?`<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="8" cy="8" r="8" fill="#1DB954"/><path d="M11.5 10.5C9.5 9.2 6.3 9 4 9.7" stroke="white" stroke-width="1.2" stroke-linecap="round"/><path d="M12 8C9.5 6.5 5.8 6.3 3.5 7.2" stroke="white" stroke-width="1.2" stroke-linecap="round"/><path d="M12.5 5.5C9.5 3.8 5.2 3.7 3 4.7" stroke="white" stroke-width="1.2" stroke-linecap="round"/></svg>`:'🔗 קישור'):'🔗 קישור';
+
     document.getElementById('view-modal-links').innerHTML = `
         <a class="link-btn link-tickets${e.tickets?'':' link-none'}" href="${e.tickets||'#'}" ${e.tickets?'target="_blank"':''}>🎟 כרטיסים</a>
         ${e.tickets2?`<a class="link-btn link-tickets" href="${e.tickets2}" target="_blank">🎟 כרטיסים 2</a>`:''}
-        <a class="link-btn link-materials${e.materials?'':' link-none'}" href="${e.materials||'#'}" ${e.materials?'target="_blank"':''}>${matIcon}</a>
-        ${e.materials2?`<a class="link-btn link-materials" href="${e.materials2}" target="_blank">${e.materials2.includes('youtube')||e.materials2.includes('youtu.be')?'▶️ יוטיוב 2':e.materials2.includes('spotify')?'🎧 ספוטיפיי 2':'🔗 קישור 2'}</a>`:''}`;
+        ${matLinkHtml(e.materials, 1)}
+        ${e.materials2?matLinkHtml(e.materials2, 2):''}`;
     // פתיחת overlay נפרד לתצוגה
     const vo = document.getElementById('view-overlay');
     vo.style.display = 'flex';
@@ -1400,6 +1429,20 @@ async function saveEvent() {
     } catch(e) { alert('שגיאה: ' + e.message); }
 }
 
+// ── כפתור קישור לחומרים: לוגו יוטיוב / ספוטיפיי במקום המילה "קישור" ──
+const ICON_YT = `<svg width="24" height="17" viewBox="0 0 28 20" aria-hidden="true"><rect width="28" height="20" rx="5" fill="#FF0000"/><path d="M11 5.5v9l7.5-4.5z" fill="#fff"/></svg>`;
+const ICON_SP = `<svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="12" fill="#1DB954"/><path d="M6 9.2c4-1.2 8.6-.9 12.2 1.1M6.6 12.5c3.3-1 7.1-.7 10 .9M7.2 15.6c2.7-.7 5.6-.5 7.9.8" fill="none" stroke="#121212" stroke-width="1.7" stroke-linecap="round"/></svg>`;
+const ICON_LINK = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>`;
+function matLinkHtml(url, n) {
+    const u = (url || '').toLowerCase();
+    if (!u) return `<a class="link-btn link-materials link-none link-brand" href="#" aria-label="אין קישור ליוטיוב או ספוטיפיי">${ICON_YT}${ICON_SP}</a>`;
+    let icon, label;
+    if (u.includes('youtube.com') || u.includes('youtu.be')) { icon = ICON_YT; label = 'צפייה ביוטיוב'; }
+    else if (u.includes('spotify.com') || u.includes('spotify.link')) { icon = ICON_SP; label = 'האזנה בספוטיפיי'; }
+    else { icon = ICON_LINK; label = 'קישור נוסף'; }
+    return `<a class="link-btn link-materials link-brand" href="${url}" target="_blank" rel="noopener" aria-label="${label}${n === 2 ? ' 2' : ''}" title="${label}">${icon}</a>`;
+}
+
 // כיווץ תמונה לפני שמירה: עד 1200 פיקסלים בצד הארוך, JPEG באיכות טובה
 function compressImage(dataUrl, maxSide = 1200, quality = 0.82) {
     return new Promise((resolve, reject) => {
@@ -1670,6 +1713,17 @@ function switchLegalTab(tab){
     document.getElementById('tab-'+t).classList.toggle('active',t===tab);
   });
 }
+// הצגת כללי הפרסום בתוך חלון הוספת האירוע (מועתק מכללי הפרסום, כך שיש מקור אחד)
+(function(){
+  const src=document.querySelector('#legal-rules ul');
+  const box=document.getElementById('modal-rules');
+  if(src&&box){
+    box.appendChild(src.cloneNode(true));
+    const p=document.createElement('p');
+    p.textContent='האתר רשאי להסיר אירוע שאינו עומד בכללים.';
+    box.appendChild(p);
+  }
+})();
 document.getElementById('legal-overlay').addEventListener('click',function(e){
   if(e.target===this) closeLegal();
 });
