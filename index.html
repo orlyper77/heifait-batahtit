@@ -1240,12 +1240,14 @@ async function loadAllUsers() {
 }
 
 async function toggleTrust(userId, trust) {
-    await db.from('user_profiles').upsert({id: userId, trusted: trust}, {onConflict:'id'});
+    const { error } = await db.from('user_profiles').upsert({id: userId, trusted: trust}, {onConflict:'id'});
+    if (error) alert('שגיאה: ' + error.message);
     await loadAllUsers();
 }
 
 async function toggleBlock(userId, block) {
-    await db.from('user_profiles').upsert({id: userId, blocked: block}, {onConflict:'id'});
+    const { error } = await db.from('user_profiles').upsert({id: userId, blocked: block}, {onConflict:'id'});
+    if (error) alert('שגיאה: ' + error.message);
     await loadAllUsers();
 }
 
