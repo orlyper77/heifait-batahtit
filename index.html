@@ -1724,6 +1724,11 @@ function switchLegalTab(tab){
     box.appendChild(p);
   }
 })();
+// קישור ישיר: /#privacy , /#terms , /#rules פותחים את הדף המתאים
+(function(){
+  const h=(location.hash||'').replace('#','');
+  if(['privacy','terms','rules'].includes(h)) openLegal(h);
+})();
 document.getElementById('legal-overlay').addEventListener('click',function(e){
   if(e.target===this) closeLegal();
 });
