@@ -107,6 +107,8 @@ body{font-family:'Secular One',sans-serif;background:#1a0505;color:#f5ede8;direc
 .filter-btn{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.6);font-family:'Secular One',sans-serif;font-size:13px;padding:6px 14px;border-radius:4px;cursor:pointer;transition:all .2s;}
 .filter-btn:hover{opacity:0.85;}
 .filter-btn.active{font-weight:500;opacity:1;}
+.filter-btn.no-events:not(.active){opacity:.32;filter:saturate(.25);}
+.filter-btn.no-events:not(.active):hover{opacity:.6;}
 .filter-btn[data-cat="all"]{background:rgba(255,255,255,0.1);border-color:rgba(255,255,255,0.3);color:#fff;}
 .filter-btn[data-cat="all"].active{background:#fff;color:#1a0505;border-color:#fff;}
 .filter-btn[data-cat="music"]{background:rgba(167,105,221,0.25);color:#e0b8ff;border-color:rgba(167,105,221,0.5);}
@@ -1033,16 +1035,30 @@ function applyFilter() {
     const searchVal = (document.getElementById('search-input')?.value || '').trim().toLowerCase();
     let list = [...events];
     if (activeTab === 'favs') list = list.filter(e => favs.has(e.id));
-    if (activeCats.size > 0) list = list.filter(e => (e.cats||[e.cat]).some(c => activeCats.has(c)));
     if (dateFilter) list = list.filter(e => e.dateRaw === dateFilter || (e.dateEndRaw && e.dateRaw <= dateFilter && e.dateEndRaw >= dateFilter));
     if (searchVal) list = list.filter(e =>
-        e.title.toLowerCase().includes(searchVal) ||
-        e.desc.toLowerCase().includes(searchVal) ||
-        e.location.toLowerCase().includes(searchVal)
+        (e.title||'').toLowerCase().includes(searchVal) ||
+        (e.desc||'').toLowerCase().includes(searchVal) ||
+        (e.location||'').toLowerCase().includes(searchVal)
     );
+    updateCatAvailability(list);
+    if (activeCats.size > 0) list = list.filter(e => (e.cats||[e.cat]).some(c => activeCats.has(c)));
     filteredEvents = list;
     render();
     setTimeout(hideUnnecessaryMoreBtns, 50);
+}
+
+// קטגוריות בלי אירועים מוצגות מעומעמות; עם אירועים — מוארות
+function updateCatAvailability(list) {
+    const counts = {};
+    list.forEach(e => (e.cats || [e.cat]).forEach(c => { counts[c] = (counts[c] || 0) + 1; }));
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+        const c = btn.dataset.cat;
+        if (!c || c === 'all') return;
+        const n = counts[c] || 0;
+        btn.classList.toggle('no-events', n === 0);
+        btn.title = n ? `${n} אירועים` : 'אין כרגע אירועים בקטגוריה הזו';
+    });
 }
 
 function render() {
