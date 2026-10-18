@@ -573,16 +573,18 @@ body.a11y-big-cursor *{cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w
     bar.classList.toggle('compact', on);
     if(on){ const a=bar.querySelector('.filter-btn.active'); if(a) a.scrollIntoView({inline:'center',block:'nearest'}); }
   }
-  if(!('IntersectionObserver' in window)) return;
-  let past=false;
-  new IntersectionObserver(([e])=>{
-    past = !e.isIntersecting && e.boundingClientRect.top < 0;
+  let past=false, ticking=false;
+  function check(){
+    ticking=false;
+    const limit=(userBar ? userBar.offsetHeight : 0) + 4;
+    past = sentinel.getBoundingClientRect().top < limit;
     setCompact(mq.matches && past);
-  },{rootMargin:'-60px 0px 0px 0px'}).observe(sentinel);
-  const onMq=()=>{ setTop(); setCompact(mq.matches && past); };
+  }
+  window.addEventListener('scroll',()=>{ if(!ticking){ ticking=true; requestAnimationFrame(check); } },{passive:true});
+  const onMq=()=>{ setTop(); check(); };
   mq.addEventListener ? mq.addEventListener('change',onMq) : mq.addListener(onMq);
-  window.addEventListener('resize',setTop);
-  setTop();
+  window.addEventListener('resize',()=>{ setTop(); check(); });
+  setTop(); check();
 })();
 </script>
 
