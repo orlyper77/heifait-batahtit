@@ -1071,6 +1071,21 @@ function applyFilter() {
 }
 
 // קטגוריות בלי אירועים מוצגות מעומעמות; עם אירועים — מוארות
+// תאריך לתצוגה: יום אחד — כמו שנשמר; כמה ימים — טווח קריא ("18–19 באוקטובר 2026")
+function formatEventDate(e) {
+    const start = e.dateRaw, end = e.dateEndRaw;
+    if (!start || !end || end <= start) return e.date || '';
+    const d1 = new Date(start + 'T12:00:00'), d2 = new Date(end + 'T12:00:00');
+    if (isNaN(d1) || isNaN(d2)) return e.date || '';
+    const month = d => d.toLocaleDateString('he-IL', { month: 'long' });
+    const day = d => d.getDate();
+    if (d1.getFullYear() === d2.getFullYear() && d1.getMonth() === d2.getMonth())
+        return `${day(d1)}–${day(d2)} ב${month(d1)} ${d1.getFullYear()}`;
+    if (d1.getFullYear() === d2.getFullYear())
+        return `${day(d1)} ב${month(d1)} – ${day(d2)} ב${month(d2)} ${d2.getFullYear()}`;
+    return `${day(d1)} ב${month(d1)} ${d1.getFullYear()} – ${day(d2)} ב${month(d2)} ${d2.getFullYear()}`;
+}
+
 function updateCatAvailability(list) {
     const counts = {};
     list.forEach(e => (e.cats || [e.cat]).forEach(c => { counts[c] = (counts[c] || 0) + 1; }));
@@ -1110,7 +1125,7 @@ function render() {
                 ${e.desc ? `<div class="card-desc" id="desc-${e.id}">${e.desc}</div>
                 <button class="btn-more" id="more-${e.id}" onclick="toggleDesc('${e.id}',event)">עוד ▾</button>` : ''}
                 <div class="card-meta">
-                    <div class="meta-item"><svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" style="opacity:.5;flex-shrink:0"><rect x="2" y="3" width="12" height="11" rx="2"/><path d="M2 7h12M5 1v4M11 1v4"/></svg>${e.date}</div>
+                    <div class="meta-item"><svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" style="opacity:.5;flex-shrink:0"><rect x="2" y="3" width="12" height="11" rx="2"/><path d="M2 7h12M5 1v4M11 1v4"/></svg>${formatEventDate(e)}</div>
                     <div class="meta-item"><svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" style="opacity:.5;flex-shrink:0"><circle cx="8" cy="8" r="6"/><path d="M8 5v3l2 2"/></svg>${e.time}</div>
                     <div class="meta-item"><svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" style="opacity:.5;flex-shrink:0"><path d="M8 2C5.8 2 4 3.8 4 6c0 3.5 4 8 4 8s4-4.5 4-8c0-2.2-1.8-4-4-4z"/><circle cx="8" cy="6" r="1.5"/></svg>${e.location}</div>
                     <div class="meta-item"><svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" style="opacity:.5;flex-shrink:0"><path d="M2 4h12v8a2 2 0 01-2 2H4a2 2 0 01-2-2V4zM2 4l2-2h8l2 2"/></svg>${e.price}</div>
@@ -1149,7 +1164,7 @@ function openViewModal(id) {
     document.getElementById('view-modal-desc').textContent = e.desc || '';
     // מטא
     document.getElementById('view-modal-meta').innerHTML = `
-        <div class="meta-item"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" style="opacity:.5;flex-shrink:0;margin-left:6px"><rect x="2" y="3" width="12" height="11" rx="2"/><path d="M2 7h12M5 1v4M11 1v4"/></svg>${e.date}${e.dateEndRaw&&e.dateEndRaw!==e.dateRaw?' — '+e.dateEndRaw:''}</div>
+        <div class="meta-item"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" style="opacity:.5;flex-shrink:0;margin-left:6px"><rect x="2" y="3" width="12" height="11" rx="2"/><path d="M2 7h12M5 1v4M11 1v4"/></svg>${formatEventDate(e)}</div>
         <div class="meta-item"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" style="opacity:.5;flex-shrink:0;margin-left:6px"><circle cx="8" cy="8" r="6"/><path d="M8 5v3l2 2"/></svg>${e.time}</div>
         <div class="meta-item"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" style="opacity:.5;flex-shrink:0;margin-left:6px"><path d="M8 2C5.8 2 4 3.8 4 6c0 3.5 4 8 4 8s4-4.5 4-8c0-2.2-1.8-4-4-4z"/><circle cx="8" cy="6" r="1.5"/></svg>${e.location}</div>
         <div class="meta-item"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" style="opacity:.5;flex-shrink:0;margin-left:6px"><path d="M2 4h12v8a2 2 0 01-2 2H4a2 2 0 01-2-2V4zM2 4l2-2h8l2 2"/></svg>${e.price}</div>`;
