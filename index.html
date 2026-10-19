@@ -340,19 +340,6 @@ body{font-family:'Secular One',sans-serif;background:#1a0505;color:#f5ede8;direc
 .overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.72);z-index:200;align-items:center;justify-content:center;padding:1rem;}
 .overlay.open{display:flex;}
 .modal{background:#2e0c0c;border:1px solid rgba(255,255,255,0.12);border-radius:20px;padding:2rem;width:100%;max-width:640px;max-height:92vh;overflow-y:auto;}
-.paste-wrap{margin-bottom:1rem;}
-.paste-toggle{width:100%;text-align:right;background:rgba(80,160,255,0.08);border:1px dashed rgba(120,180,255,0.45);color:#a8cfff;font-family:'Secular One',sans-serif;font-size:13px;line-height:1.5;padding:10px 14px;border-radius:10px;cursor:pointer;}
-.paste-toggle:hover{background:rgba(80,160,255,0.14);}
-.paste-box{display:none;margin-top:8px;}
-.paste-box.open{display:block;}
-.paste-box textarea{width:100%;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.15);color:#f5ede8;font-family:'Secular One',sans-serif;font-size:13.5px;padding:10px 12px;border-radius:10px;outline:none;direction:rtl;resize:vertical;line-height:1.5;}
-.paste-go{margin-top:8px;background:#d4e034;color:#1a0505;border:none;font-family:'Secular One',sans-serif;font-size:14px;padding:8px 18px;border-radius:10px;cursor:pointer;}
-.paste-result{font-size:13px;margin-top:8px;line-height:1.5;}
-.paste-result.ok{color:#9be37a;}
-.paste-result.err{color:#ff9a8a;}
-.paste-miss{color:#f0c060;}
-.paste-note{font-size:11.5px;color:rgba(255,255,255,0.4);margin-top:6px;}
-.just-filled{border-color:#d4e034 !important;box-shadow:0 0 0 2px rgba(212,224,52,0.25);}
 .modal-rules{background:rgba(212,224,52,0.06);border:1px solid rgba(212,224,52,0.25);border-radius:10px;padding:14px 16px;margin-bottom:12px;}
 .modal-rules h4{color:#d4e034;font-size:14px;margin-bottom:8px;}
 .modal-rules ul{padding-right:1.1rem;margin:0;}
@@ -429,6 +416,12 @@ body{font-family:'Secular One',sans-serif;background:#1a0505;color:#f5ede8;direc
     /* תפריט קטגוריות מכווץ בזמן גלילה בטלפון: שורה אחת שנגללת הצידה */
     /* טלפון: התפריט המלא נגלל עם הדף, ופס קטגוריות דק מחליק פנימה מלמעלה */
     .toolbar{position:relative;top:auto !important;}
+    /* טלפון: כפתורי כרטיסים / יוטיוב / ספוטיפיי גדולים ונוחים ללחיצה */
+    .link-btn{font-size:15px;padding:10px 12px;min-height:46px;border-radius:10px;white-space:nowrap;}
+    .link-brand{gap:10px;}
+    .link-brand svg[viewBox="0 0 28 20"]{width:34px;height:24px;}
+    .link-brand svg[viewBox="0 0 24 24"]{width:26px;height:26px;}
+    .link-brand svg[viewBox="0 0 24 24"][stroke]{width:20px;height:20px;}
     #cat-strip{display:flex;}
     .events-grid{padding:1rem;}
     .form-row{grid-template-columns:1fr;}
@@ -683,15 +676,6 @@ body.a11y-big-cursor *{cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w
 <div class="overlay" id="overlay" onclick="overlayClick(event)">
     <div class="modal">
         <h2 id="modal-title">✦ הוסף אירוע חדש</h2>
-        <div class="paste-wrap" id="paste-wrap">
-            <button type="button" class="paste-toggle" onclick="togglePasteBox()">📋 יש לך את פרטי האירוע בפייסבוק, וואטסאפ, אינסטגרם או באתר אחר? הדביקו את הטקסט והטופס יתמלא לבד</button>
-            <div class="paste-box" id="paste-box">
-                <textarea id="paste-text" rows="6" placeholder="העתיקו את כל הטקסט של האירוע (מפייסבוק, וואטסאפ, אינסטגרם, אתר המקום וכו׳) והדביקו כאן…"></textarea>
-                <button type="button" class="paste-go" onclick="smartPasteFill()">✨ מלא את הטופס</button>
-                <div class="paste-result" id="paste-result"></div>
-                <div class="paste-note">התמונה לא מועתקת — שמרו אותה מהפוסט או מהאתר והעלו כאן למטה. אפשר להדביק שוב ולמלא מחדש; שדות שהקלדתם בעצמכם לא יידרסו.</div>
-            </div>
-        </div>
         <div class="form-group">
             <label>תמונה לאירוע</label>
             <div class="img-upload-area" id="upload-area">
@@ -1426,11 +1410,6 @@ function openModal(id) {
     document.getElementById('upload-area').classList.remove('has-image');
     document.getElementById('f-image').value = '';
 
-    document.getElementById('paste-wrap').style.display = id === null ? '' : 'none';
-    document.getElementById('paste-box').classList.remove('open');
-    document.getElementById('paste-text').value = '';
-    document.getElementById('paste-result').textContent = '';
-    pasteAutoFilled = new Set();
     if (id === null) {
         document.getElementById('modal-title').textContent = '✦ הוסף אירוע חדש';
         document.getElementById('modal-submit-btn').textContent = 'פרסם אירוע';
@@ -1534,255 +1513,6 @@ function matLinkHtml(url, n) {
     else if (u.includes('spotify.com') || u.includes('spotify.link')) { icon = ICON_SP; label = 'האזנה בספוטיפיי'; }
     else { icon = ICON_YT + ICON_SP; label = 'קישור נוסף'; }
     return `<a class="link-btn link-materials link-brand" href="${url}" target="_blank" rel="noopener" aria-label="${label}${n === 2 ? ' 2' : ''}" title="${label}">${icon}</a>`;
-}
-
-// ── הדבקה חכמה: מדביקים טקסט של אירוע (פייסבוק / וואטסאפ / אינסטגרם / אתר) והטופס מתמלא ──
-const HE_MONTHS = {'ינואר':1,'פברואר':2,'מרץ':3,'מרס':3,'אפריל':4,'מאי':5,'יוני':6,'יולי':7,'אוגוסט':8,'ספטמבר':9,'אוקטובר':10,'נובמבר':11,'דצמבר':12,
-    'ינו':1,'פבר':2,'אפר':4,'אוג':8,'ספט':9,'ספ':9,'אוק':10,'נוב':11,'דצמ':12};
-const EN_MONTHS = {jan:1,feb:2,mar:3,apr:4,may:5,jun:6,jul:7,aug:8,sep:9,oct:10,nov:11,dec:12};
-const CAT_KEYWORDS = {
-    jazz:['ג\'אז','גאז','jazz'], poetry:['שירה','משורר','משוררת','משוררים','poetry','spoken word'], openstage:['במה פתוחה','open mic','אופן מייק','open stage'],
-    standup:['סטנדאפ','סטנד-אפ','סטנד אפ','stand up','standup','stand-up'], lectures:['הרצאה','הרצאת','מרצה','שיחה עם','פאנל','lecture','talk'], workshops:['סדנה','סדנת','סדנא','workshop'],
-    kids:['ילדים','לילדים','משפחות','לכל המשפחה','kids'], theater:['הצגה','תיאטרון','תאטרון','מחזה','מחזמר','theatre','theater','musical'], cinema:['סרט','הקרנה','קולנוע','סינמטק','film','screening'],
-    parties:['מסיבה','מסיבת','dj ','די ג\'יי','party','רייב'], dance:['מחול','ריקוד','רוקדים','dance','סלסה','טנגו'], classic:['קלאסי','תזמורת','רסיטל','קאמרי','classical'],
-    tours:['סיור','סיורים','טיול','tour'], art:['תערוכה','אמנות','גלריה','exhibition','פתיחת תערוכה'], literature:['השקת ספר','ספרות','מועדון קריאה','סופר','סופרת'],
-    festivals:['פסטיבל','festival'], fairs:['יריד','שוק ','בזאר','market'], community:['קהילה','קהילתי','התנדבות','מפגש קהילתי'],
-    music:['הופעה','מופע','קונצרט','להקה','זמר','זמרת','מוזיקה','מוסיקה','נגן','live','concert','גיג','אלבום'], fringe:['פרינג\''], performance:['פרפורמנס','performance'],
-    spirit:['מדיטציה','יוגה','רוחני','מעגל נשים','טקס'], games:['משחקי','חידון','טריוויה','quiz'], laughs:['קומדיה','אימפרוב','קומיקאי']
-};
-const TICKET_HOSTS = ['eventer','tickchak','smarticket','leaan','go-out','goout','eventbrite','zappa','tix','kupat','ticket','hazira','bimot','tmura','shoo.co','cupa','events.co.il','forms.gle','docs.google.com/forms','bit.ly','linktr.ee','eventbuzz','ticketmaster','lev.co.il','haifa-theatre','haifamuseums'];
-// מקומות מוכרים בחיפה — אם מוזכרים בטקסט ואין כתובת מפורשת, הכתובת מתמלאת לבד
-const KNOWN_VENUES = [
-    {re:/תיאטרון חיפה|תאטרון חיפה|haifa theat(?:re|er)/i, val:'תיאטרון חיפה, פבזנר 50, חיפה'},
-    {re:/אודיטוריום חיפה|haifa auditorium/i, val:'אודיטוריום חיפה, שדרות הנשיא 138, חיפה'},
-    {re:/סינמטק חיפה|haifa cinematheque/i, val:'סינמטק חיפה, שדרות הנשיא 142, חיפה'},
-    {re:/בית הגפן|beit hagefen/i, val:'בית הגפן, הגפן 2, חיפה'},
-    {re:/מוזיאון חיפה לאמנות|haifa museum of art/i, val:'מוזיאון חיפה לאמנות, שבתאי לוי 26, חיפה'},
-    {re:/מוזיאון טיקוטין|tikotin/i, val:'מוזיאון טיקוטין, שדרות הנשיא 89, חיפה'}
-];
-const LBL = {
-    date:/^(?:תאריך|מתי|date|when)\s*[:\-–]\s*/i,
-    time:/^(?:שעה|שעות|שעת התחלה|התחלה|פתיחת דלתות|דלתות|time|doors)\s*[:\-–]\s*/i,
-    loc:/^(?:מיקום|מקום|כתובת|איפה|היכן|מקום האירוע|location|where|venue|address)\s*[:\-–?]\s*/i,
-    price:/^(?:מחיר|מחירים|עלות|כניסה|כרטיס|כרטיסים|דמי כניסה|price|entry|tickets?)\s*[:\-–]\s*/i
-};
-
-function pad2(n){ return String(n).padStart(2,'0'); }
-function toISO(y,m,d){ return `${y}-${pad2(m)}-${pad2(d)}`; }
-function guessYear(m,d){
-    const now=new Date(); let y=now.getFullYear();
-    const today=new Date(now.getFullYear(),now.getMonth(),now.getDate());
-    if (new Date(y,m-1,d) < new Date(today.getTime()-30*864e5)) y++;
-    return y;
-}
-function validDate(y,m,d){ const t=new Date(y,m-1,d); return t.getFullYear()===y && t.getMonth()===m-1 && t.getDate()===d; }
-function normalizeText(t){
-    return t.replace(/\r/g,'').replace(/[‎‏‪-‮⁦-⁩ ]/g,' ')
-            .replace(/[״“”]/g,'"').replace(/[׳‘’`]/g,"'").replace(/[ \t]+/g,' ');
-}
-
-function parseDates(text){
-    const found=[]; const add=(y,m,d,idx)=>{ if(m>=1&&m<=12&&d>=1&&d<=31){ y = y ? (y<100?2000+y:y) : guessYear(m,d); if(y>=2020&&y<=2100&&validDate(y,m,d)) found.push({iso:toISO(y,m,d),idx}); } };
-    let m; const t=text;
-    // 23/10/2026 , 23.10.26 , 23/10 , 23-10-2026  (לא אם זו שעה: "בשעה 20.30")
-    const r1=/(^|[^\d:])(\d{1,2})[\/.\-](\d{1,2})(?:[\/.\-](\d{2,4}))?(?![\d:])/g;
-    while((m=r1.exec(t))){
-        const before=t.slice(Math.max(0,m.index-8),m.index+m[1].length);
-        if(/שעה|בשעה|at\s*$/i.test(before) && !m[4]) continue;
-        add(m[4]?+m[4]:0, +m[3], +m[2], m.index);
-    }
-    // 23 באוקטובר 2026 / 23 לאוק' / ה-23 באוקטובר
-    const heNames=Object.keys(HE_MONTHS).sort((a,b)=>b.length-a.length).join('|');
-    const r2=new RegExp('(\\d{1,2})\\s*(?:ב|ל|ב-|ל-)?\\s*('+heNames+")'?(?![א-ת])(?:\\s*,?\\s*(\\d{4}))?",'g');
-    while((m=r2.exec(t))){ add(m[3]?+m[3]:0, HE_MONTHS[m[2]], +m[1], m.index); }
-    // October 23, 2026 / Oct 23
-    const r3=/\b(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*\.?\s+(\d{1,2})(?:st|nd|rd|th)?(?:,?\s*(\d{4}))?/gi;
-    while((m=r3.exec(t))){ add(m[3]?+m[3]:0, EN_MONTHS[m[1].toLowerCase()], +m[2], m.index); }
-    // 23 October 2026
-    const r4=/\b(\d{1,2})(?:st|nd|rd|th)?\s+(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*\.?(?:,?\s*(\d{4}))?/gi;
-    while((m=r4.exec(t))){ add(m[3]?+m[3]:0, EN_MONTHS[m[2].toLowerCase()], +m[1], m.index); }
-    // היום / מחר / מחרתיים
-    const now=new Date(); const rel=(days,re)=>{ const i=t.search(re); if(i>=0){ const d=new Date(now.getTime()+days*864e5); found.push({iso:toISO(d.getFullYear(),d.getMonth()+1,d.getDate()),idx:i}); } };
-    rel(0,/(^|[\s(])היום(?=[\s,.!)]|$)/); rel(1,/(^|[\s(])מחר(?=[\s,.!)]|$)/); rel(2,/(^|[\s(])מחרתיים(?=[\s,.!)]|$)/); rel(0,/\btonight\b|\btoday\b/i); rel(1,/\btomorrow\b/i);
-    found.sort((a,b)=>a.idx-b.idx);
-    const uniq=[]; found.forEach(f=>{ if(!uniq.includes(f.iso)) uniq.push(f.iso); });
-    return uniq;
-}
-
-function to24(h,min,ap){ h=+h; min=min?+min:0; if(ap){ ap=ap.toLowerCase(); if(ap==='pm'&&h<12) h+=12; if(ap==='am'&&h===12) h=0; } return (h>=0&&h<24&&min<60)?`${pad2(h)}:${pad2(min)}`:null; }
-function parseTimeIn(text){
-    let m;
-    m=/(?:^|[^\d\/])([01]?\d|2[0-3])[:.]([0-5]\d)\s*(?:-|–|—|עד)\s*([01]?\d|2[0-3])[:.]([0-5]\d)(?![\d\/])/.exec(text);
-    if(m) return `${to24(m[1],m[2])}–${to24(m[3],m[4])}`;
-    m=/\b(1[0-2]|0?[1-9])(?::([0-5]\d))?\s*(am|pm)\s*(?:-|–|—|to|עד)\s*(1[0-2]|0?[1-9])(?::([0-5]\d))?\s*(am|pm)\b/i.exec(text);
-    if(m) return `${to24(m[1],m[2],m[3])}–${to24(m[4],m[5],m[6])}`;
-    m=/\b(1[0-2]|0?[1-9])(?::([0-5]\d))?\s*(am|pm)\b/i.exec(text);
-    if(m) return to24(m[1],m[2],m[3]);
-    m=/(?:^|[^\d\/.])([01]?\d|2[0-3]):([0-5]\d)(?![\d\/])/.exec(text);
-    if(m) return to24(m[1],m[2]);
-    m=/(?:בשעה|שעה|ב-?)\s*([01]?\d|2[0-3])\.([0-5]\d)(?![\d\/.])/.exec(text);
-    if(m) return to24(m[1],m[2]);
-    m=/(?:בשעה|שעה)?\s*(\d{1,2})(?:[:.](\d{2}))?\s*(בערב|בלילה|בבוקר|בצהריים|אחה"צ)/.exec(text);
-    if(m){ let h=+m[1]; if((m[3]==='בערב'||m[3]==='בלילה'||m[3]==='אחה"צ')&&h<12) h+=12; return to24(h,m[2]); }
-    m=/בשעה\s*(\d{1,2})(?![\d:.])/.exec(text);
-    if(m){ let h=+m[1]; if(h>=1&&h<=11) h+=12; return to24(h,0); }
-    return '';
-}
-function parseTime(lines, raw){
-    // עדיפות: שורה שמסומנת כ"תחילת המופע"/"שעה:", אחר כך כל הטקסט
-    const km=/(?:תחילת\s*(?:ה)?(?:מופע|הופעה|אירוע|ערב|הערב)|מתחילים\s*(?:ב-?)?|ההופעה\s*מתחילה\s*(?:ב-?)?|start(?:s)?\s*(?:at)?)\s*[:\-–]?\s*(?:בשעה\s*)?([01]?\d|2[0-3])[:.]([0-5]\d)/i.exec(raw);
-    if(km) return to24(km[1],km[2]);
-    const lab=lines.find(l=>LBL.time.test(l) && !/דלתות|doors/i.test(l) && parseTimeIn(l));
-    if(lab) return parseTimeIn(lab);
-    return parseTimeIn(raw);
-}
-
-function parsePrice(lines, raw){
-    const PROMO=/הטבה|הנחה|מבצע|קוד|קופון|בלבד!|במקום\s*₪?\d/;
-    const lab=lines.find(l=>LBL.price.test(l) && !/https?:\/\//.test(l) && !PROMO.test(l));
-    const src=lab ? lab.replace(LBL.price,'') : lines.filter(l=>!PROMO.test(l)).join('\n');
-    if(/כניסה\s*(חופשית|חינם|ללא\s*תשלום)|ללא\s*עלות|ללא\s*תשלום|(^|[^א-ת])(ב?חינם)([^א-ת]|$)|free entrance|free entry|\bfree\b/i.test(src)) return 'כניסה חופשית';
-    const nums=[...src.matchAll(/(?:₪\s*(\d{1,4})|(\d{1,4})(?:\s*[-–\/]\s*(\d{1,4}))?\s*(?:₪|ש"ח|שח\b|שקלים|שקל|nis\b|ils\b))/gi)];
-    const vals=[]; nums.forEach(x=>{ [x[1],x[2],x[3]].forEach(v=>{ if(v && !vals.includes(+v)) vals.push(+v); }); });
-    if(vals.length) return vals.slice(0,3).map(v=>'₪'+v).join(' / ');
-    if(lab){ const short=src.trim(); if(short && short.length<=40) return short; }
-    return '';
-}
-
-function isDateTimeOnly(l){
-    const stripped=l.replace(/[\p{Extended_Pictographic}️‍]/gu,'')
-        .replace(/(?:יום\s*)?(ראשון|שני|שלישי|רביעי|חמישי|שישי|שבת|מוצ"ש|מוצאי שבת)/g,'').replace(/יום\s*[אבגדהו]'?/g,'')
-        .replace(/(sunday|monday|tuesday|wednesday|thursday|friday|saturday|sun|mon|tue|wed|thu|fri|sat)\b,?/gi,'')
-        .replace(new RegExp(Object.keys(HE_MONTHS).join('|'),'g'),'')
-        .replace(/(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*/gi,'')
-        .replace(/בשעה|שעה|at|from|to|עד|בערב|בבוקר|היום|מחר|ה-|ב-|ל-|pm|am|utc[+\-]?\d*/gi,'')
-        .replace(/[\d\s:.,\/\-–—|•()]+/g,'');
-    return stripped.length<=2 && /\d/.test(l);
-}
-
-function parseLocation(lines){
-    for(const l of lines){
-        let m=/^\s*(?:📍|📌|🗺️?|🏠|🏛️?)\s*(.+)$/u.exec(l); if(m) return {val:m[1].trim(),line:l};
-        if(LBL.loc.test(l)){ let v=l.replace(LBL.loc,'').trim(); const kv=KNOWN_VENUES.find(k=>k.re.test(v)); if(kv && !/\d/.test(v)) v=kv.val; return {val:v,line:l}; }
-    }
-    // שורה קצרה כמו "בקפה מסדה" / "במועדון X" / "@ בר החזרה"
-    for(const l of lines){
-        const m=/^(?:@\s*|ב|ב-)((?:קפה|בר|מועדון|גלריה|תיאטרון|תאטרון|סטודיו|מרכז|בית|היכל|אולם|סינמטק|מוזיאון|פאב|ספרייה|ספריית|גן|פארק|חוות|מתנ"ס|אודיטוריום|מסעדת|מסעדה)\s[^,.!?\n]{1,40}(?:,\s*[^.!?\n]{1,40})?)$/.exec(l.replace(/[\p{Extended_Pictographic}\uFE0F]/gu,'').trim());
-        if(m && l.length<=70) return {val:m[1].trim(),line:l};
-    }
-    const joinedAll=lines.join(' ');
-    for(const v of KNOWN_VENUES){ if(v.re.test(joinedAll)) return {val:v.val,line:null}; }
-    // פייסבוק / אתרים: שורה קצרה שמזכירה את חיפה, אולי עם שם המקום בשורה שלפניה
-    for(let i=0;i<lines.length;i++){
-        const l=lines[i];
-        if(l.length<=70 && /(חיפה|haifa|נשר|טירת כרמל|קריית|קרית)/i.test(l) && !/חני(?:י)?ה|חניון|parking/i.test(l) && !/https?:\/\//.test(l) && !isDateTimeOnly(l) && l.split(' ').length<=9){
-            const prev=lines[i-1];
-            if(/^(חיפה|haifa)(,?\s*(israel|ישראל))?$/i.test(l.trim()) && prev && prev.length<=50 && !isDateTimeOnly(prev) && !/https?:\/\//.test(prev)) return {val:prev.trim()+', חיפה',line:l,line2:prev};
-            if(/(רחוב|רח'|שדרות|שד'|דרך|\d{1,3})/.test(l) || /,/.test(l)) return {val:l.trim(),line:l};
-        }
-    }
-    const joined=lines.join(' ');
-    for(const v of KNOWN_VENUES){ if(v.re.test(joined)) return {val:v.val,line:null}; }
-    return {val:'',line:null};
-}
-
-function parseLinks(text){
-    const urls=[...new Set((text.match(/https?:\/\/[^\s<>"']+/gi)||[]).map(u=>u.replace(/[),.;!?\]]+$/,'')))];
-    const out={tickets:[],media:[]};
-    urls.forEach(u=>{
-        const lu=u.toLowerCase();
-        if(lu.includes('youtube.com')||lu.includes('youtu.be')||lu.includes('spotify.com')||lu.includes('spotify.link')||lu.includes('soundcloud')||lu.includes('bandcamp')) out.media.push(u);
-        else if(TICKET_HOSTS.some(h=>lu.includes(h))) out.tickets.push(u);
-        else {
-            const line=(text.split('\n').find(l=>l.includes(u))||'');
-            if(/כרטיס|הרשמה|להרשמה|רישום|הזמנ|רכישה|tickets?|register|rsvp|buy/i.test(line)) out.tickets.push(u); else out.media.push(u);
-        }
-    });
-    return out;
-}
-
-function parseCats(text){
-    const lt=' '+text.toLowerCase()+' '; const cats=[];
-    const esc=w=>w.toLowerCase().trim().replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
-    const has=w=>new RegExp('(^|[^א-תa-z0-9])[והבלמכש]{0,3}'+esc(w)).test(lt);   // מילה שלמה (עם תחיליות עבריות) — כדי ש"מחזמר" לא ייחשב "זמר"
-    Object.entries(CAT_KEYWORDS).forEach(([c,words])=>{ if(words.some(has)) cats.push(c); });
-    if(cats.includes('theater') && cats.includes('music') && !/קונצרט|להקה|מוזיקה|מוסיקה|זמר|concert/i.test(text)) cats.splice(cats.indexOf('music'),1);
-    if((cats.includes('jazz')||cats.includes('classic')||cats.includes('openstage')) && !cats.includes('music') && /הופעה|מוזיקה|נגנ|jam/i.test(text)) cats.push('music');
-    return cats.slice(0,4);
-}
-
-function cleanTitle(line){
-    return line.replace(/https?:\/\/\S+/g,'').replace(/[*_~]/g,'').replace(/^(?:שם האירוע|כותרת|אירוע|הופעה|מופע|event|title)\s*[:\-–]\s*/i,'')
-        .replace(/^[\s\p{Extended_Pictographic}️‍*•\-–|]+/u,'').replace(/[\s\p{Extended_Pictographic}️‍*•\-–|]+$/u,'').trim().slice(0,120);
-}
-
-let pasteAutoFilled = new Set();
-function smartPasteFill(){
-    const raw=normalizeText(document.getElementById('paste-text').value||'').trim();
-    const out=document.getElementById('paste-result');
-    if(!raw){ out.className='paste-result err'; out.textContent='הדביקו קודם את הטקסט של האירוע.'; return; }
-    const FB_NOISE=/^(פרטים|details|אודות|about|discussion|דיון|interested|מעוניינ(?:ת|ים)?|going|הולכ(?:ת|ים)?|share|שיתוף|invite|הזמנה|public|ציבורי|anyone on or off facebook|[\d,.\sK]*(?:people|אנשים)\s+(?:responded|interested|going|הגיבו|מעוניינים|הולכים)|event by .*|אירוע של .*|see more|ראה עוד|הצג עוד|duration:.*|משך:.*)$/i;
-    const lines=raw.split('\n').map(l=>l.trim()).filter(l=>l && !FB_NOISE.test(l));
-    const filled=[]; const missing=[];
-    const put=(id,val,label)=>{
-        const el=document.getElementById(id); if(!el) return;
-        const canWrite = !el.value.trim() || pasteAutoFilled.has(id);   // לא דורסים מה שהוקלד ידנית
-        if(val && canWrite){ el.value=val; pasteAutoFilled.add(id); if(label) filled.push(label); el.classList.add('just-filled'); setTimeout(()=>el.classList.remove('just-filled'),2200); }
-        else if(!val && !el.value.trim() && label) missing.push(label);
-    };
-
-    const loc=parseLocation(lines);
-    const used=new Set([loc.line,loc.line2].filter(Boolean));
-    // כותרת: השורה הראשונה שאינה קישור, אינה רק תאריך/שעה ואינה שורת "מחיר:/מקום:"
-    const titleLine=lines.find(l=>!/^https?:\/\//.test(l) && !isDateTimeOnly(l) && !used.has(l) && !LBL.price.test(l) && !LBL.loc.test(l) && !LBL.time.test(l) && !LBL.date.test(l) && cleanTitle(l).length>1) || '';
-    let title=cleanTitle(titleLine), titleFromQuote=false;
-    if(title.length>60){
-        const q=/["'“”«]([^"'“”«»\n]{2,40})["'“”»]/.exec(titleLine) || /["'“”«]([^"'“”«»\n]{2,40})["'“”»]/.exec(lines.slice(0,3).join(' '));
-        if(q){ title=q[1].trim(); titleFromQuote=true; }
-    }
-    put('f-title', title, 'שם');
-
-    const dates=parseDates(raw);
-    put('f-date', dates[0]||'', 'תאריך');
-    if(dates.length>1){
-        const sorted=[...dates].sort(); const first=sorted[0], last=sorted[sorted.length-1];
-        if((new Date(last)-new Date(first))/864e5 <= 120){ put('f-date', first, ''); put('f-date-end', last, ''); }
-    }
-    put('f-time', parseTime(lines, raw), 'שעה');
-    put('f-loc', loc.val, 'מיקום');
-    put('f-price', parsePrice(lines, raw), 'מחיר');
-    const links=parseLinks(raw);
-    put('f-tickets', links.tickets[0], '');
-    put('f-tickets2', links.tickets[1], '');
-    put('f-materials', links.media[0], '');
-    put('f-materials2', links.media[1], '');
-    if(links.tickets[0]) filled.push('כרטיסים'); if(links.media[0]) filled.push('קישור');
-
-    // תיאור: הטקסט בלי הכותרת, בלי שורות שהן רק תאריך/שעה/מקום/מחיר, ובלי קישורים
-    const scheduleHdr=new Set(lines.filter((l,i)=>/:\s*$/.test(l) && lines[i+1] && isDateTimeOnly(lines[i+1])));
-    const desc=lines.filter(l=>!scheduleHdr.has(l) && !/^(חני(?:י)?ה|חניון|parking)/i.test(l) && (l!==titleLine || titleFromQuote) && !used.has(l) && !isDateTimeOnly(l) && !LBL.loc.test(l) && !LBL.time.test(l) && !LBL.date.test(l) && !(LBL.price.test(l) && l.length<40) && !/^https?:\/\/\S+$/.test(l))
-        .join('\n').replace(/https?:\/\/\S+/g,'').replace(/\n{3,}/g,'\n\n').trim();
-    put('f-desc', desc.slice(0,2000), 'תיאור');
-
-    const cats=parseCats(raw); const anySelected=document.querySelector('.cat-pick-btn.selected');
-    if(cats.length && (!anySelected || pasteAutoFilled.has('cats'))){
-        document.querySelectorAll('.cat-pick-btn.selected').forEach(b=>b.classList.remove('selected'));
-        cats.forEach(c=>{ const b=document.querySelector(`.cat-pick-btn[data-c="${c}"]`); if(b) b.classList.add('selected'); });
-        pasteAutoFilled.add('cats'); filled.push('קטגוריות');
-    }
-    const miss=missing.filter(Boolean);
-    if(filled.length){
-        out.className='paste-result ok';
-        out.innerHTML='✓ מילאנו: '+filled.join(', ')+'.'+(miss.length?`<br><span class="paste-miss">לא זוהו: ${miss.join(', ')} — מלאו ידנית.</span>`:'')+'<br>בדקו את הפרטים, הוסיפו תמונה ופרסמו.';
-    } else {
-        out.className='paste-result err';
-        out.textContent='לא הצלחנו לזהות פרטים. אפשר למלא ידנית.';
-    }
-}
-function togglePasteBox(){
-    const box=document.getElementById('paste-box');
-    box.classList.toggle('open');
-    if(box.classList.contains('open')) setTimeout(()=>document.getElementById('paste-text').focus(),50);
 }
 
 // כיווץ תמונה לפני שמירה: עד 1200 פיקסלים בצד הארוך, JPEG באיכות טובה
