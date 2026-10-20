@@ -90,12 +90,10 @@ body{font-family:'Secular One',sans-serif;background:#1a0505;color:#f5ede8;direc
 .btn-logout:hover{border-color:rgba(255,255,255,0.3);color:rgba(255,255,255,0.7);}
 
 /* Hero */
-.hero{position:relative;background:linear-gradient(160deg,#3d0a0a 0%,#7a1515 50%,#c8232c 100%);padding:0;overflow:hidden;border-bottom:1px solid rgba(255,255,255,0.07);min-height:320px;height:clamp(240px,38vw,520px);}
-/* באנר: התמונה שלמה במרכז + רקע מטושטש מאותה תמונה מסביב */
-.hero-blur{position:absolute;inset:-40px;background-image:url('hero.jpg');background-size:cover;background-position:center;filter:blur(26px) brightness(.55) saturate(1.15);z-index:0;}
-.hero-bg{position:absolute;inset:0;background-image:url('hero.jpg');background-size:contain;background-repeat:no-repeat;background-position:center;transform:none;opacity:1;z-index:0;}
+.hero{position:relative;background:linear-gradient(160deg,#3d0a0a 0%,#7a1515 50%,#c8232c 100%);padding:0;overflow:hidden;border-bottom:1px solid rgba(255,255,255,0.07);min-height:320px;}
+.hero-bg{position:absolute;inset:0;background-image:url('hero.jpg');background-size:cover;background-position:center 47%;transform:none;opacity:1;z-index:0;}
 .hero::before{content:'';position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,0.0) 0%,rgba(26,5,5,0.15) 100%);z-index:1;}
-.hero>*:not(.hero-bg):not(.hero-blur){position:relative;z-index:2;}
+.hero>*:not(.hero-bg){position:relative;z-index:2;}
 .hero-content{position:relative;z-index:2;padding:2.5rem 2rem 2rem;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;height:100%;}
 .hero-badge{display:none;}
 .hero-text-box{display:inline-flex;flex-direction:column;align-items:center;gap:.5rem;padding:1.2rem 2.5rem 1.4rem;border-radius:18px;background:rgba(0,0,0,0.35);backdrop-filter:blur(6px);border:1px solid rgba(212,224,52,0.25);box-shadow:0 0 40px rgba(212,224,52,0.15),0 0 80px rgba(212,224,52,0.08),inset 0 1px 0 rgba(255,255,255,0.07);}
@@ -442,8 +440,7 @@ body:has(#overlay.open),body:has(.auth-overlay.open),body:has(#legal-overlay.ope
     #cat-strip{display:flex;}
     .events-grid{padding:1rem;}
     .form-row{grid-template-columns:1fr;}
-    .hero-bg{background-position:center;transform:none;}
-    .hero{min-height:0;height:auto;aspect-ratio:1081/641;}
+    .hero-bg{background-position:72% 47%;transform:none;}
 }
     
 /* ===== נגישות ===== */
@@ -543,7 +540,6 @@ body.a11y-big-cursor *{cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w
 
 <!-- Hero -->
 <div class="hero">
-    <div class="hero-blur" aria-hidden="true"></div>
     <div class="hero-bg" id="hero-bg"></div>
     <div class="hero-content">
 
