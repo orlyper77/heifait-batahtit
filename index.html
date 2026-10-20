@@ -196,6 +196,12 @@ body{font-family:'Secular One',sans-serif;background:#1a0505;color:#f5ede8;direc
 .card.user-event .del-btn{display:flex;}
 .card-img{width:100%;flex:0 0 auto;aspect-ratio:4/3;display:flex;align-items:center;justify-content:center;font-size:2.5rem;background:#4a1010;overflow:hidden;min-height:0;max-height:none;}
 .card-img img{width:100%;height:100%;object-fit:cover;}
+/* תמונה שלמה במרכז + רקע מטושטש מאותה תמונה מסביב */
+.card-img{position:relative;}
+.card-img-bg{position:absolute;inset:-24px;width:calc(100% + 48px)!important;height:calc(100% + 48px)!important;object-fit:cover;filter:blur(18px) brightness(.55) saturate(1.15);pointer-events:none;}
+.card-img .card-img-main{position:relative;width:100%;height:100%;object-fit:contain;}
+.view-modal-imgbox{position:relative;overflow:hidden;border-radius:14px 14px 0 0;aspect-ratio:4/3;background:#1a0505;}
+.view-modal-imgbox .view-modal-img{position:relative;width:100%;height:100%;aspect-ratio:auto;background:transparent;border-radius:0;}
 .card-body{padding:.9rem 1rem .6rem;flex:1;display:flex;flex-direction:column;min-height:0;}
 .card-cat{display:inline-block;font-size:11.5px;font-weight:500;letter-spacing:.5px;padding:2px 8px;border-radius:20px;margin-bottom:.3rem;text-transform:uppercase;}
 .cat-music{background:rgba(167,105,221,0.2);color:#c98ff0;border:1px solid rgba(167,105,221,0.25);}
@@ -1190,7 +1196,7 @@ function render() {
                 ${isUserEvent ? `<button class="del-btn" onclick="deleteEvent('${e.id}',event)">🗑️</button>` : ''}
             </div>
             <div class="card-img">
-                ${e.image ? `<img src="${e.image}" alt="${e.title}">` : `<span>${e.emoji}</span>`}
+                ${e.image ? `<img class="card-img-bg" src="${e.image}" alt="" aria-hidden="true"><img class="card-img-main" src="${e.image}" alt="${e.title}" loading="lazy">` : `<span>${e.emoji}</span>`}
             </div>
             <div class="card-body">
                 <div class="card-cats">${(e.cats||[e.cat]).map(c=>`<span class="card-cat cat-${c}">${CAT_LABEL[c]||c}</span>`).join('')}${e.status==='pending'&&currentRole==='admin'?'<span style="background:rgba(255,100,100,0.3);color:#ff8080;border:1px solid rgba(255,100,100,0.5);font-size:10px;padding:2px 7px;border-radius:20px;">⏳ ממתין לאישור</span>':''}</div>
@@ -1226,7 +1232,7 @@ function openViewModal(id) {
     // תמונה
     const imgWrap = document.getElementById('view-modal-img-wrap');
     imgWrap.innerHTML = e.image
-        ? `<img class="view-modal-img" src="${e.image}" alt="${e.title}">`
+        ? `<div class="view-modal-imgbox"><img class="card-img-bg" src="${e.image}" alt="" aria-hidden="true"><img class="view-modal-img" src="${e.image}" alt="${e.title}"></div>`
         : `<div class="view-modal-img-placeholder">${e.emoji}</div>`;
     // קטגוריות
     document.getElementById('view-modal-cats').innerHTML =
