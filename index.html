@@ -332,8 +332,19 @@ body{font-family:'Secular One',sans-serif;background:#1a0505;color:#f5ede8;direc
 .crop-aspect button.on{background:#d4e034;color:#1a0505;border-color:#d4e034;}
 .img-editor-btns button.primary{background:#d4e034;color:#1a0505;border-color:#d4e034;}
 .crop-box .cropper-view-box{outline:2px solid #d4e034;outline-color:rgba(212,224,52,0.9);}
-.crop-box .cropper-point{background:#d4e034;width:10px;height:10px;opacity:1;}
-.crop-box .cropper-line{background:#d4e034;}
+.crop-box .cropper-point{background:#d4e034;opacity:1;width:14px;height:14px;border-radius:50%;box-shadow:0 0 0 2px rgba(0,0,0,0.5);}
+.crop-box .cropper-point.point-e,.crop-box .cropper-point.point-w{margin-top:-7px;}
+.crop-box .cropper-point.point-n,.crop-box .cropper-point.point-s{margin-left:-7px;}
+.crop-box .cropper-point.point-ne,.crop-box .cropper-point.point-nw{top:-7px;}
+.crop-box .cropper-point.point-se,.crop-box .cropper-point.point-sw{bottom:-7px;}
+.crop-box .cropper-point.point-ne,.crop-box .cropper-point.point-se{right:-7px;}
+.crop-box .cropper-point.point-nw,.crop-box .cropper-point.point-sw{left:-7px;}
+.crop-box .cropper-point.point-n{top:-7px;} .crop-box .cropper-point.point-s{bottom:-7px;}
+.crop-box .cropper-point.point-e{right:-7px;} .crop-box .cropper-point.point-w{left:-7px;}
+@media (pointer:coarse){ .crop-box .cropper-point{width:22px;height:22px;} }
+.crop-box .cropper-line{opacity:.25;}
+.crop-box .cropper-line.line-e,.crop-box .cropper-line.line-w{width:14px;}
+.crop-box .cropper-line.line-n,.crop-box .cropper-line.line-s{height:14px;}
 .img-editor{border:1px solid rgba(212,224,52,0.3);border-radius:12px;padding:10px;background:rgba(0,0,0,0.2);}
 #img-canvas{width:100%;height:auto;aspect-ratio:4/3;display:block;border-radius:8px;cursor:grab;touch-action:none;background:#1a0505;}
 #img-canvas:active{cursor:grabbing;}
@@ -351,6 +362,8 @@ body{font-family:'Secular One',sans-serif;background:#1a0505;color:#f5ede8;direc
 .img-placeholder-sub{font-size:11px;color:rgba(255,255,255,0.25);margin-top:3px;}
 .btn-remove-img{position:absolute;top:6px;left:6px;background:rgba(0,0,0,0.6);border:none;border-radius:50%;width:26px;height:26px;color:#fff;font-size:13px;cursor:pointer;display:none;align-items:center;justify-content:center;z-index:3;}
 .img-upload-area.has-image .btn-remove-img{display:flex;}
+.btn-edit-img{position:absolute;top:6px;right:6px;z-index:3;display:none;background:rgba(0,0,0,0.65);border:1px solid rgba(212,224,52,0.6);color:#d4e034;font-family:'Secular One',sans-serif;font-size:13px;padding:6px 12px;border-radius:20px;cursor:pointer;}
+.img-upload-area.has-image .btn-edit-img{display:inline-flex;align-items:center;gap:4px;}
 
 /* Footer */
 .site-footer{background:#100303;border-top:1px solid rgba(255,255,255,0.07);overflow:hidden;position:relative;}
@@ -701,6 +714,7 @@ body.a11y-big-cursor *{cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w
             <label>תמונה לאירוע</label>
             <div class="img-upload-area" id="upload-area">
                 <input type="file" accept="image/*" id="f-image" onchange="handleImageUpload(event)">
+                <button type="button" class="btn-edit-img" onclick="editExistingImage(event)">✂️ עריכת תמונה</button>
                 <button class="btn-remove-img" onclick="removeImage(event)">×</button>
                 <div class="img-placeholder" id="img-placeholder">
                     <div class="img-placeholder-icon">🖼</div>
@@ -711,12 +725,13 @@ body.a11y-big-cursor *{cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w
             </div>
             <div class="crop-box" id="crop-box" style="display:none;">
                 <div class="crop-stage"><img id="crop-img" alt="חיתוך תמונה"></div>
+                <div class="img-editor-hint">גררו את הפינות או הצדדים של המסגרת כדי להגדיל, להקטין, למתוח או לכווץ · גררו בתוך המסגרת כדי להזיז אותה · גרירה מחוץ למסגרת מסמנת מסגרת חדשה</div>
                 <div class="crop-aspect">
                     <span>יחס:</span>
+                    <button type="button" data-r="0" onclick="setCropAspect(NaN)">חופשי</button>
                     <button type="button" data-r="1.3333333333333333" onclick="setCropAspect(4/3)">4:3 כרטיס</button>
                     <button type="button" data-r="1" onclick="setCropAspect(1)">ריבוע</button>
                     <button type="button" data-r="0.75" onclick="setCropAspect(3/4)">לאורך</button>
-                    <button type="button" data-r="0" onclick="setCropAspect(NaN)">חופשי</button>
                 </div>
                 <div class="img-editor-btns">
                     <button type="button" onclick="cropperInst&&cropperInst.rotate(-90)">↺ סיבוב</button>
@@ -1553,7 +1568,7 @@ async function saveEvent() {
         materials: document.getElementById('f-materials').value.trim(),
         materials2: document.getElementById('f-materials2').value.trim(),
         date_end_raw: dateEndRaw || null,
-        image: (imgEd.img ? document.getElementById('img-canvas').toDataURL('image/jpeg', 0.82) : currentImageData) || null,
+        image: (() => { try { return imgEd.img ? document.getElementById('img-canvas').toDataURL('image/jpeg', 0.82) : currentImageData; } catch (e) { return currentImageData; } })() || null,
         status: (currentRole === 'admin' || currentTrusted) ? 'approved' : 'pending'
     };
 
@@ -1615,11 +1630,12 @@ async function openCropper(dataUrl) {
     if (cropperInst) { cropperInst.destroy(); cropperInst = null; }
     img.onload = () => {
         cropperInst = new Cropper(img, {
-            viewMode: 1, dragMode: 'move', aspectRatio: 4 / 3, autoCropArea: 1,
+            viewMode: 1, dragMode: 'crop', aspectRatio: NaN, autoCropArea: 0.9,
             background: false, responsive: true, guides: true, center: true,
-            toggleDragModeOnDblclick: false
+            cropBoxMovable: true, cropBoxResizable: true, movable: true, zoomable: true,
+            toggleDragModeOnDblclick: true, minCropBoxWidth: 40, minCropBoxHeight: 40
         });
-        setCropAspect(4 / 3);
+        setCropAspect(NaN);   // ברירת מחדל: חיתוך חופשי — אפשר למתוח ולכווץ כל צד בנפרד
     };
     img.src = dataUrl;
 }
@@ -1649,6 +1665,7 @@ const imgEd = { img: null, s: 1, ox: 0, oy: 0, fit: 1, cover: 1, max: 4, draggin
 
 function openImageEditor(dataUrl) {
     const img = new Image();
+    if (!/^data:/.test(dataUrl)) img.crossOrigin = 'anonymous';
     img.onload = () => {
         imgEd.img = img;
         imgEd.fit = Math.min(IMG_W / img.naturalWidth, IMG_H / img.naturalHeight);
@@ -1660,6 +1677,13 @@ function openImageEditor(dataUrl) {
     };
     img.onerror = () => alert('לא ניתן לקרוא את קובץ התמונה. נסו תמונה בפורמט JPG או PNG.');
     img.src = dataUrl;
+}
+
+function editExistingImage(ev) {
+    if (ev) { ev.preventDefault(); ev.stopPropagation(); }
+    if (!currentImageData) return;
+    cropOriginal = currentImageData;
+    openImageEditor(currentImageData);
 }
 
 function closeImageEditor() {
@@ -1711,7 +1735,7 @@ function drawEditor(final) {
     }
     ctx.drawImage(img, imgEd.ox, imgEd.oy, w, h);
     clearTimeout(drawEditor._t);
-    drawEditor._t = setTimeout(() => { currentImageData = c.toDataURL('image/jpeg', 0.82); }, 120);
+    drawEditor._t = setTimeout(() => { try { currentImageData = c.toDataURL('image/jpeg', 0.82); } catch (e) { console.warn('image export blocked', e); } }, 120);
 }
 
 function canvasPoint(ev) {
