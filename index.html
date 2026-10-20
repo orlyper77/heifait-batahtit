@@ -115,8 +115,9 @@ body{font-family:'Secular One',sans-serif;background:#1a0505;color:#f5ede8;direc
 #cat-strip.show{transform:translateY(0);opacity:1;pointer-events:auto;}
 #cat-strip .filter-btn{flex-shrink:0;white-space:nowrap;padding:5px 11px;font-size:12px;}
 @media (prefers-reduced-motion: reduce){#cat-strip{transition:none;}}
-.filter-btn.no-events:not(.active){opacity:.32;filter:saturate(.25);}
-.filter-btn.no-events:not(.active):hover{opacity:.6;}
+/* מוצגות רק קטגוריות שיש בהן אירועים (קטגוריה שנבחרה נשארת גלויה) */
+.filter-btn.no-events:not(.active){display:none !important;}
+.cats-loading .filter-btn:not([data-cat="all"]){display:none !important;}
 .filter-btn[data-cat="all"]{background:rgba(255,255,255,0.1);border-color:rgba(255,255,255,0.3);color:#fff;}
 .filter-btn[data-cat="all"].active{background:#fff;color:#1a0505;border-color:#fff;}
 .filter-btn[data-cat="music"]{background:rgba(167,105,221,0.25);color:#e0b8ff;border-color:rgba(167,105,221,0.5);}
@@ -323,6 +324,16 @@ body{font-family:'Secular One',sans-serif;background:#1a0505;color:#f5ede8;direc
 .img-upload-area:hover{border-color:#7ec8d8;background:rgba(126,200,216,0.05);}
 .img-upload-area.has-image{padding:0;border-style:solid;border-color:rgba(126,200,216,0.35);}
 .img-upload-area input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;}
+.img-editor{border:1px solid rgba(212,224,52,0.3);border-radius:12px;padding:10px;background:rgba(0,0,0,0.2);}
+#img-canvas{width:100%;height:auto;aspect-ratio:4/3;display:block;border-radius:8px;cursor:grab;touch-action:none;background:#1a0505;}
+#img-canvas:active{cursor:grabbing;}
+.img-editor-hint{font-size:12px;color:rgba(255,255,255,0.5);text-align:center;margin:8px 0 4px;}
+.img-editor-zoom{display:flex;align-items:center;gap:8px;font-size:13px;color:rgba(255,255,255,0.6);}
+.img-editor-zoom input{flex:1;accent-color:#d4e034;}
+.img-editor-btns{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;}
+.img-editor-btns button{flex:1 1 auto;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.15);color:#f5ede8;font-family:'Secular One',sans-serif;font-size:13px;padding:7px 10px;border-radius:8px;cursor:pointer;white-space:nowrap;}
+.img-editor-btns button:hover{background:rgba(212,224,52,0.15);border-color:rgba(212,224,52,0.4);}
+.img-editor-btns button.danger{color:#ff9a8a;}
 .img-preview{width:100%;height:150px;object-fit:cover;border-radius:10px;display:block;}
 .img-placeholder{pointer-events:none;}
 .img-placeholder-icon{font-size:1.8rem;margin-bottom:.4rem;}
@@ -348,7 +359,7 @@ body{font-family:'Secular One',sans-serif;background:#1a0505;color:#f5ede8;direc
 .modal-rules p{color:rgba(255,255,255,0.5);font-size:12px;margin-top:8px;}
 .modal h2{font-size:1.4rem;font-weight:700;margin-bottom:1.2rem;color:#d4e034;}
 .view-modal{background:#2e0c0c;border:1px solid rgba(255,255,255,0.12);border-radius:20px;width:100%;max-width:600px;max-height:90vh;overflow-y:auto;position:relative;animation:fadeIn .2s ease;}
-.view-modal-img{width:100%;max-height:280px;object-fit:cover;border-radius:14px 14px 0 0;display:block;}
+.view-modal-img{width:100%;aspect-ratio:4/3;height:auto;object-fit:contain;background:#1a0505;border-radius:14px 14px 0 0;display:block;}
 .view-modal-img-placeholder{width:100%;height:180px;display:flex;align-items:center;justify-content:center;font-size:4rem;border-radius:14px 14px 0 0;background:#4a1010;}
 .view-modal-body{padding:1.5rem;}
 .view-modal-cats{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:.7rem;}
@@ -538,7 +549,7 @@ body.a11y-big-cursor *{cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w
 </div>
 
 <!-- Toolbar -->
-<div class="toolbar" id="toolbar">
+<div class="toolbar cats-loading" id="toolbar">
     <button class="filter-btn active" data-cat="all">הכל</button>
     <button class="filter-btn" data-cat="music">🎵 מוזיקה</button>
     <button class="filter-btn" data-cat="theater">🎭 תאטרון</button>
@@ -687,6 +698,17 @@ body.a11y-big-cursor *{cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w
                     <div class="img-placeholder-sub">JPG, PNG, WEBP עד 5MB · מומלץ: 800×500 פיקסלים</div>
                 </div>
                 <img id="img-preview" class="img-preview" src="" alt="" style="display:none;">
+            </div>
+            <div class="img-editor" id="img-editor" style="display:none;">
+                <canvas id="img-canvas" width="1200" height="900" aria-label="תצוגה מקדימה של תמונת האירוע"></canvas>
+                <div class="img-editor-hint">גררו כדי להזיז · זום עם הסרגל או בשתי אצבעות</div>
+                <div class="img-editor-zoom"><span>🔍−</span><input type="range" id="img-zoom" min="0" max="1000" step="1" value="0" aria-label="זום"><span>🔍+</span></div>
+                <div class="img-editor-btns">
+                    <button type="button" onclick="setEditorScale(imgEd.fit, true)">🖼 כל התמונה</button>
+                    <button type="button" onclick="setEditorScale(imgEd.cover, true)">⬛ מילוי המסגרת</button>
+                    <button type="button" onclick="document.getElementById('f-image').click()">🔄 החלפת תמונה</button>
+                    <button type="button" class="danger" onclick="removeImage(event)">🗑 הסרה</button>
+                </div>
             </div>
         </div>
         <div class="form-group"><label>שם האירוע *</label><input type="text" id="f-title" placeholder="למשל: קונצרט בגן הבהאים"></div>
@@ -1070,7 +1092,8 @@ function applyFilter() {
     setTimeout(hideUnnecessaryMoreBtns, 50);
 }
 
-// קטגוריות בלי אירועים מוצגות מעומעמות; עם אירועים — מוארות
+// קטגוריות בלי אירועים מוסתרות; מוצגות רק קטגוריות שיש בהן אירועים
+setTimeout(() => document.getElementById('toolbar')?.classList.remove('cats-loading'), 6000);
 // תאריך לתצוגה: יום אחד — כמו שנשמר; כמה ימים — טווח קריא ("18–19 באוקטובר 2026")
 function formatEventDate(e) {
     const start = e.dateRaw, end = e.dateEndRaw;
@@ -1096,6 +1119,8 @@ function updateCatAvailability(list) {
         btn.classList.toggle('no-events', n === 0);
         btn.title = n ? `${n} אירועים` : 'אין כרגע אירועים בקטגוריה הזו';
     });
+    document.getElementById('toolbar').classList.remove('cats-loading');
+    const strip = document.getElementById('cat-strip'); if (strip) strip.classList.remove('cats-loading');
 }
 
 function render() {
@@ -1424,6 +1449,7 @@ function openModal(id) {
     document.getElementById('img-placeholder').style.display = 'block';
     document.getElementById('upload-area').classList.remove('has-image');
     document.getElementById('f-image').value = '';
+    closeImageEditor();
 
     if (id === null) {
         document.getElementById('modal-title').textContent = '✦ הוסף אירוע חדש';
@@ -1494,7 +1520,7 @@ async function saveEvent() {
         materials: document.getElementById('f-materials').value.trim(),
         materials2: document.getElementById('f-materials2').value.trim(),
         date_end_raw: dateEndRaw || null,
-        image: currentImageData || null,
+        image: (imgEd.img ? document.getElementById('img-canvas').toDataURL('image/jpeg', 0.82) : currentImageData) || null,
         status: (currentRole === 'admin' || currentTrusted) ? 'approved' : 'pending'
     };
 
@@ -1530,6 +1556,118 @@ function matLinkHtml(url, n) {
     return `<a class="link-btn link-materials link-brand" href="${url}" target="_blank" rel="noopener" aria-label="${label}${n === 2 ? ' 2' : ''}" title="${label}">${icon}</a>`;
 }
 
+// ── עורך תמונה: חיתוך והתאמה למסגרת של כרטיס האירוע (4:3) ──
+const IMG_W = 1200, IMG_H = 900;
+const imgEd = { img: null, s: 1, ox: 0, oy: 0, fit: 1, cover: 1, max: 4, dragging: false, lx: 0, ly: 0, pinch: null, pts: new Map() };
+
+function openImageEditor(dataUrl) {
+    const img = new Image();
+    img.onload = () => {
+        imgEd.img = img;
+        imgEd.fit = Math.min(IMG_W / img.naturalWidth, IMG_H / img.naturalHeight);
+        imgEd.cover = Math.max(IMG_W / img.naturalWidth, IMG_H / img.naturalHeight);
+        imgEd.max = imgEd.cover * 3;
+        setEditorScale(imgEd.fit, true);          // ברירת מחדל: כל התמונה נראית
+        document.getElementById('img-editor').style.display = 'block';
+        document.getElementById('upload-area').style.display = 'none';
+    };
+    img.onerror = () => alert('לא ניתן לקרוא את קובץ התמונה. נסו תמונה בפורמט JPG או PNG.');
+    img.src = dataUrl;
+}
+
+function closeImageEditor() {
+    imgEd.img = null;
+    document.getElementById('img-editor').style.display = 'none';
+    document.getElementById('upload-area').style.display = '';
+}
+
+function clampEditor() {
+    const w = imgEd.img.naturalWidth * imgEd.s, h = imgEd.img.naturalHeight * imgEd.s;
+    imgEd.ox = w >= IMG_W ? Math.min(0, Math.max(IMG_W - w, imgEd.ox)) : Math.max(0, Math.min(IMG_W - w, imgEd.ox));
+    imgEd.oy = h >= IMG_H ? Math.min(0, Math.max(IMG_H - h, imgEd.oy)) : Math.max(0, Math.min(IMG_H - h, imgEd.oy));
+}
+
+function setEditorScale(newS, center, cx, cy) {
+    const img = imgEd.img; if (!img) return;
+    newS = Math.max(imgEd.fit, Math.min(imgEd.max, newS));
+    if (center) {
+        imgEd.s = newS;
+        imgEd.ox = (IMG_W - img.naturalWidth * newS) / 2;
+        imgEd.oy = (IMG_H - img.naturalHeight * newS) / 2;
+    } else {
+        // זום סביב נקודה (מרכז המסגרת כברירת מחדל)
+        cx = cx ?? IMG_W / 2; cy = cy ?? IMG_H / 2;
+        imgEd.ox = cx - (cx - imgEd.ox) * newS / imgEd.s;
+        imgEd.oy = cy - (cy - imgEd.oy) * newS / imgEd.s;
+        imgEd.s = newS;
+    }
+    clampEditor();
+    const z = document.getElementById('img-zoom');
+    z.value = Math.round((Math.log(imgEd.s / imgEd.fit) / Math.log(imgEd.max / imgEd.fit)) * 1000) || 0;
+    drawEditor();
+}
+
+function drawEditor(final) {
+    const c = document.getElementById('img-canvas'), ctx = c.getContext('2d'), img = imgEd.img;
+    if (!img) return;
+    const w = img.naturalWidth * imgEd.s, h = img.naturalHeight * imgEd.s;
+    ctx.fillStyle = '#1a0505'; ctx.fillRect(0, 0, IMG_W, IMG_H);
+    if (w < IMG_W - 1 || h < IMG_H - 1) {
+        // רקע מטושטש מאותה תמונה, כדי שלא יהיו פסים ריקים
+        const cs = imgEd.cover * 1.1, bw = img.naturalWidth * cs, bh = img.naturalHeight * cs;
+        ctx.save();
+        if ('filter' in ctx) ctx.filter = 'blur(28px) brightness(0.55)';
+        ctx.drawImage(img, (IMG_W - bw) / 2, (IMG_H - bh) / 2, bw, bh);
+        ctx.restore();
+        if (!('filter' in ctx)) { ctx.fillStyle = 'rgba(26,5,5,0.6)'; ctx.fillRect(0, 0, IMG_W, IMG_H); }
+    }
+    ctx.drawImage(img, imgEd.ox, imgEd.oy, w, h);
+    clearTimeout(drawEditor._t);
+    drawEditor._t = setTimeout(() => { currentImageData = c.toDataURL('image/jpeg', 0.82); }, 120);
+}
+
+function canvasPoint(ev) {
+    const c = document.getElementById('img-canvas'), r = c.getBoundingClientRect();
+    return { x: (ev.clientX - r.left) * IMG_W / r.width, y: (ev.clientY - r.top) * IMG_H / r.height, k: IMG_W / r.width };
+}
+
+function setupImageEditor() {
+    const c = document.getElementById('img-canvas');
+    c.addEventListener('pointerdown', ev => {
+        c.setPointerCapture(ev.pointerId);
+        imgEd.pts.set(ev.pointerId, canvasPoint(ev));
+        if (imgEd.pts.size === 2) {
+            const [a, b] = [...imgEd.pts.values()];
+            imgEd.pinch = { d: Math.hypot(a.x - b.x, a.y - b.y), s: imgEd.s };
+        }
+    });
+    c.addEventListener('pointermove', ev => {
+        if (!imgEd.pts.has(ev.pointerId) || !imgEd.img) return;
+        const p = canvasPoint(ev), prev = imgEd.pts.get(ev.pointerId);
+        imgEd.pts.set(ev.pointerId, p);
+        if (imgEd.pts.size === 2 && imgEd.pinch) {
+            const [a, b] = [...imgEd.pts.values()];
+            const d = Math.hypot(a.x - b.x, a.y - b.y);
+            setEditorScale(imgEd.pinch.s * d / imgEd.pinch.d, false, (a.x + b.x) / 2, (a.y + b.y) / 2);
+        } else if (imgEd.pts.size === 1) {
+            imgEd.ox += p.x - prev.x; imgEd.oy += p.y - prev.y;
+            clampEditor(); drawEditor();
+        }
+    });
+    const end = ev => { imgEd.pts.delete(ev.pointerId); if (imgEd.pts.size < 2) imgEd.pinch = null; };
+    c.addEventListener('pointerup', end); c.addEventListener('pointercancel', end);
+    c.addEventListener('wheel', ev => {
+        if (!imgEd.img) return; ev.preventDefault();
+        const p = canvasPoint(ev);
+        setEditorScale(imgEd.s * (ev.deltaY < 0 ? 1.08 : 1 / 1.08), false, p.x, p.y);
+    }, { passive: false });
+    document.getElementById('img-zoom').addEventListener('input', ev => {
+        const t = ev.target.value / 1000;
+        setEditorScale(imgEd.fit * Math.pow(imgEd.max / imgEd.fit, t), false);
+    });
+}
+document.addEventListener('DOMContentLoaded', setupImageEditor);
+
 // כיווץ תמונה לפני שמירה: עד 1200 פיקסלים בצד הארוך, JPEG באיכות טובה
 function compressImage(dataUrl, maxSide = 1200, quality = 0.82) {
     return new Promise((resolve, reject) => {
@@ -1557,23 +1695,21 @@ function handleImageUpload(e) {
     reader.onload = async ev => {
         let data = ev.target.result;
         try {
-            data = await compressImage(data);
+            data = await compressImage(data, 2400, 0.9);
         } catch (err) {
             alert('לא ניתן לקרוא את קובץ התמונה. נסו תמונה בפורמט JPG או PNG.');
             e.target.value = '';
             return;
         }
         currentImageData = data;
-        document.getElementById('img-preview').src = currentImageData;
-        document.getElementById('img-preview').style.display = 'block';
-        document.getElementById('img-placeholder').style.display = 'none';
-        document.getElementById('upload-area').classList.add('has-image');
+        openImageEditor(data);
     };
     reader.readAsDataURL(file);
 }
 
 function removeImage(e) {
-    e.preventDefault(); e.stopPropagation();
+    if (e) { e.preventDefault(); e.stopPropagation(); }
+    closeImageEditor();
     currentImageData = null;
     document.getElementById('img-preview').src = '';
     document.getElementById('img-preview').style.display = 'none';
