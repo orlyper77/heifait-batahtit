@@ -324,6 +324,16 @@ body{font-family:'Secular One',sans-serif;background:#1a0505;color:#f5ede8;direc
 .img-upload-area:hover{border-color:#7ec8d8;background:rgba(126,200,216,0.05);}
 .img-upload-area.has-image{padding:0;border-style:solid;border-color:rgba(126,200,216,0.35);}
 .img-upload-area input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;}
+.crop-box{border:1px solid rgba(212,224,52,0.3);border-radius:12px;padding:10px;background:rgba(0,0,0,0.25);}
+.crop-stage{width:100%;height:min(60vh,420px);background:#0f0202;border-radius:8px;overflow:hidden;}
+.crop-stage img{display:block;max-width:100%;}
+.crop-aspect{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin-top:8px;font-size:13px;color:rgba(255,255,255,0.6);}
+.crop-aspect button{background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.15);color:#f5ede8;font-family:'Secular One',sans-serif;font-size:12.5px;padding:5px 10px;border-radius:20px;cursor:pointer;}
+.crop-aspect button.on{background:#d4e034;color:#1a0505;border-color:#d4e034;}
+.img-editor-btns button.primary{background:#d4e034;color:#1a0505;border-color:#d4e034;}
+.crop-box .cropper-view-box{outline:2px solid #d4e034;outline-color:rgba(212,224,52,0.9);}
+.crop-box .cropper-point{background:#d4e034;width:10px;height:10px;opacity:1;}
+.crop-box .cropper-line{background:#d4e034;}
 .img-editor{border:1px solid rgba(212,224,52,0.3);border-radius:12px;padding:10px;background:rgba(0,0,0,0.2);}
 #img-canvas{width:100%;height:auto;aspect-ratio:4/3;display:block;border-radius:8px;cursor:grab;touch-action:none;background:#1a0505;}
 #img-canvas:active{cursor:grabbing;}
@@ -699,6 +709,27 @@ body.a11y-big-cursor *{cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w
                 </div>
                 <img id="img-preview" class="img-preview" src="" alt="" style="display:none;">
             </div>
+            <div class="crop-box" id="crop-box" style="display:none;">
+                <div class="crop-stage"><img id="crop-img" alt="חיתוך תמונה"></div>
+                <div class="crop-aspect">
+                    <span>יחס:</span>
+                    <button type="button" data-r="1.3333333333333333" onclick="setCropAspect(4/3)">4:3 כרטיס</button>
+                    <button type="button" data-r="1" onclick="setCropAspect(1)">ריבוע</button>
+                    <button type="button" data-r="0.75" onclick="setCropAspect(3/4)">לאורך</button>
+                    <button type="button" data-r="0" onclick="setCropAspect(NaN)">חופשי</button>
+                </div>
+                <div class="img-editor-btns">
+                    <button type="button" onclick="cropperInst&&cropperInst.rotate(-90)">↺ סיבוב</button>
+                    <button type="button" onclick="cropperInst&&cropperInst.rotate(90)">↻ סיבוב</button>
+                    <button type="button" onclick="cropperInst&&cropperInst.zoom(0.1)">🔍+</button>
+                    <button type="button" onclick="cropperInst&&cropperInst.zoom(-0.1)">🔍−</button>
+                    <button type="button" onclick="cropperInst&&cropperInst.reset()">↩ איפוס</button>
+                </div>
+                <div class="img-editor-btns">
+                    <button type="button" class="primary" onclick="applyCrop()">✓ אישור חיתוך</button>
+                    <button type="button" onclick="cancelCrop()">ביטול</button>
+                </div>
+            </div>
             <div class="img-editor" id="img-editor" style="display:none;">
                 <canvas id="img-canvas" width="1200" height="900" aria-label="תצוגה מקדימה של תמונת האירוע"></canvas>
                 <div class="img-editor-hint">גררו כדי להזיז · זום עם הסרגל או בשתי אצבעות</div>
@@ -706,6 +737,7 @@ body.a11y-big-cursor *{cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w
                 <div class="img-editor-btns">
                     <button type="button" onclick="setEditorScale(imgEd.fit, true)">🖼 כל התמונה</button>
                     <button type="button" onclick="setEditorScale(imgEd.cover, true)">⬛ מילוי המסגרת</button>
+                    <button type="button" onclick="openCropper()">✂️ חיתוך מדויק</button>
                     <button type="button" onclick="document.getElementById('f-image').click()">🔄 החלפת תמונה</button>
                     <button type="button" class="danger" onclick="removeImage(event)">🗑 הסרה</button>
                 </div>
@@ -1037,7 +1069,8 @@ async function loadEvents() {
     try {
         const { data, error } = await db.from('events').select('*').order('date_raw', { ascending: true });
         if (error) throw error;
-        const today = new Date().toISOString().split('T')[0];
+        const _n = new Date(); // תאריך מקומי (ישראל), לא UTC — כדי שאירועים של אתמול ייעלמו כבר בחצות
+        const today = `${_n.getFullYear()}-${String(_n.getMonth()+1).padStart(2,'0')}-${String(_n.getDate()).padStart(2,'0')}`;
         events = (data || []).filter(e => {
             if (!e.date_raw) return true;
             const endDate = e.date_end_raw || e.date_raw;
@@ -1556,6 +1589,60 @@ function matLinkHtml(url, n) {
     return `<a class="link-btn link-materials link-brand" href="${url}" target="_blank" rel="noopener" aria-label="${label}${n === 2 ? ' 2' : ''}" title="${label}">${icon}</a>`;
 }
 
+// ── חיתוך מדויק (Cropper.js) — נטען רק כשצריך ──
+let cropperInst = null, cropOriginal = null;
+function loadCropperLib() {
+    if (window.Cropper) return Promise.resolve();
+    const bases = ['https://cdn.jsdelivr.net/npm/cropperjs@1.6.2/dist/', 'https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/'];
+    const tryLoad = i => new Promise((res, rej) => {
+        if (i >= bases.length) return rej(new Error('cropper'));
+        const css = document.createElement('link'); css.rel = 'stylesheet'; css.href = bases[i] + 'cropper.min.css'; document.head.appendChild(css);
+        const sc = document.createElement('script'); sc.src = bases[i] + 'cropper.min.js';
+        sc.onload = () => window.Cropper ? res() : tryLoad(i + 1).then(res, rej);
+        sc.onerror = () => tryLoad(i + 1).then(res, rej);
+        document.head.appendChild(sc);
+    });
+    return tryLoad(0);
+}
+async function openCropper(dataUrl) {
+    dataUrl = dataUrl || cropOriginal; if (!dataUrl) return;
+    cropOriginal = dataUrl;
+    try { await loadCropperLib(); } catch (e) { alert('לא הצלחנו לטעון את כלי החיתוך. בדקו את החיבור לאינטרנט ונסו שוב.'); return; }
+    const box = document.getElementById('crop-box'), img = document.getElementById('crop-img');
+    document.getElementById('img-editor').style.display = 'none';
+    document.getElementById('upload-area').style.display = 'none';
+    box.style.display = 'block';
+    if (cropperInst) { cropperInst.destroy(); cropperInst = null; }
+    img.onload = () => {
+        cropperInst = new Cropper(img, {
+            viewMode: 1, dragMode: 'move', aspectRatio: 4 / 3, autoCropArea: 1,
+            background: false, responsive: true, guides: true, center: true,
+            toggleDragModeOnDblclick: false
+        });
+        setCropAspect(4 / 3);
+    };
+    img.src = dataUrl;
+}
+function setCropAspect(r) {
+    if (cropperInst) cropperInst.setAspectRatio(r);
+    document.querySelectorAll('.crop-aspect button').forEach(b => b.classList.toggle('on', +b.dataset.r === (isNaN(r) ? 0 : r)));
+}
+function applyCrop() {
+    if (!cropperInst) return;
+    const c = cropperInst.getCroppedCanvas({ maxWidth: 2400, maxHeight: 2400, imageSmoothingQuality: 'high', fillColor: '#1a0505' });
+    const out = c.toDataURL('image/jpeg', 0.92);
+    cancelCrop(true);
+    openImageEditor(out);        // המסגרת של הכרטיס: "כל התמונה" כברירת מחדל
+}
+function cancelCrop(keepHidden) {
+    if (cropperInst) { cropperInst.destroy(); cropperInst = null; }
+    document.getElementById('crop-box').style.display = 'none';
+    if (!keepHidden) {
+        if (imgEd.img) document.getElementById('img-editor').style.display = 'block';
+        else document.getElementById('upload-area').style.display = '';
+    }
+}
+
 // ── עורך תמונה: חיתוך והתאמה למסגרת של כרטיס האירוע (4:3) ──
 const IMG_W = 1200, IMG_H = 900;
 const imgEd = { img: null, s: 1, ox: 0, oy: 0, fit: 1, cover: 1, max: 4, dragging: false, lx: 0, ly: 0, pinch: null, pts: new Map() };
@@ -1577,6 +1664,7 @@ function openImageEditor(dataUrl) {
 
 function closeImageEditor() {
     imgEd.img = null;
+    if (typeof cancelCrop === 'function' && document.getElementById('crop-box').style.display !== 'none') cancelCrop(true);
     document.getElementById('img-editor').style.display = 'none';
     document.getElementById('upload-area').style.display = '';
 }
@@ -1702,6 +1790,7 @@ function handleImageUpload(e) {
             return;
         }
         currentImageData = data;
+        cropOriginal = data;
         openImageEditor(data);
     };
     reader.readAsDataURL(file);
