@@ -377,6 +377,10 @@ body:has(#overlay.open),body:has(.auth-overlay.open),body:has(#legal-overlay.ope
 .view-modal-links{display:flex;gap:8px;}
 .view-modal-close{position:absolute;top:12px;left:12px;background:rgba(0,0,0,0.5);border:none;color:#fff;font-size:18px;width:32px;height:32px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:2;}
 #view-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.75);display:none;align-items:center;justify-content:center;z-index:1000;padding:1rem;}
+#overlay,#view-overlay{z-index:2100 !important;}
+.btn-preview{flex:1;background:rgba(107,170,220,0.12);color:#9cc9f0;border:1px solid rgba(107,170,220,0.35);font-family:'Secular One',sans-serif;font-size:13px;padding:8px 10px;border-radius:8px;cursor:pointer;}
+.btn-preview:hover{background:rgba(107,170,220,0.22);}
+.approval-btns+.approval-btns{margin-top:6px;}
 .approval-panel{position:fixed;inset:0;background:#1a0505;z-index:2000;overflow-y:auto;display:none;padding:1.5rem;}
 .approval-panel.open{display:block;}
 .approval-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;border-bottom:1px solid rgba(255,255,255,0.1);padding-bottom:1rem;}
@@ -738,7 +742,6 @@ body.a11y-big-cursor *{cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w
                 <button type="button" class="cat-pick-btn" data-c="openstage" onclick="toggleCatPick(this)">🗣️ במה פתוחה</button>
             </div>
         </div>
-        <div class="form-group"><label>תיאור</label><textarea id="f-desc" placeholder="תאר את האירוע..."></textarea></div>
         <div class="form-row">
             <div class="form-group"><label>תאריך</label><input type="date" id="f-date"></div>
             <div class="form-group"><label>תאריך סיום (אופציונלי)</label><input type="date" id="f-date-end"></div>
@@ -746,6 +749,7 @@ body.a11y-big-cursor *{cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w
         </div>
         <div class="form-group"><label>מיקום</label><input type="text" id="f-loc" placeholder="כתובת או שם המקום"></div>
         <div class="form-group"><label>מחיר</label><input type="text" id="f-price" placeholder="₪50 / כניסה חופשית"></div>
+        <div class="form-group"><label>תיאור</label><textarea id="f-desc" placeholder="תאר את האירוע..."></textarea></div>
         <div class="form-divider">קישורים</div>
         <div class="form-group"><label>🎟 קישור לכרטיסים</label><input type="url" id="f-tickets" placeholder="https://..."></div>
         <div class="form-group"><label>🌐 קישור לאתר (של האירוע / המקום / האמן)</label><input type="url" id="f-tickets2" placeholder="https://..."></div>
@@ -780,8 +784,8 @@ body.a11y-big-cursor *{cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w
         <div class="view-modal-body">
             <div class="view-modal-cats" id="view-modal-cats"></div>
             <div class="view-modal-title" id="view-modal-title"></div>
-            <div class="view-modal-desc" id="view-modal-desc"></div>
             <div class="view-modal-meta" id="view-modal-meta"></div>
+            <div class="view-modal-desc" id="view-modal-desc"></div>
             <div class="view-modal-links" id="view-modal-links"></div>
         </div>
     </div>
@@ -1046,32 +1050,36 @@ async function loadEvents() {
             if (!e.status || e.status === 'approved' || e.status === '') return true;
             if (currentUser && e.user_id === currentUser.id) return true;
             return false;
-        }).map(e => ({
-            id: e.id,
-            cat: e.cat,
-            cats: e.cats ? (Array.isArray(e.cats) ? e.cats : JSON.parse(e.cats)) : [e.cat],
-            emoji: CAT_EMOJI[e.cat] || '📌',
-            title: e.title,
-            desc: e.description || '',
-            dateRaw: e.date_raw || '',
-            dateEndRaw: e.date_end_raw || '',
-            date: e.date_display || (e.date_raw ? new Date(e.date_raw + 'T12:00:00').toLocaleDateString('he-IL', {weekday:'long',day:'numeric',month:'long',year:'numeric'}) : '-'),
-            time: e.time || '-',
-            location: e.location || 'חיפה',
-            price: e.price || 'כניסה חופשית',
-            tickets: e.tickets || '',
-            tickets2: e.tickets2 || '',
-            materials: e.materials || '',
-            materials2: e.materials2 || '',
-            image: e.image || null,
-            user_id: e.user_id,
-            status: e.status || 'approved'
-        }));
+        }).map(rowToEvent);
         applyFilter();
     } catch(e) {
         console.error(e);
         document.getElementById('grid').innerHTML = '<div class="empty">שגיאה בטעינת האירועים</div>';
     }
+}
+
+function rowToEvent(e) {
+    return {
+        id: e.id,
+        cat: e.cat,
+        cats: e.cats ? (Array.isArray(e.cats) ? e.cats : JSON.parse(e.cats)) : [e.cat],
+        emoji: CAT_EMOJI[e.cat] || '📌',
+        title: e.title,
+        desc: e.description || '',
+        dateRaw: e.date_raw || '',
+        dateEndRaw: e.date_end_raw || '',
+        date: e.date_display || (e.date_raw ? new Date(e.date_raw + 'T12:00:00').toLocaleDateString('he-IL', {weekday:'long',day:'numeric',month:'long',year:'numeric'}) : '-'),
+        time: e.time || '-',
+        location: e.location || 'חיפה',
+        price: e.price || 'כניסה חופשית',
+        tickets: e.tickets || '',
+        tickets2: e.tickets2 || '',
+        materials: e.materials || '',
+        materials2: e.materials2 || '',
+        image: e.image || null,
+        user_id: e.user_id,
+        status: e.status || 'approved'
+    };
 }
 
 function applyFilter() {
@@ -1298,6 +1306,7 @@ async function loadPendingEvents() {
         const { data: profile } = await db.from('user_profiles').select('id,email,name,trusted').eq('id', uid).single();
         userEmails[uid] = (profile?.name ? profile.name + ' · ' : '') + (profile?.email || uid.substring(0,8)+'...');
     }
+    pendingRows = {}; data.forEach(r => { pendingRows[r.id] = r; });
     grid.innerHTML = data.map(e => `
         <div class="approval-card" id="acard-${e.id}">
             ${e.image ? `<img class="approval-card-img" src="${e.image}" alt="">` : `<div class="approval-card-img">${CAT_EMOJI[e.cat]||'📌'}</div>`}
@@ -1306,6 +1315,10 @@ async function loadPendingEvents() {
                 <div class="approval-card-meta">📅 ${e.date_display||e.date_raw||'-'} · 📍 ${e.location||'חיפה'}</div>
                 <div class="approval-card-meta">👤 <span id="user-email-${e.id}">${userEmails[e.user_id]||'לא ידוע'}</span></div>
                 <div class="approval-card-desc">${e.description||''}</div>
+                <div class="approval-btns">
+                    <button class="btn-preview" onclick="previewPending('${e.id}')">👁 צפייה מלאה</button>
+                    <button class="btn-preview" onclick="editPending('${e.id}')">✏️ עריכה</button>
+                </div>
                 <div class="approval-btns">
                     <button class="btn-approve" onclick="approveEvent('${e.id}')">✓ אשרי</button>
                     <button class="btn-reject" onclick="rejectEvent('${e.id}')">✕ דחי</button>
@@ -1325,6 +1338,16 @@ async function fetchUserEmails(events) {
         } catch(err) {}
     }
 }
+
+// תצוגה מלאה / עריכה של מודעה שממתינה לאישור
+let pendingRows = {};
+function ensurePendingInEvents(id) {
+    let ev = events.find(e => String(e.id) === String(id));
+    if (!ev && pendingRows[id]) { ev = rowToEvent(pendingRows[id]); events.push(ev); }
+    return ev;
+}
+function previewPending(id) { if (ensurePendingInEvents(id)) openViewModal(String(id)); }
+function editPending(id) { if (ensurePendingInEvents(id)) openModal(String(id)); }
 
 async function approveEvent(id) {
     const { error } = await db.from('events').update({status:'approved'}).eq('id', id);
@@ -1512,7 +1535,9 @@ async function saveEvent() {
         materials2: document.getElementById('f-materials2').value.trim(),
         date_end_raw: dateEndRaw || null,
         image: currentImageData || null,
-        status: (currentRole === 'admin' || currentTrusted) ? 'approved' : 'pending'
+        status: (editingId !== null && currentRole === 'admin')
+            ? ((events.find(ev => String(ev.id) === String(editingId)) || {}).status || 'approved')   // מנהלת שעורכת — הסטטוס לא משתנה (ממתין נשאר ממתין)
+            : ((currentRole === 'admin' || currentTrusted) ? 'approved' : 'pending')
     };
 
     try {
@@ -1526,6 +1551,7 @@ async function saveEvent() {
         }
         if (error) throw error;
         closeModal();
+        if (document.getElementById('approval-panel')?.classList.contains('open')) loadPendingEvents();
         if (currentRole !== 'admin' && !currentTrusted && !editingId) {
             alert('האירוע שלך התקבל ויפורסם לאחר אישור המנהלת 🙏');
         }
