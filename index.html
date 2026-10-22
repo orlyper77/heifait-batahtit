@@ -185,6 +185,9 @@ body{font-family:'Secular One',sans-serif;background:#1a0505;color:#f5ede8;direc
 
 /* Cards */
 .events-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:1.4rem;padding:1.5rem 2rem;max-width:1400px;margin:0 auto;}
+.day-header{grid-column:1/-1;display:flex;align-items:center;gap:10px;font-size:1.15rem;font-weight:700;color:#f5ede8;padding:.6rem .2rem .1rem;border-bottom:1px solid rgba(212,224,52,0.25);margin-top:.6rem;}
+.day-header:first-child{margin-top:0;}
+.day-rel{background:#d4e034;color:#1a0505;font-size:.85rem;padding:2px 10px;border-radius:20px;}
 .card{background:#2a0a0a;border:1px solid rgba(255,255,255,0.07);border-radius:14px;overflow:hidden;transition:transform .25s,box-shadow .25s,border-color .25s;position:relative;animation:fadeIn .3s ease;display:flex;flex-direction:column;}
 @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
 .card:hover{transform:translateY(-3px);box-shadow:0 12px 30px rgba(0,0,0,0.4);border-color:rgba(212,224,52,0.3);}
@@ -342,6 +345,7 @@ body{font-family:'Secular One',sans-serif;background:#1a0505;color:#f5ede8;direc
 .img-placeholder-icon{font-size:1.8rem;margin-bottom:.4rem;}
 .img-placeholder-text{font-size:13px;color:rgba(255,255,255,0.4);}
 .img-placeholder-sub{font-size:11.5px;color:rgba(255,255,255,0.4);margin-top:3px;}
+.field-hint{font-size:11.5px;color:rgba(255,255,255,0.4);margin-top:4px;}
 .img-placeholder-size{font-size:15px;font-weight:700;color:#d4e034;margin-top:6px;}
 .btn-remove-img{position:absolute;top:6px;left:6px;background:rgba(0,0,0,0.6);border:none;border-radius:50%;width:26px;height:26px;color:#fff;font-size:13px;cursor:pointer;display:none;align-items:center;justify-content:center;z-index:3;}
 .img-upload-area.has-image .btn-remove-img{display:flex;}
@@ -747,7 +751,8 @@ body.a11y-big-cursor *{cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w
             <div class="form-group"><label>תאריך סיום (אופציונלי)</label><input type="date" id="f-date-end"></div>
             <div class="form-group"><label>שעה</label><input type="text" id="f-time" placeholder="20:00–23:00"></div>
         </div>
-        <div class="form-group"><label>מיקום</label><input type="text" id="f-loc" placeholder="כתובת או שם המקום"></div>
+        <div class="form-group"><label>מיקום</label><input type="text" id="f-loc" list="venue-list" autocomplete="off" placeholder="שם המקום, רחוב ומספר, עיר — למשל: אנטארקטיקה, נורדאו 20, חיפה"><datalist id="venue-list"></datalist>
+            <div class="field-hint">התחילו להקליד את שם המקום ובחרו מהרשימה — כך הכתובת תיכתב תמיד באותה צורה.</div></div>
         <div class="form-group"><label>מחיר</label><input type="text" id="f-price" placeholder="₪50 / כניסה חופשית"></div>
         <div class="form-group"><label>תיאור</label><textarea id="f-desc" placeholder="תאר את האירוע..."></textarea></div>
         <div class="form-divider">קישורים</div>
@@ -1138,7 +1143,32 @@ function render() {
         grid.innerHTML = `<div class="empty"><div style="font-size:2.5rem;margin-bottom:.75rem">${activeTab==='favs'?'💔':'🔍'}</div><div>${msg}</div></div>`;
         return;
     }
-    grid.innerHTML = filteredEvents.map(e => {
+    // קיבוץ לפי ימים: כותרת לכל יום ומתחתיה האירועים שלו
+    const todayISO = localISO(new Date());
+    const groupKey = e => !e.dateRaw ? 'zzzz' : (e.dateRaw < todayISO ? todayISO : e.dateRaw);   // אירוע מתמשך שהתחיל — תחת "היום"
+    const ordered = [...filteredEvents].sort((a, b) => groupKey(a).localeCompare(groupKey(b)) || (a.time||'').localeCompare(b.time||''));
+    let lastKey = null;
+    grid.innerHTML = ordered.map(e => {
+        const k = groupKey(e);
+        const header = k !== lastKey ? `<div class="day-header">${dayHeaderLabel(k, todayISO)}</div>` : '';
+        lastKey = k;
+        return header + cardHtml(e);
+    }).join('');
+}
+
+function localISO(d) { return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`; }
+function dayHeaderLabel(k, todayISO) {
+    if (k === 'zzzz') return 'ללא תאריך';
+    const d = new Date(k + 'T12:00:00');
+    const tmr = new Date(todayISO + 'T12:00:00'); tmr.setDate(tmr.getDate() + 1);
+    const full = d.toLocaleDateString('he-IL', { weekday: 'long', day: 'numeric', month: 'long' });
+    if (k === todayISO) return `<span class="day-rel">היום</span> ${full}`;
+    if (k === localISO(tmr)) return `<span class="day-rel">מחר</span> ${full}`;
+    return full;
+}
+
+function cardHtml(e) {
+    {
         const isUserEvent = currentUser && (currentUser.id === e.user_id || currentRole === 'admin');
         return `
         <div class="card${isUserEvent?' user-event':''}" data-id="${e.id}" data-cat="${e.cat}" onclick="openViewModal('${e.id}')" style="cursor:pointer;">
@@ -1165,7 +1195,7 @@ function render() {
             </div>
             ${(() => { const l = eventLinksHtml(e); return l ? `<div class="card-links">${l}</div>` : ''; })()}
         </div>`;
-    }).join('');
+    }
 }
 
 function toggleFav(id, ev) {
@@ -1498,16 +1528,52 @@ function openModal(id) {
             document.getElementById('upload-area').classList.add('has-image');
         }
     }
+    fillVenueList();
     document.getElementById('overlay').classList.add('open');
 }
 
 function closeModal() { document.getElementById('overlay').classList.remove('open'); editingId = null; }
 function overlayClick(e) { if (e.target === document.getElementById('overlay')) closeModal(); }
 
+// ── מיקום אחיד: הצעות ממקומות שכבר פורסמו + ניקוי אוטומטי של הכתובת ──
+const CITY_RE = /(חיפה|נשר|טירת כרמל|קריית\s?[א-ת]+|קרית\s?[א-ת]+|עכו|נהריה|עספיא|דלית אל.?כרמל|יקנעם|זכרון יעקב|תל אביב|ירושלים|haifa)\s*$/i;
+const venueKey = s => (s || '').split(',')[0].replace(/["'״׳]/g, '').replace(/\s+/g, ' ').trim().toLowerCase();
+function knownVenues() {
+    // לכל מקום (לפי השם) — הכתיב הנפוץ ביותר באירועים שכבר באתר
+    const byVenue = {};
+    events.forEach(e => {
+        const loc = (e.location || '').trim();
+        if (!loc || loc === 'חיפה' || !loc.includes(',')) return;
+        const k = venueKey(loc); byVenue[k] = byVenue[k] || {};
+        byVenue[k][loc] = (byVenue[k][loc] || 0) + 1;
+    });
+    return Object.values(byVenue).map(v => Object.entries(v).sort((a, b) => b[1] - a[1] || b[0].length - a[0].length)[0][0])
+        .sort((a, b) => a.localeCompare(b, 'he'));
+}
+function fillVenueList() {
+    const dl = document.getElementById('venue-list'); if (!dl) return;
+    dl.innerHTML = knownVenues().map(v => `<option value="${v.replace(/"/g, '&quot;')}"></option>`).join('');
+}
+function normalizeLocation(raw) {
+    let s = (raw || '').replace(/\s+/g, ' ').trim();
+    if (!s) return '';
+    s = s.replace(/\s*[|·•]\s*/g, ', ').replace(/\s*,\s*/g, ', ').replace(/(,\s*)+/g, ', ').replace(/^,\s*|,\s*$/g, '');
+    // אם הוקלד רק שם של מקום מוכר — משלימים לכתובת המלאה שלו
+    const full = knownVenues().find(v => venueKey(v) === venueKey(s));
+    if (full && !s.includes(',')) return full;
+    // עיר בסוף בלי פסיק ("מסדה 31 חיפה") → "מסדה 31, חיפה"
+    const m = s.match(CITY_RE);
+    if (m && m.index > 0 && s[m.index - 2] !== ',') s = s.slice(0, m.index).trim().replace(/,$/, '') + ', ' + m[1];
+    // אין עיר בכלל → מוסיפים חיפה
+    if (!CITY_RE.test(s)) s += ', חיפה';
+    return s;
+}
+
 async function saveEvent() {
     if (!currentUser) { openAuth(); return; }
     const title = document.getElementById('f-title').value.trim();
     if (!title) { document.getElementById('f-title').style.borderColor = '#f075a8'; setTimeout(() => document.getElementById('f-title').style.borderColor = '', 1500); return; }
+    document.getElementById('f-loc').value = normalizeLocation(document.getElementById('f-loc').value);
     if (!document.getElementById('check-accurate').checked || !document.getElementById('check-rules').checked) {
         alert('יש לאשר את שני הסעיפים לפני פרסום האירוע.');
         return;
@@ -1518,6 +1584,17 @@ async function saveEvent() {
     const cat = selectedCats[0];
     const cats = selectedCats;
     const dateRaw = document.getElementById('f-date').value;
+    // מניעת כפילויות: אותו שם באותו תאריך — חסום; אותו מקום באותו תאריך עם שם דומה — שאלה
+    {
+        const norm = t => (t || '').toLowerCase().replace(/[^0-9a-zא-ת]+/g, '');
+        const others = events.filter(ev => String(ev.id) !== String(editingId) && ev.dateRaw && ev.dateRaw === dateRaw);
+        const same = others.find(ev => norm(ev.title) === norm(title));
+        if (same) { alert(`האירוע "${same.title}" כבר מופיע באתר באותו תאריך — אין צורך לפרסם אותו שוב 🙂`); return; }
+        const loc = document.getElementById('f-loc').value;
+        const near = others.find(ev => venueKey(ev.location) && venueKey(ev.location) === venueKey(loc) &&
+            (norm(ev.title).includes(norm(title).slice(0, 6)) || norm(title).includes(norm(ev.title).slice(0, 6))));
+        if (near && !confirm(`כבר יש באתר אירוע דומה באותו מקום ובאותו תאריך:\n"${near.title}"\n\nלפרסם בכל זאת?`)) return;
+    }
     const dateEndRaw = document.getElementById('f-date-end').value;
     const dateDisplay = dateRaw ? new Date(dateRaw + 'T12:00:00').toLocaleDateString('he-IL', {weekday:'long',day:'numeric',month:'long',year:'numeric'}) : '-';
 
@@ -1556,7 +1633,10 @@ async function saveEvent() {
             alert('האירוע שלך התקבל ויפורסם לאחר אישור המנהלת 🙏');
         }
         await loadEvents();
-    } catch(e) { alert('שגיאה: ' + e.message); }
+    } catch(e) {
+        if (String(e.message||'').includes('DUPLICATE_EVENT')) alert('האירוע הזה כבר פורסם (או ממתין לאישור) — אותו שם באותו תאריך. אין צורך לפרסם אותו שוב 🙂');
+        else alert('שגיאה: ' + e.message);
+    }
 }
 
 // ── כפתור קישור לחומרים: לוגו יוטיוב / ספוטיפיי במקום המילה "קישור" ──
