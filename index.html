@@ -624,6 +624,7 @@ body.a11y-big-cursor *{cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w
   function check(){
     ticking=false;
     strip.style.top=ubH()+'px';
+    bar.style.top = mq.matches ? '' : ubH()+'px';   // מחשב: התפריט נצמד מתחת לפס העליון ולא מתחבא מאחוריו
     const show = mq.matches && bar.getBoundingClientRect().bottom < ubH() + 8;
     if(show===shown) return;
     shown=show;
