@@ -379,6 +379,16 @@ body:has(#overlay.open),body:has(.auth-overlay.open),body:has(#legal-overlay.ope
 .view-modal-meta{display:flex;flex-direction:column;gap:7px;margin-bottom:1.2rem;}
 .view-modal-meta .meta-item{font-size:.9rem;}
 .view-modal-links{display:flex;gap:8px;}
+.view-modal-tools{display:flex;gap:8px;margin-top:10px;}
+.tool-wrap{position:relative;flex:1;}
+.tool-btn{width:100%;display:inline-flex;align-items:center;justify-content:center;gap:7px;background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.85);border:1px solid rgba(255,255,255,0.15);font-family:inherit;font-size:14px;font-weight:600;padding:9px 10px;border-radius:9px;cursor:pointer;transition:background .2s;}
+.tool-btn:hover{background:rgba(255,255,255,0.12);}
+.tool-menu{display:none;position:absolute;bottom:calc(100% + 6px);right:0;left:0;background:#1f1a24;border:1px solid rgba(255,255,255,0.15);border-radius:10px;padding:5px;z-index:5;box-shadow:0 8px 24px rgba(0,0,0,.5);}
+.tool-menu.open{display:block;}
+.tool-menu button{display:block;width:100%;text-align:right;background:none;border:none;color:#f5ede8;font-family:inherit;font-size:14px;padding:9px 10px;border-radius:7px;cursor:pointer;}
+.tool-menu button:hover{background:rgba(255,255,255,0.08);}
+.toast-msg{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#d4e034;color:#1a1a1a;font-weight:700;padding:10px 18px;border-radius:10px;z-index:3000;font-size:14px;}
+@media(max-width:600px){.tool-btn{font-size:15px;min-height:46px;border-radius:10px;}}
 .view-modal-close{position:absolute;top:12px;left:12px;background:rgba(0,0,0,0.5);border:none;color:#fff;font-size:18px;width:32px;height:32px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:2;}
 #view-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.75);display:none;align-items:center;justify-content:center;z-index:1000;padding:1rem;}
 #overlay,#view-overlay{z-index:2100 !important;}
@@ -793,6 +803,23 @@ body.a11y-big-cursor *{cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w
             <div class="view-modal-meta" id="view-modal-meta"></div>
             <div class="view-modal-desc" id="view-modal-desc"></div>
             <div class="view-modal-links" id="view-modal-links"></div>
+            <div class="view-modal-tools">
+                <div class="tool-wrap">
+                    <button class="tool-btn" onclick="toggleToolMenu('cal-menu',event)"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2" y="3" width="12" height="11" rx="2"/><path d="M2 7h12M5 1v4M11 1v4M8 9v4M6 11h4"/></svg>הוספה ליומן</button>
+                    <div class="tool-menu" id="cal-menu">
+                        <button onclick="addToCalendar('google')">יומן Google</button>
+                        <button onclick="addToCalendar('ics')">אייפון / Outlook</button>
+                    </div>
+                </div>
+                <div class="tool-wrap">
+                    <button class="tool-btn" onclick="shareEvent(event)"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="3.5" r="2"/><circle cx="4" cy="8" r="2"/><circle cx="12" cy="12.5" r="2"/><path d="M5.8 7l4.4-2.5M5.8 9l4.4 2.5"/></svg>שיתוף</button>
+                    <div class="tool-menu" id="share-menu">
+                        <button onclick="shareTo('whatsapp')">וואטסאפ</button>
+                        <button onclick="shareTo('facebook')">פייסבוק</button>
+                        <button onclick="shareTo('copy')">העתקת קישור</button>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -1058,6 +1085,7 @@ async function loadEvents() {
             return false;
         }).map(rowToEvent);
         applyFilter();
+        handleEventDeepLink();
     } catch(e) {
         console.error(e);
         document.getElementById('grid').innerHTML = '<div class="empty">שגיאה בטעינת האירועים</div>';
@@ -1208,6 +1236,8 @@ function toggleFav(id, ev) {
 function openViewModal(id) {
     const e = events.find(x => x.id == id);
     if (!e) return;
+    viewEventId = e.id;
+    document.querySelectorAll('.tool-menu.open').forEach(m => m.classList.remove('open'));
     // תמונה
     const imgWrap = document.getElementById('view-modal-img-wrap');
     imgWrap.innerHTML = e.image
@@ -1240,6 +1270,120 @@ function openViewModal(id) {
 function closeViewModal() {
     const vo = document.getElementById('view-overlay');
     vo.style.display = 'none';
+    viewEventId = null;
+    if (new URLSearchParams(location.search).has('event')) history.replaceState(null, '', location.pathname);
+}
+
+// ── הוספה ליומן ושיתוף ──
+let viewEventId = null;
+let deepLinkHandled = false;
+const SITE_URL = 'https://heifait-batahtit.co.il/';
+const eventUrl = e => SITE_URL + 'e/' + encodeURIComponent(e.id);   // קישור שיתוף עם תמונה וכותרת של האירוע
+const curViewEvent = () => events.find(x => x.id == viewEventId);
+
+function toggleToolMenu(id, ev) {
+    ev.stopPropagation();
+    const m = document.getElementById(id);
+    const open = !m.classList.contains('open');
+    document.querySelectorAll('.tool-menu.open').forEach(x => x.classList.remove('open'));
+    if (open) m.classList.add('open');
+}
+document.addEventListener('click', ev => {
+    if (!ev.target.closest || !ev.target.closest('.tool-wrap'))
+        document.querySelectorAll('.tool-menu.open').forEach(x => x.classList.remove('open'));
+});
+function showToast(t) {
+    const d = document.createElement('div');
+    d.className = 'toast-msg'; d.textContent = t;
+    document.body.appendChild(d);
+    setTimeout(() => d.remove(), 2200);
+}
+
+// שעה בישראל → זמן UTC (מתחשב בשעון קיץ/חורף)
+function israelToUtc(dateStr, h, m) {
+    const [y, mo, d] = dateStr.split('-').map(Number);
+    const guess = Date.UTC(y, mo - 1, d, h, m);
+    const p = Object.fromEntries(new Intl.DateTimeFormat('en-US', { timeZone: 'Asia/Jerusalem', hourCycle: 'h23', year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' }).formatToParts(new Date(guess)).map(x => [x.type, x.value]));
+    const asIsrael = Date.UTC(+p.year, +p.month - 1, +p.day, +p.hour % 24, +p.minute);
+    return new Date(guess - (asIsrael - guess));
+}
+const utcStamp = d => d.toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '');
+const dayStamp = s => s.replace(/-/g, '');
+function nextDay(s) { const d = new Date(s + 'T12:00:00'); d.setDate(d.getDate() + 1); return `${d.getFullYear()}${String(d.getMonth()+1).padStart(2,'0')}${String(d.getDate()).padStart(2,'0')}`; }
+
+// זמני האירוע: שעה מתוך שדה השעה ("20:30", "20:00-23:00"); בלי שעה או כמה ימים — אירוע של יום שלם
+function calTimes(e) {
+    const times = [...(e.time || '').matchAll(/(\d{1,2})[:.](\d{2})/g)].map(m => [+m[1], +m[2]]).filter(([h, m]) => h < 24 && m < 60);
+    const multi = e.dateEndRaw && e.dateEndRaw > e.dateRaw;
+    if (!e.dateRaw) return null;
+    if (!times.length || multi) return { allDay: true, start: dayStamp(e.dateRaw), end: nextDay(multi ? e.dateEndRaw : e.dateRaw) };
+    const s = israelToUtc(e.dateRaw, ...times[0]);
+    let en = times[1] ? israelToUtc(e.dateRaw, ...times[1]) : new Date(s.getTime() + 2 * 3600e3);
+    if (en <= s) en = new Date(en.getTime() + 24 * 3600e3);   // מסתיים אחרי חצות
+    return { allDay: false, start: utcStamp(s), end: utcStamp(en) };
+}
+function calDetails(e) {
+    const parts = [];
+    if (e.desc) parts.push(e.desc.length > 600 ? e.desc.slice(0, 600) + '…' : e.desc);
+    if (e.time && e.time !== '-') parts.push('שעה: ' + e.time);
+    if (e.price) parts.push('מחיר: ' + e.price);
+    if (e.tickets) parts.push('כרטיסים: ' + e.tickets);
+    parts.push('פרטים: ' + eventUrl(e));
+    return parts.join('\n\n');
+}
+function addToCalendar(kind) {
+    const e = curViewEvent(); if (!e) return;
+    document.querySelectorAll('.tool-menu.open').forEach(x => x.classList.remove('open'));
+    const t = calTimes(e);
+    if (!t) { showToast('לאירוע אין תאריך'); return; }
+    if (kind === 'google') {
+        const q = new URLSearchParams({ action: 'TEMPLATE', text: e.title, dates: t.start + '/' + t.end, details: calDetails(e), location: e.location || '', ctz: 'Asia/Jerusalem' });
+        window.open('https://calendar.google.com/calendar/render?' + q.toString(), '_blank', 'noopener');
+        return;
+    }
+    const esc = s => String(s || '').replace(/\\/g, '\\\\').replace(/[,;]/g, m => '\\' + m).replace(/\r?\n/g, '\\n');
+    const dt = (k, v) => t.allDay ? `${k};VALUE=DATE:${v}` : `${k}:${v}`;
+    const ics = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//heifait-batahtit//HE', 'CALSCALE:GREGORIAN', 'METHOD:PUBLISH', 'BEGIN:VEVENT',
+        'UID:event-' + e.id + '@heifait-batahtit.co.il', 'DTSTAMP:' + utcStamp(new Date()),
+        dt('DTSTART', t.start), dt('DTEND', t.end),
+        'SUMMARY:' + esc(e.title), 'LOCATION:' + esc(e.location), 'DESCRIPTION:' + esc(calDetails(e)), 'URL:' + eventUrl(e),
+        'END:VEVENT', 'END:VCALENDAR'].join('\r\n');
+    const url = URL.createObjectURL(new Blob([ics], { type: 'text/calendar;charset=utf-8' }));
+    const a = document.createElement('a');
+    a.href = url; a.download = (e.title || 'event').replace(/[\\/:*?"<>|]/g, '').slice(0, 60) + '.ics';
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 5000);
+}
+
+function shareText(e) { return `${e.title}\n${formatEventDate(e)}${e.time && e.time !== '-' ? ' | ' + e.time : ''}\n${e.location || ''}`; }
+async function shareEvent(ev) {
+    const e = curViewEvent(); if (!e) return;
+    if (navigator.share && matchMedia('(pointer:coarse)').matches) {
+        try { await navigator.share({ title: e.title, text: shareText(e), url: eventUrl(e) }); } catch (_) {}
+        return;
+    }
+    toggleToolMenu('share-menu', ev);
+}
+async function shareTo(kind) {
+    const e = curViewEvent(); if (!e) return;
+    document.querySelectorAll('.tool-menu.open').forEach(x => x.classList.remove('open'));
+    const url = eventUrl(e);
+    if (kind === 'whatsapp') window.open('https://wa.me/?text=' + encodeURIComponent(shareText(e) + '\n' + url), '_blank', 'noopener');
+    else if (kind === 'facebook') window.open('https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(url), '_blank', 'noopener');
+    else {
+        try { await navigator.clipboard.writeText(url); }
+        catch (_) { const ta = document.createElement('textarea'); ta.value = url; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); ta.remove(); }
+        showToast('הקישור הועתק ✓');
+    }
+}
+// קישור ישיר לאירוע: ?event=ID פותח אותו אחרי הטעינה
+function handleEventDeepLink() {
+    if (deepLinkHandled) return;
+    deepLinkHandled = true;
+    const id = new URLSearchParams(location.search).get('event');
+    if (!id) return;
+    if (events.some(x => x.id == id)) openViewModal(id);
+    else { history.replaceState(null, '', location.pathname); showToast('האירוע כבר עבר או לא נמצא'); }
 }
 
 function toggleDesc(id, ev) {
