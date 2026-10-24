@@ -12,6 +12,6 @@ module.exports = async (req, res) => {
     return res.end(Buffer.from(m[2], 'base64'));
   }
   res.statusCode = 302;
-  res.setHeader('Location', /^https?:\/\//.test(img) ? img : 'https://heifait-batahtit.co.il/og-image.jpg');
+  res.setHeader('Location', /^https?:\/\//.test(img) ? img : 'https://heifait-batahtit.co.il/og-image-2.jpg');
   res.end();
 };

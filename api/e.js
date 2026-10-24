@@ -24,7 +24,7 @@ module.exports = async (req, res) => {
 
   const when = [heDate(e.date_raw) + (e.date_end_raw && e.date_end_raw > e.date_raw ? ' – ' + heDate(e.date_end_raw) : ''), e.time && e.time !== '-' ? e.time : '', e.location].filter(Boolean).join(' | ');
   const desc = when + (e.description ? ' — ' + String(e.description).replace(/\s+/g, ' ').slice(0, 160) : '');
-  const img = e.image ? `${SITE}/api/img?id=${encodeURIComponent(e.id)}&v=${String(e.image).length}` : `${SITE}/og-image.jpg`;
+  const img = e.image ? `${SITE}/api/img?id=${encodeURIComponent(e.id)}&v=${String(e.image).length}` : `${SITE}/og-image-2.jpg`;
   const url = `${SITE}/e/${encodeURIComponent(e.id)}`;
   const title = `${e.title} | חיפאית בתחתית`;
 
