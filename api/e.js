@@ -13,8 +13,8 @@ function heDate(raw) {
 }
 
 module.exports = async (req, res) => {
-  const id = String(req.query.id || '').replace(/\D/g, '');
-  const target = id ? `${SITE}/?event=${id}` : SITE + '/';
+  const id = String(req.query.id || '').replace(/[^A-Za-z0-9-]/g, '').slice(0, 64);
+  const target = id ? `${SITE}/?event=${encodeURIComponent(id)}` : SITE + '/';
   const ua = req.headers['user-agent'] || '';
   if (!BOTS.test(ua)) { res.statusCode = 302; res.setHeader('Location', target); return res.end(); }
 
@@ -24,8 +24,8 @@ module.exports = async (req, res) => {
 
   const when = [heDate(e.date_raw) + (e.date_end_raw && e.date_end_raw > e.date_raw ? ' – ' + heDate(e.date_end_raw) : ''), e.time && e.time !== '-' ? e.time : '', e.location].filter(Boolean).join(' | ');
   const desc = when + (e.description ? ' — ' + String(e.description).replace(/\s+/g, ' ').slice(0, 160) : '');
-  const img = e.image ? `${SITE}/api/img?id=${e.id}&v=${String(e.image).length}` : `${SITE}/og-image.jpg`;
-  const url = `${SITE}/e/${e.id}`;
+  const img = e.image ? `${SITE}/api/img?id=${encodeURIComponent(e.id)}&v=${String(e.image).length}` : `${SITE}/og-image.jpg`;
+  const url = `${SITE}/e/${encodeURIComponent(e.id)}`;
   const title = `${e.title} | חיפאית בתחתית`;
 
   res.setHeader('Content-Type', 'text/html; charset=utf-8');

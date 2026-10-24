@@ -1237,6 +1237,9 @@ function openViewModal(id) {
     const e = events.find(x => x.id == id);
     if (!e) return;
     viewEventId = e.id;
+    const hs = history.state || {};
+    if (hs.view) history.replaceState({ ...hs, view: e.id }, '', '?event=' + e.id);
+    else history.pushState({ ...hs, view: e.id }, '', '?event=' + e.id);
     document.querySelectorAll('.tool-menu.open').forEach(m => m.classList.remove('open'));
     // תמונה
     const imgWrap = document.getElementById('view-modal-img-wrap');
@@ -1267,12 +1270,23 @@ function openViewModal(id) {
     setTimeout(() => vo.style.opacity = '1', 10);
 }
 
-function closeViewModal() {
+function closeViewModal(fromBack) {
     const vo = document.getElementById('view-overlay');
+    if (vo.style.display === 'none') return;
     vo.style.display = 'none';
     viewEventId = null;
-    if (new URLSearchParams(location.search).has('event')) history.replaceState(null, '', location.pathname);
+    if (fromBack === true) return;
+    const s = history.state || {};
+    if (s.view && !s.form) history.back();          // סגירה בכפתור = כמו "אחורה", כדי שההיסטוריה תישאר נקייה
+    else history.replaceState({ ...s, view: null }, '', location.pathname);
 }
+
+// כפתור "אחורה" בטלפון: סוגר את החלון הפתוח (אירוע / טופס) במקום לצאת מהאתר
+window.addEventListener('popstate', ev => {
+    const s = ev.state || {};
+    if (!s.form && document.getElementById('overlay').classList.contains('open')) closeModal(true);
+    if (!s.view && document.getElementById('view-overlay').style.display !== 'none') closeViewModal(true);
+});
 
 // ── הוספה ליומן ושיתוף ──
 let viewEventId = null;
@@ -1382,6 +1396,7 @@ function handleEventDeepLink() {
     deepLinkHandled = true;
     const id = new URLSearchParams(location.search).get('event');
     if (!id) return;
+    history.replaceState(null, '', location.pathname);   // מתחת לאירוע יש את העמוד הראשי, כך ש"אחורה" מחזיר אליו
     if (events.some(x => x.id == id)) openViewModal(id);
     else { history.replaceState(null, '', location.pathname); showToast('האירוע כבר עבר או לא נמצא'); }
 }
@@ -1675,9 +1690,17 @@ function openModal(id) {
     }
     fillVenueList();
     document.getElementById('overlay').classList.add('open');
+    { const hs = history.state || {}; if (!hs.form) history.pushState({ ...hs, form: true }, '', location.href); }
 }
 
-function closeModal() { document.getElementById('overlay').classList.remove('open'); editingId = null; }
+function closeModal(fromBack) {
+    const ov = document.getElementById('overlay');
+    if (!ov.classList.contains('open')) return;
+    ov.classList.remove('open'); editingId = null;
+    if (fromBack === true) return;
+    const s = history.state || {};
+    if (s.form) history.back();
+}
 function overlayClick(e) { if (e.target === document.getElementById('overlay')) closeModal(); }
 
 // ── מיקום אחיד: הצעות ממקומות שכבר פורסמו + ניקוי אוטומטי של הכתובת ──
