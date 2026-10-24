@@ -1,5 +1,14 @@
 {
   "rewrites": [
-    { "source": "/e/:id", "destination": "/api/e?id=:id" }
+    {
+      "source": "/e/:id",
+      "destination": "/api/e?id=:id"
+    }
+  ],
+  "crons": [
+    {
+      "path": "/api/daily",
+      "schedule": "0 5 * * *"
+    }
   ]
 }

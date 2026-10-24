@@ -1,0 +1,17 @@
+{
+  "name": "חיפאית בתחתית",
+  "short_name": "חיפאית בתחתית",
+  "description": "כל האירועים בחיפה במקום אחד",
+  "lang": "he",
+  "dir": "rtl",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#160c0c",
+  "theme_color": "#160c0c",
+  "icons": [
+    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

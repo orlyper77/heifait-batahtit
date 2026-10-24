@@ -14,4 +14,15 @@ async function getEvent(id, columns) {
   if (!e || (e.status && e.status !== 'approved')) return null;
   return e;
 }
-module.exports = { getEvent };
+// קריאה לפונקציה ב-Supabase (למשל רשימת המנויים להתראות)
+async function rpc(name, args) {
+  const r = await fetch(`${SUPABASE_URL}/rest/v1/rpc/${name}`, {
+    method: 'POST',
+    headers: { apikey: SUPABASE_ANON_KEY, Authorization: 'Bearer ' + SUPABASE_ANON_KEY, 'Content-Type': 'application/json' },
+    body: JSON.stringify(args || {})
+  });
+  const text = await r.text();
+  if (!r.ok) throw new Error(`rpc ${name}: ${r.status} ${text.slice(0, 200)}`);
+  return text ? JSON.parse(text) : null;
+}
+module.exports = { getEvent, rpc, SUPABASE_URL, SUPABASE_ANON_KEY };
