@@ -1315,9 +1315,9 @@ function openViewModal(id) {
     if (!e) return;
     viewEventId = e.id;
     const hs = history.state || {};
-    if (hs.view) history.replaceState({ ...hs, view: e.id }, '', '?event=' + e.id);
+    closeMenus('silent');
+    if (hs.view || hs.menu) history.replaceState({ ...hs, view: e.id, menu: null }, '', '?event=' + e.id);
     else history.pushState({ ...hs, view: e.id }, '', '?event=' + e.id);
-    document.querySelectorAll('.tool-menu.open').forEach(m => m.classList.remove('open'));
     // תמונה
     const imgWrap = document.getElementById('view-modal-img-wrap');
     imgWrap.innerHTML = e.image
@@ -1354,13 +1354,15 @@ function closeViewModal(fromBack) {
     viewEventId = null;
     if (fromBack === true) return;
     const s = history.state || {};
-    if (s.view && !s.form) history.back();          // סגירה בכפתור = כמו "אחורה", כדי שההיסטוריה תישאר נקייה
+    if (document.querySelector('.tool-menu.open')) closeMenus('silent');
+    if (s.view && !s.form) history.go(s.menu ? -2 : -1);          // סגירה בכפתור = כמו "אחורה", כדי שההיסטוריה תישאר נקייה
     else history.replaceState({ ...s, view: null }, '', location.pathname);
 }
 
 // כפתור "אחורה" בטלפון: סוגר את החלון הפתוח (אירוע / טופס) במקום לצאת מהאתר
 window.addEventListener('popstate', ev => {
     const s = ev.state || {};
+    if (!s.menu && document.querySelector('.tool-menu.open')) closeMenus('back');
     if (!s.form && document.getElementById('overlay').classList.contains('open')) closeModal(true);
     if (!s.view && document.getElementById('view-overlay').style.display !== 'none') closeViewModal(true);
 });
@@ -1372,16 +1374,27 @@ const SITE_URL = 'https://heifait-batahtit.co.il/';
 const eventUrl = e => SITE_URL + 'e/' + encodeURIComponent(e.id);   // קישור שיתוף עם תמונה וכותרת של האירוע
 const curViewEvent = () => events.find(x => x.id == viewEventId);
 
+// תפריטי יומן/שיתוף: פתיחה מוסיפה צעד להיסטוריה, כך ש"אחורה" בטלפון סוגר את התפריט ולא יוצא מהאתר
+function menuOpened() {
+    const s = history.state || {};
+    if (!s.menu) history.pushState({ ...s, menu: true }, '', location.href);
+}
+function closeMenus(mode) {   // mode: 'back' = נסגר ע"י אחורה, 'silent' = בלי לגעת בהיסטוריה
+    const any = document.querySelector('.tool-menu.open');
+    document.querySelectorAll('.tool-menu.open').forEach(x => x.classList.remove('open'));
+    if (any && !mode && (history.state || {}).menu) history.back();
+}
 function toggleToolMenu(id, ev) {
     ev.stopPropagation();
     const m = document.getElementById(id);
     const open = !m.classList.contains('open');
-    document.querySelectorAll('.tool-menu.open').forEach(x => x.classList.remove('open'));
-    if (open) m.classList.add('open');
+    if (!open) return closeMenus();
+    closeMenus('silent');
+    m.classList.add('open');
+    menuOpened();
 }
 document.addEventListener('click', ev => {
-    if (!ev.target.closest || !ev.target.closest('.tool-wrap'))
-        document.querySelectorAll('.tool-menu.open').forEach(x => x.classList.remove('open'));
+    if (!ev.target.closest || !ev.target.closest('.tool-wrap')) closeMenus();
 });
 function showToast(t) {
     const d = document.createElement('div');
@@ -1424,7 +1437,7 @@ function calDetails(e) {
 }
 function addToCalendar(kind) {
     const e = curViewEvent(); if (!e) return;
-    document.querySelectorAll('.tool-menu.open').forEach(x => x.classList.remove('open'));
+    closeMenus();
     const t = calTimes(e);
     if (!t) { showToast('לאירוע אין תאריך'); return; }
     if (kind === 'google') {
@@ -1452,14 +1465,14 @@ function cardTool(kind, id, ev) {
     const btn = ev.currentTarget;
     let wrap = document.getElementById('float-wrap');
     const wasOpen = wrap && wrap.dataset.key === kind + id && document.getElementById('float-menu').classList.contains('open');
-    document.querySelectorAll('.tool-menu.open').forEach(x => x.classList.remove('open'));
-    if (wasOpen) return;
+    if (wasOpen) return closeMenus();
+    closeMenus('silent');
     if (!wrap) {
         wrap = document.createElement('div');
         wrap.className = 'tool-wrap'; wrap.id = 'float-wrap';
         wrap.innerHTML = '<div class="tool-menu" id="float-menu"></div>';
         document.body.appendChild(wrap);
-        window.addEventListener('scroll', () => { if (Math.abs(window.scrollY - (+wrap.dataset.y || 0)) > 60) document.getElementById('float-menu').classList.remove('open'); }, { passive: true });
+        window.addEventListener('scroll', () => { if (Math.abs(window.scrollY - (+wrap.dataset.y || 0)) > 60) closeMenus(); }, { passive: true });
     }
     viewEventId = id;
     wrap.dataset.key = kind + id;
@@ -1469,6 +1482,7 @@ function cardTool(kind, id, ev) {
     const more = menu.querySelector('[data-more]');
     if (more) more.style.display = navigator.share ? '' : 'none';
     menu.classList.add('open');
+    menuOpened();
     const r = btn.getBoundingClientRect(), mw = menu.offsetWidth, mh = menu.offsetHeight;
     const left = Math.max(8, Math.min(r.left, window.innerWidth - mw - 8));
     const top = r.top - mh - 6 > 8 ? r.top - mh - 6 : Math.min(r.bottom + 6, window.innerHeight - mh - 8);
@@ -1483,7 +1497,7 @@ async function shareEvent(ev) {
 }
 async function shareTo(kind) {
     const e = curViewEvent(); if (!e) return;
-    document.querySelectorAll('.tool-menu.open').forEach(x => x.classList.remove('open'));
+    closeMenus();
     const url = eventUrl(e);
     const copy = async () => {
         try { await navigator.clipboard.writeText(url); }
