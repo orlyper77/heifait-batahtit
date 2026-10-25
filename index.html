@@ -282,6 +282,9 @@ body{font-family:'Secular One',sans-serif;background:#1a0505;color:#f5ede8;direc
 .card-meta{display:flex;flex-direction:column;gap:4px;}
 .meta-item{display:flex;align-items:center;gap:6px;font-size:13.5px;color:rgba(255,255,255,0.75);font-weight:600;}
 .card-links{display:flex;gap:5px;padding:.5rem .85rem;border-top:1px solid rgba(255,255,255,0.06);}
+.nav-chip{display:inline-flex;align-items:center;gap:4px;margin-inline-start:8px;background:rgba(51,204,255,0.12);border:1px solid rgba(51,204,255,0.4);color:#8fdcff;font-family:inherit;font-size:12px;font-weight:600;padding:2px 9px;border-radius:12px;cursor:pointer;flex-shrink:0;}
+.nav-chip:hover{background:rgba(51,204,255,0.25);}
+@media(max-width:600px){.nav-chip{font-size:13px;padding:5px 11px;}}
 .card-tools{display:flex;gap:5px;margin-inline-start:auto;}
 .card-tool{display:inline-flex;align-items:center;justify-content:center;width:38px;min-height:32px;background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.75);border:1px solid rgba(255,255,255,0.14);border-radius:7px;cursor:pointer;transition:background .2s;flex-shrink:0;}
 .card-tool:hover{background:rgba(255,255,255,0.14);color:#fff;}
@@ -451,6 +454,7 @@ body:has(#overlay.open),body:has(.auth-overlay.open),body:has(#legal-overlay.ope
 .tool-menu button{display:flex;align-items:center;gap:10px;}
 .share-ico{width:22px;height:22px;flex-shrink:0;}
 #share-menu{right:auto;left:0;min-width:220px;}
+#nav-menu,#cal-menu{left:auto;right:0;min-width:200px;}
 .tool-menu button{white-space:nowrap;}
 @media(max-width:600px){.tool-menu button{font-size:15.5px;padding:11px 10px;}.share-ico{width:26px;height:26px;}}
 .toast-msg{position:fixed;bottom:24px;z-index:3000;line-height:1.5;left:50%;transform:translateX(-50%);background:#d4e034;color:#1a1a1a;font-weight:700;padding:10px 18px;border-radius:10px;z-index:3000;font-size:14px;max-width:90vw;text-align:center;}
@@ -568,6 +572,7 @@ body.a11y-big-cursor *{cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w
 .footer-link:hover{color:#d4e034;}
 .footer-contact{display:flex;flex-direction:column;align-items:center;gap:6px;margin-bottom:6px;}
 .btn-contact{display:inline-flex;align-items:center;gap:8px;background:rgba(212,224,52,0.12);border:1px solid rgba(212,224,52,0.4);color:#d4e034;font-family:'Secular One',sans-serif;font-size:15px;padding:9px 22px;border-radius:24px;text-decoration:none;transition:background .2s;}
+.time-input{text-align:right;letter-spacing:.5px;}
 .form-errors{background:rgba(240,117,168,0.12);border:1px solid rgba(240,117,168,0.55);color:#ffc2da;border-radius:10px;padding:10px 14px;margin:0 0 12px;font-size:14px;line-height:1.7;}
 .form-errors b{color:#ff9cc4;}
 .form-errors ul{margin:4px 0 0;padding-inline-start:18px;}
@@ -874,8 +879,8 @@ body.a11y-big-cursor *{cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w
         <div class="form-row">
             <div class="form-group"><label>תאריך *</label><input type="date" id="f-date"></div>
             <div class="form-group"><label>תאריך סיום (אופציונלי)</label><input type="date" id="f-date-end"></div>
-            <div class="form-group"><label>שעת התחלה *</label><input type="time" id="f-time"></div>
-            <div class="form-group"><label>שעת סיום (אופציונלי)</label><input type="time" id="f-time-end"></div>
+            <div class="form-group"><label>שעת התחלה *</label><input type="text" id="f-time" class="time-input" inputmode="numeric" maxlength="5" placeholder="20:00" dir="ltr" autocomplete="off"></div>
+            <div class="form-group"><label>שעת סיום (אופציונלי)</label><input type="text" id="f-time-end" class="time-input" inputmode="numeric" maxlength="5" placeholder="23:00" dir="ltr" autocomplete="off"></div>
         </div>
         <div class="form-group"><label>מיקום</label><input type="text" id="f-loc" list="venue-list" autocomplete="off" placeholder="שם המקום, רחוב ומספר, עיר — למשל: אנטארקטיקה, נורדאו 20, חיפה"><datalist id="venue-list"></datalist>
             <div class="field-hint">התחילו להקליד את שם המקום ובחרו מהרשימה — כך הכתובת תיכתב תמיד באותה צורה.</div></div>
@@ -920,8 +925,17 @@ body.a11y-big-cursor *{cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w
             <div class="view-modal-desc" id="view-modal-desc"></div>
             <div class="view-modal-links" id="view-modal-links"></div>
             <div class="view-modal-tools">
+                <div class="tool-wrap" id="nav-wrap">
+                    <button class="tool-btn" onclick="toggleToolMenu('nav-menu',event)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l18-8-8 18-2-8z"/></svg>ניווט</button>
+                    <div class="tool-menu" id="nav-menu">
+                        <button onclick="navigateTo('waze')"><svg class="share-ico" viewBox="0 0 24 24"><circle cx="12" cy="12" r="11" fill="#33CCFF"/><path fill="#fff" d="M12 5.2c-3.9 0-6.6 2.6-6.6 6 0 1.4.5 2.4 1.2 3.2-.3.6-.9 1.1-1.6 1.3.5.6 1.7 1 2.9.8.9.7 2.3 1.1 4.1 1.1 3.9 0 6.6-2.6 6.6-6.4s-2.7-6-6.6-6z"/><circle cx="10" cy="10.4" r=".9" fill="#222"/><circle cx="14.2" cy="10.4" r=".9" fill="#222"/><path d="M9.6 13c.7.9 1.6 1.3 2.6 1.3s1.9-.4 2.5-1.3" fill="none" stroke="#222" stroke-width="1" stroke-linecap="round"/><circle cx="8.6" cy="18.4" r="1.3" fill="#222"/><circle cx="15.4" cy="18.4" r="1.3" fill="#222"/></svg>Waze</button>
+                        <button onclick="navigateTo('google')"><svg class="share-ico" viewBox="0 0 24 24"><path fill="#EA4335" d="M12 2a7 7 0 0 0-7 7c0 5.2 7 13 7 13s7-7.8 7-13a7 7 0 0 0-7-7z"/><circle cx="12" cy="9" r="2.6" fill="#fff"/></svg>Google Maps</button>
+                        <button onclick="navigateTo('apple')" class="nav-apple" style="display:none"><svg class="share-ico" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" fill="#34C759"/><path d="M7 17l5-11 5 11-5-2.5z" fill="#fff"/></svg>מפות של אפל</button>
+                        <button onclick="navigateTo('copy')"><svg class="share-ico" viewBox="0 0 24 24" fill="none" stroke="#d4e034" stroke-width="2" stroke-linecap="round"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h3"/></svg>העתקת הכתובת</button>
+                    </div>
+                </div>
                 <div class="tool-wrap">
-                    <button class="tool-btn" onclick="toggleToolMenu('cal-menu',event)"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2" y="3" width="12" height="11" rx="2"/><path d="M2 7h12M5 1v4M11 1v4M8 9v4M6 11h4"/></svg>הוספה ליומן</button>
+                    <button class="tool-btn" onclick="toggleToolMenu('cal-menu',event)"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2" y="3" width="12" height="11" rx="2"/><path d="M2 7h12M5 1v4M11 1v4M8 9v4M6 11h4"/></svg>ליומן</button>
                     <div class="tool-menu" id="cal-menu">
                         <button onclick="addToCalendar('google')">יומן Google</button>
                         <button onclick="addToCalendar('ics')">אייפון / Outlook</button>
@@ -1366,7 +1380,7 @@ function cleanLink(v) {
 }
 
 function cardHtml(e) {
-    e = escEvent(e);
+    const raw = e; e = escEvent(e);
     {
         const isUserEvent = currentUser && (currentUser.id === e.user_id || currentRole === 'admin');
         return `
@@ -1388,7 +1402,7 @@ function cardHtml(e) {
                 <div class="card-meta">
                     <div class="meta-item"><svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" style="opacity:.5;flex-shrink:0"><rect x="2" y="3" width="12" height="11" rx="2"/><path d="M2 7h12M5 1v4M11 1v4"/></svg>${formatEventDate(e)}</div>
                     <div class="meta-item"><svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" style="opacity:.5;flex-shrink:0"><circle cx="8" cy="8" r="6"/><path d="M8 5v3l2 2"/></svg><bdi dir="ltr">${e.time}</bdi></div>
-                    <div class="meta-item"><svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" style="opacity:.5;flex-shrink:0"><path d="M8 2C5.8 2 4 3.8 4 6c0 3.5 4 8 4 8s4-4.5 4-8c0-2.2-1.8-4-4-4z"/><circle cx="8" cy="6" r="1.5"/></svg>${e.location}</div>
+                    <div class="meta-item"><svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" style="opacity:.5;flex-shrink:0"><path d="M8 2C5.8 2 4 3.8 4 6c0 3.5 4 8 4 8s4-4.5 4-8c0-2.2-1.8-4-4-4z"/><circle cx="8" cy="6" r="1.5"/></svg><span>${e.location}</span>${navQuery(raw) ? `<button class="nav-chip" onclick="cardTool('nav','${e.id}',event)" title="ניווט למקום" aria-label="ניווט למקום"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l18-8-8 18-2-8z"/></svg>ניווט</button>` : ''}</div>
                     <div class="meta-item"><svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" style="opacity:.5;flex-shrink:0"><path d="M2 4h12v8a2 2 0 01-2 2H4a2 2 0 01-2-2V4zM2 4l2-2h8l2 2"/></svg>${e.price}</div>
                 </div>
             </div>
@@ -1435,6 +1449,8 @@ function openViewModal(id) {
         <div class="meta-item"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" style="opacity:.5;flex-shrink:0;margin-left:6px"><path d="M2 4h12v8a2 2 0 01-2 2H4a2 2 0 01-2-2V4zM2 4l2-2h8l2 2"/></svg>${e.price}</div>`;
     // כפתורים
 
+    document.getElementById('nav-wrap').style.display = navQuery(raw) ? '' : 'none';
+    document.querySelectorAll('.nav-apple').forEach(b => b.style.display = (typeof ntIsIOS === 'function' && ntIsIOS()) ? '' : 'none');
     const vLinks = eventLinksHtml(e);
     document.getElementById('view-modal-links').innerHTML = vLinks;
     document.getElementById('view-modal-links').style.display = vLinks ? '' : 'none';
@@ -1532,6 +1548,28 @@ function calDetails(e) {
     parts.push('פרטים: ' + eventUrl(e));
     return parts.join('\n\n');
 }
+// ── ניווט למקום האירוע ──
+function navQuery(e) {
+    let q = String(e.location || '').trim();
+    if (!q || q === 'חיפה') return '';
+    if (!/(חיפה|נשר|טירת כרמל|קרי[י]?ת|עכו|נהריה|haifa)/i.test(q)) q += ', חיפה';
+    return q;
+}
+async function navigateTo(kind) {
+    const e = curViewEvent(); if (!e) return;
+    closeMenus();
+    const q = navQuery(e);
+    if (!q) { showToast('לאירוע הזה אין כתובת מדויקת'); return; }
+    const enc = encodeURIComponent(q);
+    if (kind === 'waze') window.open('https://waze.com/ul?q=' + enc + '&navigate=yes', '_blank', 'noopener');
+    else if (kind === 'google') window.open('https://www.google.com/maps/search/?api=1&query=' + enc, '_blank', 'noopener');
+    else if (kind === 'apple') window.open('https://maps.apple.com/?q=' + enc, '_blank', 'noopener');
+    else {
+        try { await navigator.clipboard.writeText(q); } catch (_) { const ta = document.createElement('textarea'); ta.value = q; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); ta.remove(); }
+        showToast('הכתובת הועתקה ✓');
+    }
+}
+
 function addToCalendar(kind) {
     const e = curViewEvent(); if (!e) return;
     closeMenus();
@@ -1575,7 +1613,8 @@ function cardTool(kind, id, ev) {
     wrap.dataset.key = kind + id;
     wrap.dataset.y = window.scrollY;
     const menu = document.getElementById('float-menu');
-    menu.innerHTML = document.getElementById(kind === 'cal' ? 'cal-menu' : 'share-menu').innerHTML.replace(/ id="share-more"/, ' data-more="1"');
+    menu.innerHTML = document.getElementById(kind === 'cal' ? 'cal-menu' : kind === 'nav' ? 'nav-menu' : 'share-menu').innerHTML.replace(/ id="share-more"/, ' data-more="1"');
+    menu.querySelectorAll('.nav-apple').forEach(b => b.style.display = (typeof ntIsIOS === 'function' && ntIsIOS()) ? '' : 'none');
     const more = menu.querySelector('[data-more]');
     if (more) more.style.display = navigator.share ? '' : 'none';
     menu.classList.add('open');
@@ -2055,7 +2094,24 @@ function showFormErrors(msgs, ids, head) {
     if (first && first.focus && first.type !== 'checkbox' && first.tagName !== 'DIV') setTimeout(() => first.focus({ preventScroll: true }), 350);
     else box.scrollIntoView({ behavior: 'smooth', block: 'center' });
 }
+// שדות שעה: מקלידים ספרות בלבד, הנקודתיים נוספות לבד (2030 → 20:30)
+function fmtTimeTyping(el) {
+    const d = el.value.replace(/\D/g, '').slice(0, 4);
+    el.value = d.length >= 3 ? d.slice(0, d.length - 2) + ':' + d.slice(-2) : d;
+}
+function fmtTimeFinal(el) {
+    const d = el.value.replace(/\D/g, '');
+    if (!d) { el.value = ''; return; }
+    let hh, mm;
+    if (d.length <= 2) { hh = +d; mm = 0; } else { hh = +d.slice(0, d.length - 2); mm = +d.slice(-2); }
+    el.value = (hh < 24 && mm < 60) ? String(hh).padStart(2, '0') + ':' + String(mm).padStart(2, '0') : el.value;
+}
+const validTime = s => /^([01]\d|2[0-3]):[0-5]\d$/.test(s);
+document.addEventListener('input', ev => { if (ev.target.classList && ev.target.classList.contains('time-input')) fmtTimeTyping(ev.target); });
+document.addEventListener('focusout', ev => { if (ev.target.classList && ev.target.classList.contains('time-input')) fmtTimeFinal(ev.target); });
+
 function validateEventForm() {
+    ['f-time', 'f-time-end'].forEach(id => fmtTimeFinal(document.getElementById(id)));
     const v = id => (document.getElementById(id).value || '').trim();
     const msgs = [], ids = [];
     if (!v('f-title')) { msgs.push('שם האירוע'); ids.push('f-title'); }
@@ -2067,6 +2123,8 @@ function validateEventForm() {
         else if ((end || v('f-date')) < today && editingId === null) { msgs.push('התאריך שנבחר כבר עבר'); ids.push('f-date'); }
     }
     if (!v('f-time') && !document.getElementById('f-time').dataset.orig) { msgs.push('שעת התחלה'); ids.push('f-time'); }
+    else if (v('f-time') && !validTime(v('f-time'))) { msgs.push('שעת התחלה לא תקינה — למשל 20:00'); ids.push('f-time'); }
+    if (v('f-time-end') && !validTime(v('f-time-end'))) { msgs.push('שעת סיום לא תקינה — למשל 23:00'); ids.push('f-time-end'); }
     if (!document.getElementById('check-accurate').checked) { msgs.push('סימון ✓ באישור שהפרטים נכונים'); ids.push('check-accurate'); }
     if (!document.getElementById('check-rules').checked) { msgs.push('סימון ✓ באישור כללי הפרסום'); ids.push('check-rules'); }
     showFormErrors(msgs, ids);
