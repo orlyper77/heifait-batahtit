@@ -535,6 +535,11 @@ body.a11y-big-cursor *{cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w
 .footer-links{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;}
 .footer-link{background:none;border:none;color:rgba(255,255,255,0.35);font-size:12px;cursor:pointer;text-decoration:underline;font-family:'Secular One',sans-serif;}
 .footer-link:hover{color:#d4e034;}
+.footer-contact{display:flex;flex-direction:column;align-items:center;gap:6px;margin-bottom:6px;}
+.btn-contact{display:inline-flex;align-items:center;gap:8px;background:rgba(212,224,52,0.12);border:1px solid rgba(212,224,52,0.4);color:#d4e034;font-family:'Secular One',sans-serif;font-size:15px;padding:9px 22px;border-radius:24px;text-decoration:none;transition:background .2s;}
+.btn-contact:hover{background:rgba(212,224,52,0.24);}
+.contact-mail{background:none;border:none;color:rgba(255,255,255,0.5);font-size:13px;cursor:pointer;direction:ltr;font-family:inherit;padding:2px 4px;}
+.contact-mail:hover{color:#d4e034;}
 
 /* ===== מודל חוקי ===== */
 #legal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:9998;align-items:center;justify-content:center;padding:1rem;}
@@ -2187,6 +2192,10 @@ loadA11yPrefs();
 
 <!-- פוטר -->
 <footer class="site-footer">
+  <div class="footer-contact">
+    <a class="btn-contact" href="mailto:heifait.batahtit@gmail.com?subject=%D7%A4%D7%A0%D7%99%D7%99%D7%94%20%D7%9E%D7%94%D7%90%D7%AA%D7%A8%20%D7%97%D7%99%D7%A4%D7%90%D7%99%D7%AA%20%D7%91%D7%AA%D7%97%D7%AA%D7%99%D7%AA"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>צור קשר</a>
+    <button class="contact-mail" onclick="copyContactMail(this)" title="העתקת כתובת המייל">heifait.batahtit@gmail.com</button>
+  </div>
   <div class="footer-links">
     <button class="footer-link" onclick="openLegal('privacy')">מדיניות פרטיות</button>
     <button class="footer-link" onclick="openLegal('terms')">תנאי שימוש</button>
@@ -2290,6 +2299,12 @@ loadA11yPrefs();
 </div>
 
 <script>
+function copyContactMail(btn){
+  const t='heifait.batahtit@gmail.com';
+  const done=()=>{ if (typeof showToast==='function') showToast('כתובת המייל הועתקה ✓'); };
+  if (navigator.clipboard) navigator.clipboard.writeText(t).then(done).catch(()=>{});
+  else { const ta=document.createElement('textarea'); ta.value=t; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); ta.remove(); done(); }
+}
 function openLegal(tab){
   document.getElementById('legal-overlay').classList.add('open');
   switchLegalTab(tab||'privacy');
@@ -2410,6 +2425,7 @@ async function openNotify() {
         controls.style.display = 'none';
         return;
     }
+    ios.innerHTML = NT_IOS_HELP;
     if (ntIsIOS() && !ntStandalone()) {
         status.textContent = 'קבלו הודעה לטלפון ברגע שמתפרסם אירוע חדש.';
         ios.style.display = ''; controls.style.display = 'none';
@@ -2421,8 +2437,10 @@ async function openNotify() {
         return;
     }
     if (Notification.permission === 'denied') {
-        status.textContent = 'ההתראות חסומות בדפדפן. כדי להפעיל: הגדרות האתר (סמל המנעול ליד הכתובת) ← התראות ← לאפשר.';
+        status.textContent = 'ההתראות חסומות כרגע בדפדפן. כך מבטלים את החסימה:';
         controls.style.display = 'none';
+        ios.innerHTML = ntBlockedHelp();
+        ios.style.display = '';
         return;
     }
     const sub = await ntCurrentSub();
@@ -2433,6 +2451,26 @@ async function openNotify() {
     else status.textContent = sub ? '✅ ההתראות פעילות במכשיר הזה. אפשר לשנות קטגוריות ולשמור.' : 'קבלו הודעה לטלפון ברגע שמתפרסם אירוע חדש.';
     document.getElementById('nt-on').textContent = sub ? 'שמירת השינויים' : 'הפעלת התראות';
     document.getElementById('nt-off').style.display = sub ? '' : 'none';
+}
+const NT_IOS_HELP = document.getElementById('nt-ios').innerHTML;
+const ntIsAndroid = () => /android/i.test(navigator.userAgent);
+// הסבר לביטול חסימת התראות — לפי סוג המכשיר
+function ntBlockedHelp() {
+    if (ntIsIOS()) return `<b>באייפון:</b><br>
+        1. פותחים את <b>הגדרות</b> הטלפון ← <b>התראות</b><br>
+        2. מחפשים את <b>"חיפאית בתחתית"</b> ומפעילים את <b>"אפשר התראות"</b><br>
+        3. חוזרים לאתר (מהאייקון במסך הבית) ולוחצים שוב על 🔔`;
+    if (ntIsAndroid()) return `<b>בטלפון אנדרואיד (כרום):</b><br>
+        1. לוחצים על הסמל <b>שמשמאל לכתובת האתר</b> למעלה (⚙ או 🔒)<br>
+        2. <b>הרשאות</b> ← <b>התראות</b> ← <b>אפשר</b><br>
+        3. מרעננים את הדף ולוחצים שוב על 🔔<br><br>
+        <b>אם כתוב "נחסם אוטומטית":</b> באותו מקום בוחרים <b>"איפוס הרשאות"</b> (או: ⋮ ← הגדרות ← הגדרות אתר ← כל האתרים ← <span dir="ltr" style="white-space:nowrap">heifait-batahtit.co.il</span> ← <b>ניקוי ואיפוס</b>), ואז לוחצים שוב על 🔔 ו<b>"אפשר"</b>.<br><br>
+        <span class="nt-hint">אם עדיין לא מגיעות התראות: הגדרות הטלפון ← אפליקציות ← Chrome ← התראות ← להפעיל.</span>`;
+    return `<b>במחשב:</b><br>
+        1. לוחצים על הסמל <b>שמשמאל לכתובת האתר</b> (⚙ או 🔒)<br>
+        2. ליד <b>Notifications / התראות</b> — מדליקים את המתג, או בוחרים <b>Allow / אפשר</b><br>
+        3. מרעננים את הדף ולוחצים שוב על 🔔<br><br>
+        <span class="nt-hint">בווינדוס, אם ההתראות לא קופצות: Settings ← System ← Notifications ← לוודא ש-Google Chrome מופעל ו-Do not disturb כבוי.</span>`;
 }
 function closeNotify() { document.getElementById('notify-overlay').classList.remove('open'); }
 // מנהלת שכבר הפעילה התראות במכשיר — מסמנים את המנוי כמנוי מנהלת (השרת בודק לפי המייל)
@@ -2449,7 +2487,14 @@ async function notifySubscribe() {
     try {
         const cfg = await ntLoadConfig();
         const perm = await Notification.requestPermission();
-        if (perm !== 'granted') { showToast('לא אושרו התראות בדפדפן'); return; }
+        if (perm !== 'granted') {
+            // הדפדפן לא אישר — מציגים בחלון הסבר מותאם למכשיר
+            const status = document.getElementById('nt-status'), ios = document.getElementById('nt-ios');
+            status.textContent = perm === 'denied' ? 'ההתראות חסומות כרגע בדפדפן. כך מבטלים את החסימה:' : 'הדפדפן לא אישר התראות. אם לא הופיעה שאלה, כך מאשרים ידנית:';
+            ios.innerHTML = ntBlockedHelp(); ios.style.display = '';
+            document.getElementById('nt-controls').style.display = 'none';
+            return;
+        }
         ntReg = ntReg || await navigator.serviceWorker.register('/sw.js', { scope: '/' });
         await navigator.serviceWorker.ready;
         let sub = await ntReg.pushManager.getSubscription();
