@@ -16,6 +16,9 @@ module.exports = async (req, res) => {
   const id = String(req.query.id || '').replace(/[^A-Za-z0-9-]/g, '').slice(0, 64);
   const target = id ? `${SITE}/?event=${encodeURIComponent(id)}` : SITE + '/';
   const ua = req.headers['user-agent'] || '';
+  // חשוב: לא לשמור במטמון של Vercel — אחרת אנשים מקבלים את הדף של הרובוטים
+  res.setHeader('Cache-Control', 'no-store');
+  res.setHeader('Vary', 'User-Agent');
   if (!BOTS.test(ua)) { res.statusCode = 302; res.setHeader('Location', target); return res.end(); }
 
   let e = null;
@@ -29,7 +32,6 @@ module.exports = async (req, res) => {
   const title = `${e.title} | חיפאית בתחתית`;
 
   res.setHeader('Content-Type', 'text/html; charset=utf-8');
-  res.setHeader('Cache-Control', 'public, max-age=300, s-maxage=600');
   res.end(`<!doctype html><html lang="he" dir="rtl"><head><meta charset="utf-8">
 <title>${esc(title)}</title>
 <meta name="description" content="${esc(desc)}">
@@ -45,5 +47,6 @@ module.exports = async (req, res) => {
 <meta name="twitter:title" content="${esc(title)}">
 <meta name="twitter:description" content="${esc(desc)}">
 <meta name="twitter:image" content="${esc(img)}">
+<script>location.replace(${JSON.stringify(target)});</script>
 </head><body><h1>${esc(e.title)}</h1><p>${esc(desc)}</p><p><a href="${esc(target)}">לפרטים באתר</a></p></body></html>`);
 };
