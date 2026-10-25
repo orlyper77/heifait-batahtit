@@ -874,7 +874,7 @@ body.a11y-big-cursor *{cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w
         <div class="form-row">
             <div class="form-group"><label>תאריך *</label><input type="date" id="f-date"></div>
             <div class="form-group"><label>תאריך סיום (אופציונלי)</label><input type="date" id="f-date-end"></div>
-            <div class="form-group"><label>שעת התחלה</label><input type="time" id="f-time"></div>
+            <div class="form-group"><label>שעת התחלה *</label><input type="time" id="f-time"></div>
             <div class="form-group"><label>שעת סיום (אופציונלי)</label><input type="time" id="f-time-end"></div>
         </div>
         <div class="form-group"><label>מיקום</label><input type="text" id="f-loc" list="venue-list" autocomplete="off" placeholder="שם המקום, רחוב ומספר, עיר — למשל: אנטארקטיקה, נורדאו 20, חיפה"><datalist id="venue-list"></datalist>
@@ -2066,7 +2066,7 @@ function validateEventForm() {
         if (end && end < v('f-date')) { msgs.push('תאריך הסיום לפני תאריך ההתחלה — יש לתקן או למחוק אותו'); ids.push('f-date-end'); }
         else if ((end || v('f-date')) < today && editingId === null) { msgs.push('התאריך שנבחר כבר עבר'); ids.push('f-date'); }
     }
-    if (v('f-time-end') && !v('f-time') && !document.getElementById('f-time').dataset.orig) { msgs.push('שעת התחלה (מילאתם שעת סיום בלי שעת התחלה)'); ids.push('f-time'); }
+    if (!v('f-time') && !document.getElementById('f-time').dataset.orig) { msgs.push('שעת התחלה'); ids.push('f-time'); }
     if (!document.getElementById('check-accurate').checked) { msgs.push('סימון ✓ באישור שהפרטים נכונים'); ids.push('check-accurate'); }
     if (!document.getElementById('check-rules').checked) { msgs.push('סימון ✓ באישור כללי הפרסום'); ids.push('check-rules'); }
     showFormErrors(msgs, ids);
