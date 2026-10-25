@@ -882,7 +882,7 @@ body.a11y-big-cursor *{cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w
             <div class="form-group"><label>שעת התחלה *</label><input type="text" id="f-time" class="time-input" inputmode="numeric" maxlength="5" placeholder="20:00" dir="ltr" autocomplete="off"></div>
             <div class="form-group"><label>שעת סיום (אופציונלי)</label><input type="text" id="f-time-end" class="time-input" inputmode="numeric" maxlength="5" placeholder="23:00" dir="ltr" autocomplete="off"></div>
         </div>
-        <div class="form-group"><label>מיקום</label><input type="text" id="f-loc" list="venue-list" autocomplete="off" placeholder="שם המקום, רחוב ומספר, עיר — למשל: אנטארקטיקה, נורדאו 20, חיפה"><datalist id="venue-list"></datalist>
+        <div class="form-group"><label>מקום *</label><input type="text" id="f-loc" list="venue-list" autocomplete="off" placeholder="שם המקום, רחוב ומספר, עיר — למשל: אנטארקטיקה, נורדאו 20, חיפה"><datalist id="venue-list"></datalist>
             <div class="field-hint">התחילו להקליד את שם המקום ובחרו מהרשימה — כך הכתובת תיכתב תמיד באותה צורה.</div></div>
         <div class="form-group"><label>מחיר</label><input type="text" id="f-price" placeholder="₪50 / כניסה חופשית"></div>
         <div class="form-group"><label>תיאור</label><textarea id="f-desc" placeholder="תאר את האירוע..."></textarea></div>
@@ -1549,11 +1549,18 @@ function calDetails(e) {
     return parts.join('\n\n');
 }
 // ── ניווט למקום האירוע ──
+// ניווט לפי הכתובת (רחוב ומספר + עיר) ולא לפי שם המקום — כדי שהאפליקציה לא תתבלבל עם עסק אחר באותו שם
+const NAV_CITY_RE = /(חיפה|נשר|טירת כרמל|קרי[י]?ת\s?[א-ת]+|עכו|נהריה|עספיא|דלית אל.?כרמל|יקנעם|זכרון יעקב|haifa)/i;
 function navQuery(e) {
-    let q = String(e.location || '').trim();
-    if (!q || q === 'חיפה') return '';
-    if (!/(חיפה|נשר|טירת כרמל|קרי[י]?ת|עכו|נהריה|haifa)/i.test(q)) q += ', חיפה';
-    return q;
+    const loc = String(e.location || '').trim();
+    if (!loc || loc === 'חיפה') return '';
+    const segs = loc.replace(/\([^)]*\)/g, '').split(',').map(s => s.trim()).filter(Boolean);
+    const lastSeg = segs[segs.length - 1] || '';
+    const city = segs.length > 1 && NAV_CITY_RE.test(lastSeg) && !/\d/.test(lastSeg) ? lastSeg : 'חיפה';
+    const rest = segs.slice(1);
+    const street = [...rest].reverse().find(s => /\d/.test(s) && /[א-ת]/.test(s)) || rest.find(s => /\d/.test(s) && !/^\d+$/.test(s));
+    if (street) return `${street}, ${city}`;
+    return NAV_CITY_RE.test(loc) ? loc : loc + ', חיפה';
 }
 async function navigateTo(kind) {
     const e = curViewEvent(); if (!e) return;
@@ -2125,6 +2132,7 @@ function validateEventForm() {
     if (!v('f-time') && !document.getElementById('f-time').dataset.orig) { msgs.push('שעת התחלה'); ids.push('f-time'); }
     else if (v('f-time') && !validTime(v('f-time'))) { msgs.push('שעת התחלה לא תקינה — למשל 20:00'); ids.push('f-time'); }
     if (v('f-time-end') && !validTime(v('f-time-end'))) { msgs.push('שעת סיום לא תקינה — למשל 23:00'); ids.push('f-time-end'); }
+    if (!v('f-loc') || v('f-loc') === 'חיפה') { msgs.push('מקום האירוע (שם המקום, רחוב ומספר)'); ids.push('f-loc'); }
     if (!document.getElementById('check-accurate').checked) { msgs.push('סימון ✓ באישור שהפרטים נכונים'); ids.push('check-accurate'); }
     if (!document.getElementById('check-rules').checked) { msgs.push('סימון ✓ באישור כללי הפרסום'); ids.push('check-rules'); }
     showFormErrors(msgs, ids);
