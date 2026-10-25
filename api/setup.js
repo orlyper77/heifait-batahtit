@@ -31,15 +31,20 @@ module.exports = async (req, res) => {
 
   // 2. התראות לטלפון
   html += '<h2>התראות לטלפון</h2><ul>';
-  const hasV = env('VAPID_PUBLIC_KEY') && env('VAPID_PRIVATE_KEY');
-  html += row(hasV, 'VAPID_PUBLIC_KEY + VAPID_PRIVATE_KEY', hasV ? '' : '— חסרים');
+  const b64len = v => { try { return Buffer.from(String(v).replace(/-/g, '+').replace(/_/g, '/'), 'base64').length; } catch (_) { return 0; } };
+  const pubV = env('VAPID_PUBLIC_KEY'), privV = env('VAPID_PRIVATE_KEY');
+  const pubOk = b64len(pubV) === 65, privOk = b64len(privV) === 32;
+  const hasV = pubOk && privOk;
+  html += row(pubOk, 'VAPID_PUBLIC_KEY', !pubV ? '— חסר' : pubOk ? '' : `— לא תקין (אורך ${pubV.length} תווים, צריך 87)`);
+  html += row(privOk, 'VAPID_PRIVATE_KEY', !privV ? '— חסר' : privOk ? '' : `— לא תקין (אורך ${privV.length} תווים, צריך 43)`);
   html += '</ul>';
   if (!hasV) {
     const keys = require('web-push').generateVAPIDKeys();
-    html += `<p>הנה שני מפתחות חדשים שנוצרו עכשיו בשבילך (רק את רואה אותם). מעתיקים כל אחד ל-Vercel בשם שמופיע לידו:</p>
-      <table><tr><td><b>VAPID_PUBLIC_KEY</b></td><td><code>${keys.publicKey}</code></td></tr>
-      <tr><td><b>VAPID_PRIVATE_KEY</b></td><td><code>${keys.privateKey}</code></td></tr></table>
-      <p class="muted">אם תרענני את הדף ייווצרו מפתחות אחרים — זה בסדר, רק חשוב ששניהם יהיו מאותו רענון.</p>`;
+    const copyBtn = (id) => `<button class="btn" style="border:none;cursor:pointer;font-family:inherit" onclick="navigator.clipboard.writeText(document.getElementById('${id}').value);this.textContent='✓ הועתק'">העתקה</button>`;
+    html += `<p>${pubV || privV ? '<b class="bad">אחד המפתחות לא הועתק נכון.</b> מוחקים ב-Vercel את שני המשתנים (VAPID_PUBLIC_KEY ו-VAPID_PRIVATE_KEY) ומוסיפים אותם מחדש עם הערכים האלה:' : 'הנה שני מפתחות חדשים שנוצרו עכשיו בשבילך (רק את רואה אותם). מעתיקים כל אחד ל-Vercel בשם שמופיע לידו:'}</p>
+      <p><b>VAPID_PUBLIC_KEY</b> (${keys.publicKey.length} תווים)<br><input id="k1" readonly value="${keys.publicKey}" style="width:100%;direction:ltr;font-family:monospace;padding:6px" onclick="this.select()"> ${copyBtn('k1')}</p>
+      <p><b>VAPID_PRIVATE_KEY</b> (${keys.privateKey.length} תווים)<br><input id="k2" readonly value="${keys.privateKey}" style="width:100%;direction:ltr;font-family:monospace;padding:6px" onclick="this.select()"> ${copyBtn('k2')}</p>
+      <p class="muted">חשוב ששני המפתחות יהיו מאותה פתיחה של הדף (ריענון יוצר זוג חדש). אחרי השמירה — Redeploy, ואז ב-🔔 באתר: "ביטול התראות" ו"הפעלת התראות" מחדש.</p>`;
   } else {
     html += `<p>כדי לבדוק: הפעילי התראות באתר (כפתור 🔔) כשאת מחוברת כמנהלת, ואז:</p>
       <p><a class="btn" href="?key=${k}&test=adminpush">התראת "ממתין לאישור" — רק למנהלות</a> <a class="btn" href="?key=${k}&test=push">התראת בדיקה לכל המנויים</a></p>`;

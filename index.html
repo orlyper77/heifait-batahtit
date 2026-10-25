@@ -2453,6 +2453,10 @@ async function notifySubscribe() {
         ntReg = ntReg || await navigator.serviceWorker.register('/sw.js', { scope: '/' });
         await navigator.serviceWorker.ready;
         let sub = await ntReg.pushManager.getSubscription();
+        // אם מפתח ההתראות של האתר השתנה — נרשמים מחדש
+        const want = urlB64ToUint8Array(cfg.publicKey);
+        const have = sub && sub.options && sub.options.applicationServerKey ? new Uint8Array(sub.options.applicationServerKey) : null;
+        if (sub && have && (have.length !== want.length || have.some((b, i) => b !== want[i]))) { try { await sub.unsubscribe(); } catch (_) {} sub = null; }
         if (!sub) sub = await ntReg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: urlB64ToUint8Array(cfg.publicKey) });
         const j = sub.toJSON();
         const cats = currentRole === 'admin' ? [] : [...document.querySelectorAll('#nt-cats .cat-pick-btn.selected')].map(b => b.dataset.c);
