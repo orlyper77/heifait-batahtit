@@ -1,4 +1,4 @@
-// Service Worker — מקבל התראות על אירועים חדשים ומציג אותן גם כשהאתר סגור
+// v2 — Service Worker — מקבל התראות על אירועים חדשים ומציג אותן גם כשהאתר סגור
 self.addEventListener('install', () => self.skipWaiting());
 self.addEventListener('activate', e => e.waitUntil(self.clients.claim()));
 
@@ -8,7 +8,7 @@ self.addEventListener('push', event => {
   const opts = {
     body: d.body || '',
     icon: '/icon-192.png',
-    badge: '/icon-192.png',
+    badge: '/badge-96.png',   // אייקון קטן בשורת המצב: לבן על שקוף (אנדרואיד צובע אותו)
     image: d.image,
     tag: d.tag,
     dir: 'rtl',
