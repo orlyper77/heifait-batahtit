@@ -1275,7 +1275,29 @@ function dayHeaderLabel(k, todayISO) {
     return full;
 }
 
+// ── אבטחה: כל טקסט שמשתמשים כתבו מוצג כטקסט בלבד (לא כקוד), וקישורים רק http/https ──
+const escHtml = s => String(s == null ? '' : s).replace(/[&<>"'`]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;', '`': '&#96;' }[c]));
+const safeUrl = u => { u = String(u || '').trim(); return /^https?:\/\/[^\s<>"']+$/i.test(u) ? u : ''; };
+const safeImg = u => { u = String(u || '').trim(); return /^data:image\/(png|jpe?g|gif|webp);base64,[a-z0-9+\/=]+$/i.test(u) || /^https:\/\/[^\s<>"']+$/i.test(u) ? u : ''; };
+function escEvent(e) {
+    const o = { ...e };
+    ['id', 'cat', 'title', 'desc', 'description', 'date', 'date_display', 'date_raw', 'time', 'location', 'price', 'emoji'].forEach(k => { if (o[k] != null) o[k] = escHtml(o[k]); });
+    if (Array.isArray(o.cats)) o.cats = o.cats.map(escHtml);
+    ['tickets', 'tickets2', 'materials', 'materials2'].forEach(k => { o[k] = escHtml(safeUrl(o[k])); });
+    o.image = o.image ? escHtml(safeImg(o.image)) || null : null;
+    return o;
+}
+
+// קישור מהטופס: מוסיפים https:// אם חסר; כל מה שאינו קישור אינטרנט רגיל — נמחק
+function cleanLink(v) {
+    v = String(v || '').trim();
+    if (!v) return '';
+    if (!/^[a-z][a-z0-9+.-]*:/i.test(v) && /^[\w.-]+\.[a-z]{2,}/i.test(v)) v = 'https://' + v;
+    return safeUrl(v);
+}
+
 function cardHtml(e) {
+    e = escEvent(e);
     {
         const isUserEvent = currentUser && (currentUser.id === e.user_id || currentRole === 'admin');
         return `
@@ -1316,13 +1338,14 @@ function toggleFav(id, ev) {
 }
 
 function openViewModal(id) {
-    const e = events.find(x => x.id == id);
+    let e = events.find(x => x.id == id);
     if (!e) return;
     viewEventId = e.id;
     const hs = history.state || {};
     closeMenus('silent');
     if (hs.view || hs.menu) history.replaceState({ ...hs, view: e.id, menu: null }, '', '?event=' + e.id);
     else history.pushState({ ...hs, view: e.id }, '', '?event=' + e.id);
+    const raw = e; e = escEvent(e);   // מכאן: גרסה בטוחה להצגה
     // תמונה
     const imgWrap = document.getElementById('view-modal-img-wrap');
     imgWrap.innerHTML = e.image
@@ -1332,9 +1355,9 @@ function openViewModal(id) {
     document.getElementById('view-modal-cats').innerHTML =
         (e.cats||[e.cat]).map(c=>`<span class="card-cat cat-${c}">${CAT_LABEL[c]||c}</span>`).join('');
     // כותרת
-    document.getElementById('view-modal-title').textContent = e.title;
+    document.getElementById('view-modal-title').textContent = raw.title;
     // תיאור
-    document.getElementById('view-modal-desc').textContent = e.desc || '';
+    document.getElementById('view-modal-desc').textContent = raw.desc || '';
     // מטא
     document.getElementById('view-modal-meta').innerHTML = `
         <div class="meta-item"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" style="opacity:.5;flex-shrink:0;margin-left:6px"><rect x="2" y="3" width="12" height="11" rx="2"/><path d="M2 7h12M5 1v4M11 1v4"/></svg>${formatEventDate(e)}</div>
@@ -1627,13 +1650,13 @@ async function loadPendingEvents() {
         userEmails[uid] = (profile?.name ? profile.name + ' · ' : '') + (profile?.email || uid.substring(0,8)+'...');
     }
     pendingRows = {}; data.forEach(r => { pendingRows[r.id] = r; });
-    grid.innerHTML = data.map(e => `
+    grid.innerHTML = data.map(r => { const e = escEvent(r); return `
         <div class="approval-card" id="acard-${e.id}">
             ${e.image ? `<img class="approval-card-img" src="${e.image}" alt="">` : `<div class="approval-card-img">${CAT_EMOJI[e.cat]||'📌'}</div>`}
             <div class="approval-card-body">
                 <div class="approval-card-title">${e.title}</div>
                 <div class="approval-card-meta">📅 ${e.date_display||e.date_raw||'-'} · 📍 ${e.location||'חיפה'}</div>
-                <div class="approval-card-meta">👤 <span id="user-email-${e.id}">${userEmails[e.user_id]||'לא ידוע'}</span></div>
+                <div class="approval-card-meta">👤 <span id="user-email-${e.id}">${escHtml(userEmails[r.user_id]||'לא ידוע')}</span></div>
                 <div class="approval-card-desc">${e.description||''}</div>
                 <div class="approval-btns">
                     <button class="btn-preview" onclick="previewPending('${e.id}')">👁 צפייה מלאה</button>
@@ -1644,7 +1667,7 @@ async function loadPendingEvents() {
                     <button class="btn-reject" onclick="rejectEvent('${e.id}')">✕ דחי</button>
                 </div>
             </div>
-        </div>`).join('');
+        </div>`; }).join('');
     // נסיון לשלוף מיילים אמיתיים
     fetchUserEmails(data);
 }
@@ -1732,8 +1755,8 @@ async function loadAllUsers() {
     if (users.length === 0) { list.innerHTML = '<div style="color:rgba(255,255,255,0.3);font-size:.85rem;">אין משתמשים רשומים עדיין</div>'; return; }
 
     list.innerHTML = users.map(u => {
-        const displayName = u.name ? `<strong style="color:#f5ede8;">${u.name}</strong> ` : '';
-        const displayEmail = u.email ? `<span style="color:rgba(255,255,255,0.45);font-size:.8rem;">${u.email}</span>` : `<span style="color:rgba(255,255,255,0.3);font-size:.8rem;">${u.id.substring(0,8)}...</span>`;
+        const displayName = u.name ? `<strong style="color:#f5ede8;">${escHtml(u.name)}</strong> ` : '';
+        const displayEmail = u.email ? `<span style="color:rgba(255,255,255,0.45);font-size:.8rem;">${escHtml(u.email)}</span>` : `<span style="color:rgba(255,255,255,0.3);font-size:.8rem;">${u.id.substring(0,8)}...</span>`;
         return `
         <div class="trusted-user-row">
             <span class="trusted-user-email">${displayName}${displayEmail}</span>
@@ -1912,7 +1935,7 @@ function knownVenues() {
 }
 function fillVenueList() {
     const dl = document.getElementById('venue-list'); if (!dl) return;
-    dl.innerHTML = knownVenues().map(v => `<option value="${v.replace(/"/g, '&quot;')}"></option>`).join('');
+    dl.innerHTML = knownVenues().map(v => `<option value="${escHtml(v)}"></option>`).join('');
 }
 function normalizeLocation(raw) {
     let s = (raw || '').replace(/\s+/g, ' ').trim();
@@ -1972,10 +1995,10 @@ async function saveEvent() {
         time: document.getElementById('f-time').value || '-',
         location: document.getElementById('f-loc').value || 'חיפה',
         price: document.getElementById('f-price').value || 'כניסה חופשית',
-        tickets: document.getElementById('f-tickets').value.trim(),
-        tickets2: document.getElementById('f-tickets2').value.trim(),
-        materials: document.getElementById('f-materials').value.trim(),
-        materials2: document.getElementById('f-materials2').value.trim(),
+        tickets: cleanLink(document.getElementById('f-tickets').value),
+        tickets2: cleanLink(document.getElementById('f-tickets2').value),
+        materials: cleanLink(document.getElementById('f-materials').value),
+        materials2: cleanLink(document.getElementById('f-materials2').value),
         date_end_raw: dateEndRaw || null,
         image: currentImageData || null,
         status: (editingId !== null && currentRole === 'admin')
