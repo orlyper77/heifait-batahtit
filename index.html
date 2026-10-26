@@ -294,6 +294,9 @@ body{font-family:'Secular One',sans-serif;background:#1a0505;color:#f5ede8;direc
 .link-tickets:hover{background:rgba(212,224,52,0.22);}
 .link-site{background:rgba(107,170,220,0.12);color:#9cc9f0;border:1px solid rgba(107,170,220,0.3);}
 .link-site:hover{background:rgba(107,170,220,0.22);}
+.link-fb{background:rgba(24,119,242,0.14);color:#9cc4ff;border-color:rgba(24,119,242,0.45);}
+.link-ig{background:rgba(214,41,118,0.13);color:#ffa8cf;border-color:rgba(214,41,118,0.45);}
+.link-fb svg,.link-ig svg{flex-shrink:0;}
 .link-materials{background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.55);border:1px solid rgba(255,255,255,0.1);}
 .link-brand{display:inline-flex;align-items:center;justify-content:center;gap:8px;}
 .link-brand.link-none svg{filter:grayscale(1);opacity:.5;}
@@ -2224,10 +2227,22 @@ function eventLinksHtml(e) {
     const safe = u => (u || '').trim();
     const out = [];
     if (safe(e.tickets)) out.push(`<a class="link-btn link-tickets" href="${safe(e.tickets)}" target="_blank" rel="noopener" onclick="event.stopPropagation()">🎟 כרטיסים</a>`);
-    if (safe(e.tickets2)) out.push(`<a class="link-btn link-site" href="${safe(e.tickets2)}" target="_blank" rel="noopener" onclick="event.stopPropagation()">🌐 לאתר</a>`);
+    if (safe(e.tickets2)) out.push(siteLinkHtml(safe(e.tickets2)));
     if (safe(e.materials)) out.push(matLinkHtml(safe(e.materials), 1));
     if (safe(e.materials2)) out.push(matLinkHtml(safe(e.materials2), 2));
     return out.join('');
+}
+
+// קישור "לאתר": אם זה דף פייסבוק או אינסטגרם — עם האייקון שלהם
+const ICON_FB = `<svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="12" fill="#1877F2"/><path fill="#fff" d="M13.4 24v-8.4h2.8l.4-3.3h-3.2v-2.1c0-.9.3-1.6 1.6-1.6h1.7V5.7c-.3 0-1.3-.1-2.5-.1-2.5 0-4.2 1.5-4.2 4.3v2.4H7.2v3.3H10V24z"/></svg>`;
+const ICON_IG = `<svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><rect x="1" y="1" width="22" height="22" rx="6" fill="url(#igg)"/><rect x="5.5" y="5.5" width="13" height="13" rx="4" fill="none" stroke="#fff" stroke-width="1.8"/><circle cx="12" cy="12" r="3.1" fill="none" stroke="#fff" stroke-width="1.8"/><circle cx="16.4" cy="7.6" r="1.1" fill="#fff"/></svg>`;
+function siteLinkHtml(url) {
+    let host = '';
+    try { host = new URL(url.replace(/&amp;/g, '&')).hostname.toLowerCase().replace(/^(www|m|web|mobile)\./, ''); } catch (_) {}
+    let cls = 'link-site', inner = '🌐 לאתר';
+    if (/^(facebook\.com|fb\.com|fb\.me|fb\.watch)$/.test(host)) { cls = 'link-site link-fb'; inner = ICON_FB + ' פייסבוק'; }
+    else if (/^(instagram\.com|instagr\.am)$/.test(host)) { cls = 'link-site link-ig'; inner = ICON_IG + ' אינסטגרם'; }
+    return `<a class="link-btn ${cls}" href="${url}" target="_blank" rel="noopener" onclick="event.stopPropagation()">${inner}</a>`;
 }
 
 function matLinkHtml(url, n) {
