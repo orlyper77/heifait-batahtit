@@ -1,5 +1,5 @@
 // נקרא אוטומטית מ-Supabase כשנוסף אירוע או כשאירוע מאושר (ראו notifications.sql)
-const { env, tgAdmin, tgChannel, pushAll, pushAdmins, emailAdmin } = require('./_notify');
+const { env, tgAdmin, tgChannel, pushAll, pushAdmins, pushPublisherApproved, pushUserTrusted, emailAdmin } = require('./_notify');
 const crypto = require('crypto');
 
 function safeEqual(a, b) {
@@ -31,6 +31,8 @@ module.exports = async (req, res) => {
       ]);
       out.adminPush = p; out.admin = t; out.email = m;
     }
+    if (kind === 'trusted') out.trusted = await pushUserTrusted(body.user_id).catch(err => ({ error: String(err) }));
+    if (kind === 'approved') out.publisher = await pushPublisherApproved(e).catch(err => ({ error: String(err) }));
     if (kind === 'approved' || kind === 'published') {
       const [ch, push] = await Promise.all([
         env('TELEGRAM_CHANNEL') ? tgChannel(e).catch(err => ({ ok: false, description: String(err) })) : null,

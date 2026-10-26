@@ -96,8 +96,10 @@ async function pushAll(e, opts = {}) {
   });
   let sent = 0, removed = 0, failed = 0;
   await Promise.all((subs || []).map(async s => {
-    if (opts.admins ? !s.is_admin : (!opts.all && s.is_admin)) return;   // למנהלות — רק התראות אישור
-    if (!opts.all && !opts.admins && s.cats && s.cats.length && !cats.some(c => s.cats.includes(c))) return;
+    if (opts.userId) { if (String(s.user_id || '') !== String(opts.userId)) return; }        // התראה אישית למשתמש אחד
+    else if (opts.admins ? !s.is_admin : (!opts.all && s.is_admin)) return;   // למנהלות — רק התראות אישור
+    if (!opts.userId && !opts.admins && !opts.all && e.user_id && String(s.user_id || '') === String(e.user_id)) return;   // המפרסם מקבל התראה אישית במקום הכללית
+    if (!opts.all && !opts.admins && !opts.userId && s.cats && s.cats.length && !cats.some(c => s.cats.includes(c))) return;
     try {
       await wp.sendNotification({ endpoint: s.endpoint, keys: { p256dh: s.p256dh, auth: s.auth } }, payload, { TTL: 60 * 60 * 24, urgency: 'normal' });
       sent++;
@@ -109,6 +111,14 @@ async function pushAll(e, opts = {}) {
     }
   }));
   return { sent, removed, failed, total: (subs || []).length };
+}
+// התראה אישית למפרסם
+function pushPublisherApproved(e) {
+  if (!e.user_id) return Promise.resolve({ sent: 0 });
+  return pushAll(e, { userId: e.user_id, title: '🎉 האירוע שלך אושר ופורסם!', body: e.title, url: `/?event=${encodeURIComponent(e.id)}` });
+}
+function pushUserTrusted(userId) {
+  return pushAll({ id: 'trusted', has_image: false }, { userId, title: '⭐ את/ה מאושר/ת מראש!', body: 'מעכשיו האירועים שלך בחיפאית בתחתית מתפרסמים מיד, בלי לחכות לאישור.', url: '/' });
 }
 // התראה למנהלות: אירוע חדש ממתין לאישור
 function pushAdmins(e) {
@@ -190,4 +200,4 @@ async function sendDaily(chatId, day) {
   return { ok: results.every(r => r.ok), events: events.length, messages: msgs.length, errors: results.filter(r => !r.ok).map(r => r.description) };
 }
 
-module.exports = { SITE, env, tg, tgAdmin, tgChannel, pushAll, pushAdmins, whenText, emailAdmin, sendDaily, israelToday };
+module.exports = { SITE, env, tg, tgAdmin, tgChannel, pushAll, pushAdmins, pushPublisherApproved, pushUserTrusted, whenText, emailAdmin, sendDaily, israelToday };

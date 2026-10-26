@@ -670,6 +670,10 @@ button,input,textarea,select{font-family:'Rubik',sans-serif;}
 /* כפתור X בטופס הוספת אירוע — נשאר גלוי גם כשגוללים */
 .modal-x{position:sticky;top:0;float:left;z-index:5;width:38px;height:38px;margin:-1rem -1rem 0 0;border-radius:50%;border:1px solid rgba(255,255,255,0.18);background:rgba(20,4,4,0.85);color:#fff;font-size:17px;cursor:pointer;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(4px);}
 .modal-x:hover{background:rgba(255,255,255,0.15);}
+
+.notice-box{position:fixed;top:70px;left:50%;transform:translateX(-50%);z-index:3000;width:min(92vw,460px);background:#1f2a08;border:1px solid rgba(212,224,52,0.6);color:#f5f7d0;border-radius:16px;padding:14px 44px 14px 16px;font-size:15px;line-height:1.7;box-shadow:0 10px 30px rgba(0,0,0,.5);animation:fadeIn .3s ease;}
+.notice-box b{color:#e6f06a;}
+.notice-x{position:absolute;top:8px;right:8px;width:28px;height:28px;border-radius:50%;border:none;background:rgba(255,255,255,0.1);color:#fff;cursor:pointer;font-size:14px;}
 </style>
 </head>
 <body>
@@ -1104,8 +1108,9 @@ async function checkAuth() {
             if (currentRole === 'admin') {
                 document.getElementById('btn-approval-panel').style.display = 'inline-flex';
                 updateApprovalBadge();
-                if (typeof ntSyncAdmin === 'function') ntSyncAdmin();
             }
+            // מנוי ההתראות במכשיר הזה משויך למשתמש המחובר (בשביל "האירוע שלך אושר")
+            if (typeof ntSyncAdmin === 'function') ntSyncAdmin();
         } else {
             document.getElementById('user-menu-wrap').style.display = 'none';
             document.getElementById('btn-login-toolbar').style.display = 'inline-flex';
@@ -1302,6 +1307,7 @@ async function loadEvents() {
         }).map(rowToEvent).filter(e => !eventIsOver(e));   // אירוע שנגמר (כולל שעת סיום של היום) יורד מהלוח
         applyFilter();
         handleEventDeepLink();
+        checkPublisherUpdates();
     } catch(e) {
         console.error(e);
         document.getElementById('grid').innerHTML = '<div class="empty">שגיאה בטעינת האירועים</div>';
@@ -1474,7 +1480,7 @@ function cardHtml(e) {
                 ${e.image ? `<img class="card-img-bg" src="${e.image}" alt="" aria-hidden="true" loading="lazy" decoding="async"><img class="card-img-main" src="${e.image}" alt="${e.title}" loading="lazy">` : `<span>${e.emoji}</span>`}
             </div>
             <div class="card-body">
-                <div class="card-cats">${(e.cats||[e.cat]).map(c=>`<span class="card-cat cat-${c}">${CAT_LABEL[c]||c}</span>`).join('')}${e.status==='pending'&&currentRole==='admin'?'<span style="background:rgba(255,100,100,0.3);color:#ff8080;border:1px solid rgba(255,100,100,0.5);font-size:10px;padding:2px 7px;border-radius:20px;">⏳ ממתין לאישור</span>':''}</div>
+                <div class="card-cats">${(e.cats||[e.cat]).map(c=>`<span class="card-cat cat-${c}">${CAT_LABEL[c]||c}</span>`).join('')}${e.status==='pending'&&(currentRole==='admin'||(currentUser&&currentUser.id===e.user_id))?'<span style="background:rgba(255,100,100,0.3);color:#ff8080;border:1px solid rgba(255,100,100,0.5);font-size:10px;padding:2px 7px;border-radius:20px;">⏳ ממתין לאישור</span>':''}</div>
                 <div class="card-title" title="${e.title}">${e.title}</div>
                 ${e.desc ? `<div class="card-desc" id="desc-${e.id}">${e.desc}</div>
                 <button class="btn-more" id="more-${e.id}" onclick="toggleDesc('${e.id}',event)">עוד ▾</button>` : ''}
@@ -1588,11 +1594,40 @@ function toggleToolMenu(id, ev) {
 document.addEventListener('click', ev => {
     if (!ev.target.closest || !ev.target.closest('.tool-wrap')) closeMenus();
 });
-function showToast(t) {
+function showToast(t, ms) {
     const d = document.createElement('div');
     d.className = 'toast-msg'; d.textContent = t;
     document.body.appendChild(d);
-    setTimeout(() => d.remove(), t.length > 25 ? 3500 : 2200);
+    setTimeout(() => d.remove(), ms || (t.length > 25 ? 3500 : 2200));
+}
+// הודעה בולטת למפרסם (נשארת עד שסוגרים)
+function showNotice(html) {
+    let box = document.getElementById('notice-box');
+    if (!box) {
+        box = document.createElement('div'); box.id = 'notice-box'; box.className = 'notice-box'; box.setAttribute('role', 'status');
+        document.body.appendChild(box);
+    }
+    box.innerHTML = `<button class="notice-x" aria-label="סגירה" onclick="this.parentNode.remove()">✕</button>${html}`;
+}
+// כשהמפרסם חוזר לאתר: האם אירוע שלו אושר מאז הביקור הקודם? האם הוא סומן "מאושר מראש"?
+function checkPublisherUpdates() {
+    if (!currentUser || currentRole === 'admin') return;
+    const key = 'myPending_' + currentUser.id, tkey = 'trustedSeen_' + currentUser.id;
+    let before = [];
+    try { before = JSON.parse(localStorage.getItem(key) || '[]'); } catch (_) {}
+    const mine = events.filter(e => e.user_id === currentUser.id);
+    const approvedNow = before.filter(id => mine.some(e => String(e.id) === String(id) && e.status === 'approved'));
+    const msgs = approvedNow.map(id => mine.find(e => String(e.id) === String(id))).filter(Boolean)
+        .map(e => `🎉 האירוע <b>"${escHtml(e.title)}"</b> אושר ופורסם באתר!`);
+    let trustedSeen = false;
+    try { trustedSeen = localStorage.getItem(tkey) === '1'; } catch (_) {}
+    if (currentTrusted && !trustedSeen) {
+        msgs.push('⭐ <b>את/ה מאושר/ת מראש!</b> מעכשיו האירועים שלך מתפרסמים מיד, בלי לחכות לאישור.');
+        try { localStorage.setItem(tkey, '1'); } catch (_) {}
+    }
+    if (!currentTrusted) { try { localStorage.removeItem(tkey); } catch (_) {} }
+    if (msgs.length) showNotice(msgs.join('<br>'));
+    try { localStorage.setItem(key, JSON.stringify(mine.filter(e => e.status === 'pending').map(e => e.id))); } catch (_) {}
 }
 
 // שעה בישראל → זמן UTC (מתחשב בשעון קיץ/חורף)
@@ -2341,7 +2376,7 @@ async function saveEvent() {
         closeModal();
         if (document.getElementById('approval-panel')?.classList.contains('open')) loadPendingEvents();
         if (currentRole !== 'admin' && !currentTrusted && !editingId) {
-            alert('האירוע שלך התקבל ויפורסם לאחר אישור המנהלת 🙏');
+            showNotice('🙏 <b>האירוע התקבל!</b> הוא יפורסם אחרי אישור המנהלת.<br>עד אז הוא מסומן אצלך ב"⏳ ממתין לאישור". כשהוא יאושר תופיע כאן הודעה' + ((typeof Notification !== 'undefined' && Notification.permission === 'granted') ? ', ותקבל/י גם התראה לטלפון.' : '. רוצים לקבל התראה לטלפון? לחצו על 🔔 למעלה.'));
         }
         await loadEvents();
     } catch(e) {
