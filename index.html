@@ -666,6 +666,10 @@ button,input,textarea,select{font-family:'Rubik',sans-serif;}
 /* רשימת הקטגוריות ממורכזת */
 .toolbar{justify-content:center;}
 .toolbar .toolbar-extra{justify-content:center;}
+
+/* כפתור X בטופס הוספת אירוע — נשאר גלוי גם כשגוללים */
+.modal-x{position:sticky;top:0;float:left;z-index:5;width:38px;height:38px;margin:-1rem -1rem 0 0;border-radius:50%;border:1px solid rgba(255,255,255,0.18);background:rgba(20,4,4,0.85);color:#fff;font-size:17px;cursor:pointer;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(4px);}
+.modal-x:hover{background:rgba(255,255,255,0.15);}
 </style>
 </head>
 <body>
@@ -699,6 +703,7 @@ button,input,textarea,select{font-family:'Rubik',sans-serif;}
 <div class="approval-panel" id="approval-panel">
     <div class="approval-header">
         <h2>✦ בקשות פרסום ממתינות לאישור</h2>
+        <button class="btn-preview" id="btn-migrate-images" onclick="migrateImages()" style="flex:0 0 auto;display:none">🖼 העברת תמונות ישנות לאחסון</button>
         <button class="btn-close-approval" onclick="closeApprovalPanel()">✕ סגור</button>
     </div>
     <div class="approval-grid" id="approval-grid"></div>
@@ -893,6 +898,7 @@ button,input,textarea,select{font-family:'Rubik',sans-serif;}
 <!-- Event Modal -->
 <div class="overlay" id="overlay" onclick="overlayClick(event)">
     <div class="modal">
+        <button type="button" class="modal-x" onclick="closeModal()" aria-label="סגירה" title="סגירה">✕</button>
         <h2 id="modal-title">✦ הוסף אירוע חדש</h2>
         <div class="form-group">
             <label>תמונה לאירוע</label>
@@ -1433,7 +1439,8 @@ function dayHeaderLabel(k, todayISO) {
 // ── אבטחה: כל טקסט שמשתמשים כתבו מוצג כטקסט בלבד (לא כקוד), וקישורים רק http/https ──
 const escHtml = s => String(s == null ? '' : s).replace(/[&<>"'`]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;', '`': '&#96;' }[c]));
 const safeUrl = u => { u = String(u || '').trim(); return /^https?:\/\/[^\s<>"']+$/i.test(u) ? u : ''; };
-const safeImg = u => { u = String(u || '').trim(); return /^data:image\/(png|jpe?g|gif|webp);base64,[a-z0-9+\/=]+$/i.test(u) || /^https:\/\/[^\s<>"']+$/i.test(u) ? u : ''; };
+const STORAGE_PREFIX = SUPABASE_URL + '/storage/v1/object/public/event-images/';
+const safeImg = u => { u = String(u || '').trim(); return /^data:image\/(png|jpe?g|gif|webp);base64,[a-z0-9+\/=]+$/i.test(u) || (u.startsWith(STORAGE_PREFIX) && /^[^\s<>"']+$/.test(u)) ? u : ''; };
 function escEvent(e) {
     const o = { ...e };
     ['id', 'cat', 'title', 'desc', 'description', 'date', 'date_display', 'date_raw', 'time', 'location', 'price', 'emoji'].forEach(k => { if (o[k] != null) o[k] = escHtml(o[k]); });
@@ -1464,7 +1471,7 @@ function cardHtml(e) {
                 ${isUserEvent ? `<button class="del-btn" onclick="deleteEvent('${e.id}',event)">🗑️</button>` : ''}
             </div>
             <div class="card-img">
-                ${e.image ? `<img class="card-img-bg" src="${e.image}" alt="" aria-hidden="true"><img class="card-img-main" src="${e.image}" alt="${e.title}" loading="lazy">` : `<span>${e.emoji}</span>`}
+                ${e.image ? `<img class="card-img-bg" src="${e.image}" alt="" aria-hidden="true" loading="lazy" decoding="async"><img class="card-img-main" src="${e.image}" alt="${e.title}" loading="lazy">` : `<span>${e.emoji}</span>`}
             </div>
             <div class="card-body">
                 <div class="card-cats">${(e.cats||[e.cat]).map(c=>`<span class="card-cat cat-${c}">${CAT_LABEL[c]||c}</span>`).join('')}${e.status==='pending'&&currentRole==='admin'?'<span style="background:rgba(255,100,100,0.3);color:#ff8080;border:1px solid rgba(255,100,100,0.5);font-size:10px;padding:2px 7px;border-radius:20px;">⏳ ממתין לאישור</span>':''}</div>
@@ -1814,6 +1821,7 @@ async function updateApprovalBadge() {
 
 async function openApprovalPanel() {
     document.getElementById('approval-panel').classList.add('open');
+    checkMigrateNeeded();
     await loadPendingEvents();
     await loadAllUsers();
 }
@@ -1878,6 +1886,44 @@ function ensurePendingInEvents(id) {
 }
 function previewPending(id) { if (ensurePendingInEvents(id)) openViewModal(String(id)); }
 function editPending(id) { if (ensurePendingInEvents(id)) openModal(String(id)); }
+
+// מנהלת: העברה חד-פעמית של תמונות שנשמרו בתוך האירועים → לתיקיית התמונות
+async function checkMigrateNeeded() {
+    const btn = document.getElementById('btn-migrate-images'); if (!btn) return;
+    try {
+        const { count } = await db.from('events').select('id', { count: 'exact', head: true }).like('image', 'data:%');
+        btn.style.display = count ? '' : 'none';
+        btn.textContent = `🖼 העברת ${count || 0} תמונות ישנות לאחסון`;
+    } catch (_) { btn.style.display = 'none'; }
+}
+async function migrateImages() {
+    const btn = document.getElementById('btn-migrate-images');
+    if (!confirm('להעביר את כל התמונות הישנות לתיקיית התמונות? זה לוקח כדקה, לא סוגרים את החלון בינתיים.')) return;
+    btn.disabled = true;
+    let done = 0, failed = 0;
+    try {
+        const { data: ids, error } = await db.from('events').select('id').like('image', 'data:%');
+        if (error) throw error;
+        for (const { id } of ids || []) {
+            btn.textContent = `⏳ מעבירה... ${done + failed + 1}/${ids.length}`;
+            try {
+                const { data: row, error: e1 } = await db.from('events').select('id,image').eq('id', id).single();
+                if (e1 || !row || !String(row.image || '').startsWith('data:')) continue;
+                const url = await uploadEventImage(row.image, 'migrated');
+                const { error: e2 } = await db.from('events').update({ image: url }).eq('id', id);
+                if (e2) throw e2;
+                done++;
+            } catch (err) { console.error(err); failed++; }
+        }
+        alert(failed ? `הועברו ${done} תמונות. ${failed} לא הצליחו — אפשר ללחוץ שוב כדי לנסות אותן מחדש.` : `✓ הועברו ${done} תמונות בהצלחה.`);
+    } catch (err) {
+        alert('שגיאה: ' + (err.message || err) + '\nאם עוד לא הרצת את storage_images.sql ב-Supabase — צריך להריץ אותו קודם.');
+    } finally {
+        btn.disabled = false;
+        checkMigrateNeeded();
+        loadEvents();
+    }
+}
 
 async function approveEvent(id) {
     const { error } = await db.from('events').update({status:'approved'}).eq('id', id);
@@ -2153,6 +2199,23 @@ function normalizeLocation(raw) {
     return s;
 }
 
+// ── תמונות: נשמרות בתיקיית הקבצים (Storage), ובאירוע נשמר רק הקישור ──
+function dataUrlToBlob(d) {
+    const [head, b64] = d.split(',');
+    const mime = (head.match(/data:([^;]+)/) || [])[1] || 'image/jpeg';
+    const bin = atob(b64); const arr = new Uint8Array(bin.length);
+    for (let i = 0; i < bin.length; i++) arr[i] = bin.charCodeAt(i);
+    return new Blob([arr], { type: mime });
+}
+async function uploadEventImage(dataUrl, folder) {
+    const blob = dataUrlToBlob(dataUrl);
+    const ext = blob.type === 'image/png' ? 'png' : blob.type === 'image/webp' ? 'webp' : 'jpg';
+    const path = `${folder}/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
+    const { error } = await db.storage.from('event-images').upload(path, blob, { contentType: blob.type, cacheControl: '31536000', upsert: false });
+    if (error) throw error;
+    return db.storage.from('event-images').getPublicUrl(path).data.publicUrl;
+}
+
 // ── בדיקת הטופס לפני פרסום: הודעה ברורה מה חסר + סימון השדות באדום ──
 function showFormErrors(msgs, ids, head) {
     const box = document.getElementById('form-errors');
@@ -2260,6 +2323,11 @@ async function saveEvent() {
             : ((currentRole === 'admin' || currentTrusted) ? 'approved' : 'pending')
     };
 
+    // תמונה חדשה → מעלים לתיקיית התמונות; אם זה לא מצליח (למשל לפני שהתיקייה הוקמה) — נשמרת כמו קודם
+    if (payload.image && payload.image.startsWith('data:')) {
+        try { payload.image = await uploadEventImage(payload.image, currentUser.id); }
+        catch (err) { console.warn('image upload failed, keeping inline image', err); }
+    }
     try {
         let error;
         if (editingId !== null) {
