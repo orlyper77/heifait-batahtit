@@ -1278,7 +1278,12 @@ async function logout() {
 // ── Events ──
 async function loadEvents() {
     try {
-        const { data, error } = await db.from('events').select('*').order('date_raw', { ascending: true });
+        // רק אירועים רלוונטיים (מאתמול והלאה — אתמול בשביל אירועים שנמשכים אחרי חצות). אירועים ישנים לא נטענים בכלל.
+        const _y = new Date(Date.now() - 864e5);
+        const since = `${_y.getFullYear()}-${String(_y.getMonth()+1).padStart(2,'0')}-${String(_y.getDate()).padStart(2,'0')}`;
+        const { data, error } = await db.from('events').select('*')
+            .or(`date_raw.gte.${since},date_end_raw.gte.${since},date_raw.is.null`)
+            .order('date_raw', { ascending: true });
         if (error) throw error;
         const _n = new Date(); // תאריך מקומי (ישראל), לא UTC — כדי שאירועים של אתמול ייעלמו כבר בחצות
         const today = `${_n.getFullYear()}-${String(_n.getMonth()+1).padStart(2,'0')}-${String(_n.getDate()).padStart(2,'0')}`;
