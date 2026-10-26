@@ -73,6 +73,9 @@ async function tgChannel(e) {
   return tg('sendMessage', { chat_id: channel, text: caption, parse_mode: 'HTML' });
 }
 
+// שם המקום בצורה אחידה (כמו באתר): החלק הראשון בכתובת, בלי גרשיים, תיאטרון=תאטרון
+const venueKey = s => String(s || '').split(',')[0].replace(/["'״׳]/g, '').replace(/תיאטרון/g, 'תאטרון').replace(/\s+/g, ' ').trim().toLowerCase();
+
 // ── התראות לטלפון (Web Push) ──
 function webpush() {
   const pub = env('VAPID_PUBLIC_KEY'), priv = env('VAPID_PRIVATE_KEY');
@@ -87,6 +90,7 @@ async function pushAll(e, opts = {}) {
   const secret = env('NOTIFY_SECRET');
   const subs = await rpc('push_list', { p_secret: secret });
   const cats = eventCats(e).map(c => c === 'general' ? 'other' : c);
+  const evVenue = venueKey(e.location);
   const payload = JSON.stringify({
     title: opts.title || 'אירוע חדש: ' + e.title,
     body: opts.body || [whenText(e), e.location].filter(Boolean).join('\n'),
@@ -99,7 +103,15 @@ async function pushAll(e, opts = {}) {
     if (opts.userId) { if (String(s.user_id || '') !== String(opts.userId)) return; }        // התראה אישית למשתמש אחד
     else if (opts.admins ? !s.is_admin : (!opts.all && s.is_admin)) return;   // למנהלות — רק התראות אישור
     if (!opts.userId && !opts.admins && !opts.all && e.user_id && String(s.user_id || '') === String(e.user_id)) return;   // המפרסם מקבל התראה אישית במקום הכללית
-    if (!opts.all && !opts.admins && !opts.userId && s.cats && s.cats.length && !cats.some(c => s.cats.includes(c))) return;
+    if (!opts.all && !opts.admins && !opts.userId) {
+      // בחירה לפי קטגוריות ו/או מקומות: מספיק שאחד מהם מתאים. בלי בחירה בכלל = הכול
+      const sc = s.cats || [], sv = s.venues || [];
+      if (sc.length || sv.length) {
+        const catOk = sc.length && cats.some(c => sc.includes(c));
+        const venueOk = sv.length && evVenue && sv.some(v => venueKey(v) === evVenue);
+        if (!catOk && !venueOk) return;
+      }
+    }
     try {
       await wp.sendNotification({ endpoint: s.endpoint, keys: { p256dh: s.p256dh, auth: s.auth } }, payload, { TTL: 60 * 60 * 24, urgency: 'normal' });
       sent++;

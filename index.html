@@ -674,6 +674,14 @@ button,input,textarea,select{font-family:'Rubik',sans-serif;}
 .notice-box{position:fixed;top:70px;left:50%;transform:translateX(-50%);z-index:3000;width:min(92vw,460px);background:#1f2a08;border:1px solid rgba(212,224,52,0.6);color:#f5f7d0;border-radius:16px;padding:14px 44px 14px 16px;font-size:15px;line-height:1.7;box-shadow:0 10px 30px rgba(0,0,0,.5);animation:fadeIn .3s ease;}
 .notice-box b{color:#e6f06a;}
 .notice-x{position:absolute;top:8px;right:8px;width:28px;height:28px;border-radius:50%;border:none;background:rgba(255,255,255,0.1);color:#fff;cursor:pointer;font-size:14px;}
+
+.nt-venue-add{display:flex;gap:8px;margin-bottom:10px;}
+.nt-venue-add input{flex:1;min-width:0;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.18);border-radius:12px;color:#fff;padding:9px 12px;font-family:inherit;font-size:14px;}
+.nt-venue-add button{background:rgba(212,224,52,0.15);border:1px solid rgba(212,224,52,0.5);color:#d4e034;border-radius:12px;padding:0 14px;font-family:inherit;font-weight:500;cursor:pointer;}
+.nt-venues{margin-bottom:1rem;}
+.nt-venues:empty{display:none;}
+.nt-venue-chip{display:inline-flex;align-items:center;gap:6px;cursor:default;}
+.nt-venue-chip button{background:none;border:none;color:inherit;opacity:.7;cursor:pointer;font-size:12px;padding:0 2px;}
 </style>
 </head>
 <body>
@@ -854,6 +862,13 @@ button,input,textarea,select{font-family:'Rubik',sans-serif;}
             <div id="nt-controls">
                 <div class="nt-label">על אילו אירועים? <span class="nt-hint">(בלי בחירה = הכול)</span></div>
                 <div class="nt-cats" id="nt-cats"></div>
+                <div class="nt-label" id="nt-venues-label">ובאילו מקומות? <span class="nt-hint">(התראה על כל אירוע במקומות שבחרתם)</span></div>
+                <div class="nt-venue-add" id="nt-venue-add">
+                    <input type="text" id="nt-venue-input" list="nt-venue-list" autocomplete="off" placeholder="הקלידו שם מקום, למשל: רודיאו">
+                    <datalist id="nt-venue-list"></datalist>
+                    <button type="button" onclick="ntAddVenue()">הוספה</button>
+                </div>
+                <div class="nt-cats nt-venues" id="nt-venues"></div>
                 <button class="nt-btn" id="nt-on" onclick="notifySubscribe()">הפעלת התראות</button>
                 <button class="nt-btn nt-off" id="nt-off" onclick="notifyUnsubscribe()" style="display:none">ביטול התראות</button>
             </div>
@@ -2772,6 +2787,32 @@ const ntIsIOS = () => /iphone|ipad|ipod/i.test(navigator.userAgent) || (navigato
 const ntStandalone = () => matchMedia('(display-mode: standalone)').matches || navigator.standalone === true;
 function ntGetCats() { try { return JSON.parse(localStorage.getItem('ntCats') || '[]'); } catch (_) { return []; } }
 function ntSetCats(c) { try { localStorage.setItem('ntCats', JSON.stringify(c)); } catch (_) {} }
+function ntGetVenues() { try { return JSON.parse(localStorage.getItem('ntVenues') || '[]'); } catch (_) { return []; } }
+function ntSetVenues(v) { try { localStorage.setItem('ntVenues', JSON.stringify(v)); } catch (_) {} }
+// מקומות להתראות: שם המקום בלבד (החלק הראשון בכתובת)
+let ntVenuesSel = [];
+const venueName = s => String(s || '').split(',')[0].trim();
+function ntRenderVenues() {
+    document.getElementById('nt-venues').innerHTML = ntVenuesSel.map((v, i) =>
+        `<span class="cat-pick-btn selected nt-venue-chip">📍 ${escHtml(v)} <button type="button" aria-label="הסרה" onclick="ntVenuesSel.splice(${i},1);ntRenderVenues()">✕</button></span>`).join('');
+}
+function ntAddVenue() {
+    const inp = document.getElementById('nt-venue-input');
+    const name = venueName(inp.value);
+    if (!name) return;
+    if (!ntVenuesSel.some(v => venueKey(v) === venueKey(name))) ntVenuesSel.push(name);
+    inp.value = '';
+    ntRenderVenues();
+}
+document.addEventListener('change', ev => { if (ev.target && ev.target.id === 'nt-venue-input' && ev.target.value) ntAddVenue(); });
+document.addEventListener('keydown', ev => { if (ev.target && ev.target.id === 'nt-venue-input' && ev.key === 'Enter') { ev.preventDefault(); ntAddVenue(); } });
+// הרשמה בשרת (עם מקומות; אם השרת עוד בגרסה הישנה — בלי מקומות)
+async function ntRpcSubscribe(j, cats, venues) {
+    const base = { p_endpoint: j.endpoint, p_p256dh: j.keys.p256dh, p_auth: j.keys.auth, p_cats: cats };
+    let res = await db.rpc('push_subscribe', { ...base, p_venues: venues });
+    if (res.error && /p_venues|function|schema cache/i.test(res.error.message || '')) res = await db.rpc('push_subscribe', base);
+    return res;
+}
 function urlB64ToUint8Array(b64) {
     const pad = '='.repeat((4 - b64.length % 4) % 4);
     const raw = atob((b64 + pad).replace(/-/g, '+').replace(/_/g, '/'));
@@ -2807,6 +2848,11 @@ async function openNotify() {
     const box = document.getElementById('nt-cats');
     box.innerHTML = Object.entries(CAT_LABEL).filter(([k]) => k !== 'general').map(([k, v]) =>
         `<span class="cat-pick-btn${chosen.has(k) ? ' selected' : ''}" data-c="${k}" onclick="this.classList.toggle('selected')">${CAT_EMOJI[k] || ''} ${v}</span>`).join('');
+    // מקומות: הרשימה הקבועה + מקומות מאירועים באתר
+    ntVenuesSel = ntGetVenues();
+    ntRenderVenues();
+    const names = [...new Set(knownVenues().map(venueName).filter(Boolean))].sort((a, b) => a.localeCompare(b, 'he'));
+    document.getElementById('nt-venue-list').innerHTML = names.map(n => `<option value="${escHtml(n)}"></option>`).join('');
     const cfg = await ntLoadConfig();
     // ערוץ טלגרם
     document.getElementById('nt-tg').style.display = cfg.telegram ? '' : 'none';
@@ -2844,6 +2890,7 @@ async function openNotify() {
     const isAdmin = currentRole === 'admin';
     document.querySelector('#nt-controls .nt-label').style.display = isAdmin ? 'none' : '';
     document.getElementById('nt-cats').style.display = isAdmin ? 'none' : '';
+    ['nt-venues-label', 'nt-venue-add', 'nt-venues'].forEach(id => document.getElementById(id).style.display = isAdmin ? 'none' : '');
     if (isAdmin) status.textContent = sub ? '✅ פעיל: תקבלי התראה על כל אירוע שממתין לאישור.' : 'כמנהלת, תקבלי התראה לטלפון על כל אירוע חדש שממתין לאישור.';
     else status.textContent = sub ? '✅ ההתראות פעילות במכשיר הזה. אפשר לשנות קטגוריות ולשמור.' : 'קבלו הודעה לטלפון ברגע שמתפרסם אירוע חדש.';
     document.getElementById('nt-on').textContent = sub ? 'שמירת השינויים' : 'הפעלת התראות';
@@ -2875,7 +2922,7 @@ async function ntSyncAdmin() {
     const sub = await ntCurrentSub();
     if (!sub) return;
     const j = sub.toJSON();
-    try { await db.rpc('push_subscribe', { p_endpoint: j.endpoint, p_p256dh: j.keys.p256dh, p_auth: j.keys.auth, p_cats: ntGetCats() }); } catch (_) {}
+    try { await ntRpcSubscribe(j, ntGetCats(), ntGetVenues()); } catch (_) {}
 }
 
 async function notifySubscribe() {
@@ -2902,9 +2949,11 @@ async function notifySubscribe() {
         if (!sub) sub = await ntReg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: urlB64ToUint8Array(cfg.publicKey) });
         const j = sub.toJSON();
         const cats = currentRole === 'admin' ? [] : [...document.querySelectorAll('#nt-cats .cat-pick-btn.selected')].map(b => b.dataset.c);
-        const { error } = await db.rpc('push_subscribe', { p_endpoint: j.endpoint, p_p256dh: j.keys.p256dh, p_auth: j.keys.auth, p_cats: cats });
+        if (document.getElementById('nt-venue-input').value) ntAddVenue();
+        const venues = currentRole === 'admin' ? [] : ntVenuesSel.slice();
+        const { error } = await ntRpcSubscribe(j, cats, venues);
         if (error) throw error;
-        ntSetCats(cats);
+        ntSetCats(cats); ntSetVenues(venues);
         showToast(currentRole === 'admin' ? '🔔 תקבלי התראה על כל אירוע שממתין לאישור' : '🔔 ההתראות הופעלו!');
         closeNotify();
     } catch (e) {
