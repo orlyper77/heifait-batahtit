@@ -747,6 +747,36 @@ button,input,textarea,select{font-family:'Rubik',sans-serif;}
 .msg-side .btn-preview{flex:0 0 auto;font-size:12px;padding:4px 10px;}
 .msg-edited_live .msg-title,.msg-edited .msg-title{color:#9cc9f0;}
 .msg-deleted .msg-title{color:#ff9e9e;}
+.filter-btn[data-cat="dancing"]{background:rgba(255,120,80,0.22);color:#ffab90;border-color:rgba(255,120,80,0.5);}
+.filter-btn[data-cat="dancing"].active{background:rgba(255,120,80,0.9);color:#fff;border-color:rgb(255,120,80);}
+.filter-btn[data-cat="spokenword"]{background:rgba(150,170,255,0.22);color:#c3cfff;border-color:rgba(150,170,255,0.5);}
+.filter-btn[data-cat="spokenword"].active{background:rgba(150,170,255,0.9);color:#fff;border-color:rgb(150,170,255);}
+.cat-dancing{background:rgba(255,120,80,0.2);color:#ffab90;border:1px solid rgba(255,120,80,0.25);}
+.cat-spokenword{background:rgba(150,170,255,0.2);color:#c3cfff;border:1px solid rgba(150,170,255,0.25);}
+.cat-pick-btn[data-c="dancing"].selected{background:rgba(255,120,80,0.3);color:#ffab90;border-color:rgba(255,120,80,0.6);}
+.cat-pick-btn[data-c="spokenword"].selected{background:rgba(150,170,255,0.3);color:#c3cfff;border-color:rgba(150,170,255,0.6);}
+.card[data-cat="dancing"]{border-color:rgba(255,120,80,0.6);}
+.card[data-cat="dancing"] .card-img{background:linear-gradient(135deg,#2d0e08,#5a2214);}
+.card[data-cat="spokenword"]{border-color:rgba(150,170,255,0.6);}
+.card[data-cat="spokenword"] .card-img{background:linear-gradient(135deg,#0e1230,#222a5c);}
+/* סרגל: שורה עליונה (הכל + תאריך + חיפוש), ומתחתיה הקטגוריות */
+.toolbar{flex-direction:column;align-items:stretch;gap:10px;}
+.toolbar-top{display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap;}
+.toolbar-top .toolbar-extra{flex:0 1 auto;}
+.toolbar-top .search-input{min-width:180px;}
+.toolbar-cats{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;}
+@media(max-width:768px){.toolbar-top{flex-wrap:nowrap;justify-content:stretch;}.toolbar-top .toolbar-extra{flex:1 1 auto;flex-wrap:nowrap !important;min-width:0;}.toolbar-top .search-input{min-width:0 !important;width:0;flex:1 1 auto;}.toolbar-top .toolbar-extra label{min-width:0;flex-shrink:1;overflow:hidden;}.toolbar-top #date-label-text{overflow:hidden;text-overflow:ellipsis;}.toolbar-top{max-width:100%;}.toolbar-top .filter-btn{flex-shrink:0;}}
+/* פס דק בגלילה (טלפון): הכל + תאריך + חיפוש + כפתור לפתיחת כל הקטגוריות */
+#cat-strip{flex-direction:column;gap:0;overflow:visible;padding:.45rem .8rem;}
+#cat-strip.show{display:flex;}
+#cat-strip .strip-top{display:flex;align-items:center;gap:6px;min-width:0;max-width:100%;}
+#cat-strip{box-sizing:border-box;max-width:100vw;}
+#cat-strip .strip-top .filter-btn{flex-shrink:0;}
+#cat-strip .strip-date{flex-shrink:0;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.3);border-radius:999px;color:#fff;font-family:inherit;font-size:12px;padding:5px 10px;white-space:nowrap;cursor:pointer;max-width:120px;overflow:hidden;text-overflow:ellipsis;}
+#cat-strip .strip-search{flex:1;min-width:0;width:0;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.3);border-radius:999px;color:#fff;font-family:inherit;font-size:13px;padding:6px 10px;}
+#cat-strip .strip-toggle{flex-shrink:0;background:#d4e034;color:#1a0505;border:none;border-radius:999px;font-family:inherit;font-weight:600;font-size:12.5px;padding:6px 11px;cursor:pointer;white-space:nowrap;}
+#cat-strip .strip-cats{display:none;flex-wrap:wrap;gap:6px;justify-content:center;padding-top:8px;max-height:55vh;overflow-y:auto;}
+#cat-strip .strip-cats.open{display:flex;}
 </style>
 </head>
 <body>
@@ -824,37 +854,9 @@ button,input,textarea,select{font-family:'Rubik',sans-serif;}
 
 <!-- Toolbar -->
 <div class="toolbar cats-loading" id="toolbar">
-    <button class="filter-btn active" data-cat="all">הכל</button>
-    <button class="filter-btn" data-cat="music">🎵 מוזיקה</button>
-    <button class="filter-btn" data-cat="theater">🎭 תאטרון</button>
-    <button class="filter-btn" data-cat="cinema">🎬 קולנוע</button>
-    <button class="filter-btn" data-cat="lectures">🎤 הרצאות</button>
-    <button class="filter-btn" data-cat="kids">🧒 ילדים</button>
-    <button class="filter-btn" data-cat="spirit">✨ רוח</button>
-    <button class="filter-btn" data-cat="workshops">🛠️ סדנאות</button>
-    <button class="filter-btn" data-cat="literature">📚 ספרות</button>
-    <button class="filter-btn" data-cat="art">🎨 אמנות</button>
-    <button class="filter-btn" data-cat="parties">🎉 מסיבות</button>
-    <button class="filter-btn" data-cat="games">🎮 משחקים</button>
-    <button class="filter-btn" data-cat="fairs">🏪 ירידים</button>
-    <button class="filter-btn" data-cat="community">🤝 קהילתי</button>
-    <button class="filter-btn" data-cat="standup">🎙️ סטנדאפ</button>
-    <button class="filter-btn" data-cat="tours">🗺️ סיורים</button>
-    <button class="filter-btn" data-cat="performance">💃 פרפורמנס</button>
-    <button class="filter-btn" data-cat="fringe">🌀 פרינג'</button>
-    <button class="filter-btn" data-cat="festivals">🎪 פסטיבלים</button>
-    <button class="filter-btn" data-cat="laughs">😂 צחוקים</button>
-    <button class="filter-btn" data-cat="jazz">🎷 ג'אז</button>
-    <button class="filter-btn" data-cat="dance">💃 מחול</button>
-    <button class="filter-btn" data-cat="classic">🎻 קלאסי</button>
-    <button class="filter-btn" data-cat="poetry">✒️ שירה</button>
-    <button class="filter-btn" data-cat="openstage">🗣️ במה פתוחה</button>
-    <button class="filter-btn" data-cat="pubquiz">🧠 פאב קוויז</button>
-    <button class="filter-btn" data-cat="karaoke">🎶 קריוקי</button>
-    <button class="filter-btn" data-cat="secondhand">♻️ יד 2</button>
-    <button class="filter-btn" data-cat="pride">🏳️‍🌈 גאווה</button>
-    <button class="filter-btn" data-cat="other">📌 אחר</button>
-    <div class="toolbar-extra" style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;max-width:100%;">
+    <div class="toolbar-top">
+        <button class="filter-btn active" data-cat="all">הכל</button>
+        <div class="toolbar-extra" style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;max-width:100%;">
         <label style="display:flex;align-items:center;gap:4px;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.3);border-radius:20px;padding:6px 12px;cursor:pointer;font-size:13px;color:#fff;white-space:nowrap;" onclick="document.getElementById('date-filter').showPicker && document.getElementById('date-filter').showPicker()">
             📅 <span id="date-label-text">סינון לפי תאריך</span>
             <input type="date" class="date-input" id="date-filter" style="position:absolute;opacity:0;width:0;height:0;">
@@ -862,38 +864,97 @@ button,input,textarea,select{font-family:'Rubik',sans-serif;}
         <button class="btn-clear-date" onclick="clearDate()">×</button>
         <input type="text" class="search-input" id="search-input" placeholder="🔍 חיפוש חופשי..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" readonly onfocus="this.removeAttribute('readonly')" oninput="applyFilter()" style="flex:1;min-width:120px;">
     </div>
+    </div>
+    <div class="toolbar-cats">
+        <button class="filter-btn" data-cat="art">🎨 אמנות</button>
+        <button class="filter-btn" data-cat="openstage">🗣️ במה פתוחה</button>
+        <button class="filter-btn" data-cat="pride">🏳️‍🌈 גאווה</button>
+        <button class="filter-btn" data-cat="jazz">🎷 ג'אז</button>
+        <button class="filter-btn" data-cat="lectures">🎤 הרצאות</button>
+        <button class="filter-btn" data-cat="secondhand">♻️ יד 2</button>
+        <button class="filter-btn" data-cat="kids">🧒 ילדים</button>
+        <button class="filter-btn" data-cat="fairs">🏪 ירידים</button>
+        <button class="filter-btn" data-cat="music">🎵 מוזיקה</button>
+        <button class="filter-btn" data-cat="dance">💃 מחול</button>
+        <button class="filter-btn" data-cat="parties">🎉 מסיבות</button>
+        <button class="filter-btn" data-cat="games">🎮 משחקים</button>
+        <button class="filter-btn" data-cat="workshops">🛠️ סדנאות</button>
+        <button class="filter-btn" data-cat="standup">🎙️ סטנדאפ</button>
+        <button class="filter-btn" data-cat="tours">🗺️ סיורים</button>
+        <button class="filter-btn" data-cat="spokenword">🗯️ ספוקן וורד</button>
+        <button class="filter-btn" data-cat="literature">📚 ספרות</button>
+        <button class="filter-btn" data-cat="pubquiz">🧠 פאב קוויז</button>
+        <button class="filter-btn" data-cat="festivals">🎪 פסטיבלים</button>
+        <button class="filter-btn" data-cat="fringe">🌀 פרינג'</button>
+        <button class="filter-btn" data-cat="performance">💃 פרפורמנס</button>
+        <button class="filter-btn" data-cat="laughs">😂 צחוקים</button>
+        <button class="filter-btn" data-cat="community">🤝 קהילתי</button>
+        <button class="filter-btn" data-cat="cinema">🎬 קולנוע</button>
+        <button class="filter-btn" data-cat="classic">🎻 קלאסי</button>
+        <button class="filter-btn" data-cat="karaoke">🎶 קריוקי</button>
+        <button class="filter-btn" data-cat="spirit">✨ רוח</button>
+        <button class="filter-btn" data-cat="dancing">🪩 רוקדים</button>
+        <button class="filter-btn" data-cat="poetry">✒️ שירה</button>
+        <button class="filter-btn" data-cat="theater">🎭 תאטרון</button>
+        <button class="filter-btn" data-cat="other">📌 אחר</button>
+    </div>
 </div>
 
 <div id="cat-strip" aria-label="קטגוריות"></div>
 <script>
-// טלפון: כשתפריט הקטגוריות המלא יוצא מהמסך, פס קטגוריות דק מחליק פנימה בעדינות (בלי קפיצה בתוכן)
+// טלפון: כשהסרגל יוצא מהמסך בגלילה, פס דק מחליק פנימה: "הכל" + תאריך + חיפוש + כפתור שפותח את כל הקטגוריות
 (function(){
   const bar=document.getElementById('toolbar'), strip=document.getElementById('cat-strip');
   const userBar=document.getElementById('user-bar');
   const mq=window.matchMedia('(max-width:768px)');
-  const originals=[...bar.querySelectorAll('.filter-btn')];
-  const pairs=originals.map(orig=>{
+  strip.innerHTML='<div class="strip-top"></div><div class="strip-cats" id="strip-cats"></div>';
+  const top=strip.querySelector('.strip-top'), catsBox=strip.querySelector('.strip-cats');
+  const allOrig=bar.querySelector('.filter-btn[data-cat="all"]');
+  const catOrigs=[...bar.querySelectorAll('.toolbar-cats .filter-btn')];
+  const pairs=[];
+  const mkClone=(orig,parent)=>{
     const c=orig.cloneNode(true);
     c.removeAttribute('id');
-    c.addEventListener('click',e=>{ e.stopImmediatePropagation(); orig.click(); });
-    strip.appendChild(c);
-    return [orig,c];
-  });
-  const sync=()=>pairs.forEach(([o,c])=>{ c.className=o.className; c.title=o.title; });
+    c.addEventListener('click',e=>{ e.stopImmediatePropagation(); orig.click(); updToggle(); });
+    parent.appendChild(c); pairs.push([orig,c]); return c;
+  };
+  mkClone(allOrig, top);
+  // תאריך
+  const dateBtn=document.createElement('button'); dateBtn.type='button'; dateBtn.className='strip-date';
+  const dateInput=document.getElementById('date-filter'), dateLbl=document.getElementById('date-label-text');
+  dateBtn.addEventListener('click',()=>{ try{ dateInput.showPicker(); }catch(_){ dateInput.focus(); dateInput.click(); } });
+  top.appendChild(dateBtn);
+  // חיפוש
+  const search=document.createElement('input'); search.type='text'; search.className='strip-search'; search.placeholder='🔍 חיפוש'; search.autocomplete='off';
+  const origSearch=document.getElementById('search-input');
+  search.addEventListener('input',()=>{ origSearch.value=search.value; applyFilter(); });
+  top.appendChild(search);
+  // כפתור קטגוריות
+  const toggle=document.createElement('button'); toggle.type='button'; toggle.className='strip-toggle';
+  toggle.addEventListener('click',()=>{ catsBox.classList.toggle('open'); updToggle(); });
+  top.appendChild(toggle);
+  catOrigs.forEach(o=>mkClone(o,catsBox));
+  function updToggle(){
+    const n=catOrigs.filter(o=>o.classList.contains('active')).length;
+    toggle.textContent=(catsBox.classList.contains('open')?'סגירה ▴':'קטגוריות ▾')+(n?` (${n})`:'');
+  }
+  const sync=()=>{ pairs.forEach(([o,c])=>{ c.className=o.className; c.title=o.title; }); dateBtn.textContent='📅 '+(dateLbl && dateLbl.textContent!=='סינון לפי תאריך'?dateLbl.textContent:'תאריך'); updToggle(); };
   const mo=new MutationObserver(sync);
-  originals.forEach(o=>mo.observe(o,{attributes:true,attributeFilter:['class','title']}));
+  [allOrig,...catOrigs].forEach(o=>mo.observe(o,{attributes:true,attributeFilter:['class','title']}));
+  if(dateLbl) mo.observe(dateLbl,{childList:true,characterData:true,subtree:true});
   sync();
   let shown=false, ticking=false;
   function ubH(){ return userBar ? userBar.offsetHeight : 0; }
   function check(){
     ticking=false;
     strip.style.top=ubH()+'px';
-    bar.style.top = mq.matches ? '' : ubH()+'px';   // מחשב: התפריט נצמד מתחת לפס העליון ולא מתחבא מאחוריו
+    bar.style.top = mq.matches ? '' : ubH()+'px';   // מחשב: הסרגל נצמד מתחת לפס העליון
     const show = mq.matches && bar.getBoundingClientRect().bottom < ubH() + 8;
     if(show===shown) return;
     shown=show;
     strip.classList.toggle('show',show);
-    if(show){ const a=strip.querySelector('.filter-btn.active:not([data-cat="all"])')||strip.querySelector('.filter-btn.active'); if(a) strip.scrollLeft = a.offsetLeft - (strip.clientWidth - a.offsetWidth)/2; }
+    if(show){ search.value=origSearch.value; }
+    else { catsBox.classList.remove('open'); updToggle(); }
   }
   const req=()=>{ if(!ticking){ ticking=true; requestAnimationFrame(check); } };
   window.addEventListener('scroll',req,{passive:true});
@@ -1019,34 +1080,36 @@ button,input,textarea,select{font-family:'Rubik',sans-serif;}
         <div class="form-group"><label>שם האירוע *</label><input type="text" id="f-title" placeholder="למשל: קונצרט בגן הבהאים"></div>
         <div class="form-group"><label>קטגוריות <span class="cat-pick-hint">(בחרי אחת או יותר)</span></label>
             <div class="cat-picker" id="f-cats">
-                <button type="button" class="cat-pick-btn" data-c="music" onclick="toggleCatPick(this)">🎵 מוזיקה</button>
-                <button type="button" class="cat-pick-btn" data-c="theater" onclick="toggleCatPick(this)">🎭 תאטרון</button>
-                <button type="button" class="cat-pick-btn" data-c="cinema" onclick="toggleCatPick(this)">🎬 קולנוע</button>
-                <button type="button" class="cat-pick-btn" data-c="lectures" onclick="toggleCatPick(this)">🎤 הרצאות</button>
-                <button type="button" class="cat-pick-btn" data-c="kids" onclick="toggleCatPick(this)">🧒 ילדים</button>
-                <button type="button" class="cat-pick-btn" data-c="spirit" onclick="toggleCatPick(this)">✨ רוח</button>
-                <button type="button" class="cat-pick-btn" data-c="workshops" onclick="toggleCatPick(this)">🛠️ סדנאות</button>
-                <button type="button" class="cat-pick-btn" data-c="literature" onclick="toggleCatPick(this)">📚 ספרות</button>
                 <button type="button" class="cat-pick-btn" data-c="art" onclick="toggleCatPick(this)">🎨 אמנות</button>
+                <button type="button" class="cat-pick-btn" data-c="openstage" onclick="toggleCatPick(this)">🗣️ במה פתוחה</button>
+                <button type="button" class="cat-pick-btn" data-c="pride" onclick="toggleCatPick(this)">🏳️‍🌈 גאווה</button>
+                <button type="button" class="cat-pick-btn" data-c="jazz" onclick="toggleCatPick(this)">🎷 ג'אז</button>
+                <button type="button" class="cat-pick-btn" data-c="lectures" onclick="toggleCatPick(this)">🎤 הרצאות</button>
+                <button type="button" class="cat-pick-btn" data-c="secondhand" onclick="toggleCatPick(this)">♻️ יד 2</button>
+                <button type="button" class="cat-pick-btn" data-c="kids" onclick="toggleCatPick(this)">🧒 ילדים</button>
+                <button type="button" class="cat-pick-btn" data-c="fairs" onclick="toggleCatPick(this)">🏪 ירידים</button>
+                <button type="button" class="cat-pick-btn" data-c="music" onclick="toggleCatPick(this)">🎵 מוזיקה</button>
+                <button type="button" class="cat-pick-btn" data-c="dance" onclick="toggleCatPick(this)">💃 מחול</button>
                 <button type="button" class="cat-pick-btn" data-c="parties" onclick="toggleCatPick(this)">🎉 מסיבות</button>
                 <button type="button" class="cat-pick-btn" data-c="games" onclick="toggleCatPick(this)">🎮 משחקים</button>
-                <button type="button" class="cat-pick-btn" data-c="fairs" onclick="toggleCatPick(this)">🏪 ירידים</button>
-                <button type="button" class="cat-pick-btn" data-c="community" onclick="toggleCatPick(this)">🤝 קהילתי</button>
+                <button type="button" class="cat-pick-btn" data-c="workshops" onclick="toggleCatPick(this)">🛠️ סדנאות</button>
                 <button type="button" class="cat-pick-btn" data-c="standup" onclick="toggleCatPick(this)">🎙️ סטנדאפ</button>
                 <button type="button" class="cat-pick-btn" data-c="tours" onclick="toggleCatPick(this)">🗺️ סיורים</button>
-                <button type="button" class="cat-pick-btn" data-c="performance" onclick="toggleCatPick(this)">💃 פרפורמנס</button>
-                <button type="button" class="cat-pick-btn" data-c="fringe" onclick="toggleCatPick(this)">🌀 פרינג'</button>
-                <button type="button" class="cat-pick-btn" data-c="festivals" onclick="toggleCatPick(this)">🎪 פסטיבלים</button>
-                <button type="button" class="cat-pick-btn" data-c="laughs" onclick="toggleCatPick(this)">😂 צחוקים</button>
-                <button type="button" class="cat-pick-btn" data-c="jazz" onclick="toggleCatPick(this)">🎷 ג'אז</button>
-                <button type="button" class="cat-pick-btn" data-c="dance" onclick="toggleCatPick(this)">💃 מחול</button>
-                <button type="button" class="cat-pick-btn" data-c="classic" onclick="toggleCatPick(this)">🎻 קלאסי</button>
-                <button type="button" class="cat-pick-btn" data-c="poetry" onclick="toggleCatPick(this)">✒️ שירה</button>
-                <button type="button" class="cat-pick-btn" data-c="openstage" onclick="toggleCatPick(this)">🗣️ במה פתוחה</button>
+                <button type="button" class="cat-pick-btn" data-c="spokenword" onclick="toggleCatPick(this)">🗯️ ספוקן וורד</button>
+                <button type="button" class="cat-pick-btn" data-c="literature" onclick="toggleCatPick(this)">📚 ספרות</button>
                 <button type="button" class="cat-pick-btn" data-c="pubquiz" onclick="toggleCatPick(this)">🧠 פאב קוויז</button>
+                <button type="button" class="cat-pick-btn" data-c="festivals" onclick="toggleCatPick(this)">🎪 פסטיבלים</button>
+                <button type="button" class="cat-pick-btn" data-c="fringe" onclick="toggleCatPick(this)">🌀 פרינג'</button>
+                <button type="button" class="cat-pick-btn" data-c="performance" onclick="toggleCatPick(this)">💃 פרפורמנס</button>
+                <button type="button" class="cat-pick-btn" data-c="laughs" onclick="toggleCatPick(this)">😂 צחוקים</button>
+                <button type="button" class="cat-pick-btn" data-c="community" onclick="toggleCatPick(this)">🤝 קהילתי</button>
+                <button type="button" class="cat-pick-btn" data-c="cinema" onclick="toggleCatPick(this)">🎬 קולנוע</button>
+                <button type="button" class="cat-pick-btn" data-c="classic" onclick="toggleCatPick(this)">🎻 קלאסי</button>
                 <button type="button" class="cat-pick-btn" data-c="karaoke" onclick="toggleCatPick(this)">🎶 קריוקי</button>
-                <button type="button" class="cat-pick-btn" data-c="secondhand" onclick="toggleCatPick(this)">♻️ יד 2</button>
-                <button type="button" class="cat-pick-btn" data-c="pride" onclick="toggleCatPick(this)">🏳️‍🌈 גאווה</button>
+                <button type="button" class="cat-pick-btn" data-c="spirit" onclick="toggleCatPick(this)">✨ רוח</button>
+                <button type="button" class="cat-pick-btn" data-c="dancing" onclick="toggleCatPick(this)">🪩 רוקדים</button>
+                <button type="button" class="cat-pick-btn" data-c="poetry" onclick="toggleCatPick(this)">✒️ שירה</button>
+                <button type="button" class="cat-pick-btn" data-c="theater" onclick="toggleCatPick(this)">🎭 תאטרון</button>
                 <button type="button" class="cat-pick-btn" data-c="other" onclick="toggleCatPick(this)">📌 אחר</button>
             </div>
         </div>
@@ -1137,8 +1200,8 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
 const db = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 // ── State ──
-const CAT_EMOJI = {music:'🎵',theater:'🎭',cinema:'🎬',lectures:'🎤',kids:'🧒',spirit:'✨',workshops:'🛠️',literature:'📚',art:'🎨',parties:'🎉',games:'🎮',fairs:'🏪',community:'🤝',standup:'🎙️',tours:'🗺️',performance:'💃',fringe:'🌀',festivals:'🎪',laughs:'😂',jazz:'🎷',dance:'💃',classic:'🎻',poetry:'✒️',openstage:'🗣️',pubquiz:'🧠',karaoke:'🎶',secondhand:'♻️',pride:'🏳️‍🌈',other:'📌',general:'📌'};
-const CAT_LABEL = {music:'מוזיקה',theater:'תאטרון',cinema:'קולנוע',lectures:'הרצאות',kids:'ילדים',spirit:'רוח',workshops:'סדנאות',literature:'ספרות',art:'אמנות',parties:'מסיבות',games:'משחקים',fairs:'ירידים',community:'קהילתי',standup:'סטנדאפ',tours:'סיורים',performance:'פרפורמנס',fringe:"פרינג'",festivals:'פסטיבלים',laughs:'צחוקים',jazz:"ג'אז",dance:'מחול',classic:'קלאסי',poetry:'שירה',openstage:'במה פתוחה',pubquiz:'פאב קוויז',karaoke:'קריוקי',secondhand:'יד 2',pride:'גאווה',other:'אחר',general:'אחר'};
+const CAT_EMOJI = {music:'🎵',theater:'🎭',cinema:'🎬',lectures:'🎤',kids:'🧒',spirit:'✨',workshops:'🛠️',literature:'📚',art:'🎨',parties:'🎉',games:'🎮',fairs:'🏪',community:'🤝',standup:'🎙️',tours:'🗺️',performance:'💃',fringe:'🌀',festivals:'🎪',laughs:'😂',jazz:'🎷',dance:'💃',classic:'🎻',poetry:'✒️',openstage:'🗣️',pubquiz:'🧠',karaoke:'🎶',secondhand:'♻️',pride:'🏳️‍🌈',dancing:'🪩',spokenword:'🗯️',other:'📌',general:'📌'};
+const CAT_LABEL = {music:'מוזיקה',theater:'תאטרון',cinema:'קולנוע',lectures:'הרצאות',kids:'ילדים',spirit:'רוח',workshops:'סדנאות',literature:'ספרות',art:'אמנות',parties:'מסיבות',games:'משחקים',fairs:'ירידים',community:'קהילתי',standup:'סטנדאפ',tours:'סיורים',performance:'פרפורמנס',fringe:"פרינג'",festivals:'פסטיבלים',laughs:'צחוקים',jazz:"ג'אז",dance:'מחול',classic:'קלאסי',poetry:'שירה',openstage:'במה פתוחה',pubquiz:'פאב קוויז',karaoke:'קריוקי',secondhand:'יד 2',pride:'גאווה',dancing:'רוקדים',spokenword:'ספוקן וורד',other:'אחר',general:'אחר'};
 
 // מיילים של מנהלות האתר
 const ADMIN_EMAILS = ['heifait.batahtit@gmail.com', 'orlyper77@gmail.com'];
@@ -3086,7 +3149,7 @@ async function openNotify() {
     // קטגוריות לבחירה
     const chosen = new Set(ntGetCats());
     const box = document.getElementById('nt-cats');
-    box.innerHTML = Object.entries(CAT_LABEL).filter(([k]) => k !== 'general').map(([k, v]) =>
+    box.innerHTML = Object.entries(CAT_LABEL).filter(([k]) => k !== 'general').sort((a, b) => (a[0] === 'other') - (b[0] === 'other') || a[1].localeCompare(b[1], 'he')).map(([k, v]) =>
         `<span class="cat-pick-btn${chosen.has(k) ? ' selected' : ''}" data-c="${k}" onclick="this.classList.toggle('selected')">${CAT_EMOJI[k] || ''} ${v}</span>`).join('');
     // מקומות: הרשימה הקבועה + מקומות מאירועים באתר
     ntVenuesSel = ntGetVenues();
