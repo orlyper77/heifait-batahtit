@@ -777,6 +777,19 @@ button,input,textarea,select{font-family:'Rubik',sans-serif;}
 #cat-strip .strip-toggle{flex-shrink:0;background:#d4e034;color:#1a0505;border:none;border-radius:999px;font-family:inherit;font-weight:600;font-size:12.5px;padding:6px 11px;cursor:pointer;white-space:nowrap;}
 #cat-strip .strip-cats{display:none;flex-wrap:wrap;gap:6px;justify-content:center;padding-top:8px;max-height:55vh;overflow-y:auto;}
 #cat-strip .strip-cats.open{display:flex;}
+
+button.user-stats{border:none;cursor:pointer;font-family:inherit;}
+button.user-stats:hover{background:rgba(212,224,52,0.22);}
+.user-events{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-top:none;border-radius:0 0 10px 10px;margin:-6px 0 10px;padding:6px 12px;font-size:13px;}
+.ue-row{display:flex;align-items:center;gap:10px;padding:5px 0;border-bottom:1px solid rgba(255,255,255,0.05);}
+.ue-row:last-child{border-bottom:none;}
+.ue-date{color:rgba(255,255,255,0.5);font-size:12px;min-width:62px;direction:ltr;text-align:right;}
+.ue-title{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#f5ede8;}
+.ue-st{font-size:11px;border-radius:10px;padding:0 7px;flex-shrink:0;}
+.ue-st.ok{background:rgba(120,200,90,0.18);color:#a8e08a;}
+.ue-st.pend{background:rgba(240,128,128,0.2);color:#ffb0b0;}
+.ue-st.past{background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.5);}
+.ue-row .btn-preview{flex:0 0 auto;font-size:12px;padding:3px 10px;}
 </style>
 </head>
 <body>
@@ -2314,9 +2327,9 @@ async function loadAllUsers() {
         const displayName = u.name ? `<strong style="color:#f5ede8;">${escHtml(u.name)}</strong> ` : '';
         const displayEmail = u.email ? `<a href="mailto:${escHtml(u.email)}" onclick="event.stopPropagation()" style="color:rgba(160,200,255,0.8);font-size:.8rem;">${escHtml(u.email)}</a>` : `<span style="color:rgba(255,255,255,0.3);font-size:.8rem;">${u.id.substring(0,8)}...</span>`;
         const n = evCount[u.id] || 0, pn = pendCount[u.id] || 0, rc = rowCount[u.id] || 0;
-        const stats = n ? `<span class="user-stats">${n} ${n === 1 ? 'אירוע' : 'אירועים'}${rc > n ? ` (${rc} מועדים)` : ''}${pn ? ` · מתוכם ${pn} ממתין לאישור` : ''}</span>` : '';
+        const stats = n ? `<button type="button" class="user-stats" onclick="toggleUserEvents('${u.id}', this)" title="הצגת האירועים">${n} ${n === 1 ? 'אירוע' : 'אירועים'}${rc > n ? ` (${rc} מועדים)` : ''}${pn ? ` · מתוכם ${pn} ממתין לאישור` : ''} ▾</button>` : '';
         return `
-        <div class="trusted-user-row">
+        <div class="trusted-user-row" id="urow-${u.id}">
             <span class="trusted-user-email">${displayName}${displayEmail}${stats}</span>
             <div style="display:flex;gap:6px;">
                 <button class="btn-trust ${u.trusted?'trusted':''}" onclick="toggleTrust('${u.id}',${!u.trusted})">
@@ -2342,6 +2355,22 @@ async function loadAllUsers() {
     list.innerHTML = section('pub', '📣 מפרסמים', publishers, 'עדיין אין מפרסמים') + section('view', '👀 צופים (נרשמו ולא פרסמו)', viewers, 'אין משתמשים שרק צופים');
 }
 let groupEmails = { pub: [], view: [] };
+// האירועים של משתמש — נפתחים מתחת לשורה שלו
+async function toggleUserEvents(uid, btn) {
+    const row = document.getElementById('urow-' + uid);
+    const next = row && row.nextElementSibling;
+    if (next && next.classList.contains('user-events')) { next.remove(); btn.textContent = btn.textContent.replace('▴', '▾'); return; }
+    const box = document.createElement('div'); box.className = 'user-events'; box.textContent = 'טוען…';
+    row.after(box); btn.textContent = btn.textContent.replace('▾', '▴');
+    const { data } = await db.from('events').select('id,title,date_raw,date_end_raw,time,status').eq('user_id', uid).order('date_raw', { ascending: false });
+    const _n = new Date(), today = `${_n.getFullYear()}-${String(_n.getMonth()+1).padStart(2,'0')}-${String(_n.getDate()).padStart(2,'0')}`;
+    box.innerHTML = (data || []).map(e => {
+        const past = (e.date_end_raw || e.date_raw || '9999') < today;
+        const st = e.status === 'pending' ? '<span class="ue-st pend">ממתין</span>' : past ? '<span class="ue-st past">עבר</span>' : '<span class="ue-st ok">מפורסם</span>';
+        const d = e.date_raw ? new Date(e.date_raw + 'T12:00:00').toLocaleDateString('he-IL', { day: 'numeric', month: 'numeric', year: '2-digit' }) : '';
+        return `<div class="ue-row"><span class="ue-date">${escHtml(d)}</span><span class="ue-title">${escHtml(e.title)}</span>${st}<button class="btn-preview" onclick="openMsgEvent('${escHtml(String(e.id))}')">פתיחה</button></div>`;
+    }).join('') || 'אין אירועים';
+}
 async function copyGroupEmails(key) {
     const arr = groupEmails[key] || []; if (!arr.length) return;
     const t = arr.join(', ');
