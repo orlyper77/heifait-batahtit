@@ -729,6 +729,24 @@ button,input,textarea,select{font-family:'Rubik',sans-serif;}
 .users-empty{color:rgba(255,255,255,0.35);font-size:.85rem;padding:4px 0;}
 .user-stats{display:inline-block;margin-inline-start:8px;font-size:.75rem;color:rgba(212,224,52,0.85);background:rgba(212,224,52,0.1);border-radius:10px;padding:0 7px;}
 
+
+.msg-badge{background:#6baadc;color:#fff;border-radius:10px;font-size:10px;padding:1px 6px;margin-right:4px;}
+.admin-tabs{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 1.2rem;}
+.admin-tab{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.75);font-family:inherit;font-size:14px;font-weight:500;padding:8px 16px;border-radius:999px;cursor:pointer;}
+.admin-tab.active{background:#d4e034;color:#1a0505;border-color:#d4e034;}
+.tab-count:not(:empty){display:inline-block;background:rgba(0,0,0,0.25);border-radius:10px;padding:0 7px;margin-inline-start:4px;font-size:12px;}
+.admin-tab:not(.active) .tab-count:not(:empty){background:#f08080;color:#fff;}
+.msg-tools{display:flex;justify-content:flex-end;margin-bottom:10px;}
+.msg-tools .btn-preview{flex:0 0 auto;}
+.msg-row{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:12px;padding:10px 14px;margin-bottom:8px;}
+.msg-row.unread{background:rgba(212,224,52,0.07);border-color:rgba(212,224,52,0.35);}
+.msg-title{font-weight:600;font-size:14.5px;color:#f5ede8;}
+.msg-body{font-size:13px;color:rgba(255,255,255,0.65);margin-top:2px;}
+.msg-side{display:flex;flex-direction:column;align-items:flex-end;gap:6px;flex-shrink:0;}
+.msg-time{font-size:12px;color:rgba(255,255,255,0.45);white-space:nowrap;}
+.msg-side .btn-preview{flex:0 0 auto;font-size:12px;padding:4px 10px;}
+.msg-edited_live .msg-title,.msg-edited .msg-title{color:#9cc9f0;}
+.msg-deleted .msg-title{color:#ff9e9e;}
 </style>
 </head>
 <body>
@@ -738,7 +756,7 @@ button,input,textarea,select{font-family:'Rubik',sans-serif;}
 <div class="user-bar show" id="user-bar">
     <div style="display:flex;align-items:center;gap:10px;">
         <button class="btn-approval-panel" id="btn-approval-panel" onclick="openApprovalPanel()">
-            ✦ בקשות פרסום <span class="approval-badge" id="approval-badge" style="display:none">0</span>
+            ✦ ניהול <span class="approval-badge" id="approval-badge" style="display:none" title="ממתינים לאישור">0</span><span class="msg-badge" id="msg-badge" style="display:none" title="הודעות חדשות">📬 0</span>
         </button>
     </div>
     <div class="user-bar-actions">
@@ -761,13 +779,26 @@ button,input,textarea,select{font-family:'Rubik',sans-serif;}
 <!-- Approval Panel -->
 <div class="approval-panel" id="approval-panel">
     <div class="approval-header">
-        <h2>✦ בקשות פרסום ממתינות לאישור</h2>
+        <h2>✦ ניהול האתר</h2>
         <button class="btn-preview" id="btn-migrate-images" onclick="migrateImages()" style="flex:0 0 auto;display:none">🖼 העברת תמונות ישנות לאחסון</button>
         <button class="btn-close-approval" onclick="closeApprovalPanel()">✕ סגור</button>
     </div>
-    <div class="approval-grid" id="approval-grid"></div>
+    <div class="admin-tabs" role="tablist">
+        <button class="admin-tab active" data-tab="pending" onclick="showAdminTab('pending')">⏳ ממתינים לאישור <span class="tab-count" id="tab-count-pending"></span></button>
+        <button class="admin-tab" data-tab="messages" onclick="showAdminTab('messages')">📬 הודעות <span class="tab-count" id="tab-count-messages"></span></button>
+        <button class="admin-tab" data-tab="users" onclick="showAdminTab('users')">👥 משתמשים</button>
+    </div>
+    <div class="admin-tab-panel" id="tab-pending">
+        <div class="approval-grid" id="approval-grid"></div>
+    </div>
+    <div class="admin-tab-panel" id="tab-messages" style="display:none">
+        <div class="msg-tools">
+            <button class="btn-preview" onclick="clearReadMessages()">🗑 מחיקת הודעות שכבר נקראו</button>
+        </div>
+        <div id="admin-messages-list"></div>
+    </div>
 
-    <div class="trusted-section">
+    <div class="trusted-section admin-tab-panel" id="tab-users" style="display:none">
         <h3>👥 משתמשים רשומים</h3>
         <div class="users-mail-tools">
             <button class="btn-preview" onclick="copyAllEmails()">📋 העתקת כל המיילים (<span id="users-email-count">0</span>)</button>
@@ -1938,11 +1969,83 @@ async function updateApprovalBadge() {
     const count = data?.length || 0;
     const badge = document.getElementById('approval-badge');
     if (badge) { badge.textContent = count; badge.style.display = count > 0 ? 'inline' : 'none'; }
+    const tc = document.getElementById('tab-count-pending'); if (tc) tc.textContent = count ? count : '';
+    updateMessagesBadge();
+}
+
+// ── לשונית "הודעות" למנהלת: אירוע חדש / נערך / נמחק, משתמש חדש ──
+let adminTab = 'pending', msgRealtimeOn = false;
+async function updateMessagesBadge() {
+    try {
+        const { count, error } = await db.from('admin_messages').select('id', { count: 'exact', head: true }).eq('read', false);
+        if (error) return;
+        const b = document.getElementById('msg-badge');
+        if (b) { b.textContent = '📬 ' + (count || 0); b.style.display = count ? 'inline' : 'none'; }
+        const tc = document.getElementById('tab-count-messages'); if (tc) tc.textContent = count ? count : '';
+    } catch (_) {}
+    if (!msgRealtimeOn && currentRole === 'admin') {
+        msgRealtimeOn = true;
+        try {
+            db.channel('admin-messages').on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'admin_messages' }, () => {
+                updateMessagesBadge();
+                if (adminTab === 'messages' && document.getElementById('approval-panel').classList.contains('open')) loadMessages();
+            }).subscribe();
+        } catch (_) {}
+    }
+}
+function showAdminTab(tab) {
+    adminTab = tab;
+    document.querySelectorAll('.admin-tab').forEach(b => b.classList.toggle('active', b.dataset.tab === tab));
+    ['pending', 'messages', 'users'].forEach(t => document.getElementById('tab-' + t).style.display = t === tab ? '' : 'none');
+    if (tab === 'messages') loadMessages(true);
+    if (tab === 'users') loadAllUsers();
+}
+function timeAgo(iso) {
+    const d = new Date(iso), s = (Date.now() - d.getTime()) / 1000;
+    if (s < 60) return 'עכשיו';
+    if (s < 3600) return `לפני ${Math.floor(s / 60)} דק'`;
+    if (s < 86400) return `לפני ${Math.floor(s / 3600)} שע'`;
+    return d.toLocaleDateString('he-IL', { day: 'numeric', month: 'numeric' }) + ' ' + d.toLocaleTimeString('he-IL', { hour: '2-digit', minute: '2-digit' });
+}
+async function loadMessages(markRead) {
+    const list = document.getElementById('admin-messages-list');
+    const { data, error } = await db.from('admin_messages').select('*').order('created_at', { ascending: false }).limit(150);
+    if (error) { list.innerHTML = '<div class="users-empty">לשונית ההודעות תעבוד אחרי שמריצים ב-Supabase את admin_messages.sql</div>'; return; }
+    if (!data || !data.length) { list.innerHTML = '<div class="users-empty">אין הודעות עדיין</div>'; return; }
+    list.innerHTML = data.map(m => `
+        <div class="msg-row${m.read ? '' : ' unread'} msg-${escHtml(m.kind)}">
+            <div class="msg-main">
+                <div class="msg-title">${escHtml(m.title)}</div>
+                ${m.body ? `<div class="msg-body">${escHtml(m.body)}</div>` : ''}
+            </div>
+            <div class="msg-side">
+                <span class="msg-time">${escHtml(timeAgo(m.created_at))}</span>
+                ${m.event_id && m.kind !== 'deleted' ? `<button class="btn-preview" onclick="openMsgEvent('${escHtml(m.event_id)}')">פתיחה</button>` : ''}
+            </div>
+        </div>`).join('');
+    if (markRead && data.some(m => !m.read)) {
+        await db.from('admin_messages').update({ read: true }).eq('read', false);
+        updateMessagesBadge();
+    }
+}
+async function openMsgEvent(id) {
+    if (!events.some(e => String(e.id) === String(id))) {
+        const { data } = await db.from('events').select('*').eq('id', id).maybeSingle();
+        if (!data) { showToast('האירוע כבר לא קיים'); return; }
+        events.push(rowToEvent(data));
+    }
+    openViewModal(String(id));
+}
+async function clearReadMessages() {
+    if (!confirm('למחוק את כל ההודעות שכבר נקראו?')) return;
+    await db.from('admin_messages').delete().eq('read', true);
+    loadMessages();
 }
 
 async function openApprovalPanel() {
     document.getElementById('approval-panel').classList.add('open');
     pushLayer('panel');
+    showAdminTab(adminTab || 'pending');
     checkMigrateNeeded();
     await loadPendingEvents();
     await loadAllUsers();
@@ -2114,9 +2217,17 @@ async function loadAllUsers() {
     // שליפת כל הפרופילים
     const { data: profiles } = await db.from('user_profiles').select('id,role,trusted,blocked,email,name');
     // כל האירועים (כולל ישנים) — כדי לדעת מי פרסם ומה מספר האירועים של כל אחד
-    const { data: allEvs } = await db.from('events').select('user_id,status');
-    const evCount = {}, pendCount = {};
-    (allEvs || []).forEach(e => { if (!e.user_id) return; evCount[e.user_id] = (evCount[e.user_id] || 0) + 1; if (e.status === 'pending') pendCount[e.user_id] = (pendCount[e.user_id] || 0) + 1; });
+    const { data: allEvs } = await db.from('events').select('user_id,status,title');
+    // ספירה אמיתית: אירועים שונים לפי שם (אותו אירוע בכמה תאריכים = "מועדים" של אירוע אחד)
+    const normT = t => String(t || '').toLowerCase().replace(/[^0-9a-zא-ת]+/g, '');
+    const evTitles = {}, rowCount = {}, pendCount = {};
+    (allEvs || []).forEach(e => {
+        if (!e.user_id) return;
+        (evTitles[e.user_id] = evTitles[e.user_id] || new Set()).add(normT(e.title));
+        rowCount[e.user_id] = (rowCount[e.user_id] || 0) + 1;
+        if (e.status === 'pending') pendCount[e.user_id] = (pendCount[e.user_id] || 0) + 1;
+    });
+    const evCount = {}; Object.keys(evTitles).forEach(u => evCount[u] = evTitles[u].size);
     const pendingEvs = (allEvs || []).filter(e => e.status === 'pending');
     const list = document.getElementById('trusted-users-list');
 
@@ -2139,8 +2250,8 @@ async function loadAllUsers() {
     const rowHtml = u => {
         const displayName = u.name ? `<strong style="color:#f5ede8;">${escHtml(u.name)}</strong> ` : '';
         const displayEmail = u.email ? `<a href="mailto:${escHtml(u.email)}" onclick="event.stopPropagation()" style="color:rgba(160,200,255,0.8);font-size:.8rem;">${escHtml(u.email)}</a>` : `<span style="color:rgba(255,255,255,0.3);font-size:.8rem;">${u.id.substring(0,8)}...</span>`;
-        const n = evCount[u.id] || 0, pn = pendCount[u.id] || 0;
-        const stats = n ? `<span class="user-stats">${n} ${n === 1 ? 'אירוע' : 'אירועים'}${pn ? ` · ${pn} ממתין` : ''}</span>` : '';
+        const n = evCount[u.id] || 0, pn = pendCount[u.id] || 0, rc = rowCount[u.id] || 0;
+        const stats = n ? `<span class="user-stats">${n} ${n === 1 ? 'אירוע' : 'אירועים'}${rc > n ? ` (${rc} מועדים)` : ''}${pn ? ` · מתוכם ${pn} ממתין לאישור` : ''}</span>` : '';
         return `
         <div class="trusted-user-row">
             <span class="trusted-user-email">${displayName}${displayEmail}${stats}</span>
