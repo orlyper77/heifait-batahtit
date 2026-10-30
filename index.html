@@ -510,6 +510,8 @@ body:has(#overlay.open),body:has(.auth-overlay.open),body:has(#legal-overlay.ope
 .ov-msg{display:flex;justify-content:space-between;gap:10px;padding:7px 0;border-bottom:1px solid rgba(255,255,255,0.06);font-size:13px;color:rgba(255,255,255,0.75);}
 .ov-msg.unread span{color:#f5ede8;font-weight:600;}
 .ov-msg small{color:rgba(255,255,255,0.4);white-space:nowrap;}
+.my-intro{font-size:13px;color:rgba(255,255,255,0.6);line-height:1.6;margin-bottom:12px;}
+.my-totals{margin-bottom:12px;}
 .btn-link{background:none;border:none;color:#9cc9f0;font-family:inherit;font-size:13px;cursor:pointer;padding:8px 0 0;}
 @media(max-width:768px){
   .approval-panel{padding:1rem;}
@@ -922,12 +924,32 @@ button.user-stats:hover{background:rgba(212,224,52,0.22);}
             👤 <span id="user-name">-</span> <span id="user-role-badge" class="role-badge"></span> ▾
         </button>
         <div class="user-dropdown" id="user-dropdown">
+            <button class="user-dropdown-item" onclick="closeUserMenu();openMyPanel()">📋 האירועים שלי והנתונים</button>
             <button class="user-dropdown-item" onclick="changePassword();closeUserMenu()">🔑 שנה סיסמה</button>
             <div class="user-dropdown-divider"></div>
             <button class="user-dropdown-item danger" onclick="logout()">יציאה ←</button>
         </div>
     </div>
     <button class="btn-add" onclick="handleAddEvent()">+ הוסף אירוע</button>
+    </div>
+</div>
+
+<!-- האירועים שלי (למפרסמים) -->
+<div class="approval-panel" id="my-panel">
+    <div class="admin-top">
+    <div class="approval-header">
+        <h2>📋 האירועים שלי</h2>
+        <button class="btn-close-approval" onclick="closeMyPanel()">✕ סגור</button>
+    </div>
+    <div class="adm-chips" id="my-chips" style="margin-bottom:.8rem">
+        <button class="adm-chip active" data-f="up" onclick="setMyFilter('up')">אירועים קרובים</button>
+        <button class="adm-chip" data-f="past" onclick="setMyFilter('past')">אירועים שעברו</button>
+    </div>
+    </div>
+    <div class="admin-tab-panel">
+        <div class="my-intro">כאן רואים כמה אנשים התעניינו בכל אירוע שלך: 👁 צפיות · ❤️ לבבות · 📅 הוסיפו ליומן · 🎟 לחצו על כרטיסים · 🔗 לחצו על קישורים · 📤 שיתפו. כל אדם נספר פעם אחת. רק את/ה והנהלת האתר רואים את הנתונים.</div>
+        <div class="ov-kpi ov-wide my-totals" id="my-totals" style="display:none"></div>
+        <div id="my-list"></div>
     </div>
 </div>
 
@@ -1637,6 +1659,9 @@ async function loadEvents() {
             return false;
         }).map(rowToEvent).filter(e => !eventIsOver(e));   // אירוע שנגמר (כולל שעת סיום של היום) יורד מהלוח
         applyFilter();
+        // רשימות פתוחות מתעדכנות אחרי עריכה / מחיקה
+        if (document.getElementById('my-panel')?.classList.contains('open')) loadMyEvents();
+        if (document.getElementById('approval-panel')?.classList.contains('open') && adminTab === 'events') renderAdminEvents(true);
         handleEventDeepLink();
         checkPublisherUpdates();
     } catch(e) {
@@ -1690,7 +1715,7 @@ async function showEventStats(id, allowed) {
     if (!allowed) return;
     const { data, error } = await db.from('event_stats').select('*').eq('event_id', String(id)).maybeSingle();
     if (error || String(viewEventId) !== String(id)) return;
-    box.innerHTML = `<div class="st-head">📊 נתוני האירוע <small>(רק ${currentRole === 'admin' ? 'את והמפרסם/ת רואים' : 'את/ה והמנהלת רואים'})</small></div><div class="st-grid">${statsLine(data, false)}</div>`;
+    box.innerHTML = `<div class="st-head">📊 נתוני האירוע <small>(רק ${currentRole === 'admin' ? 'את והמפרסם/ת רואים' : 'את/ה והמנהלת רואים'})</small></div><div class="st-grid">${statsLine(data, false)}</div>${currentRole !== 'admin' ? '<button class="btn-link" onclick="closeViewModal();openMyPanel()">לכל האירועים שלי והנתונים ←</button>' : ''}`;
     box.style.display = '';
 }
 
@@ -1940,6 +1965,7 @@ function popLayer(key, useBack) {
 }
 const LAYERS = {
     panel:  { open: () => document.getElementById('approval-panel').classList.contains('open'), close: () => closeApprovalPanel(true) },
+    mine:   { open: () => document.getElementById('my-panel').classList.contains('open'), close: () => closeMyPanel(true) },
     notify: { open: () => document.getElementById('notify-overlay').classList.contains('open'), close: () => closeNotify(true) },
     auth:   { open: () => document.getElementById('auth-overlay').classList.contains('open'), close: () => closeAuth(true) },
     legal:  { open: () => document.getElementById('legal-overlay').classList.contains('open'), close: () => closeLegal(true) }
@@ -2659,6 +2685,75 @@ async function renderAdminEvents(reload) {
     }).join('') || '<div class="users-empty">אין אירועים שמתאימים לחיפוש</div>';
 }
 async function admDelete(id, ev) { await deleteEvent(id, ev); renderAdminEvents(); }
+
+// ── "האירועים שלי": כל מפרסם רואה את האירועים שלו עם הנתונים ──
+let myFilter = 'up', myRows = [];
+function openMyPanel() {
+    if (!currentUser) { openAuth(); return; }
+    document.getElementById('my-panel').classList.add('open');
+    pushLayer('mine');
+    loadMyEvents();
+}
+function closeMyPanel(fromBack) {
+    const el = document.getElementById('my-panel');
+    if (!el.classList.contains('open')) return;
+    el.classList.remove('open');
+    if (fromBack !== true) popLayer('mine', true);
+}
+function setMyFilter(f) {
+    myFilter = f;
+    document.querySelectorAll('#my-chips .adm-chip').forEach(b => b.classList.toggle('active', b.dataset.f === f));
+    renderMyEvents();
+}
+async function loadMyEvents() {
+    const list = document.getElementById('my-list');
+    if (!myRows.length) list.innerHTML = '<div class="users-empty">טוען…</div>';
+    const { data, error } = await db.from('events').select('id,title,date_raw,date_end_raw,time,location,status,cat,user_id').eq('user_id', currentUser.id).order('date_raw', { ascending: true });
+    if (error) { list.innerHTML = '<div class="users-empty">לא הצלחנו לטעון את האירועים. נסו שוב.</div>'; return; }
+    myRows = data || [];
+    admStats = admStats || {};
+    if (myRows.length) await loadAdmStats(myRows.map(e => String(e.id)));
+    renderMyEvents();
+}
+function renderMyEvents() {
+    const list = document.getElementById('my-list');
+    const up = myRows.filter(e => !rowIsOver(e)), past = myRows.filter(e => rowIsOver(e)).reverse();
+    const arr = myFilter === 'up' ? up : past;
+    document.querySelector('#my-chips [data-f="up"]').textContent = `אירועים קרובים (${up.length})`;
+    document.querySelector('#my-chips [data-f="past"]').textContent = `אירועים שעברו (${past.length})`;
+    const totals = {}; myRows.forEach(e => { const s = admStats[String(e.id)] || {}; STAT_KINDS.forEach(([k]) => totals[k] = (totals[k] || 0) + (s[k] || 0)); });
+    const tb = document.getElementById('my-totals');
+    tb.style.display = myRows.length ? '' : 'none';
+    tb.innerHTML = `<span class="ov-ic">📊</span><div class="ov-totals">${statsLine(totals, true)}</div><span>סה"כ בכל האירועים שלך</span>`;
+    if (!myRows.length) { list.innerHTML = '<div class="users-empty">עוד לא פרסמת אירועים. <button class="btn-link" onclick="closeMyPanel();handleAddEvent()">+ להוספת אירוע ראשון</button></div>'; return; }
+    list.innerHTML = arr.map(e => {
+        const s = admStats[String(e.id)] || {}, id = escHtml(String(e.id)), isPast = myFilter === 'past';
+        const d = e.date_raw ? new Date(e.date_raw + 'T12:00:00').toLocaleDateString('he-IL', { weekday: 'short', day: 'numeric', month: 'numeric', year: isPast ? '2-digit' : undefined }) : '';
+        const st = e.status === 'pending' ? ' <span class="ue-st pend">ממתין לאישור</span>' : '';
+        return `<div class="adm-ev">
+            <div class="adm-ev-date">${escHtml(d)}<small>${escHtml(e.time && e.time !== '-' ? e.time : '')}</small></div>
+            <div class="adm-ev-main">
+                <div class="adm-ev-title">${escHtml(e.title)}${st}</div>
+                <div class="adm-ev-sub">📍 ${escHtml(e.location || '')}</div>
+                <div class="ue-stats">${statsLine(s, true)}</div>
+            </div>
+            ${isPast ? '' : `<div class="adm-ev-btns">
+                <button class="btn-preview" onclick="myOpen('${id}','view')" title="צפייה">👁</button>
+                <button class="btn-preview" onclick="myOpen('${id}','edit')" title="עריכה">✏️</button>
+                <button class="btn-reject" onclick="myDelete('${id}', event)" title="מחיקה">🗑</button>
+            </div>`}
+        </div>`;
+    }).join('') || `<div class="users-empty">${myFilter === 'up' ? 'אין כרגע אירועים קרובים' : 'אין אירועים שעברו'}</div>`;
+}
+async function myOpen(id, mode) {
+    if (!events.some(e => String(e.id) === String(id))) {
+        const { data } = await db.from('events').select('*').eq('id', id).maybeSingle();
+        if (!data) { showToast('האירוע לא נמצא'); return; }
+        events.push(rowToEvent(data));
+    }
+    if (mode === 'edit') openModal(String(id)); else openViewModal(String(id));
+}
+async function myDelete(id, ev) { await deleteEvent(id, ev); }
 
 // ── לשונית "סקירה" ──
 async function loadOverview() {
