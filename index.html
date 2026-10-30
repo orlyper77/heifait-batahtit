@@ -781,6 +781,15 @@ button,input,textarea,select{font-family:'Rubik',sans-serif;}
 button.user-stats{border:none;cursor:pointer;font-family:inherit;}
 button.user-stats:hover{background:rgba(212,224,52,0.22);}
 .user-events{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-top:none;border-radius:0 0 10px 10px;margin:-6px 0 10px;padding:6px 12px;font-size:13px;}
+.view-modal-stats{margin-top:16px;padding:12px 14px;border-radius:14px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);}
+.st-head{font-size:.85rem;color:#f5ede8;margin-bottom:10px;}
+.st-head small{opacity:.5;font-weight:400;}
+.st-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
+.st-box{display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 4px;border-radius:10px;background:rgba(255,255,255,0.04);}
+.st-box b{font-size:1rem;color:#f5ede8;}
+.st-box span{font-size:.7rem;opacity:.6;text-align:center;}
+.ue-stats{display:flex;gap:8px;flex-wrap:wrap;font-size:11px;opacity:.75;}
+.st-chip{white-space:nowrap;}
 .ue-row{display:flex;align-items:center;gap:10px;padding:5px 0;border-bottom:1px solid rgba(255,255,255,0.05);}
 .ue-row:last-child{border-bottom:none;}
 .ue-date{color:rgba(255,255,255,0.5);font-size:12px;min-width:62px;direction:ltr;text-align:right;}
@@ -833,7 +842,7 @@ button.user-stats:hover{background:rgba(212,224,52,0.22);}
 .trusted-user-row{justify-content:flex-start;gap:14px;flex-wrap:wrap;}
 .trusted-user-row .trusted-user-email{flex:0 1 auto;}
 .users-group-head{justify-content:flex-start;}
-.ue-row{justify-content:flex-start;}
+.ue-row{justify-content:flex-start;flex-wrap:wrap;}
 .ue-row .ue-title{flex:0 1 auto;max-width:260px;}
 </style>
 </head>
@@ -1228,6 +1237,7 @@ button.user-stats:hover{background:rgba(212,224,52,0.22);}
             <div class="view-modal-meta" id="view-modal-meta"></div>
             <div class="view-modal-desc" id="view-modal-desc"></div>
             <div class="view-modal-links" id="view-modal-links"></div>
+            <div class="view-modal-stats" id="view-modal-stats" style="display:none"></div>
             <div class="view-modal-tools">
                 <div class="tool-wrap" id="nav-wrap">
                     <button class="tool-btn" onclick="toggleToolMenu('nav-menu',event)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l18-8-8 18-2-8z"/></svg>ניווט</button>
@@ -1275,7 +1285,7 @@ const ADMIN_EMAILS = ['heifait.batahtit@gmail.com', 'orlyper77@gmail.com'];
 
 let currentUser = null, currentRole = null, currentTrusted = false, currentBlocked = false;
 let events = [], filteredEvents = [];
-let favs = new Set(), activeTab = 'all', activeCats = new Set(), dateFilter = '';
+let favs = new Set((() => { try { return JSON.parse(localStorage.getItem('favs') || '[]').map(String); } catch (_) { return []; } })()), activeTab = 'all', activeCats = new Set(), dateFilter = '';
 let editingId = null, currentImageData = null, pendingAction = null;
 
 // ── Init ──
@@ -1560,6 +1570,36 @@ function eventIsOver(e, now = new Date()) {
     return now >= end;
 }
 
+// ── נתוני אירועים: ספירה אנונימית (בלי לשמור מי לחץ) ──
+// כל דפדפן נספר פעם אחת לכל אירוע ולכל סוג (חוץ מלב, שאפשר לבטל)
+const STAT_KINDS = [['views','👁','צפיות'],['likes','❤️','לבבות'],['calendar','📅','הוסיפו ליומן'],['tickets','🎟','לחצו על כרטיסים'],['links','🔗','לחצו על קישורים'],['shares','📤','שיתופים']];
+function trackEv(id, kind, delta = 1) {
+    id = String(id || ''); if (!id || !db) return;
+    if (kind !== 'likes') {
+        let seen = {}; try { seen = JSON.parse(localStorage.getItem('evTrack') || '{}'); } catch (_) {}
+        const k = id + ':' + kind; if (seen[k]) return;
+        seen[k] = Date.now();
+        const keys = Object.keys(seen); if (keys.length > 3000) keys.sort((a, b) => seen[a] - seen[b]).slice(0, 1000).forEach(x => delete seen[x]);
+        try { localStorage.setItem('evTrack', JSON.stringify(seen)); } catch (_) {}
+    }
+    db.rpc('track_event', { p_event_id: id, p_kind: kind, p_delta: delta }).then(() => {}, () => {});
+}
+function statsLine(s, compact) {
+    s = s || {};
+    return STAT_KINDS.map(([k, ic, lb]) => compact
+        ? `<span class="st-chip" title="${lb}">${ic} ${s[k] || 0}</span>`
+        : `<div class="st-box"><b>${ic} ${s[k] || 0}</b><span>${lb}</span></div>`).join('');
+}
+async function showEventStats(id, allowed) {
+    const box = document.getElementById('view-modal-stats');
+    box.style.display = 'none'; box.innerHTML = '';
+    if (!allowed) return;
+    const { data, error } = await db.from('event_stats').select('*').eq('event_id', String(id)).maybeSingle();
+    if (error || String(viewEventId) !== String(id)) return;
+    box.innerHTML = `<div class="st-head">📊 נתוני האירוע <small>(רק ${currentRole === 'admin' ? 'את והמפרסם/ת רואים' : 'את/ה והמנהלת רואים'})</small></div><div class="st-grid">${statsLine(data, false)}</div>`;
+    box.style.display = '';
+}
+
 // שורה גולמית מהמסד (date_raw / date_end_raw / time) — האם האירוע כבר עבר
 function rowIsOver(r) { return eventIsOver({ dateRaw: r.date_raw || '', dateEndRaw: r.date_end_raw || '', time: r.time || '' }); }
 
@@ -1592,7 +1632,7 @@ function rowToEvent(e) {
 function applyFilter() {
     const searchVal = (document.getElementById('search-input')?.value || '').trim().toLowerCase();
     let list = events.filter(e => !eventIsOver(e));
-    if (activeTab === 'favs') list = list.filter(e => favs.has(e.id));
+    if (activeTab === 'favs') list = list.filter(e => favs.has(String(e.id)));
     if (dateFilter) list = list.filter(e => e.dateRaw === dateFilter || (e.dateEndRaw && e.dateRaw <= dateFilter && e.dateEndRaw >= dateFilter));
     if (searchVal) list = list.filter(e =>
         (e.title||'').toLowerCase().includes(searchVal) ||
@@ -1731,7 +1771,11 @@ function cardHtml(e) {
 
 function toggleFav(id, ev) {
     ev.stopPropagation();
-    if (favs.has(id)) favs.delete(id); else favs.add(id);
+    id = String(id);
+    const liked = !favs.has(id);
+    if (liked) favs.add(id); else favs.delete(id);
+    try { localStorage.setItem('favs', JSON.stringify([...favs])); } catch (_) {}
+    trackEv(id, 'likes', liked ? 1 : -1);
     applyFilter();
 }
 
@@ -1769,6 +1813,10 @@ function openViewModal(id) {
     const vLinks = eventLinksHtml(e);
     document.getElementById('view-modal-links').innerHTML = vLinks;
     document.getElementById('view-modal-links').style.display = vLinks ? '' : 'none';
+    // נתונים: צפייה נספרת (לא של המנהלת/המפרסם עצמו), והמנהלת/המפרסם רואים את המספרים
+    const isOwnerView = currentUser && (currentRole === 'admin' || currentUser.id === raw.user_id);
+    if (!isOwnerView) trackEv(raw.id, 'views');
+    showEventStats(raw.id, isOwnerView);
     // פתיחת overlay נפרד לתצוגה
     const vo = document.getElementById('view-overlay');
     vo.style.display = 'flex';
@@ -1944,6 +1992,7 @@ async function navigateTo(kind) {
 function addToCalendar(kind) {
     const e = curViewEvent(); if (!e) return;
     closeMenus();
+    trackEv(e.id, 'calendar');
     const t = calTimes(e);
     if (!t) { showToast('לאירוע אין תאריך'); return; }
     if (kind === 'google') {
@@ -2010,6 +2059,7 @@ async function shareTo(kind) {
         try { await navigator.clipboard.writeText(url); }
         catch (_) { const ta = document.createElement('textarea'); ta.value = url; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); ta.remove(); }
     };
+    trackEv(e.id, 'shares');
     if (kind === 'more') { try { await navigator.share({ title: e.title, text: shareText(e), url }); } catch (_) {} return; }
     if (kind === 'instagram') {
         // לאינסטגרם אין קישור שיתוף ישיר: מעתיקים את הקישור ופותחים את האפליקציה/האתר
@@ -2439,10 +2489,16 @@ async function toggleUserEvents(uid, btn) {
     row.after(box); btn.textContent = btn.textContent.replace('▾', '▴');
     const { data } = await db.from('events').select('id,title,date_raw,date_end_raw,time,status').eq('user_id', uid).order('date_raw', { ascending: true });
     // רק אירועים שעוד לא עברו
-    box.innerHTML = (data || []).filter(e => !rowIsOver(e)).map(e => {
+    const upcoming = (data || []).filter(e => !rowIsOver(e));
+    const statMap = {};
+    if (upcoming.length) {
+        const { data: st } = await db.from('event_stats').select('*').in('event_id', upcoming.map(e => String(e.id)));
+        (st || []).forEach(s => statMap[s.event_id] = s);
+    }
+    box.innerHTML = upcoming.map(e => {
         const st = e.status === 'pending' ? '<span class="ue-st pend">ממתין</span>' : '<span class="ue-st ok">מפורסם</span>';
         const d = e.date_raw ? new Date(e.date_raw + 'T12:00:00').toLocaleDateString('he-IL', { day: 'numeric', month: 'numeric', year: '2-digit' }) : '';
-        return `<div class="ue-row"><span class="ue-date">${escHtml(d)}</span><span class="ue-title">${escHtml(e.title)}</span>${st}<button class="btn-preview" onclick="openMsgEvent('${escHtml(String(e.id))}')">פתיחה</button></div>`;
+        return `<div class="ue-row"><span class="ue-date">${escHtml(d)}</span><span class="ue-title">${escHtml(e.title)}</span>${st}<span class="ue-stats">${statsLine(statMap[String(e.id)], true)}</span><button class="btn-preview" onclick="openMsgEvent('${escHtml(String(e.id))}')">פתיחה</button></div>`;
     }).join('') || 'אין אירועים קרובים';
 }
 async function copyGroupEmails(key) {
@@ -2921,9 +2977,10 @@ const ICON_LINK = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" s
 function eventLinksHtml(e) {
     const safe = u => (u || '').trim();
     const out = [];
-    if (safe(e.tickets)) out.push(`<a class="link-btn link-tickets" href="${safe(e.tickets)}" target="_blank" rel="noopener" onclick="event.stopPropagation()">🎟 כרטיסים</a>`);
+    const eid = String(e.id || '').replace(/[^A-Za-z0-9-]/g, '');
+    if (safe(e.tickets)) out.push(`<a class="link-btn link-tickets" href="${safe(e.tickets)}" target="_blank" rel="noopener" onclick="event.stopPropagation();trackEv('${eid}','tickets')">🎟 כרטיסים</a>`);
     // קישורים נוספים — רק האייקון של האתר
-    [e.tickets2, e.materials, e.materials2].map(safe).filter(Boolean).forEach(u => out.push(linkIconHtml(u)));
+    [e.tickets2, e.materials, e.materials2].map(safe).filter(Boolean).forEach(u => out.push(linkIconHtml(u).replace('onclick="event.stopPropagation()"', `onclick="event.stopPropagation();trackEv('${eid}','links')"`)));
     return out.join('');
 }
 
