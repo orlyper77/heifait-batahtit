@@ -802,6 +802,32 @@ button.user-stats:hover{background:rgba(212,224,52,0.22);}
   .user-bar .btn-approval-panel{padding:5px 9px;white-space:nowrap;}
   .user-bar .btn-add,.user-bar .btn-login{padding:7px 12px;white-space:nowrap;}
 }
+
+/* חלון הוספת אירוע גדול יותר */
+#overlay .modal{max-width:820px;}
+@media(min-width:900px){#overlay .modal{padding:2.2rem 2.6rem;}}
+@media(max-width:600px){#overlay{padding:0 !important;}#overlay .modal{max-width:none;width:100%;max-height:100vh;height:100%;border-radius:0;padding:1.4rem 1.1rem;}}
+/* מקום: רשימת הצעות */
+.loc-group{position:relative;}
+.loc-suggest{display:none;position:absolute;right:0;left:0;top:calc(100% - 1.6rem);z-index:20;background:#1f0a0a;border:1px solid rgba(255,255,255,0.18);border-radius:12px;box-shadow:0 12px 30px rgba(0,0,0,.55);max-height:300px;overflow-y:auto;padding:4px;}
+.loc-suggest.open{display:block;}
+.ls-item{display:flex;flex-direction:column;align-items:flex-start;width:100%;background:none;border:none;text-align:right;color:#f5ede8;font-family:inherit;padding:8px 10px;border-radius:8px;cursor:pointer;}
+.ls-item:hover,.ls-item:focus{background:rgba(255,255,255,0.08);}
+.ls-main{font-size:14px;font-weight:500;}
+.ls-sub{font-size:12px;color:rgba(255,255,255,0.55);}
+.ls-head{font-size:11.5px;color:rgba(212,224,52,0.8);padding:6px 10px 2px;border-top:1px solid rgba(255,255,255,0.08);margin-top:4px;}
+/* קישורים נוספים */
+.link-row{display:flex;gap:6px;align-items:center;margin-bottom:6px;}
+.link-row input{flex:1;}
+#overlay input[type="url"]{text-align:left;}
+.link-row-x{background:none;border:1px solid rgba(255,255,255,0.18);color:rgba(255,255,255,0.6);border-radius:8px;width:34px;height:34px;cursor:pointer;flex-shrink:0;}
+.link-add{background:rgba(212,224,52,0.1);border:1px dashed rgba(212,224,52,0.5);color:#d4e034;border-radius:10px;padding:6px 14px;font-family:inherit;font-size:13px;cursor:pointer;margin-bottom:4px;}
+/* כפתור-אייקון לקישור */
+.link-btn.link-ico{flex:0 0 auto;width:42px;justify-content:center;padding:6px 0;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.14);}
+.link-btn.link-ico:hover{background:rgba(255,255,255,0.14);}
+.link-btn.link-ico svg{width:20px;height:20px;}
+.link-btn.link-ico.link-ico-yt svg{width:24px;height:17px;}
+@media(max-width:600px){.link-btn.link-ico{width:46px;}}
 </style>
 </head>
 <body>
@@ -1102,7 +1128,6 @@ button.user-stats:hover{background:rgba(212,224,52,0.22);}
                 <img id="img-preview" class="img-preview" src="" alt="" style="display:none;">
             </div>
         </div>
-        <div class="form-group"><label>שם האירוע *</label><input type="text" id="f-title" placeholder="למשל: קונצרט בגן הבהאים"></div>
         <div class="form-group"><label>קטגוריות <span class="cat-pick-hint">(בחרי אחת או יותר)</span></label>
             <div class="cat-picker" id="f-cats">
                 <button type="button" class="cat-pick-btn" data-c="art" onclick="toggleCatPick(this)">🎨 אמנות</button>
@@ -1138,21 +1163,31 @@ button.user-stats:hover{background:rgba(212,224,52,0.22);}
                 <button type="button" class="cat-pick-btn" data-c="other" onclick="toggleCatPick(this)">📌 אחר</button>
             </div>
         </div>
+        <div class="form-group"><label>שם האירוע *</label><input type="text" id="f-title" placeholder="למשל: קונצרט בגן הבהאים"></div>
+        <div class="form-group loc-group"><label>מקום *</label>
+            <input type="text" id="f-loc" autocomplete="off" placeholder="התחילו להקליד שם מקום או כתובת…">
+            <div class="loc-suggest" id="loc-suggest" role="listbox"></div>
+            <div class="field-hint">בחרו מהרשימה שנפתחת. מקום חדש? כתבו: <b>שם המקום, רחוב ומספר, עיר</b> — למשל: <i>רודיאו, בלפור 23, חיפה</i></div>
+        </div>
         <div class="form-row">
             <div class="form-group"><label>תאריך *</label><input type="date" id="f-date"></div>
             <div class="form-group"><label>תאריך סיום (אופציונלי)</label><input type="date" id="f-date-end"></div>
+        </div>
+        <div class="form-row">
             <div class="form-group"><label>שעת התחלה *</label><input type="text" id="f-time" class="time-input" inputmode="numeric" maxlength="5" placeholder="20:00" dir="ltr" autocomplete="off"></div>
             <div class="form-group"><label>שעת סיום (אופציונלי)</label><input type="text" id="f-time-end" class="time-input" inputmode="numeric" maxlength="5" placeholder="23:00" dir="ltr" autocomplete="off"></div>
         </div>
-        <div class="form-group"><label>מקום *</label><input type="text" id="f-loc" list="venue-list" autocomplete="off" placeholder="שם המקום, רחוב ומספר, עיר — למשל: אנטארקטיקה, נורדאו 20, חיפה"><datalist id="venue-list"></datalist>
-            <div class="field-hint">התחילו להקליד את שם המקום ובחרו מהרשימה — כך הכתובת תיכתב תמיד באותה צורה.</div></div>
         <div class="form-group"><label>מחיר</label><input type="text" id="f-price" placeholder="₪50 / כניסה חופשית"></div>
         <div class="form-group"><label>תיאור</label><textarea id="f-desc" placeholder="תאר את האירוע..."></textarea></div>
         <div class="form-divider">קישורים</div>
-        <div class="form-group"><label>🎟 קישור לכרטיסים</label><input type="url" id="f-tickets" placeholder="https://..."></div>
-        <div class="form-group"><label>🌐 קישור לאתר (של האירוע / המקום / האמן)</label><input type="url" id="f-tickets2" placeholder="https://..."></div>
-        <div class="form-group"><label class="brand-label"><svg class="brand-ico" viewBox="0 0 28 20" width="26" height="18" aria-label="YouTube" role="img"><rect width="28" height="20" rx="5" fill="#FF0000"/><path d="M11 5.5v9l7.5-4.5z" fill="#fff"/></svg><svg class="brand-ico" viewBox="0 0 24 24" width="20" height="20" aria-label="Spotify" role="img"><circle cx="12" cy="12" r="12" fill="#1DB954"/><path d="M6 9.2c4-1.2 8.6-.9 12.2 1.1M6.6 12.5c3.3-1 7.1-.7 10 .9M7.2 15.6c2.7-.7 5.6-.5 7.9.8" fill="none" stroke="#121212" stroke-width="1.7" stroke-linecap="round"/></svg><span>יוטיוב / ספוטיפיי 1</span></label><input type="url" id="f-materials" placeholder="https://..."></div>
-        <div class="form-group"><label class="brand-label"><svg class="brand-ico" viewBox="0 0 28 20" width="26" height="18" aria-label="YouTube" role="img"><rect width="28" height="20" rx="5" fill="#FF0000"/><path d="M11 5.5v9l7.5-4.5z" fill="#fff"/></svg><svg class="brand-ico" viewBox="0 0 24 24" width="20" height="20" aria-label="Spotify" role="img"><circle cx="12" cy="12" r="12" fill="#1DB954"/><path d="M6 9.2c4-1.2 8.6-.9 12.2 1.1M6.6 12.5c3.3-1 7.1-.7 10 .9M7.2 15.6c2.7-.7 5.6-.5 7.9.8" fill="none" stroke="#121212" stroke-width="1.7" stroke-linecap="round"/></svg><span>יוטיוב / ספוטיפיי 2</span></label><input type="url" id="f-materials2" placeholder="https://..."></div>
+        <div class="form-group"><label>🎟 קישור לכרטיסים</label><input type="url" id="f-tickets" placeholder="https://..." dir="ltr"></div>
+        <div class="form-group"><label>🔗 קישורים נוספים <span class="cat-pick-hint">(אתר / יוטיוב / ספוטיפיי / אינסטגרם / פייסבוק — עד 3)</span></label>
+            <div class="link-row"><input type="url" id="f-tickets2" placeholder="https://..." dir="ltr"></div>
+            <div class="link-row" id="link-row-2" style="display:none"><input type="url" id="f-materials" placeholder="https://..." dir="ltr"><button type="button" class="link-row-x" onclick="removeLinkRow(2)" aria-label="הסרת קישור">✕</button></div>
+            <div class="link-row" id="link-row-3" style="display:none"><input type="url" id="f-materials2" placeholder="https://..." dir="ltr"><button type="button" class="link-row-x" onclick="removeLinkRow(3)" aria-label="הסרת קישור">✕</button></div>
+            <button type="button" class="link-add" id="link-add" onclick="addLinkRow()">＋ הוספת קישור</button>
+            <div class="field-hint">באירוע יוצג האייקון של האתר (יוטיוב, ספוטיפיי, אינסטגרם…) במקום הקישור עצמו.</div>
+        </div>
         <div class="modal-rules" id="modal-rules">
             <h4>📋 כללי הפרסום</h4>
         </div>
@@ -2563,9 +2598,116 @@ function knownVenues() {
         .map(([, v]) => Object.entries(v).sort((a, b) => b[1] - a[1] || b[0].length - a[0].length)[0][0]);
     return [...VENUES, ...fromEvents].sort((a, b) => a.localeCompare(b, 'he'));
 }
-function fillVenueList() {
-    const dl = document.getElementById('venue-list'); if (!dl) return;
-    dl.innerHTML = knownVenues().map(v => `<option value="${escHtml(v)}"></option>`).join('');
+function fillVenueList() { locKnown = knownVenues(); hideLocSuggest(); syncLinkRows(); }
+
+// ── שדה המקום: הצעות מרשימת המקומות + מגוגל מפות (אם הוגדר מפתח) ──
+let locKnown = [], locTimer = null, locSeq = 0, gPlaces = null, gToken = null, gKey = null, gLoading = null;
+const HAIFA = { lat: 32.794, lng: 34.9896 };
+function hideLocSuggest() { const b = document.getElementById('loc-suggest'); if (b) { b.innerHTML = ''; b.classList.remove('open'); } }
+async function loadGooglePlaces() {
+    if (gPlaces) return gPlaces;
+    if (gLoading) return gLoading;
+    gLoading = (async () => {
+        if (gKey === null) { try { gKey = (await ntLoadConfig()).mapsKey || ''; } catch (_) { gKey = ''; } }
+        if (!gKey) return null;
+        if (!(window.google && google.maps && google.maps.importLibrary)) {
+            await new Promise((res, rej) => {
+                window.__gmapsReady = res;
+                const s = document.createElement('script');
+                s.src = `https://maps.googleapis.com/maps/api/js?key=${encodeURIComponent(gKey)}&loading=async&language=he&region=IL&callback=__gmapsReady`;
+                s.async = true; s.onerror = rej; document.head.appendChild(s);
+            });
+        }
+        gPlaces = await google.maps.importLibrary('places');
+        return gPlaces;
+    })().catch(err => { console.warn('google places unavailable', err); return null; });
+    return gLoading;
+}
+function renderLocSuggest(known, google, loading) {
+    const box = document.getElementById('loc-suggest');
+    let html = known.map((v, i) => `<button type="button" class="ls-item" data-k="${i}"><span class="ls-main">📍 ${escHtml(v.split(',')[0])}</span><span class="ls-sub">${escHtml(v.split(',').slice(1).join(',').trim())}</span></button>`).join('');
+    if (google.length) html += `<div class="ls-head">מגוגל מפות</div>` + google.map((g, i) => `<button type="button" class="ls-item" data-g="${i}"><span class="ls-main">🗺️ ${escHtml(g.main)}</span><span class="ls-sub">${escHtml(g.sub)}</span></button>`).join('');
+    else if (loading) html += `<div class="ls-head">מחפש בגוגל מפות…</div>`;
+    box.innerHTML = html;
+    box.classList.toggle('open', !!html);
+    box.onmousedown = ev => ev.preventDefault();   // לא לאבד את הפוקוס לפני הלחיצה
+    box.querySelectorAll('.ls-item').forEach(b => b.onclick = () => {
+        if (b.dataset.k != null) { setLoc(known[+b.dataset.k]); }
+        else pickGooglePlace(google[+b.dataset.g]);
+    });
+}
+function setLoc(v) { const inp = document.getElementById('f-loc'); inp.value = v; hideLocSuggest(); inp.dispatchEvent(new Event('input', { bubbles: true })); }
+async function onLocInput() {
+    const q = document.getElementById('f-loc').value.trim();
+    clearTimeout(locTimer);
+    if (q.length < 2) { hideLocSuggest(); return; }
+    const k = venueKey(q);
+    const known = locKnown.filter(v => venueKey(v).includes(k) || v.toLowerCase().includes(q.toLowerCase())).slice(0, 6);
+    const seq = ++locSeq;
+    renderLocSuggest(known, [], !!gKey);   // "מחפש בגוגל" רק כשיש מפתח
+    locTimer = setTimeout(async () => {
+        const P = await loadGooglePlaces();
+        if (!P || seq !== locSeq) { if (seq === locSeq) renderLocSuggest(known, [], false); return; }
+        try {
+            gToken = gToken || new P.AutocompleteSessionToken();
+            const { suggestions } = await P.AutocompleteSuggestion.fetchAutocompleteSuggestions({
+                input: q, sessionToken: gToken, language: 'he', region: 'il', includedRegionCodes: ['il'],
+                locationBias: { center: HAIFA, radius: 25000 }
+            });
+            if (seq !== locSeq) return;
+            const g = (suggestions || []).filter(s => s.placePrediction).slice(0, 5).map(s => ({
+                p: s.placePrediction, main: s.placePrediction.mainText ? s.placePrediction.mainText.text : s.placePrediction.text.text,
+                sub: s.placePrediction.secondaryText ? s.placePrediction.secondaryText.text : '', types: s.placePrediction.types || []
+            }));
+            renderLocSuggest(known, g, false);
+        } catch (err) { console.warn(err); renderLocSuggest(known, [], false); }
+    }, 350);
+}
+// בחירה מגוגל: בונים "שם המקום, רחוב ומספר, עיר"
+async function pickGooglePlace(g) {
+    hideLocSuggest();
+    try {
+        const place = g.p.toPlace();
+        await place.fetchFields({ fields: ['formattedAddress', 'addressComponents'] });
+        gToken = null;   // סוף "סשן" חיפוש
+        const comp = t => { const c = (place.addressComponents || []).find(c => (c.types || []).includes(t)); return c ? (c.longText || c.shortText || '') : ''; };
+        const street = [comp('route'), comp('street_number')].filter(Boolean).join(' ');
+        const city = comp('locality') || comp('administrative_area_level_2') || '';
+        const isAddress = g.types.some(t => ['street_address', 'route', 'premise', 'subpremise'].includes(t));
+        const name = isAddress ? '' : g.main;
+        let v = [name, street, city].filter(Boolean).join(', ');
+        if (!street) v = [name, (place.formattedAddress || g.sub).replace(/,?\s*ישראל$/, '')].filter(Boolean).join(', ');
+        setLoc(v);
+    } catch (err) { console.warn(err); setLoc([g.main, g.sub.replace(/,?\s*ישראל$/, '')].filter(Boolean).join(', ')); }
+}
+document.addEventListener('input', ev => { if (ev.target && ev.target.id === 'f-loc' && ev.isTrusted) onLocInput(); });
+document.addEventListener('focusout', ev => { if (ev.target && ev.target.id === 'f-loc') setTimeout(hideLocSuggest, 150); });
+document.addEventListener('keydown', ev => { if (ev.target && ev.target.id === 'f-loc' && ev.key === 'Escape') hideLocSuggest(); });
+
+// ── קישורים נוספים: עד 3, נפתחים ב"+" ──
+function syncLinkRows() {
+    const v2 = document.getElementById('f-materials').value, v3 = document.getElementById('f-materials2').value;
+    document.getElementById('link-row-2').style.display = v2 || v3 ? '' : 'none';
+    document.getElementById('link-row-3').style.display = v3 ? '' : 'none';
+    updLinkAdd();
+}
+function updLinkAdd() {
+    const shown = [2, 3].filter(n => document.getElementById('link-row-' + n).style.display !== 'none').length;
+    document.getElementById('link-add').style.display = shown >= 2 ? 'none' : '';
+}
+function addLinkRow() {
+    const r2 = document.getElementById('link-row-2'), r3 = document.getElementById('link-row-3');
+    const r = r2.style.display === 'none' ? r2 : r3;
+    r.style.display = ''; r.querySelector('input').focus(); updLinkAdd();
+}
+function removeLinkRow(n) {
+    const r = document.getElementById('link-row-' + n);
+    r.querySelector('input').value = ''; r.style.display = 'none';
+    if (n === 2) {   // מזיזים את השלישי למקום השני
+        const v3 = document.getElementById('f-materials2');
+        if (v3.value) { document.getElementById('f-materials').value = v3.value; v3.value = ''; r.style.display = ''; document.getElementById('link-row-3').style.display = 'none'; }
+    }
+    updLinkAdd();
 }
 function normalizeLocation(raw) {
     let s = (raw || '').replace(/\s+/g, ' ').trim();
@@ -2753,9 +2895,8 @@ function eventLinksHtml(e) {
     const safe = u => (u || '').trim();
     const out = [];
     if (safe(e.tickets)) out.push(`<a class="link-btn link-tickets" href="${safe(e.tickets)}" target="_blank" rel="noopener" onclick="event.stopPropagation()">🎟 כרטיסים</a>`);
-    if (safe(e.tickets2)) out.push(siteLinkHtml(safe(e.tickets2)));
-    if (safe(e.materials)) out.push(matLinkHtml(safe(e.materials), 1));
-    if (safe(e.materials2)) out.push(matLinkHtml(safe(e.materials2), 2));
+    // קישורים נוספים — רק האייקון של האתר
+    [e.tickets2, e.materials, e.materials2].map(safe).filter(Boolean).forEach(u => out.push(linkIconHtml(u)));
     return out.join('');
 }
 
@@ -2769,6 +2910,18 @@ function siteLinkHtml(url) {
     if (/^(facebook\.com|fb\.com|fb\.me|fb\.watch)$/.test(host)) { cls = 'link-site link-fb'; inner = ICON_FB + ' פייסבוק'; }
     else if (/^(instagram\.com|instagr\.am)$/.test(host)) { cls = 'link-site link-ig'; inner = ICON_IG + ' אינסטגרם'; }
     return `<a class="link-btn ${cls}" href="${url}" target="_blank" rel="noopener" onclick="event.stopPropagation()">${inner}</a>`;
+}
+
+const ICON_WEB = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9cc9f0" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="9.5"/><path d="M2.5 12h19M12 2.5c2.6 2.8 3.9 6 3.9 9.5s-1.3 6.7-3.9 9.5M12 2.5C9.4 5.3 8.1 8.5 8.1 12s1.3 6.7 3.9 9.5"/></svg>`;
+function linkIconHtml(url) {
+    let host = '';
+    try { host = new URL(url.replace(/&amp;/g, '&')).hostname.toLowerCase().replace(/^(www|m|web|mobile|music|open)\./, ''); } catch (_) {}
+    let icon = ICON_WEB, label = 'לאתר', cls = 'link-ico-web';
+    if (/(^|\.)youtube\.com$|^youtu\.be$/.test(host)) { icon = ICON_YT; label = 'יוטיוב'; cls = 'link-ico-yt'; }
+    else if (/(^|\.)spotify\.com$|^spotify\.link$/.test(host)) { icon = ICON_SP; label = 'ספוטיפיי'; cls = 'link-ico-sp'; }
+    else if (/^(instagram\.com|instagr\.am)$/.test(host)) { icon = ICON_IG; label = 'אינסטגרם'; cls = 'link-ico-ig'; }
+    else if (/^(facebook\.com|fb\.com|fb\.me|fb\.watch)$/.test(host)) { icon = ICON_FB; label = 'פייסבוק'; cls = 'link-ico-fb'; }
+    return `<a class="link-btn link-ico ${cls}" href="${url}" target="_blank" rel="noopener" onclick="event.stopPropagation()" aria-label="${label}" title="${label}">${icon}</a>`;
 }
 
 function matLinkHtml(url, n) {
