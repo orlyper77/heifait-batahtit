@@ -1560,6 +1560,9 @@ function eventIsOver(e, now = new Date()) {
     return now >= end;
 }
 
+// שורה גולמית מהמסד (date_raw / date_end_raw / time) — האם האירוע כבר עבר
+function rowIsOver(r) { return eventIsOver({ dateRaw: r.date_raw || '', dateEndRaw: r.date_end_raw || '', time: r.time || '' }); }
+
 function rowToEvent(e) {
     const g2o = c => c === 'general' ? 'other' : c;   // "כללי" הישן = "אחר"
     let cats; try { cats = e.cats ? (Array.isArray(e.cats) ? e.cats : JSON.parse(e.cats)) : [e.cat]; } catch (_) { cats = [e.cat]; }
@@ -2292,10 +2295,23 @@ async function copyAllEmails() {
     try { await navigator.clipboard.writeText(t); } catch (_) { const ta = document.createElement('textarea'); ta.value = t; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); ta.remove(); }
     showToast(`הועתקו ${allUserEmails.length} כתובות ✓`);
 }
+// פתיחת מייל חדש: במחשב — חלון "הודעה חדשה" של ג'ימייל (מחשבון האתר) בלשונית חדשה; בטלפון — אפליקציית המייל
+function openMail(to, bccList) {
+    const bcc = (bccList || []).join(',');
+    const isTouch = window.matchMedia && matchMedia('(pointer:coarse)').matches;
+    if (isTouch) {
+        location.href = 'mailto:' + encodeURIComponent(to) + (bcc ? '?bcc=' + encodeURIComponent(bcc) : '');
+    } else {
+        const url = 'https://mail.google.com/mail/?authuser=' + encodeURIComponent('heifait.batahtit@gmail.com') +
+            '&view=cm&fs=1&to=' + encodeURIComponent(to) + (bcc ? '&bcc=' + encodeURIComponent(bcc) : '');
+        window.open(url, '_blank', 'noopener');
+    }
+    return false;
+}
 function mailAllUsers() {
     if (!allUserEmails.length) { showToast('אין עדיין מיילים'); return; }
     // כל הנמענים בעותק מוסתר (BCC) — כך אף אחד לא רואה את הכתובות של האחרים
-    location.href = 'mailto:heifait.batahtit@gmail.com?bcc=' + encodeURIComponent(allUserEmails.join(','));
+    openMail('heifait.batahtit@gmail.com', allUserEmails);
 }
 
 async function approveEvent(id) {
@@ -2347,17 +2363,21 @@ async function loadAllUsers() {
     // שליפת כל הפרופילים
     const { data: profiles } = await db.from('user_profiles').select('id,role,trusted,blocked,email,name');
     // כל האירועים (כולל ישנים) — כדי לדעת מי פרסם ומה מספר האירועים של כל אחד
-    const { data: allEvs } = await db.from('events').select('user_id,status,title');
+    const { data: allEvs } = await db.from('events').select('user_id,status,title,date_raw,date_end_raw,time');
     // ספירה אמיתית: אירועים שונים לפי שם (אותו אירוע בכמה תאריכים = "מועדים" של אירוע אחד)
+    // evCount = כל האירועים אי-פעם (לחלוקה מפרסמים/צופים); upCount = רק אירועים שעוד לא עברו (מה שמוצג)
     const normT = t => String(t || '').toLowerCase().replace(/[^0-9a-zא-ת]+/g, '');
-    const evTitles = {}, rowCount = {}, pendCount = {};
+    const evTitles = {}, upTitles = {}, rowCount = {}, pendCount = {};
     (allEvs || []).forEach(e => {
         if (!e.user_id) return;
         (evTitles[e.user_id] = evTitles[e.user_id] || new Set()).add(normT(e.title));
+        if (rowIsOver(e)) return;
+        (upTitles[e.user_id] = upTitles[e.user_id] || new Set()).add(normT(e.title));
         rowCount[e.user_id] = (rowCount[e.user_id] || 0) + 1;
         if (e.status === 'pending') pendCount[e.user_id] = (pendCount[e.user_id] || 0) + 1;
     });
     const evCount = {}; Object.keys(evTitles).forEach(u => evCount[u] = evTitles[u].size);
+    const upCount = {}; Object.keys(upTitles).forEach(u => upCount[u] = upTitles[u].size);
     const pendingEvs = (allEvs || []).filter(e => e.status === 'pending');
     const list = document.getElementById('trusted-users-list');
 
@@ -2374,14 +2394,15 @@ async function loadAllUsers() {
     allUserEmails = users.map(u => u.email).filter(Boolean);
     const cnt = document.getElementById('users-email-count'); if (cnt) cnt.textContent = allUserEmails.length;
     // הפרדה: מפרסמים (פרסמו לפחות אירוע אחד) / צופים (רק נרשמו)
-    const publishers = users.filter(u => evCount[u.id]).sort((a, b) => evCount[b.id] - evCount[a.id]);
+    const publishers = users.filter(u => evCount[u.id]).sort((a, b) => (upCount[b.id] || 0) - (upCount[a.id] || 0) || evCount[b.id] - evCount[a.id]);
     const viewers = users.filter(u => !evCount[u.id]);
     groupEmails = { pub: publishers.map(u => u.email).filter(Boolean), view: viewers.map(u => u.email).filter(Boolean) };
     const rowHtml = u => {
         const displayName = u.name ? `<strong style="color:#f5ede8;">${escHtml(u.name)}</strong> ` : '';
-        const displayEmail = u.email ? `<a href="mailto:${escHtml(u.email)}" onclick="event.stopPropagation()" style="color:rgba(160,200,255,0.8);font-size:.8rem;">${escHtml(u.email)}</a>` : `<span style="color:rgba(255,255,255,0.3);font-size:.8rem;">${u.id.substring(0,8)}...</span>`;
-        const n = evCount[u.id] || 0, pn = pendCount[u.id] || 0, rc = rowCount[u.id] || 0;
-        const stats = n ? `<button type="button" class="user-stats" onclick="toggleUserEvents('${u.id}', this)" title="הצגת האירועים">${n} ${n === 1 ? 'אירוע' : 'אירועים'}${rc > n ? ` (${rc} מועדים)` : ''}${pn ? ` · מתוכם ${pn} ממתין לאישור` : ''} ▾</button>` : '';
+        const displayEmail = u.email ? `<a href="mailto:${escHtml(u.email)}" data-mail="${escHtml(u.email)}" onclick="event.stopPropagation(); return openMail(this.dataset.mail)" style="color:rgba(160,200,255,0.8);font-size:.8rem;">${escHtml(u.email)}</a>` : `<span style="color:rgba(255,255,255,0.3);font-size:.8rem;">${u.id.substring(0,8)}...</span>`;
+        const n = upCount[u.id] || 0, pn = pendCount[u.id] || 0, rc = rowCount[u.id] || 0;
+        const stats = n ? `<button type="button" class="user-stats" onclick="toggleUserEvents('${u.id}', this)" title="הצגת האירועים הקרובים">${n} ${n === 1 ? 'אירוע קרוב' : 'אירועים קרובים'}${rc > n ? ` (${rc} מועדים)` : ''}${pn ? ` · מתוכם ${pn} ממתין לאישור` : ''} ▾</button>`
+                    : evCount[u.id] ? `<span class="user-stats" style="opacity:.55;cursor:default;">אין אירועים קרובים</span>` : '';
         return `
         <div class="trusted-user-row" id="urow-${u.id}">
             <span class="trusted-user-email">${displayName}${displayEmail}${stats}</span>
@@ -2416,14 +2437,13 @@ async function toggleUserEvents(uid, btn) {
     if (next && next.classList.contains('user-events')) { next.remove(); btn.textContent = btn.textContent.replace('▴', '▾'); return; }
     const box = document.createElement('div'); box.className = 'user-events'; box.textContent = 'טוען…';
     row.after(box); btn.textContent = btn.textContent.replace('▾', '▴');
-    const { data } = await db.from('events').select('id,title,date_raw,date_end_raw,time,status').eq('user_id', uid).order('date_raw', { ascending: false });
-    const _n = new Date(), today = `${_n.getFullYear()}-${String(_n.getMonth()+1).padStart(2,'0')}-${String(_n.getDate()).padStart(2,'0')}`;
-    box.innerHTML = (data || []).map(e => {
-        const past = (e.date_end_raw || e.date_raw || '9999') < today;
-        const st = e.status === 'pending' ? '<span class="ue-st pend">ממתין</span>' : past ? '<span class="ue-st past">עבר</span>' : '<span class="ue-st ok">מפורסם</span>';
+    const { data } = await db.from('events').select('id,title,date_raw,date_end_raw,time,status').eq('user_id', uid).order('date_raw', { ascending: true });
+    // רק אירועים שעוד לא עברו
+    box.innerHTML = (data || []).filter(e => !rowIsOver(e)).map(e => {
+        const st = e.status === 'pending' ? '<span class="ue-st pend">ממתין</span>' : '<span class="ue-st ok">מפורסם</span>';
         const d = e.date_raw ? new Date(e.date_raw + 'T12:00:00').toLocaleDateString('he-IL', { day: 'numeric', month: 'numeric', year: '2-digit' }) : '';
         return `<div class="ue-row"><span class="ue-date">${escHtml(d)}</span><span class="ue-title">${escHtml(e.title)}</span>${st}<button class="btn-preview" onclick="openMsgEvent('${escHtml(String(e.id))}')">פתיחה</button></div>`;
-    }).join('') || 'אין אירועים';
+    }).join('') || 'אין אירועים קרובים';
 }
 async function copyGroupEmails(key) {
     const arr = groupEmails[key] || []; if (!arr.length) return;
@@ -2433,7 +2453,7 @@ async function copyGroupEmails(key) {
 }
 function mailGroup(key) {
     const arr = groupEmails[key] || []; if (!arr.length) return;
-    location.href = 'mailto:heifait.batahtit@gmail.com?bcc=' + encodeURIComponent(arr.join(','));
+    openMail('heifait.batahtit@gmail.com', arr);
 }
 
 async function toggleTrust(userId, trust) {
