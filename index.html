@@ -790,6 +790,18 @@ button.user-stats:hover{background:rgba(212,224,52,0.22);}
 .ue-st.pend{background:rgba(240,128,128,0.2);color:#ffb0b0;}
 .ue-st.past{background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.5);}
 .ue-row .btn-preview{flex:0 0 auto;font-size:12px;padding:3px 10px;}
+
+/* פס עליון: כל הכפתורים צמודים ובמרכז */
+.user-bar{justify-content:center;gap:8px;flex-wrap:wrap;}
+.user-bar > div:first-child:empty{display:none;}
+.user-bar .user-bar-actions{flex-wrap:wrap;justify-content:center;}
+@media(max-width:600px){
+  .user-bar{flex-wrap:nowrap;gap:6px;padding:.45rem .6rem;}
+  .user-bar .user-bar-actions{flex-wrap:nowrap;gap:6px;}
+  .user-avatar-btn #user-name,.user-avatar-btn #user-role-badge{display:none;}
+  .user-bar .btn-approval-panel{padding:5px 9px;white-space:nowrap;}
+  .user-bar .btn-add,.user-bar .btn-login{padding:7px 12px;white-space:nowrap;}
+}
 </style>
 </head>
 <body>
