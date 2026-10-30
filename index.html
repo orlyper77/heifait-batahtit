@@ -470,6 +470,63 @@ body:has(#overlay.open),body:has(.auth-overlay.open),body:has(#legal-overlay.ope
 .approval-btns+.approval-btns{margin-top:6px;}
 .approval-panel{position:fixed;inset:0;background:#1a0505;z-index:2000;overflow-y:auto;display:none;padding:1.5rem;}
 .approval-panel.open{display:block;}
+.admin-top{position:sticky;top:-1.5rem;z-index:20;background:#1a0505;margin:-1.5rem -1.5rem 1.2rem;padding:1.2rem 1.5rem .2rem;box-shadow:0 8px 16px -10px rgba(0,0,0,.6);}
+.admin-top .approval-header{margin-bottom:.8rem;padding-bottom:.6rem;}
+.admin-top>*,.admin-top>.admin-tabs{max-width:1100px;margin-left:auto;margin-right:auto;}
+.admin-top .admin-tabs{margin-bottom:.8rem;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;}
+.admin-top .admin-tabs::-webkit-scrollbar{display:none;}
+.admin-tab{white-space:nowrap;flex-shrink:0;}
+.admin-tab-panel{max-width:1100px;margin:0 auto;}
+.adm-tools{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:10px;}
+.adm-search{flex:1 1 220px;min-width:0;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.15);border-radius:10px;color:#fff;padding:9px 12px;font-family:inherit;font-size:14px;}
+.adm-select{background:#2a0a0a;border:1px solid rgba(255,255,255,0.15);border-radius:10px;color:#fff;padding:9px 10px;font-family:inherit;font-size:13px;}
+.adm-chips{display:flex;gap:6px;flex-wrap:wrap;}
+.adm-chip{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.75);border-radius:999px;padding:6px 12px;font-family:inherit;font-size:13px;cursor:pointer;}
+.adm-chip.active{background:rgba(212,224,52,0.18);border-color:rgba(212,224,52,0.5);color:#d4e034;}
+.adm-count{font-size:12px;color:rgba(255,255,255,0.45);margin:0 2px 8px;}
+.adm-ev{display:flex;align-items:center;gap:14px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:12px;padding:10px 14px;margin-bottom:6px;}
+.adm-ev-date{flex:0 0 86px;white-space:nowrap;text-align:center;color:#d4e034;font-size:13px;font-weight:600;line-height:1.3;}
+.adm-ev-date small{display:block;color:rgba(255,255,255,0.5);font-weight:400;font-size:11.5px;}
+.adm-ev-main{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px;}
+.adm-ev-title{font-weight:600;color:#f5ede8;font-size:14.5px;}
+.adm-ev-sub{font-size:12.5px;color:rgba(255,255,255,0.55);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.adm-ev-btns{display:flex;gap:6px;flex-shrink:0;}
+.adm-ev-btns button{flex:0 0 auto;padding:6px 10px;font-size:14px;border-radius:8px;}
+.ov-kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px;}
+.ov-kpi{display:flex;flex-direction:column;align-items:flex-start;gap:2px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.09);border-radius:14px;padding:14px 16px;color:rgba(255,255,255,0.6);font-family:inherit;font-size:12.5px;cursor:pointer;text-align:right;}
+.ov-kpi:hover{border-color:rgba(212,224,52,0.4);}
+.ov-kpi b{font-size:1.7rem;color:#f5ede8;line-height:1.1;}
+.ov-kpi.hot{border-color:rgba(240,128,128,0.55);background:rgba(240,128,128,0.08);}
+.ov-kpi.hot b{color:#ff9e9e;}
+.ov-ic{font-size:1.1rem;}
+.ov-wide{grid-column:1/-1;cursor:default;flex-direction:row;align-items:center;gap:14px;flex-wrap:wrap;}
+.ov-totals{display:flex;gap:14px;flex-wrap:wrap;font-size:15px;color:#f5ede8;}
+.ov-cols{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.ov-card{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:14px 16px;}
+.ov-card h4{margin:0 0 10px;font-size:.95rem;color:#d4e034;font-weight:600;}
+.ov-card h4 small{color:rgba(255,255,255,0.4);font-weight:400;}
+.ov-row{display:flex;flex-direction:column;align-items:flex-start;gap:3px;width:100%;background:none;border:none;border-bottom:1px solid rgba(255,255,255,0.06);padding:8px 0;color:#f5ede8;font-family:inherit;font-size:14px;cursor:pointer;text-align:right;}
+.ov-row:hover .ov-row-t{color:#d4e034;}
+.ov-msg{display:flex;justify-content:space-between;gap:10px;padding:7px 0;border-bottom:1px solid rgba(255,255,255,0.06);font-size:13px;color:rgba(255,255,255,0.75);}
+.ov-msg.unread span{color:#f5ede8;font-weight:600;}
+.ov-msg small{color:rgba(255,255,255,0.4);white-space:nowrap;}
+.btn-link{background:none;border:none;color:#9cc9f0;font-family:inherit;font-size:13px;cursor:pointer;padding:8px 0 0;}
+@media(max-width:768px){
+  .approval-panel{padding:1rem;}
+  .admin-top{top:-1rem;margin:-1rem -1rem 1rem;padding:.9rem 1rem .1rem;}
+  .ov-kpis{grid-template-columns:1fr 1fr;}
+  .admin-top .admin-tab{padding:6px 10px;font-size:12.5px;}
+  .admin-top .admin-tabs{gap:5px;flex-wrap:wrap;}
+  .ov-kpi{padding:12px;}
+  .ov-wide{flex-direction:column;align-items:flex-start;gap:6px;}
+  .ov-totals{gap:10px;font-size:14px;}
+  .ov-cols{grid-template-columns:1fr;}
+  .adm-ev{flex-wrap:wrap;gap:8px 12px;padding:10px 12px;}
+  .adm-ev-date{flex:0 0 auto;text-align:right;display:flex;gap:6px;align-items:baseline;}
+  .adm-ev-main{flex:1 1 100%;order:2;}
+  .adm-ev-btns{margin-inline-start:auto;}
+  .adm-select{flex:1 1 100%;}
+}
 .users-mail-tools{display:flex;gap:8px;flex-wrap:wrap;margin:.4rem 0 .9rem;}
 .users-mail-tools .btn-preview{flex:0 0 auto;}
 .approval-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;border-bottom:1px solid rgba(255,255,255,0.1);padding-bottom:1rem;}
@@ -495,6 +552,7 @@ body:has(#overlay.open),body:has(.auth-overlay.open),body:has(#legal-overlay.ope
 .trusted-toggle{display:flex;align-items:center;gap:6px;font-size:.8rem;color:rgba(255,255,255,0.5);margin-top:.5rem;}
 .trusted-toggle input{cursor:pointer;}
 .trusted-section{margin-top:2rem;border-top:1px solid rgba(255,255,255,0.08);padding-top:1.5rem;}
+#tab-users.trusted-section{margin-top:0;border-top:none;padding-top:0;}
 .trusted-section h3{color:#d4e034;font-size:1rem;margin-bottom:1rem;}
 .trusted-user-row{display:flex;align-items:center;justify-content:space-between;padding:.6rem .8rem;background:rgba(255,255,255,0.04);border-radius:8px;margin-bottom:.4rem;}
 .trusted-user-email{font-size:.85rem;color:rgba(255,255,255,0.6);}
@@ -875,17 +933,46 @@ button.user-stats:hover{background:rgba(212,224,52,0.22);}
 
 <!-- Approval Panel -->
 <div class="approval-panel" id="approval-panel">
+    <div class="admin-top">
     <div class="approval-header">
         <h2>✦ ניהול האתר</h2>
         <button class="btn-preview" id="btn-migrate-images" onclick="migrateImages()" style="flex:0 0 auto;display:none">🖼 העברת תמונות ישנות לאחסון</button>
         <button class="btn-close-approval" onclick="closeApprovalPanel()">✕ סגור</button>
     </div>
     <div class="admin-tabs" role="tablist">
-        <button class="admin-tab active" data-tab="pending" onclick="showAdminTab('pending')">⏳ ממתינים לאישור <span class="tab-count" id="tab-count-pending"></span></button>
+        <button class="admin-tab active" data-tab="overview" onclick="showAdminTab('overview')">🏠 סקירה</button>
+        <button class="admin-tab" data-tab="pending" onclick="showAdminTab('pending')">⏳ ממתינים <span class="tab-count" id="tab-count-pending"></span></button>
         <button class="admin-tab" data-tab="messages" onclick="showAdminTab('messages')">📬 הודעות <span class="tab-count" id="tab-count-messages"></span></button>
+        <button class="admin-tab" data-tab="events" onclick="showAdminTab('events')">📅 אירועים</button>
         <button class="admin-tab" data-tab="users" onclick="showAdminTab('users')">👥 משתמשים</button>
     </div>
-    <div class="admin-tab-panel" id="tab-pending">
+    </div>
+    <div class="admin-tab-panel" id="tab-overview">
+        <div class="ov-kpis" id="ov-kpis"></div>
+        <div class="ov-cols">
+            <div class="ov-card"><h4>🔥 האירועים הכי נצפים <small>(אירועים קרובים)</small></h4><div id="ov-top"></div></div>
+            <div class="ov-card"><h4>📬 הודעות אחרונות</h4><div id="ov-msgs"></div><button class="btn-link" onclick="showAdminTab('messages')">לכל ההודעות ←</button></div>
+        </div>
+    </div>
+    <div class="admin-tab-panel" id="tab-events" style="display:none">
+        <div class="adm-tools">
+            <input type="search" class="adm-search" id="adm-ev-search" placeholder="🔍 חיפוש לפי שם, מקום או מפרסם…" oninput="renderAdminEvents()">
+            <select class="adm-select" id="adm-ev-sort" onchange="renderAdminEvents()">
+                <option value="date">מיון: לפי תאריך</option>
+                <option value="views">מיון: הכי נצפים</option>
+                <option value="likes">מיון: הכי הרבה לבבות</option>
+                <option value="tickets">מיון: הכי הרבה לחיצות כרטיסים</option>
+            </select>
+            <div class="adm-chips" id="adm-ev-chips">
+                <button class="adm-chip active" data-f="all" onclick="setAdmEvFilter('all')">הכל</button>
+                <button class="adm-chip" data-f="week" onclick="setAdmEvFilter('week')">השבוע</button>
+                <button class="adm-chip" data-f="pending" onclick="setAdmEvFilter('pending')">ממתינים</button>
+            </div>
+        </div>
+        <div class="adm-count" id="adm-ev-count"></div>
+        <div id="adm-ev-list"></div>
+    </div>
+    <div class="admin-tab-panel" id="tab-pending" style="display:none">
         <div class="approval-grid" id="approval-grid"></div>
     </div>
     <div class="admin-tab-panel" id="tab-messages" style="display:none">
@@ -896,7 +983,14 @@ button.user-stats:hover{background:rgba(212,224,52,0.22);}
     </div>
 
     <div class="trusted-section admin-tab-panel" id="tab-users" style="display:none">
-        <h3>👥 משתמשים רשומים</h3>
+        <div class="adm-tools">
+            <input type="search" class="adm-search" id="adm-user-search" placeholder="🔍 חיפוש לפי שם או מייל…" oninput="filterUsers()">
+            <div class="adm-chips" id="adm-user-chips">
+                <button class="adm-chip active" data-f="all" onclick="setUserFilter('all')">הכל</button>
+                <button class="adm-chip" data-f="trusted" onclick="setUserFilter('trusted')">✓ מאושרים מראש</button>
+                <button class="adm-chip" data-f="blocked" onclick="setUserFilter('blocked')">🚫 חסומים</button>
+            </div>
+        </div>
         <div class="users-mail-tools">
             <button class="btn-preview" onclick="copyAllEmails()">📋 העתקת כל המיילים (<span id="users-email-count">0</span>)</button>
             <button class="btn-preview" onclick="mailAllUsers()">✉️ מייל לכולם (בעותק מוסתר)</button>
@@ -2157,7 +2251,7 @@ async function updateApprovalBadge() {
 }
 
 // ── לשונית "הודעות" למנהלת: אירוע חדש / נערך / נמחק, משתמש חדש ──
-let adminTab = 'pending', msgRealtimeOn = false;
+let adminTab = 'overview', msgRealtimeOn = false;
 async function updateMessagesBadge() {
     try {
         const { count, error } = await db.from('admin_messages').select('id', { count: 'exact', head: true }).eq('read', false);
@@ -2179,9 +2273,12 @@ async function updateMessagesBadge() {
 function showAdminTab(tab) {
     adminTab = tab;
     document.querySelectorAll('.admin-tab').forEach(b => b.classList.toggle('active', b.dataset.tab === tab));
-    ['pending', 'messages', 'users'].forEach(t => document.getElementById('tab-' + t).style.display = t === tab ? '' : 'none');
+    ['overview', 'pending', 'messages', 'events', 'users'].forEach(t => document.getElementById('tab-' + t).style.display = t === tab ? '' : 'none');
+    if (tab === 'overview') loadOverview();
     if (tab === 'messages') loadMessages(true);
+    if (tab === 'events') renderAdminEvents(true);
     if (tab === 'users') loadAllUsers();
+    const p = document.getElementById('approval-panel'); if (p) p.scrollTop = 0;
 }
 function timeAgo(iso) {
     const d = new Date(iso), s = (Date.now() - d.getTime()) / 1000;
@@ -2228,7 +2325,7 @@ async function clearReadMessages() {
 async function openApprovalPanel() {
     document.getElementById('approval-panel').classList.add('open');
     pushLayer('panel');
-    showAdminTab(adminTab || 'pending');
+    showAdminTab(adminTab || 'overview');
     checkMigrateNeeded();
     await loadPendingEvents();
     await loadAllUsers();
@@ -2454,7 +2551,7 @@ async function loadAllUsers() {
         const stats = n ? `<button type="button" class="user-stats" onclick="toggleUserEvents('${u.id}', this)" title="הצגת האירועים הקרובים">${n} ${n === 1 ? 'אירוע קרוב' : 'אירועים קרובים'}${rc > n ? ` (${rc} מועדים)` : ''}${pn ? ` · מתוכם ${pn} ממתין לאישור` : ''} ▾</button>`
                     : evCount[u.id] ? `<span class="user-stats" style="opacity:.55;cursor:default;">אין אירועים קרובים</span>` : '';
         return `
-        <div class="trusted-user-row" id="urow-${u.id}">
+        <div class="trusted-user-row" id="urow-${u.id}" data-q="${escHtml(((u.name || '') + ' ' + (u.email || '')).toLowerCase())}" data-trusted="${u.trusted ? 1 : 0}" data-blocked="${u.blocked ? 1 : 0}">
             <span class="trusted-user-email">${displayName}${displayEmail}${stats}</span>
             <div style="display:flex;gap:6px;">
                 <button class="btn-trust ${u.trusted?'trusted':''}" onclick="toggleTrust('${u.id}',${!u.trusted})">
@@ -2478,6 +2575,115 @@ async function loadAllUsers() {
             ${arr.length ? arr.map(rowHtml).join('') : `<div class="users-empty">${empty}</div>`}
         </div>`;
     list.innerHTML = section('pub', '📣 מפרסמים', publishers, 'עדיין אין מפרסמים') + section('view', '👀 צופים (נרשמו ולא פרסמו)', viewers, 'אין משתמשים שרק צופים');
+    admProfiles = profileMap;
+    filterUsers();
+}
+// ── חיפוש וסינון משתמשים ──
+let userFilter = 'all';
+function setUserFilter(f) {
+    userFilter = f;
+    document.querySelectorAll('#adm-user-chips .adm-chip').forEach(b => b.classList.toggle('active', b.dataset.f === f));
+    filterUsers();
+}
+function filterUsers() {
+    const q = (document.getElementById('adm-user-search')?.value || '').trim().toLowerCase();
+    document.querySelectorAll('#trusted-users-list .trusted-user-row').forEach(r => {
+        const ok = (!q || r.dataset.q.includes(q)) &&
+            (userFilter === 'all' || (userFilter === 'trusted' && r.dataset.trusted === '1') || (userFilter === 'blocked' && r.dataset.blocked === '1'));
+        r.style.display = ok ? '' : 'none';
+        const nx = r.nextElementSibling; if (nx && nx.classList.contains('user-events')) nx.style.display = ok ? '' : 'none';
+    });
+    document.querySelectorAll('#trusted-users-list .users-group').forEach(g => {
+        const n = [...g.querySelectorAll('.trusted-user-row')].filter(r => r.style.display !== 'none').length;
+        const c = g.querySelector('.users-group-count'); if (c) c.textContent = n;
+    });
+}
+
+// ── לשונית "אירועים": כל האירועים הקרובים בטבלה אחת, עם נתונים ──
+let admProfiles = null, admStats = {}, admEvFilter = 'all';
+const isoDay = d => `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+async function ensureAdmProfiles() {
+    if (admProfiles) return;
+    const { data } = await db.from('user_profiles').select('id,email,name');
+    admProfiles = {}; (data || []).forEach(p => admProfiles[p.id] = p);
+}
+async function loadAdmStats(ids) {
+    for (let i = 0; i < ids.length; i += 150) {
+        const { data, error } = await db.from('event_stats').select('*').in('event_id', ids.slice(i, i + 150));
+        if (error) return;
+        (data || []).forEach(s => admStats[s.event_id] = s);
+    }
+}
+function setAdmEvFilter(f) {
+    admEvFilter = f;
+    document.querySelectorAll('#adm-ev-chips .adm-chip').forEach(b => b.classList.toggle('active', b.dataset.f === f));
+    renderAdminEvents();
+}
+async function renderAdminEvents(reload) {
+    const list = document.getElementById('adm-ev-list');
+    const live = events.filter(e => !eventIsOver(e));
+    if (reload) {
+        if (!list.innerHTML) list.innerHTML = '<div class="users-empty">טוען…</div>';
+        await Promise.all([ensureAdmProfiles(), loadAdmStats(live.map(e => String(e.id)))]);
+    }
+    const q = (document.getElementById('adm-ev-search').value || '').trim().toLowerCase();
+    const sort = document.getElementById('adm-ev-sort').value;
+    const wk = new Date(); wk.setDate(wk.getDate() + 7); const weekEnd = isoDay(wk);
+    const who = e => { const p = admProfiles && admProfiles[e.user_id]; return p ? (p.name || p.email || '') : ''; };
+    let arr = live.filter(e => {
+        if (admEvFilter === 'pending' && e.status !== 'pending') return false;
+        if (admEvFilter === 'week' && (e.dateRaw || '') > weekEnd) return false;
+        if (q && !((e.title || '') + ' ' + (e.location || '') + ' ' + who(e)).toLowerCase().includes(q)) return false;
+        return true;
+    });
+    const st = e => admStats[String(e.id)] || {};
+    if (sort === 'date') arr.sort((a, b) => (a.dateRaw || '').localeCompare(b.dateRaw || ''));
+    else arr.sort((a, b) => (st(b)[sort] || 0) - (st(a)[sort] || 0));
+    document.getElementById('adm-ev-count').textContent = `${arr.length} אירועים`;
+    list.innerHTML = arr.map(e => {
+        const s = st(e), id = escHtml(String(e.id));
+        const d = e.dateRaw ? new Date(e.dateRaw + 'T12:00:00').toLocaleDateString('he-IL', { weekday: 'short', day: 'numeric', month: 'numeric' }) : '';
+        return `<div class="adm-ev">
+            <div class="adm-ev-date">${escHtml(d)}<small>${escHtml(e.time && e.time !== '-' ? e.time : '')}</small></div>
+            <div class="adm-ev-main">
+                <div class="adm-ev-title">${escHtml(e.title)}${e.status === 'pending' ? ' <span class="ue-st pend">ממתין</span>' : ''}</div>
+                <div class="adm-ev-sub">📍 ${escHtml(e.location || '')}${who(e) ? ` · 👤 ${escHtml(who(e))}` : ''}</div>
+                <div class="ue-stats">${statsLine(s, true)}</div>
+            </div>
+            <div class="adm-ev-btns">
+                <button class="btn-preview" onclick="openViewModal('${id}')" title="צפייה">👁</button>
+                <button class="btn-preview" onclick="openModal('${id}')" title="עריכה">✏️</button>
+                <button class="btn-reject" onclick="admDelete('${id}', event)" title="מחיקה">🗑</button>
+            </div>
+        </div>`;
+    }).join('') || '<div class="users-empty">אין אירועים שמתאימים לחיפוש</div>';
+}
+async function admDelete(id, ev) { await deleteEvent(id, ev); renderAdminEvents(); }
+
+// ── לשונית "סקירה" ──
+async function loadOverview() {
+    const live = events.filter(e => !eventIsOver(e));
+    const wk = new Date(); wk.setDate(wk.getDate() + 7); const weekEnd = isoDay(wk);
+    const [pend, msgs, users] = await Promise.all([
+        db.from('events').select('id', { count: 'exact', head: true }).eq('status', 'pending'),
+        db.from('admin_messages').select('*').order('created_at', { ascending: false }).limit(5),
+        db.from('user_profiles').select('id', { count: 'exact', head: true }),
+        loadAdmStats(live.map(e => String(e.id))),
+    ]);
+    const unread = (msgs.data || []).filter(m => !m.read).length;
+    const tile = (tab, icon, num, label, hot) => `<button class="ov-kpi${hot ? ' hot' : ''}" onclick="showAdminTab('${tab}')"><span class="ov-ic">${icon}</span><b>${num}</b><span>${label}</span></button>`;
+    const totals = {}; live.forEach(e => { const s = admStats[String(e.id)] || {}; STAT_KINDS.forEach(([k]) => totals[k] = (totals[k] || 0) + (s[k] || 0)); });
+    document.getElementById('ov-kpis').innerHTML =
+        tile('pending', '⏳', pend.count || 0, 'ממתינים לאישור', pend.count > 0) +
+        tile('messages', '📬', unread >= 5 ? '5+' : unread, 'הודעות חדשות', unread > 0) +
+        tile('events', '📅', live.length, `אירועים קרובים · ${live.filter(e => (e.dateRaw || '') <= weekEnd).length} השבוע`) +
+        tile('users', '👥', users.count || 0, 'משתמשים רשומים') +
+        `<div class="ov-kpi ov-wide"><span class="ov-ic">📊</span><div class="ov-totals">${statsLine(totals, true)}</div><span>סה"כ באירועים הקרובים</span></div>`;
+    const top = live.filter(e => (admStats[String(e.id)] || {}).views).sort((a, b) => admStats[String(b.id)].views - admStats[String(a.id)].views).slice(0, 6);
+    document.getElementById('ov-top').innerHTML = top.map(e => `<button class="ov-row" onclick="openViewModal('${escHtml(String(e.id))}')"><span class="ov-row-t">${escHtml(e.title)}</span><span class="ue-stats">${statsLine(admStats[String(e.id)], true)}</span></button>`).join('')
+        || '<div class="users-empty">עוד אין נתונים — הם יתחילו להצטבר מעכשיו</div>';
+    document.getElementById('ov-msgs').innerHTML = msgs.error ? '<div class="users-empty">צריך להריץ את admin_messages.sql</div>'
+        : (msgs.data || []).map(m => `<div class="ov-msg${m.read ? '' : ' unread'}"><span>${escHtml(m.title)}</span><small>${escHtml(timeAgo(m.created_at))}</small></div>`).join('') || '<div class="users-empty">אין הודעות</div>';
 }
 let groupEmails = { pub: [], view: [] };
 // האירועים של משתמש — נפתחים מתחת לשורה שלו
