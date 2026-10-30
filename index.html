@@ -470,6 +470,8 @@ body:has(#overlay.open),body:has(.auth-overlay.open),body:has(#legal-overlay.ope
 .approval-btns+.approval-btns{margin-top:6px;}
 .approval-panel{position:fixed;inset:0;background:#1a0505;z-index:2000;overflow-y:auto;display:none;padding:1.5rem;}
 .approval-panel.open{display:block;}
+.users-mail-tools{display:flex;gap:8px;flex-wrap:wrap;margin:.4rem 0 .9rem;}
+.users-mail-tools .btn-preview{flex:0 0 auto;}
 .approval-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;border-bottom:1px solid rgba(255,255,255,0.1);padding-bottom:1rem;}
 .approval-header h2{font-size:1.3rem;color:#d4e034;font-family:'Rubik',sans-serif;}
 .btn-close-approval{background:none;border:1px solid rgba(255,255,255,0.2);color:#fff;padding:6px 14px;border-radius:12px;cursor:pointer;font-size:13px;}
@@ -716,6 +718,17 @@ button,input,textarea,select{font-family:'Rubik',sans-serif;}
 /* תמונה עוד יותר גדולה: מלאה עד הקצוות */
 .card .card-img{aspect-ratio:6/5;margin:0;border-radius:18px 18px 0 0;}
 @media(max-width:600px){.card .card-img{aspect-ratio:6/5;margin:0;border-radius:18px 18px 0 0;}}
+
+
+.users-group{margin-bottom:1.4rem;}
+.users-group-head{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;border-bottom:1px solid rgba(255,255,255,0.1);padding-bottom:6px;margin-bottom:8px;}
+.users-group-head h4{font-size:1rem;font-weight:600;color:#f5ede8;margin:0;display:flex;align-items:center;gap:8px;}
+.users-group-count{background:rgba(212,224,52,0.18);color:#d4e034;border-radius:20px;padding:0 9px;font-size:.8rem;font-weight:600;}
+.users-group-tools{display:flex;gap:6px;flex-wrap:wrap;}
+.users-group-tools .btn-preview{flex:0 0 auto;font-size:12px;padding:5px 10px;}
+.users-empty{color:rgba(255,255,255,0.35);font-size:.85rem;padding:4px 0;}
+.user-stats{display:inline-block;margin-inline-start:8px;font-size:.75rem;color:rgba(212,224,52,0.85);background:rgba(212,224,52,0.1);border-radius:10px;padding:0 7px;}
+
 </style>
 </head>
 <body>
@@ -755,7 +768,11 @@ button,input,textarea,select{font-family:'Rubik',sans-serif;}
     <div class="approval-grid" id="approval-grid"></div>
 
     <div class="trusted-section">
-        <h3>👤 משתמשים מאושרים מראש</h3>
+        <h3>👥 משתמשים רשומים</h3>
+        <div class="users-mail-tools">
+            <button class="btn-preview" onclick="copyAllEmails()">📋 העתקת כל המיילים (<span id="users-email-count">0</span>)</button>
+            <button class="btn-preview" onclick="mailAllUsers()">✉️ מייל לכולם (בעותק מוסתר)</button>
+        </div>
         <div id="trusted-users-list"></div>
     </div>
 </div>
@@ -1173,8 +1190,8 @@ function handleAddEvent() {
     openModal(null);
 }
 
-function openAuth() { document.getElementById('auth-overlay').classList.add('open'); }
-function closeAuth() { document.getElementById('auth-overlay').classList.remove('open'); pendingAction = null; clearAuthMessage(); }
+function openAuth() { document.getElementById('auth-overlay').classList.add('open'); pushLayer('auth'); }
+function closeAuth(fromBack) { const el = document.getElementById('auth-overlay'); const was = el.classList.contains('open'); el.classList.remove('open'); pendingAction = null; clearAuthMessage(); if (was && fromBack !== true) popLayer('auth', false); }
 
 function setAuthTab(tab) {
     document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
@@ -1607,8 +1624,23 @@ function closeViewModal(fromBack) {
 }
 
 // כפתור "אחורה" בטלפון: סוגר את החלון הפתוח (אירוע / טופס) במקום לצאת מהאתר
+// חלונות נוספים (פאנל אישורים, חלון אישור, התראות, התחברות, תקנון): "אחורה" סוגר אותם ולא יוצא מהאתר
+function pushLayer(key) { const s = history.state || {}; if (!s[key]) history.pushState({ ...s, [key]: true }, '', location.href); }
+function popLayer(key, useBack) {
+    const s = history.state || {};
+    if (!s[key]) return;
+    if (useBack) history.back();
+    else history.replaceState({ ...s, [key]: null }, '', location.href);
+}
+const LAYERS = {
+    panel:  { open: () => document.getElementById('approval-panel').classList.contains('open'), close: () => closeApprovalPanel(true) },
+    notify: { open: () => document.getElementById('notify-overlay').classList.contains('open'), close: () => closeNotify(true) },
+    auth:   { open: () => document.getElementById('auth-overlay').classList.contains('open'), close: () => closeAuth(true) },
+    legal:  { open: () => document.getElementById('legal-overlay').classList.contains('open'), close: () => closeLegal(true) }
+};
 window.addEventListener('popstate', ev => {
     const s = ev.state || {};
+    Object.entries(LAYERS).forEach(([k, L]) => { if (!s[k] && L.open()) L.close(); });
     if (!s.menu && document.querySelector('.tool-menu.open')) closeMenus('back');
     if (!s.form && document.getElementById('overlay').classList.contains('open')) closeModal(true);
     if (!s.view && document.getElementById('view-overlay').style.display !== 'none') closeViewModal(true);
@@ -1717,13 +1749,18 @@ const NAV_CITY_RE = /(חיפה|נשר|טירת כרמל|קרי[י]?ת\s?[א-ת]+
 function navQuery(e) {
     const loc = String(e.location || '').trim();
     if (!loc || loc === 'חיפה') return '';
+    // מקומות מוכרים בלי כתובת רחוב — מנווטים לפי השם
+    if (/מוזיאון הכט/.test(loc)) return 'מוזיאון הכט, אוניברסיטת חיפה';
+    if (/אוניברסיטת חיפה/.test(loc)) return 'אוניברסיטת חיפה';
     const segs = loc.replace(/\([^)]*\)/g, '').split(',').map(s => s.trim()).filter(Boolean);
     const lastSeg = segs[segs.length - 1] || '';
     const city = segs.length > 1 && NAV_CITY_RE.test(lastSeg) && !/\d/.test(lastSeg) ? lastSeg : 'חיפה';
     const rest = segs.slice(1);
-    const street = [...rest].reverse().find(s => /\d/.test(s) && /[א-ת]/.test(s)) || rest.find(s => /\d/.test(s) && !/^\d+$/.test(s));
-    if (street) return `${street}, ${city}`;
-    return NAV_CITY_RE.test(loc) ? loc : loc + ', חיפה';
+    // ניווט רק כשיש כתובת מלאה: רחוב + מספר + עיר
+    const hasCity = segs.length > 1 && NAV_CITY_RE.test(lastSeg) && !/\d/.test(lastSeg);
+    const street = [...rest].reverse().find(s => /\d/.test(s) && /[א-תa-z]{2,}/i.test(s) && !/^\d+$/.test(s));
+    if (!hasCity || !street || street === lastSeg) return '';
+    return `${street}, ${city}`;
 }
 async function navigateTo(kind) {
     const e = curViewEvent(); if (!e) return;
@@ -1905,13 +1942,17 @@ async function updateApprovalBadge() {
 
 async function openApprovalPanel() {
     document.getElementById('approval-panel').classList.add('open');
+    pushLayer('panel');
     checkMigrateNeeded();
     await loadPendingEvents();
     await loadAllUsers();
 }
 
-function closeApprovalPanel() {
-    document.getElementById('approval-panel').classList.remove('open');
+function closeApprovalPanel(fromBack) {
+    const el = document.getElementById('approval-panel');
+    if (!el.classList.contains('open')) return;
+    el.classList.remove('open');
+    if (fromBack !== true) popLayer('panel', true);
 }
 
 async function loadPendingEvents() {
@@ -1949,6 +1990,7 @@ async function loadPendingEvents() {
         </div>`; }).join('');
     // נסיון לשלוף מיילים אמיתיים
     fetchUserEmails(data);
+
 }
 
 async function fetchUserEmails(events) {
@@ -2009,6 +2051,20 @@ async function migrateImages() {
     }
 }
 
+// מיילים של המשתמשים הרשומים (למנהלת בלבד)
+let allUserEmails = [];
+async function copyAllEmails() {
+    const t = allUserEmails.join(', ');
+    if (!t) { showToast('אין עדיין מיילים'); return; }
+    try { await navigator.clipboard.writeText(t); } catch (_) { const ta = document.createElement('textarea'); ta.value = t; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); ta.remove(); }
+    showToast(`הועתקו ${allUserEmails.length} כתובות ✓`);
+}
+function mailAllUsers() {
+    if (!allUserEmails.length) { showToast('אין עדיין מיילים'); return; }
+    // כל הנמענים בעותק מוסתר (BCC) — כך אף אחד לא רואה את הכתובות של האחרים
+    location.href = 'mailto:heifait.batahtit@gmail.com?bcc=' + encodeURIComponent(allUserEmails.join(','));
+}
+
 async function approveEvent(id) {
     const { error } = await db.from('events').update({status:'approved'}).eq('id', id);
     if (error) { alert('שגיאה: ' + error.message); return; }
@@ -2057,8 +2113,11 @@ async function rejectEvent(id) {
 async function loadAllUsers() {
     // שליפת כל הפרופילים
     const { data: profiles } = await db.from('user_profiles').select('id,role,trusted,blocked,email,name');
-    // שליפת user_ids מאירועים ממתינים שאולי אין להם פרופיל
-    const { data: pendingEvs } = await db.from('events').select('user_id').eq('status','pending');
+    // כל האירועים (כולל ישנים) — כדי לדעת מי פרסם ומה מספר האירועים של כל אחד
+    const { data: allEvs } = await db.from('events').select('user_id,status');
+    const evCount = {}, pendCount = {};
+    (allEvs || []).forEach(e => { if (!e.user_id) return; evCount[e.user_id] = (evCount[e.user_id] || 0) + 1; if (e.status === 'pending') pendCount[e.user_id] = (pendCount[e.user_id] || 0) + 1; });
+    const pendingEvs = (allEvs || []).filter(e => e.status === 'pending');
     const list = document.getElementById('trusted-users-list');
 
     // מיזוג — כל המשתמשים עם פרופיל + כל user_id מבקשות ממתינות
@@ -2071,12 +2130,20 @@ async function loadAllUsers() {
     const users = Object.values(profileMap).filter(u => u.role !== 'admin' && !ADMIN_EMAILS.includes((u.email || '').toLowerCase()));
     if (users.length === 0) { list.innerHTML = '<div style="color:rgba(255,255,255,0.3);font-size:.85rem;">אין משתמשים רשומים עדיין</div>'; return; }
 
-    list.innerHTML = users.map(u => {
+    allUserEmails = users.map(u => u.email).filter(Boolean);
+    const cnt = document.getElementById('users-email-count'); if (cnt) cnt.textContent = allUserEmails.length;
+    // הפרדה: מפרסמים (פרסמו לפחות אירוע אחד) / צופים (רק נרשמו)
+    const publishers = users.filter(u => evCount[u.id]).sort((a, b) => evCount[b.id] - evCount[a.id]);
+    const viewers = users.filter(u => !evCount[u.id]);
+    groupEmails = { pub: publishers.map(u => u.email).filter(Boolean), view: viewers.map(u => u.email).filter(Boolean) };
+    const rowHtml = u => {
         const displayName = u.name ? `<strong style="color:#f5ede8;">${escHtml(u.name)}</strong> ` : '';
-        const displayEmail = u.email ? `<span style="color:rgba(255,255,255,0.45);font-size:.8rem;">${escHtml(u.email)}</span>` : `<span style="color:rgba(255,255,255,0.3);font-size:.8rem;">${u.id.substring(0,8)}...</span>`;
+        const displayEmail = u.email ? `<a href="mailto:${escHtml(u.email)}" onclick="event.stopPropagation()" style="color:rgba(160,200,255,0.8);font-size:.8rem;">${escHtml(u.email)}</a>` : `<span style="color:rgba(255,255,255,0.3);font-size:.8rem;">${u.id.substring(0,8)}...</span>`;
+        const n = evCount[u.id] || 0, pn = pendCount[u.id] || 0;
+        const stats = n ? `<span class="user-stats">${n} ${n === 1 ? 'אירוע' : 'אירועים'}${pn ? ` · ${pn} ממתין` : ''}</span>` : '';
         return `
         <div class="trusted-user-row">
-            <span class="trusted-user-email">${displayName}${displayEmail}</span>
+            <span class="trusted-user-email">${displayName}${displayEmail}${stats}</span>
             <div style="display:flex;gap:6px;">
                 <button class="btn-trust ${u.trusted?'trusted':''}" onclick="toggleTrust('${u.id}',${!u.trusted})">
                     ${u.trusted ? '✓ מאושר' : 'אשרי מראש'}
@@ -2086,7 +2153,30 @@ async function loadAllUsers() {
                 </button>
             </div>
         </div>`;
-    }).join('');
+    };
+    const section = (key, title, arr, empty) => `
+        <div class="users-group">
+            <div class="users-group-head">
+                <h4>${title} <span class="users-group-count">${arr.length}</span></h4>
+                ${arr.some(u => u.email) ? `<div class="users-group-tools">
+                    <button class="btn-preview" onclick="copyGroupEmails('${key}')">📋 העתקת מיילים</button>
+                    <button class="btn-preview" onclick="mailGroup('${key}')">✉️ מייל לכולם</button>
+                </div>` : ''}
+            </div>
+            ${arr.length ? arr.map(rowHtml).join('') : `<div class="users-empty">${empty}</div>`}
+        </div>`;
+    list.innerHTML = section('pub', '📣 מפרסמים', publishers, 'עדיין אין מפרסמים') + section('view', '👀 צופים (נרשמו ולא פרסמו)', viewers, 'אין משתמשים שרק צופים');
+}
+let groupEmails = { pub: [], view: [] };
+async function copyGroupEmails(key) {
+    const arr = groupEmails[key] || []; if (!arr.length) return;
+    const t = arr.join(', ');
+    try { await navigator.clipboard.writeText(t); } catch (_) { const ta = document.createElement('textarea'); ta.value = t; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); ta.remove(); }
+    showToast(`הועתקו ${arr.length} כתובות ✓`);
+}
+function mailGroup(key) {
+    const arr = groupEmails[key] || []; if (!arr.length) return;
+    location.href = 'mailto:heifait.batahtit@gmail.com?bcc=' + encodeURIComponent(arr.join(','));
 }
 
 async function toggleTrust(userId, trust) {
@@ -2753,11 +2843,15 @@ function copyContactMail(btn){
 }
 function openLegal(tab){
   document.getElementById('legal-overlay').classList.add('open');
+  if (typeof pushLayer === 'function') pushLayer('legal');
   switchLegalTab(tab||'privacy');
 }
-function closeLegal(){
-  document.getElementById('legal-overlay').classList.remove('open');
+function closeLegal(fromBack){
+  const el = document.getElementById('legal-overlay');
+  const was = el.classList.contains('open');
+  el.classList.remove('open');
   cleanUrlHash();
+  if (was && fromBack !== true && typeof popLayer === 'function') popLayer('legal', true);
 }
 function switchLegalTab(tab){
   ['privacy','terms','rules'].forEach(t=>{
@@ -2877,6 +2971,7 @@ if ('serviceWorker' in navigator) {
 async function openNotify() {
     const ov = document.getElementById('notify-overlay');
     ov.classList.add('open');
+    pushLayer('notify');
     // קטגוריות לבחירה
     const chosen = new Set(ntGetCats());
     const box = document.getElementById('nt-cats');
@@ -2950,7 +3045,12 @@ function ntBlockedHelp() {
         3. מרעננים את הדף ולוחצים שוב על 🔔<br><br>
         <span class="nt-hint">בווינדוס, אם ההתראות לא קופצות: Settings ← System ← Notifications ← לוודא ש-Google Chrome מופעל ו-Do not disturb כבוי.</span>`;
 }
-function closeNotify() { document.getElementById('notify-overlay').classList.remove('open'); }
+function closeNotify(fromBack) {
+    const el = document.getElementById('notify-overlay');
+    if (!el.classList.contains('open')) return;
+    el.classList.remove('open');
+    if (fromBack !== true) popLayer('notify', true);
+}
 // מנהלת שכבר הפעילה התראות במכשיר — מסמנים את המנוי כמנוי מנהלת (השרת בודק לפי המייל)
 async function ntSyncAdmin() {
     const sub = await ntCurrentSub();
