@@ -900,6 +900,22 @@ button.user-stats:hover{background:rgba(212,224,52,0.22);}
 .my-defaults .form-group label{font-size:14.5px;color:rgba(255,255,255,0.75);}
 .my-defaults .form-group input{font-size:16px;}
 .my-defaults .cat-pick-btn{font-size:13.5px;padding:5px 12px;}
+/* טופס הפרסום: כל הטקסט מודגש, רקע בהיר יותר וטקסט כמעט לבן */
+#overlay .modal{background:linear-gradient(180deg,#4a1a1d 0%,#3d1518 100%);border-color:rgba(255,255,255,0.18);}
+#overlay .modal, #overlay .modal *{font-weight:600;}
+#overlay .modal h2{font-weight:700;color:#e4ee5a;}
+#overlay .form-group label{color:#fff5ee;font-weight:700;}
+#overlay .form-group input,#overlay .form-group textarea,#overlay .form-group select{background:rgba(255,255,255,0.1);border-color:rgba(255,255,255,0.25);color:#ffffff;font-weight:600;}
+#overlay .form-group input::placeholder,#overlay .form-group textarea::placeholder{color:rgba(255,255,255,0.5);font-weight:500;}
+#overlay .cat-pick-btn{background:rgba(255,255,255,0.1);border-color:rgba(255,255,255,0.22);color:#fff5ee;}
+#overlay .cat-pick-btn.selected{font-weight:700;}
+#overlay .cat-pick-hint,#overlay .field-hint,#overlay .img-placeholder-sub,#overlay .modal-rules p{color:rgba(255,245,238,0.75);}
+#overlay .form-divider{color:rgba(255,245,238,0.8);border-color:rgba(255,255,255,0.15);}
+#overlay .img-placeholder-text{color:#fff5ee;}
+#overlay .img-upload-area{border-color:rgba(255,255,255,0.3);background:rgba(255,255,255,0.05);}
+#overlay .modal-rules li,#overlay .rules-check-item{color:#fff5ee;}
+#overlay .btn-cancel{color:#fff5ee;background:rgba(255,255,255,0.1);}
+#overlay .defaults-note,#overlay .remember-defaults{background:rgba(255,255,255,0.08);}
 @media(min-width:900px){#overlay .modal{padding:2.2rem 2.6rem;}}
 @media(max-width:600px){#overlay{padding:0 !important;}#overlay .modal{max-width:none;width:100%;max-height:100vh;height:100%;border-radius:0;padding:1.4rem 1.1rem;}}
 /* מקום: רשימת הצעות */
