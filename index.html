@@ -3694,7 +3694,7 @@ function ticketLabel(url) {
     if (TICKET_HOSTS.test(host)) return '🎟 כרטיסים';
     if (/(regist|signup|sign-up|rsvp|הרשמה|הירשמו|הרשם|טופס|form)/.test(path)) return '📝 הרשמה';
     if (/(ticket|tix|כרטיס)/.test(host + path)) return '🎟 כרטיסים';
-    return '🎟 כרטיסים / הרשמה';
+    return '🎟 כרטיסים';            // לא זוהה כטופס הרשמה — כרטיסים
 }
 
 // ── יצירת קשר: טלפון / וואטסאפ ──
