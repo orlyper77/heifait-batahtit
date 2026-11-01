@@ -498,7 +498,84 @@ body:has(#overlay.open),body:has(.auth-overlay.open),body:has(#legal-overlay.ope
 .ov-kpi b{font-size:1.7rem;color:#f5ede8;line-height:1.1;}
 .ov-kpi.hot{border-color:rgba(240,128,128,0.55);background:rgba(240,128,128,0.08);}
 .ov-kpi.hot b{color:#ff9e9e;}
-.ov-ic{font-size:1.1rem;}
+.ov-ic{display:inline-flex;align-items:center;justify-content:center;width:46px;height:46px;border-radius:14px;background:rgba(212,224,52,0.14);color:#d4e034;margin-bottom:6px;}
+.kpi-pending .ov-ic{background:rgba(240,176,64,0.16);color:#f0b040;}
+.kpi-messages .ov-ic{background:rgba(107,170,220,0.18);color:#9cc9f0;}
+.kpi-events .ov-ic{background:rgba(212,224,52,0.14);color:#d4e034;}
+.kpi-users .ov-ic{background:rgba(240,143,176,0.16);color:#f08fb0;}
+.ov-wide .ov-ic{margin-bottom:0;background:rgba(201,160,255,0.16);color:#c9a0ff;}
+.ic{flex-shrink:0;vertical-align:-4px;}
+.admin-tab{display:inline-flex;align-items:center;gap:8px;font-size:15.5px !important;padding:10px 18px !important;}
+.admin-tab .ic{width:21px;height:21px;}
+.admin-tab[data-tab="overview"]:not(.active) .ic{color:#d4e034;}
+.admin-tab[data-tab="pending"]:not(.active) .ic{color:#f0b040;}
+.admin-tab[data-tab="messages"]:not(.active) .ic{color:#9cc9f0;}
+.admin-tab[data-tab="events"]:not(.active) .ic{color:#d4e034;}
+.admin-tab[data-tab="users"]:not(.active) .ic{color:#f08fb0;}
+.ov-card h4{display:flex;align-items:center;gap:8px;font-size:1.05rem !important;}
+.h-flame .ic{color:#ff8a5c;}
+.h-inbox .ic{color:#9cc9f0;}
+.st-chip{display:inline-flex;align-items:center;gap:4px;font-size:13px;}
+.st-chip b{font-weight:600;color:#f5ede8;}
+.ov-totals .st-chip b{font-size:18px;line-height:1.2;}
+.ov-totals .st-chip .ic{width:19px;height:19px;}
+.st-views .ic{color:#9cc9f0;} .st-likes .ic{color:#ff6b8a;} .st-calendar .ic{color:#d4e034;}
+.st-tickets .ic{color:#f0b040;} .st-links .ic{color:#7fd6c2;} .st-shares .ic{color:#c9a0ff;}
+.st-box .ic{margin-bottom:2px;}
+.st-head{display:flex;align-items:center;gap:6px;}
+.st-head .ic{color:#c9a0ff;}
+.ue-stats{gap:12px !important;opacity:1 !important;}
+.ic-btn{display:inline-flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;min-width:58px;padding:7px 8px !important;font-size:11.5px !important;line-height:1.1;}
+.adm-ev-btns .ic-btn{border-radius:10px !important;}
+.btn-preview .ic,.btn-approve .ic,.btn-reject .ic,.btn-trust .ic,.btn-block .ic,.adm-chip .ic{vertical-align:-3px;}
+.users-mail-tools .btn-preview,.users-group-tools .btn-preview{display:inline-flex;align-items:center;gap:6px;}
+.users-group-head h4{display:flex;align-items:center;gap:8px;}
+.users-group-head h4 .ic{color:#d4e034;}
+.approval-btns button{display:inline-flex;align-items:center;justify-content:center;gap:6px;}
+/* דף הניהול (וגם "האירועים שלי") — סגול-ורוד מפלטת האתר */
+.approval-panel{background:linear-gradient(165deg,#86629f 0%,#7d5a9e 45%,#6c4c8e 100%) fixed;}
+.admin-top{background:linear-gradient(165deg,#86629f 0%,#7d5a9e 100%);box-shadow:0 10px 22px -12px rgba(30,10,50,.6);}
+.approval-header{border-bottom-color:rgba(255,179,212,0.2) !important;}
+.approval-header h2{color:#ffb3d4 !important;}
+.admin-tab{background:rgba(255,255,255,0.07) !important;border-color:rgba(255,179,212,0.28) !important;color:#fbe6f0 !important;}
+.admin-tab.active{background:#f075a8 !important;border-color:#f075a8 !important;color:#2a0820 !important;}
+.admin-tab:not(.active) .tab-count:not(:empty){background:#d4e034 !important;color:#2a0820 !important;}
+.approval-panel .ov-kpi,.approval-panel .ov-card,.approval-panel .adm-ev,.approval-panel .msg-row,.approval-panel .trusted-user-row,.approval-panel .view-modal-stats{background:rgba(255,255,255,0.06);border-color:rgba(255,179,212,0.16);}
+.approval-panel .ov-kpi:hover{border-color:rgba(240,117,168,0.6);}
+.approval-panel .msg-row.unread{background:rgba(240,117,168,0.14);border-color:rgba(240,117,168,0.45);}
+.approval-card{background:rgba(255,255,255,0.07) !important;border-color:rgba(255,179,212,0.18) !important;}
+.approval-card-img{background:rgba(0,0,0,0.2) !important;}
+.adm-select{background:#6c4c8e;border-color:rgba(255,179,212,0.28);}
+.adm-search{background:rgba(255,255,255,0.08);border-color:rgba(255,179,212,0.28);}
+.adm-chip{border-color:rgba(255,179,212,0.28);color:#fbe6f0;}
+.adm-chip.active{background:rgba(240,117,168,0.25);border-color:#f075a8;color:#ffd0e4;}
+.adm-ev-date{color:#ffb3d4;}
+.ov-card h4,.users-group-head h4 .ic{color:#ffb3d4 !important;}
+.user-events{background:rgba(255,255,255,0.04);border-color:rgba(255,179,212,0.16);}
+.users-group-head{border-bottom-color:rgba(255,179,212,0.2) !important;}
+.users-group-count{background:rgba(240,117,168,0.22) !important;color:#ffb3d4 !important;}
+.btn-close-approval{border-color:rgba(255,179,212,0.4);}
+.btn-close-approval:hover{border-color:#f075a8;color:#ffb3d4;}
+/* גוון לבנדר: כרטיסים כהים-שקופים וטקסט בהיר וקריא */
+.approval-panel .ov-kpi,.approval-panel .ov-card,.approval-panel .adm-ev,.approval-panel .msg-row,.approval-panel .trusted-user-row,.approval-card{background:rgba(40,15,60,0.32) !important;border-color:rgba(255,255,255,0.18) !important;}
+.approval-panel .msg-row.unread{background:rgba(240,117,168,0.28) !important;border-color:#ffb3d4 !important;}
+.approval-panel .adm-ev-sub,.approval-panel .msg-body,.approval-panel .msg-time,.approval-panel .users-empty,.approval-panel .adm-count,.approval-panel .ov-msg small,.approval-panel .ov-card h4 small,.approval-panel .ov-kpi span:not(.ov-ic),.approval-panel .my-intro,.approval-panel .adm-ev-date small,.approval-panel .trusted-user-email,.approval-panel .approval-card-meta,.approval-panel .approval-card-desc{color:rgba(255,255,255,0.85) !important;}
+.approval-panel .ov-msg{color:#fff;border-color:rgba(255,255,255,0.15);}
+.approval-panel .ov-row{border-color:rgba(255,255,255,0.15);}
+.approval-panel .adm-ev-date{color:#ffe0ee;}
+.approval-panel .approval-header h2{color:#fff !important;}
+.approval-panel .user-stats{background:rgba(212,224,52,0.22);color:#f2f7a0;}
+.approval-panel .user-events{background:rgba(40,15,60,0.25);}
+.approval-panel .adm-search,.approval-panel .adm-select{background:rgba(40,15,60,0.35);border-color:rgba(255,255,255,0.25);}
+.approval-panel .adm-search::placeholder{color:rgba(255,255,255,0.7);}
+.approval-panel .ov-ic{background:rgba(40,15,60,0.4) !important;}
+.approval-panel .btn-preview{background:rgba(40,15,60,0.35);border-color:rgba(156,201,240,0.55);color:#cfe6fb;}
+.approval-panel .btn-reject,.approval-panel .btn-block{background:rgba(190,30,60,0.55) !important;border-color:#ff9aa8 !important;color:#fff0f2 !important;}
+.approval-panel .btn-trust{background:rgba(40,120,40,0.45) !important;border-color:#9ee28a !important;color:#eaffdf !important;}
+.approval-panel .btn-trust.trusted{background:rgba(60,160,50,0.75) !important;}
+.approval-panel .btn-block.blocked{background:rgba(210,30,60,0.85) !important;}
+.approval-panel .trusted-user-email a{color:#d8ecff !important;}
+@media(max-width:768px){.admin-tab{font-size:14px !important;padding:8px 12px !important;gap:6px;}.admin-tab .ic{width:18px;height:18px;}}
 .ov-wide{grid-column:1/-1;cursor:default;flex-direction:row;align-items:center;gap:14px;flex-wrap:wrap;}
 .ov-totals{display:flex;gap:14px;flex-wrap:wrap;font-size:15px;color:#f5ede8;}
 .ov-cols{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
@@ -1037,18 +1114,18 @@ button.user-stats:hover{background:rgba(212,224,52,0.22);}
         <button class="btn-close-approval" onclick="closeApprovalPanel()">✕ סגור</button>
     </div>
     <div class="admin-tabs" role="tablist">
-        <button class="admin-tab active" data-tab="overview" onclick="showAdminTab('overview')">🏠 סקירה</button>
-        <button class="admin-tab" data-tab="pending" onclick="showAdminTab('pending')">⏳ ממתינים <span class="tab-count" id="tab-count-pending"></span></button>
-        <button class="admin-tab" data-tab="messages" onclick="showAdminTab('messages')">📬 הודעות <span class="tab-count" id="tab-count-messages"></span></button>
-        <button class="admin-tab" data-tab="events" onclick="showAdminTab('events')">📅 אירועים</button>
-        <button class="admin-tab" data-tab="users" onclick="showAdminTab('users')">👥 משתמשים</button>
+        <button class="admin-tab active" data-tab="overview" data-ic="home" onclick="showAdminTab('overview')">סקירה</button>
+        <button class="admin-tab" data-tab="pending" data-ic="pending" onclick="showAdminTab('pending')">ממתינים <span class="tab-count" id="tab-count-pending"></span></button>
+        <button class="admin-tab" data-tab="messages" data-ic="inbox" onclick="showAdminTab('messages')">הודעות <span class="tab-count" id="tab-count-messages"></span></button>
+        <button class="admin-tab" data-tab="events" data-ic="calendar" onclick="showAdminTab('events')">אירועים</button>
+        <button class="admin-tab" data-tab="users" data-ic="users" onclick="showAdminTab('users')">משתמשים</button>
     </div>
     </div>
     <div class="admin-tab-panel" id="tab-overview">
         <div class="ov-kpis" id="ov-kpis"></div>
         <div class="ov-cols">
-            <div class="ov-card"><h4>🔥 האירועים הכי נצפים <small>(אירועים קרובים)</small></h4><div id="ov-top"></div></div>
-            <div class="ov-card"><h4>📬 הודעות אחרונות</h4><div id="ov-msgs"></div><button class="btn-link" onclick="showAdminTab('messages')">לכל ההודעות ←</button></div>
+            <div class="ov-card"><h4 data-ic="flame" class="h-flame">האירועים הכי נצפים <small>(אירועים קרובים)</small></h4><div id="ov-top"></div></div>
+            <div class="ov-card"><h4 data-ic="inbox" class="h-inbox">הודעות אחרונות</h4><div id="ov-msgs"></div><button class="btn-link" onclick="showAdminTab('messages')">לכל ההודעות ←</button></div>
         </div>
     </div>
     <div class="admin-tab-panel" id="tab-events" style="display:none">
@@ -1084,13 +1161,13 @@ button.user-stats:hover{background:rgba(212,224,52,0.22);}
             <input type="search" class="adm-search" id="adm-user-search" placeholder="🔍 חיפוש לפי שם או מייל…" oninput="filterUsers()">
             <div class="adm-chips" id="adm-user-chips">
                 <button class="adm-chip active" data-f="all" onclick="setUserFilter('all')">הכל</button>
-                <button class="adm-chip" data-f="trusted" onclick="setUserFilter('trusted')">✓ מאושרים מראש</button>
+                <button class="adm-chip" data-f="trusted" onclick="setUserFilter('trusted')" data-ic="check" data-ic-size="16">מאושרים מראש</button>
                 <button class="adm-chip" data-f="blocked" onclick="setUserFilter('blocked')">🚫 חסומים</button>
             </div>
         </div>
         <div class="users-mail-tools">
-            <button class="btn-preview" onclick="copyAllEmails()">📋 העתקת כל המיילים (<span id="users-email-count">0</span>)</button>
-            <button class="btn-preview" onclick="mailAllUsers()">✉️ מייל לכולם (בעותק מוסתר)</button>
+            <button class="btn-preview" onclick="copyAllEmails()" data-ic="copy" data-ic-size="18">העתקת כל המיילים (<span id="users-email-count">0</span>)</button>
+            <button class="btn-preview" onclick="mailAllUsers()" data-ic="mail" data-ic-size="18">מייל לכולם (בעותק מוסתר)</button>
         </div>
         <div id="trusted-users-list"></div>
     </div>
@@ -1769,9 +1846,47 @@ function eventIsOver(e, now = new Date()) {
     return now >= end;
 }
 
+// ── אייקונים מקוריים לניהול (קו נקי, בצבעי האתר) ──
+const IC_PATHS = {
+    home: '<path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/><path d="M10 21v-6h4v6"/>',
+    pending: '<path d="M6 3h12M6 21h12"/><path d="M7 3c0 5 5 6 5 9s-5 4-5 9M17 3c0 5-5 6-5 9s5 4 5 9"/><path d="M9.5 18.5h5" stroke-width="2.6"/>',
+    inbox: '<path d="M3 13l3-8h12l3 8v6a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1z"/><path d="M3 13h5l1.5 2.5h5L16 13h5"/>',
+    calendar: '<rect x="3" y="5" width="18" height="16" rx="2.5"/><path d="M3 10h18M8 3v4M16 3v4"/><circle cx="8" cy="14.5" r=".6"/><circle cx="12" cy="14.5" r=".6"/><circle cx="16" cy="14.5" r=".6"/>',
+    users: '<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.6-3.6 3.2-6 6.5-6s5.9 2.4 6.5 6"/><circle cx="17" cy="9" r="2.6"/><path d="M16.5 14.2c2.6.2 4.5 2.4 5 5.3"/>',
+    views: '<path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>',
+    likes: '<path d="M12 20s-7.5-4.6-9.2-9.3C1.7 7.6 3.8 4.5 7 4.5c2 0 3.5 1.1 5 3 1.5-1.9 3-3 5-3 3.2 0 5.3 3.1 4.2 6.2C19.5 15.4 12 20 12 20z"/>',
+    calplus: '<rect x="3" y="5" width="18" height="16" rx="2.5"/><path d="M3 10h18M8 3v4M16 3v4M12 13v5M9.5 15.5h5"/>',
+    tickets: '<path d="M3 8a2 2 0 0 0 2-2h14a2 2 0 0 0 2 2v2a2 2 0 0 0 0 4v2a2 2 0 0 0-2 2H5a2 2 0 0 0-2-2v-2a2 2 0 0 0 0-4z"/><path d="M14 7v2M14 11v2M14 15v2"/>',
+    links: '<path d="M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7l-1.7 1.7"/><path d="M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.7-1.7"/>',
+    shares: '<circle cx="18" cy="5" r="2.5"/><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="19" r="2.5"/><path d="M8.2 10.8l7.6-4.4M8.2 13.2l7.6 4.4"/>',
+    edit: '<path d="M4 20h4L19.5 8.5a2.1 2.1 0 0 0-4-4L4 16z"/><path d="M14 6l4 4"/>',
+    trash: '<path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13"/><path d="M10 11v6M14 11v6"/>',
+    repeat: '<path d="M17 2l3 3-3 3"/><path d="M4 11V9a4 4 0 0 1 4-4h12"/><path d="M7 22l-3-3 3-3"/><path d="M20 13v2a4 4 0 0 1-4 4H4"/>',
+    chart: '<path d="M4 20V11M10 20V5M16 20v-6M2.5 20h19"/>',
+    flame: '<path d="M12 22c4 0 7-2.7 7-6.8 0-3.6-2.4-5.6-3.7-8.2-.5 2-1.6 3-3 3.5.4-3.3-1-6.5-4-8.5.3 3.5-3.3 6.3-3.3 10.5C5 18.9 8 22 12 22z"/>',
+    mail: '<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/>',
+    copy: '<rect x="8" y="8" width="13" height="13" rx="2"/><path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3"/>',
+    check: '<path d="M4 12.5l5 5L20 6.5"/>',
+    ban: '<circle cx="12" cy="12" r="9"/><path d="M5.6 5.6l12.8 12.8"/>',
+    megaphone: '<path d="M3 10v4a1 1 0 0 0 1 1h3l8 4V5L7 9H4a1 1 0 0 0-1 1z"/><path d="M18.5 9a3.5 3.5 0 0 1 0 6"/>',
+    viewer: '<circle cx="12" cy="8" r="4"/><path d="M4 21c.8-4.2 4-7 8-7s7.2 2.8 8 7"/>',
+    x: '<path d="M6 6l12 12M18 6L6 18"/>'
+};
+function svgIc(name, size = 20) {
+    return `<svg class="ic ic-${name}" width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${IC_PATHS[name] || ''}</svg>`;
+}
+// אלמנטים קבועים בדף עם data-ic מקבלים את האייקון שלהם
+function paintIcons(root) {
+    (root || document).querySelectorAll('[data-ic]:not([data-ic-done])').forEach(el => {
+        el.insertAdjacentHTML('afterbegin', svgIc(el.dataset.ic, +(el.dataset.icSize || 20)));
+        el.dataset.icDone = '1';
+    });
+}
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', () => paintIcons()); else paintIcons();
+
 // ── נתוני אירועים: ספירה אנונימית (בלי לשמור מי לחץ) ──
 // כל דפדפן נספר פעם אחת לכל אירוע ולכל סוג (חוץ מלב, שאפשר לבטל)
-const STAT_KINDS = [['views','👁','צפיות'],['likes','❤️','לבבות'],['calendar','📅','הוסיפו ליומן'],['tickets','🎟','לחצו על כרטיסים'],['links','🔗','לחצו על קישורים'],['shares','📤','שיתופים']];
+const STAT_KINDS = [['views','views','צפיות'],['likes','likes','לבבות'],['calendar','calplus','הוסיפו ליומן'],['tickets','tickets','לחצו על כרטיסים'],['links','links','לחצו על קישורים'],['shares','shares','שיתופים']];
 function trackEv(id, kind, delta = 1) {
     id = String(id || ''); if (!id || !db) return;
     if (kind !== 'likes') {
@@ -1786,8 +1901,8 @@ function trackEv(id, kind, delta = 1) {
 function statsLine(s, compact) {
     s = s || {};
     return STAT_KINDS.map(([k, ic, lb]) => compact
-        ? `<span class="st-chip" title="${lb}">${ic} ${s[k] || 0}</span>`
-        : `<div class="st-box"><b>${ic} ${s[k] || 0}</b><span>${lb}</span></div>`).join('');
+        ? `<span class="st-chip st-${k}" title="${lb}">${svgIc(ic, 16)}<b>${s[k] || 0}</b></span>`
+        : `<div class="st-box st-${k}">${svgIc(ic, 24)}<b>${s[k] || 0}</b><span>${lb}</span></div>`).join('');
 }
 async function showEventStats(id, allowed) {
     const box = document.getElementById('view-modal-stats');
@@ -1795,7 +1910,7 @@ async function showEventStats(id, allowed) {
     if (!allowed) return;
     const { data, error } = await db.from('event_stats').select('*').eq('event_id', String(id)).maybeSingle();
     if (error || String(viewEventId) !== String(id)) return;
-    box.innerHTML = `<div class="st-head">📊 נתוני האירוע <small>(רק ${currentRole === 'admin' ? 'את והמפרסם/ת רואים' : 'את/ה והמנהלת רואים'})</small></div><div class="st-grid">${statsLine(data, false)}</div>${currentRole !== 'admin' ? '<button class="btn-link" onclick="closeViewModal();openMyPanel()">לכל האירועים שלי והנתונים ←</button>' : ''}`;
+    box.innerHTML = `<div class="st-head">${svgIc('chart', 18)} נתוני האירוע <small>(רק ${currentRole === 'admin' ? 'את והמפרסם/ת רואים' : 'את/ה והמנהלת רואים'})</small></div><div class="st-grid">${statsLine(data, false)}</div>${currentRole !== 'admin' ? '<button class="btn-link" onclick="closeViewModal();openMyPanel()">לכל האירועים שלי והנתונים ←</button>' : ''}`;
     box.style.display = '';
 }
 
@@ -2468,12 +2583,12 @@ async function loadPendingEvents() {
                 <div class="approval-card-meta">👤 <span id="user-email-${e.id}">${escHtml(userEmails[r.user_id]||'לא ידוע')}</span></div>
                 <div class="approval-card-desc">${e.description||''}</div>
                 <div class="approval-btns">
-                    <button class="btn-preview" onclick="previewPending('${e.id}')">👁 צפייה מלאה</button>
+                    <button class="btn-preview" onclick="previewPending('${e.id}')">${svgIc('views', 18)} צפייה מלאה</button>
                     <button class="btn-preview" onclick="editPending('${e.id}')">✏️ עריכה</button>
                 </div>
                 <div class="approval-btns">
-                    <button class="btn-approve" onclick="approveEvent('${e.id}')">✓ אשרי</button>
-                    <button class="btn-reject" onclick="rejectEvent('${e.id}')">✕ דחי</button>
+                    <button class="btn-approve" onclick="approveEvent('${e.id}')">${svgIc('check', 18)} אשרי</button>
+                    <button class="btn-reject" onclick="rejectEvent('${e.id}')">${svgIc('x', 18)} דחי</button>
                 </div>
             </div>
         </div>`; }).join('');
@@ -2661,10 +2776,10 @@ async function loadAllUsers() {
             <span class="trusted-user-email">${displayName}${displayEmail}${stats}</span>
             <div style="display:flex;gap:6px;">
                 <button class="btn-trust ${u.trusted?'trusted':''}" onclick="toggleTrust('${u.id}',${!u.trusted})">
-                    ${u.trusted ? '✓ מאושר' : 'אשרי מראש'}
+                    ${u.trusted ? svgIc('check', 16) + ' מאושר' : 'אשרי מראש'}
                 </button>
                 <button class="btn-block ${u.blocked?'blocked':''}" onclick="toggleBlock('${u.id}',${!u.blocked})">
-                    ${u.blocked ? '🚫 חסום' : 'חסמי'}
+                    ${u.blocked ? svgIc('ban', 16) + ' חסום' : 'חסמי'}
                 </button>
             </div>
         </div>`;
@@ -2674,13 +2789,13 @@ async function loadAllUsers() {
             <div class="users-group-head">
                 <h4>${title} <span class="users-group-count">${arr.length}</span></h4>
                 ${arr.some(u => u.email) ? `<div class="users-group-tools">
-                    <button class="btn-preview" onclick="copyGroupEmails('${key}')">📋 העתקת מיילים</button>
-                    <button class="btn-preview" onclick="mailGroup('${key}')">✉️ מייל לכולם</button>
+                    <button class="btn-preview" onclick="copyGroupEmails('${key}')">${svgIc('copy', 16)} העתקת מיילים</button>
+                    <button class="btn-preview" onclick="mailGroup('${key}')">${svgIc('mail', 16)} מייל לכולם</button>
                 </div>` : ''}
             </div>
             ${arr.length ? arr.map(rowHtml).join('') : `<div class="users-empty">${empty}</div>`}
         </div>`;
-    list.innerHTML = section('pub', '📣 מפרסמים', publishers, 'עדיין אין מפרסמים') + section('view', '👀 צופים (נרשמו ולא פרסמו)', viewers, 'אין משתמשים שרק צופים');
+    list.innerHTML = section('pub', svgIc('megaphone', 22) + ' מפרסמים', publishers, 'עדיין אין מפרסמים') + section('view', svgIc('viewer', 22) + ' צופים (נרשמו ולא פרסמו)', viewers, 'אין משתמשים שרק צופים');
     admProfiles = profileMap;
     filterUsers();
 }
@@ -2757,9 +2872,9 @@ async function renderAdminEvents(reload) {
                 <div class="ue-stats">${statsLine(s, true)}</div>
             </div>
             <div class="adm-ev-btns">
-                <button class="btn-preview" onclick="openViewModal('${id}')" title="צפייה">👁</button>
-                <button class="btn-preview" onclick="openModal('${id}')" title="עריכה">✏️</button>
-                <button class="btn-reject" onclick="admDelete('${id}', event)" title="מחיקה">🗑</button>
+                <button class="btn-preview ic-btn" onclick="openViewModal('${id}')" title="צפייה">${svgIc('views', 20)}<span>צפייה</span></button>
+                <button class="btn-preview ic-btn" onclick="openModal('${id}')" title="עריכה">${svgIc('edit', 20)}<span>עריכה</span></button>
+                <button class="btn-reject ic-btn" onclick="admDelete('${id}', event)" title="מחיקה">${svgIc('trash', 20)}<span>מחיקה</span></button>
             </div>
         </div>`;
     }).join('') || '<div class="users-empty">אין אירועים שמתאימים לחיפוש</div>';
@@ -2809,7 +2924,7 @@ function renderMyEvents() {
     const totals = {}; myRows.forEach(e => { const s = admStats[String(e.id)] || {}; STAT_KINDS.forEach(([k]) => totals[k] = (totals[k] || 0) + (s[k] || 0)); });
     const tb = document.getElementById('my-totals');
     tb.style.display = myRows.length ? '' : 'none';
-    tb.innerHTML = `<span class="ov-ic">📊</span><div class="ov-totals">${statsLine(totals, true)}</div><span>סה"כ בכל האירועים שלך</span>`;
+    tb.innerHTML = `<span class="ov-ic">${svgIc('chart', 28)}</span><div class="ov-totals">${statsLine(totals, true)}</div><span>סה"כ בכל האירועים שלך</span>`;
     if (!myRows.length) { list.innerHTML = '<div class="users-empty">עוד לא פרסמת אירועים. <button class="btn-link" onclick="closeMyPanel();handleAddEvent()">+ להוספת אירוע ראשון</button></div>'; return; }
     list.innerHTML = arr.map(e => {
         const s = admStats[String(e.id)] || {}, id = escHtml(String(e.id)), isPast = myFilter === 'past';
@@ -2823,10 +2938,10 @@ function renderMyEvents() {
                 <div class="ue-stats">${statsLine(s, true)}</div>
             </div>
             <div class="adm-ev-btns">
-                <button class="btn-preview" onclick="repostEvent('${id}')" title="לפרסם שוב בתאריך אחר — כל הפרטים מועתקים">🔁 שוב</button>
-                ${isPast ? '' : `<button class="btn-preview" onclick="myOpen('${id}','view')" title="צפייה">👁</button>
-                <button class="btn-preview" onclick="myOpen('${id}','edit')" title="עריכה">✏️</button>
-                <button class="btn-reject" onclick="myDelete('${id}', event)" title="מחיקה">🗑</button>`}
+                <button class="btn-preview ic-btn" onclick="repostEvent('${id}')" title="לפרסם שוב בתאריך אחר — כל הפרטים מועתקים">${svgIc('repeat', 20)}<span>שוב</span></button>
+                ${isPast ? '' : `<button class="btn-preview ic-btn" onclick="myOpen('${id}','view')" title="צפייה">${svgIc('views', 20)}<span>צפייה</span></button>
+                <button class="btn-preview ic-btn" onclick="myOpen('${id}','edit')" title="עריכה">${svgIc('edit', 20)}<span>עריכה</span></button>
+                <button class="btn-reject ic-btn" onclick="myDelete('${id}', event)" title="מחיקה">${svgIc('trash', 20)}<span>מחיקה</span></button>`}
             </div>
         </div>`;
     }).join('') || `<div class="users-empty">${myFilter === 'up' ? 'אין כרגע אירועים קרובים' : 'אין אירועים שעברו'}</div>`;
@@ -2970,14 +3085,14 @@ async function loadOverview() {
         loadAdmStats(live.map(e => String(e.id))),
     ]);
     const unread = (msgs.data || []).filter(m => !m.read).length;
-    const tile = (tab, icon, num, label, hot) => `<button class="ov-kpi${hot ? ' hot' : ''}" onclick="showAdminTab('${tab}')"><span class="ov-ic">${icon}</span><b>${num}</b><span>${label}</span></button>`;
+    const tile = (tab, icon, num, label, hot) => `<button class="ov-kpi kpi-${tab}${hot ? ' hot' : ''}" onclick="showAdminTab('${tab}')"><span class="ov-ic">${svgIc(icon, 28)}</span><b>${num}</b><span>${label}</span></button>`;
     const totals = {}; live.forEach(e => { const s = admStats[String(e.id)] || {}; STAT_KINDS.forEach(([k]) => totals[k] = (totals[k] || 0) + (s[k] || 0)); });
     document.getElementById('ov-kpis').innerHTML =
-        tile('pending', '⏳', pend.count || 0, 'ממתינים לאישור', pend.count > 0) +
-        tile('messages', '📬', unread >= 5 ? '5+' : unread, 'הודעות חדשות', unread > 0) +
-        tile('events', '📅', live.length, `אירועים קרובים · ${live.filter(e => (e.dateRaw || '') <= weekEnd).length} השבוע`) +
-        tile('users', '👥', users.count || 0, 'משתמשים רשומים') +
-        `<div class="ov-kpi ov-wide"><span class="ov-ic">📊</span><div class="ov-totals">${statsLine(totals, true)}</div><span>סה"כ באירועים הקרובים</span></div>`;
+        tile('pending', 'pending', pend.count || 0, 'ממתינים לאישור', pend.count > 0) +
+        tile('messages', 'inbox', unread >= 5 ? '5+' : unread, 'הודעות חדשות', unread > 0) +
+        tile('events', 'calendar', live.length, `אירועים קרובים · ${live.filter(e => (e.dateRaw || '') <= weekEnd).length} השבוע`) +
+        tile('users', 'users', users.count || 0, 'משתמשים רשומים') +
+        `<div class="ov-kpi ov-wide"><span class="ov-ic">${svgIc('chart', 28)}</span><div class="ov-totals">${statsLine(totals, true)}</div><span>סה"כ באירועים הקרובים</span></div>`;
     const top = live.filter(e => (admStats[String(e.id)] || {}).views).sort((a, b) => admStats[String(b.id)].views - admStats[String(a.id)].views).slice(0, 6);
     document.getElementById('ov-top').innerHTML = top.map(e => `<button class="ov-row" onclick="openViewModal('${escHtml(String(e.id))}')"><span class="ov-row-t">${escHtml(e.title)}</span><span class="ue-stats">${statsLine(admStats[String(e.id)], true)}</span></button>`).join('')
         || '<div class="users-empty">עוד אין נתונים — הם יתחילו להצטבר מעכשיו</div>';
