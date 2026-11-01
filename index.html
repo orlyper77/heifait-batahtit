@@ -874,6 +874,32 @@ button.user-stats:hover{background:rgba(212,224,52,0.22);}
 
 /* חלון הוספת אירוע גדול יותר */
 #overlay .modal{max-width:820px;}
+/* טופס הוספת אירוע — כתב גדול וקריא יותר */
+#overlay .modal h2{font-size:1.65rem;}
+#overlay .form-group label{font-size:15px;color:rgba(255,255,255,0.75);margin-bottom:7px;}
+#overlay .form-group input,#overlay .form-group textarea,#overlay .form-group select{font-size:16.5px;padding:11px 14px;}
+#overlay .form-group textarea{min-height:110px;line-height:1.6;}
+#overlay .cat-pick-btn{font-size:14px;padding:6px 13px;color:rgba(255,255,255,0.75);}
+#overlay .cat-pick-hint{font-size:13px;color:rgba(255,255,255,0.45);}
+#overlay .field-hint{font-size:13.5px;color:rgba(255,255,255,0.55);line-height:1.5;}
+#overlay .form-divider{font-size:14px;color:rgba(255,255,255,0.55);}
+#overlay .img-placeholder-text{font-size:16px;color:rgba(255,255,255,0.65);}
+#overlay .img-placeholder-sub{font-size:13.5px;}
+#overlay .modal-rules h4{font-size:16px;}
+#overlay .modal-rules li{font-size:14.5px;}
+#overlay .modal-rules p{font-size:13.5px;}
+#overlay .rules-check-item{font-size:14.5px;}
+#overlay .btn-submit,#overlay .btn-cancel{font-size:16.5px;padding:12px 20px;}
+#overlay .link-add{font-size:14.5px;}
+#overlay .loc-suggest{font-size:15px;}
+.defaults-note{background:rgba(212,224,52,0.08);border:1px solid rgba(212,224,52,0.3);border-radius:12px;padding:10px 14px;margin-bottom:14px;font-size:14.5px;color:#f5ede8;}
+.defaults-note .btn-link{padding:0 6px;font-size:14px;}
+.remember-defaults{display:flex;align-items:flex-start;gap:10px;font-size:14.5px;color:#f5ede8;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:11px 14px;margin-bottom:12px;cursor:pointer;line-height:1.5;}
+.remember-defaults input{margin-top:4px;width:17px;height:17px;flex-shrink:0;accent-color:#d4e034;}
+.my-defaults{max-width:640px;}
+.my-defaults .form-group label{font-size:14.5px;color:rgba(255,255,255,0.75);}
+.my-defaults .form-group input{font-size:16px;}
+.my-defaults .cat-pick-btn{font-size:13.5px;padding:5px 12px;}
 @media(min-width:900px){#overlay .modal{padding:2.2rem 2.6rem;}}
 @media(max-width:600px){#overlay{padding:0 !important;}#overlay .modal{max-width:none;width:100%;max-height:100vh;height:100%;border-radius:0;padding:1.4rem 1.1rem;}}
 /* מקום: רשימת הצעות */
@@ -944,12 +970,30 @@ button.user-stats:hover{background:rgba(212,224,52,0.22);}
     <div class="adm-chips" id="my-chips" style="margin-bottom:.8rem">
         <button class="adm-chip active" data-f="up" onclick="setMyFilter('up')">אירועים קרובים</button>
         <button class="adm-chip" data-f="past" onclick="setMyFilter('past')">אירועים שעברו</button>
+        <button class="adm-chip" data-f="defaults" onclick="setMyFilter('defaults')">⚙️ הפרטים הקבועים שלי</button>
     </div>
     </div>
     <div class="admin-tab-panel">
         <div class="my-intro">כאן רואים כמה אנשים התעניינו בכל אירוע שלך: 👁 צפיות · ❤️ לבבות · 📅 הוסיפו ליומן · 🎟 לחצו על כרטיסים · 🔗 לחצו על קישורים · 📤 שיתפו. כל אדם נספר פעם אחת. רק את/ה והנהלת האתר רואים את הנתונים.</div>
         <div class="ov-kpi ov-wide my-totals" id="my-totals" style="display:none"></div>
         <div id="my-list"></div>
+        <div id="my-defaults" class="my-defaults" style="display:none">
+            <p class="my-intro">הפרטים כאן ימולאו אוטומטית בכל פעם שתוסיפו אירוע חדש, ותמיד אפשר לשנות אותם באירוע עצמו. מלאו רק את מה שקבוע אצלכם.</p>
+            <div class="form-group"><label>📍 מקום קבוע</label><input type="text" id="d-loc" placeholder="שם המקום, רחוב ומספר, עיר"></div>
+            <div class="form-group"><label>🏷 קטגוריות קבועות</label><div class="cat-picker" id="d-cats"></div></div>
+            <div class="form-row">
+                <div class="form-group"><label>🕗 שעת התחלה רגילה</label><input type="text" id="d-time" class="time-input" inputmode="numeric" maxlength="5" placeholder="20:00" dir="ltr"></div>
+                <div class="form-group"><label>שעת סיום רגילה</label><input type="text" id="d-time-end" class="time-input" inputmode="numeric" maxlength="5" placeholder="23:00" dir="ltr"></div>
+            </div>
+            <div class="form-group"><label>💰 מחיר רגיל</label><input type="text" id="d-price" placeholder="₪50 / כניסה חופשית"></div>
+            <div class="form-group"><label>🎟 קישור קבוע לכרטיסים</label><input type="url" id="d-tickets" placeholder="https://..." dir="ltr"></div>
+            <div class="form-group"><label>🔗 קישורים קבועים (אתר / אינסטגרם / פייסבוק / יוטיוב / ספוטיפיי)</label>
+                <input type="url" id="d-link1" placeholder="https://..." dir="ltr" style="margin-bottom:6px">
+                <input type="url" id="d-link2" placeholder="https://..." dir="ltr" style="margin-bottom:6px">
+                <input type="url" id="d-link3" placeholder="https://..." dir="ltr">
+            </div>
+            <div class="modal-btns"><button class="btn-submit" onclick="saveDefaultsFromPanel()">💾 שמירה</button></div>
+        </div>
     </div>
 </div>
 
@@ -1245,6 +1289,7 @@ button.user-stats:hover{background:rgba(212,224,52,0.22);}
     <div class="modal">
         <button type="button" class="modal-x" onclick="closeModal()" aria-label="סגירה" title="סגירה">✕</button>
         <h2 id="modal-title">✦ הוסף אירוע חדש</h2>
+        <div class="defaults-note" id="defaults-note" style="display:none">✨ מילאנו בשבילך את הפרטים הקבועים שלך. אפשר לשנות כל שדה. <button type="button" class="btn-link" onclick="clearDefaultsFromForm()">לנקות</button></div>
         <div class="form-group">
             <label>תמונה לאירוע</label>
             <div class="img-upload-area" id="upload-area">
@@ -1320,6 +1365,10 @@ button.user-stats:hover{background:rgba(212,224,52,0.22);}
             <button type="button" class="link-add" id="link-add" onclick="addLinkRow()">＋ הוספת קישור</button>
             <div class="field-hint">באירוע יוצג האייקון של האתר (יוטיוב, ספוטיפיי, אינסטגרם…) במקום הקישור עצמו.</div>
         </div>
+        <label class="remember-defaults" id="remember-wrap" style="display:none">
+            <input type="checkbox" id="remember-defaults">
+            <span>💾 לזכור את המקום, הקטגוריות, השעות, המחיר והקישורים לאירוע הבא שלי</span>
+        </label>
         <div class="modal-rules" id="modal-rules">
             <h4>📋 כללי הפרסום</h4>
         </div>
@@ -1631,7 +1680,7 @@ async function changePassword() {
 
 async function logout() {
     await db.auth.signOut();
-    currentUser = null; currentRole = null;
+    currentUser = null; currentRole = null; myDefaults = null; myDefaultsLoaded = false;
     closeUserMenu();
     document.getElementById('user-menu-wrap').style.display = 'none';
     document.getElementById('btn-approval-panel').style.display = 'none';
@@ -2717,6 +2766,11 @@ async function loadMyEvents() {
 }
 function renderMyEvents() {
     const list = document.getElementById('my-list');
+    const isDef = myFilter === 'defaults';
+    document.getElementById('my-defaults').style.display = isDef ? '' : 'none';
+    list.style.display = isDef ? 'none' : '';
+    document.querySelector('#my-panel .my-intro').style.display = isDef ? 'none' : '';
+    if (isDef) { document.getElementById('my-totals').style.display = 'none'; fillDefaultsPanel(); return; }
     const up = myRows.filter(e => !rowIsOver(e)), past = myRows.filter(e => rowIsOver(e)).reverse();
     const arr = myFilter === 'up' ? up : past;
     document.querySelector('#my-chips [data-f="up"]').textContent = `אירועים קרובים (${up.length})`;
@@ -2737,11 +2791,12 @@ function renderMyEvents() {
                 <div class="adm-ev-sub">📍 ${escHtml(e.location || '')}</div>
                 <div class="ue-stats">${statsLine(s, true)}</div>
             </div>
-            ${isPast ? '' : `<div class="adm-ev-btns">
-                <button class="btn-preview" onclick="myOpen('${id}','view')" title="צפייה">👁</button>
+            <div class="adm-ev-btns">
+                <button class="btn-preview" onclick="repostEvent('${id}')" title="לפרסם שוב בתאריך אחר — כל הפרטים מועתקים">🔁 שוב</button>
+                ${isPast ? '' : `<button class="btn-preview" onclick="myOpen('${id}','view')" title="צפייה">👁</button>
                 <button class="btn-preview" onclick="myOpen('${id}','edit')" title="עריכה">✏️</button>
-                <button class="btn-reject" onclick="myDelete('${id}', event)" title="מחיקה">🗑</button>
-            </div>`}
+                <button class="btn-reject" onclick="myDelete('${id}', event)" title="מחיקה">🗑</button>`}
+            </div>
         </div>`;
     }).join('') || `<div class="users-empty">${myFilter === 'up' ? 'אין כרגע אירועים קרובים' : 'אין אירועים שעברו'}</div>`;
 }
@@ -2754,6 +2809,124 @@ async function myOpen(id, mode) {
     if (mode === 'edit') openModal(String(id)); else openViewModal(String(id));
 }
 async function myDelete(id, ev) { await deleteEvent(id, ev); }
+
+// ── הפרטים הקבועים של המפרסם ──
+let myDefaults = null, myDefaultsLoaded = false;
+async function loadMyDefaults() {
+    if (!currentUser) return null;
+    if (myDefaultsLoaded) return myDefaults;
+    const { data, error } = await db.from('publisher_defaults').select('data').eq('user_id', currentUser.id).maybeSingle();
+    if (error) return null;           // הטבלה עוד לא הוקמה
+    myDefaultsLoaded = true;
+    myDefaults = data && data.data && Object.keys(data.data).length ? data.data : null;
+    return myDefaults;
+}
+async function saveMyDefaults(d) {
+    const { error } = await db.from('publisher_defaults').upsert({ user_id: currentUser.id, data: d, updated_at: new Date().toISOString() }, { onConflict: 'user_id' });
+    if (error) { showToast('השמירה לא הצליחה'); return false; }
+    myDefaults = Object.keys(d).length ? d : null; myDefaultsLoaded = true;
+    return true;
+}
+const _v = id => (document.getElementById(id).value || '').trim();
+function defaultsFromForm() {
+    const d = {};
+    if (_v('f-loc')) d.loc = _v('f-loc');
+    const cats = [...document.querySelectorAll('#f-cats .cat-pick-btn.selected')].map(b => b.dataset.c);
+    if (cats.length) d.cats = cats;
+    if (_v('f-time')) d.time = _v('f-time');
+    if (_v('f-time-end')) d.time_end = _v('f-time-end');
+    if (_v('f-price')) d.price = _v('f-price');
+    if (_v('f-tickets')) d.tickets = cleanLink(_v('f-tickets'));
+    const links = ['f-tickets2', 'f-materials', 'f-materials2'].map(_v).filter(Boolean).map(cleanLink);
+    if (links.length) d.links = links;
+    return d;
+}
+// מילוי טופס של אירוע חדש מהפרטים הקבועים (רק שדות ריקים)
+function applyDefaultsToForm(d) {
+    if (!d) return false;
+    const set = (id, v) => { const el = document.getElementById(id); if (v && !el.value) el.value = v; };
+    set('f-loc', d.loc); set('f-time', d.time); set('f-time-end', d.time_end); set('f-price', d.price); set('f-tickets', d.tickets);
+    const L = d.links || []; set('f-tickets2', L[0]); set('f-materials', L[1]); set('f-materials2', L[2]);
+    if (d.cats && !document.querySelector('#f-cats .cat-pick-btn.selected'))
+        document.querySelectorAll('#f-cats .cat-pick-btn').forEach(b => b.classList.toggle('selected', d.cats.includes(b.dataset.c)));
+    syncLinkRows();
+    return true;
+}
+function clearDefaultsFromForm() {
+    ['loc', 'time', 'time-end', 'price', 'tickets', 'tickets2', 'materials', 'materials2'].forEach(f => document.getElementById('f-' + f).value = '');
+    document.querySelectorAll('#f-cats .cat-pick-btn').forEach(b => b.classList.remove('selected'));
+    syncLinkRows();
+    document.getElementById('defaults-note').style.display = 'none';
+}
+async function prepareNewEventForm() {
+    const reposting = !!window._reposting;
+    const note = document.getElementById('defaults-note'), wrap = document.getElementById('remember-wrap'), cb = document.getElementById('remember-defaults');
+    note.style.display = 'none'; wrap.style.display = 'none';
+    if (!currentUser || currentRole === 'admin') return;
+    const d = await loadMyDefaults();
+    if (!myDefaultsLoaded) return;       // אין טבלה — לא מציגים כלום
+    if (editingId !== null) return;
+    wrap.style.display = '';
+    cb.checked = !d;                     // פעם ראשונה: מסומן; אחרי שכבר נשמרו — לא דורסים בלי לבחור
+    if (!reposting && applyDefaultsToForm(d)) note.style.display = '';
+}
+// לשונית ההגדרות ב"האירועים שלי"
+async function fillDefaultsPanel() {
+    const box = document.getElementById('d-cats');
+    if (!box.children.length) {
+        box.innerHTML = document.getElementById('f-cats').innerHTML.replace(/toggleCatPick\(this\)/g, "this.classList.toggle('selected')");
+    }
+    const d = (await loadMyDefaults()) || {};
+    if (!myDefaultsLoaded) { document.getElementById('my-defaults').innerHTML = '<div class="users-empty">האפשרות הזאת תופעל בקרוב.</div>'; return; }
+    document.getElementById('d-loc').value = d.loc || '';
+    document.getElementById('d-time').value = d.time || '';
+    document.getElementById('d-time-end').value = d.time_end || '';
+    document.getElementById('d-price').value = d.price || '';
+    document.getElementById('d-tickets').value = d.tickets || '';
+    const L = d.links || []; ['d-link1', 'd-link2', 'd-link3'].forEach((id, i) => document.getElementById(id).value = L[i] || '');
+    box.querySelectorAll('.cat-pick-btn').forEach(b => b.classList.toggle('selected', (d.cats || []).includes(b.dataset.c)));
+}
+async function saveDefaultsFromPanel() {
+    const d = {};
+    if (_v('d-loc')) d.loc = normalizeLocation(_v('d-loc'));
+    const cats = [...document.querySelectorAll('#d-cats .cat-pick-btn.selected')].map(b => b.dataset.c);
+    if (cats.length) d.cats = cats;
+    const tm = v => /^\d{1,2}:\d{2}$/.test(v) ? v.padStart(5, '0') : '';
+    if (tm(_v('d-time'))) d.time = tm(_v('d-time'));
+    if (tm(_v('d-time-end'))) d.time_end = tm(_v('d-time-end'));
+    if (_v('d-price')) d.price = _v('d-price');
+    if (_v('d-tickets')) d.tickets = cleanLink(_v('d-tickets'));
+    const links = ['d-link1', 'd-link2', 'd-link3'].map(_v).filter(Boolean).map(cleanLink);
+    if (links.length) d.links = links;
+    if (await saveMyDefaults(d)) { showToast('הפרטים נשמרו ✓ — הם ימולאו אוטומטית באירוע הבא'); fillDefaultsPanel(); }
+}
+// "🔁 לפרסם שוב": אירוע חדש עם כל הפרטים של אירוע קיים, בלי התאריך
+async function repostEvent(id) {
+    const { data } = await db.from('events').select('*').eq('id', id).maybeSingle();
+    if (!data) { showToast('האירוע לא נמצא'); return; }
+    const e = rowToEvent(data);
+    window._reposting = true;
+    openModal(null);
+    window._reposting = false;
+    document.getElementById('f-title').value = e.title || '';
+    document.getElementById('f-desc').value = e.desc || '';
+    document.getElementById('f-loc').value = e.location || '';
+    document.getElementById('f-price').value = e.price && e.price !== 'כניסה חופשית' ? e.price : '';
+    const tt = eventTimes(e.time), hhmm = t => t ? String(Math.floor(t[0] % 24)).padStart(2, '0') + ':' + String(t[1]).padStart(2, '0') : '';
+    document.getElementById('f-time').value = hhmm(tt[0]); document.getElementById('f-time-end').value = hhmm(tt[1]);
+    ['tickets', 'tickets2', 'materials', 'materials2'].forEach(k => document.getElementById('f-' + k).value = e[k] || '');
+    document.querySelectorAll('#f-cats .cat-pick-btn').forEach(b => b.classList.toggle('selected', (e.cats || [e.cat]).includes(b.dataset.c)));
+    syncLinkRows();
+    if (e.image) {
+        currentImageData = e.image; setPreviewImage(e.image);
+        document.getElementById('img-preview').style.display = 'block';
+        document.getElementById('img-placeholder').style.display = 'none';
+        document.getElementById('upload-area').classList.add('has-image');
+    }
+    document.getElementById('modal-title').textContent = '🔁 פרסום חוזר — בחרו תאריך חדש';
+    document.getElementById('defaults-note').style.display = 'none';
+    setTimeout(() => document.getElementById('f-date').focus(), 300);
+}
 
 // ── לשונית "סקירה" ──
 async function loadOverview() {
@@ -2891,6 +3064,7 @@ function openModal(id) {
     }
     fillVenueList();
     showFormErrors([], []);
+    prepareNewEventForm();
     document.getElementById('overlay').classList.add('open');
     { const hs = history.state || {}; if (!hs.form) history.pushState({ ...hs, form: true }, '', location.href); }
 }
@@ -3253,6 +3427,10 @@ async function saveEvent() {
             error = res.error;
         }
         if (error) throw error;
+        if (editingId === null && currentRole !== 'admin' && document.getElementById('remember-defaults')?.checked && document.getElementById('remember-wrap').style.display !== 'none') {
+            await saveMyDefaults(defaultsFromForm());
+            showToast('💾 הפרטים נשמרו לאירוע הבא — אפשר לשנות אותם ב"האירועים שלי"');
+        }
         closeModal();
         if (document.getElementById('approval-panel')?.classList.contains('open')) loadPendingEvents();
         if (currentRole !== 'admin' && !currentTrusted && !editingId) {
