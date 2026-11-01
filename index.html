@@ -690,13 +690,39 @@ body:has(#overlay.open),body:has(.auth-overlay.open),body:has(#legal-overlay.ope
 .a11y-link{color:rgba(255,255,255,0.4);font-size:11px;text-align:center;text-decoration:underline;cursor:pointer;background:none;border:none;width:100%;}
 .a11y-link:hover{color:#d4e034;}
 /* אפקטי נגישות */
-body.a11y-big-text{font-size:120%;}
-body.a11y-high-contrast{filter:contrast(1.5) brightness(1.1);}
-body.a11y-grayscale{filter:grayscale(1);}
-body.a11y-no-animations *{animation:none!important;transition:none!important;}
-body.a11y-big-cursor *{cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Cpolygon points='0,0 0,28 8,22 14,32 18,30 12,20 22,20' fill='white' stroke='black' stroke-width='2'/%3E%3C/svg%3E") 0 0,auto!important;}
-
-/* הצהרת נגישות */
+/* ── כלי נגישות: המחלקות על <html> כדי שפילטרים לא "יזיזו" אלמנטים צפים (כמו כפתור הנגישות עצמו) ── */
+html.a11y-text-1 body{zoom:1.15;}
+html.a11y-text-2 body{zoom:1.3;}
+html.a11y-grayscale{filter:grayscale(1);}
+html.a11y-no-animations *,html.a11y-no-animations *::before,html.a11y-no-animations *::after{animation:none!important;transition:none!important;scroll-behavior:auto!important;}
+html.a11y-big-cursor,html.a11y-big-cursor *{cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 32 32'%3E%3Cpolygon points='0,0 0,28 8,22 14,32 18,30 12,20 22,20' fill='white' stroke='black' stroke-width='2'/%3E%3C/svg%3E") 0 0,auto!important;}
+html.a11y-links a{text-decoration:underline!important;text-underline-offset:3px;outline:1px dashed currentColor;outline-offset:2px;}
+html.a11y-readable body,html.a11y-readable body *:not(svg):not(svg *){font-family:Arial,'Helvetica Neue',sans-serif!important;letter-spacing:.3px!important;}
+html.a11y-readable body{line-height:1.7;}
+/* ניגודיות גבוהה אמיתית: רקע שחור, טקסט לבן, קישורים וכפתורים בצהוב */
+html.a11y-high-contrast body,html.a11y-high-contrast body :where(*:not(img,svg,svg *,video,.card-img-bg)){background-color:#000!important;background-image:none!important;color:#fff!important;border-color:#fff!important;box-shadow:none!important;text-shadow:none!important;}
+html.a11y-high-contrast a,html.a11y-high-contrast a *:not(svg):not(svg *),html.a11y-high-contrast button,html.a11y-high-contrast button *:not(svg):not(svg *),html.a11y-high-contrast [role="button"]{color:#ffef00!important;}
+html.a11y-high-contrast button,html.a11y-high-contrast a.link-btn,html.a11y-high-contrast .btn-coffee,html.a11y-high-contrast input,html.a11y-high-contrast textarea,html.a11y-high-contrast select{border:2px solid #ffef00!important;}
+html.a11y-high-contrast .active,html.a11y-high-contrast .selected,html.a11y-high-contrast .active *:not(svg):not(svg *),html.a11y-high-contrast .selected *:not(svg):not(svg *),html.a11y-high-contrast .a11y-reset{background-color:#ffef00!important;color:#000!important;}
+html.a11y-high-contrast .card-img-bg{display:none!important;}
+html.a11y-high-contrast input::placeholder,html.a11y-high-contrast textarea::placeholder{color:#ccc!important;}
+html.a11y-high-contrast #accessibility-btn{background:#fff!important;border:3px solid #ffef00!important;}
+/* מיקוד מקלדת ברור לכולם */
+:focus-visible{outline:3px solid #d4e034!important;outline-offset:2px!important;}
+html.a11y-high-contrast :focus-visible{outline-color:#00e5ff!important;}
+.skip-link{position:absolute;top:-60px;right:12px;z-index:10002;background:#d4e034;color:#1a0505;padding:10px 16px;border-radius:10px;font-weight:700;text-decoration:none;}
+.skip-link:focus{top:12px;}
+.sr-only{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;}
+/* כפתור ופאנל הנגישות — תמיד מעל הכל, וכפתור איפוס בולט */
+#accessibility-btn{z-index:10001!important;}
+#accessibility-panel{z-index:10001!important;width:250px!important;max-height:calc(100vh - 110px);overflow-y:auto;}
+.a11y-head{display:flex;align-items:center;justify-content:space-between;gap:8px;}
+.a11y-head h3{margin:0!important;border:none!important;padding:0!important;}
+.a11y-x{background:none;border:1px solid rgba(255,255,255,0.25);color:#fff;border-radius:8px;width:30px;height:30px;cursor:pointer;font-size:15px;}
+.a11y-reset{background:#d4e034!important;color:#1a0505!important;font-weight:700!important;justify-content:center;}
+.a11y-btn .a11y-level{margin-inline-start:auto;font-size:12px;opacity:.85;}
+.a11y-active-dot{position:absolute;top:2px;right:2px;width:14px;height:14px;border-radius:50%;background:#d4e034;border:2px solid #fff;display:none;}
+#accessibility-btn.has-active .a11y-active-dot{display:block;}
 #a11y-statement{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:10000;align-items:center;justify-content:center;padding:1rem;}
 #a11y-statement.open{display:flex;}
 #a11y-statement-box{background:#2e0c0c;border:1px solid rgba(212,224,52,0.3);border-radius:20px;padding:2rem;max-width:520px;width:100%;max-height:80vh;overflow-y:auto;direction:rtl;}
@@ -1065,6 +1091,8 @@ button.user-stats:hover{background:rgba(212,224,52,0.22);}
 </style>
 </head>
 <body>
+<a class="skip-link" href="#grid">דילוג לרשימת האירועים</a>
+<h1 class="sr-only">חיפאית בתחתית — לוח האירועים של חיפה</h1>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><linearGradient id="igg" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#FEDA75"/><stop offset=".35" stop-color="#FA7E1E"/><stop offset=".6" stop-color="#D62976"/><stop offset=".85" stop-color="#962FBF"/><stop offset="1" stop-color="#4F5BD5"/></linearGradient></defs></svg>
 
 <!-- User Bar -->
@@ -1333,7 +1361,7 @@ button.user-stats:hover{background:rgba(212,224,52,0.22);}
 </script>
 
 <!-- Events Grid -->
-<div class="events-grid" id="grid"></div>
+<div class="events-grid" id="grid" tabindex="-1"></div>
 
 <script>
 // Show skeleton cards immediately before JS loads
@@ -1358,7 +1386,7 @@ button.user-stats:hover{background:rgba(212,224,52,0.22);}
 
 
 <!-- Auth Modal -->
-<div class="auth-overlay" id="notify-overlay" onclick="if(event.target===this)closeNotify()">
+<div class="auth-overlay" id="notify-overlay" role="dialog" aria-modal="true" aria-label="התראות על אירועים" onclick="if(event.target===this)closeNotify()">
     <div class="auth-modal notify-modal">
         <button class="btn-close-auth" onclick="closeNotify()">×</button>
         <h2>🔔 התראות על אירועים</h2>
@@ -1391,7 +1419,7 @@ button.user-stats:hover{background:rgba(212,224,52,0.22);}
     </div>
 </div>
 
-<div class="auth-overlay" id="auth-overlay">
+<div class="auth-overlay" id="auth-overlay" role="dialog" aria-modal="true" aria-label="התחברות">
     <div class="auth-modal">
         <button class="btn-close-auth" onclick="closeAuth()">×</button>
         <h2>הצטרפי לקהילה</h2>
@@ -1426,7 +1454,7 @@ button.user-stats:hover{background:rgba(212,224,52,0.22);}
 </div>
 
 <!-- Event Modal -->
-<div class="overlay" id="overlay" onclick="overlayClick(event)">
+<div class="overlay" id="overlay" role="dialog" aria-modal="true" aria-label="טופס הוספת אירוע" onclick="overlayClick(event)">
     <div class="modal">
         <button type="button" class="modal-x" onclick="closeModal()" aria-label="סגירה" title="סגירה">✕</button>
         <h2 id="modal-title">✦ הוסף אירוע חדש</h2>
@@ -1545,7 +1573,7 @@ button.user-stats:hover{background:rgba(212,224,52,0.22);}
 </div>
 
 <!-- View Event Overlay -->
-<div class="overlay" id="view-overlay" onclick="if(event.target===this)closeViewModal()" style="display:none;">
+<div class="overlay" id="view-overlay" role="dialog" aria-modal="true" aria-label="פרטי האירוע" onclick="if(event.target===this)closeViewModal()" style="display:none;">
     <div class="view-modal" id="view-modal">
         <button class="view-modal-close" onclick="closeViewModal()">✕</button>
         <div id="view-modal-img-wrap"></div>
@@ -2099,10 +2127,10 @@ function cardHtml(e) {
     {
         const isUserEvent = currentUser && (currentUser.id === e.user_id || currentRole === 'admin');
         return `
-        <div class="card${isUserEvent?' user-event':''}" data-id="${e.id}" data-cat="${e.cat}" onclick="openViewModal('${e.id}')" style="cursor:pointer;">
+        <div class="card${isUserEvent?' user-event':''}" data-id="${e.id}" data-cat="${e.cat}" onclick="openViewModal('${e.id}')" style="cursor:pointer;" tabindex="0" role="button" aria-label="${e.title} — לפרטים" data-kbd-click>
             ${e.id && !isNaN(e.id) ? '' : '<div class="new-badge">חדש ✦</div>'}
             <div class="card-actions">
-                <button class="fav-btn" onclick="toggleFav('${e.id}',event)">${favs.has(e.id)?'❤️':'🤍'}</button>
+                <button class="fav-btn" onclick="toggleFav('${e.id}',event)" aria-pressed="${favs.has(e.id)}" aria-label="${favs.has(e.id)?'הסרה מהמועדפים':'הוספה למועדפים'}: ${e.title}">${favs.has(e.id)?'❤️':'🤍'}</button>
                 ${isUserEvent ? `<button class="edit-btn" onclick="event.stopPropagation();openModal('${e.id}')">✏️</button>` : ''}
                 ${isUserEvent ? `<button class="del-btn" onclick="deleteEvent('${e.id}',event)">🗑️</button>` : ''}
             </div>
@@ -3835,19 +3863,21 @@ setTimeout(clearSearchAutofill, 1000);
 </script>
 
 <!-- כפתור נגישות -->
-<button id="accessibility-btn" aria-label="תפריט נגישות" title="נגישות" onclick="toggleA11yPanel()"><svg width="34" height="34" viewBox="20 20 186.772 186.772" aria-hidden="true" focusable="false"><path fill="#3573c2" d="M 110.50 91.37 L 129.04 91.37 C 130.65 91.37 131.96 92.71 131.96 94.34 L 131.96 95.10 C 131.96 96.75 130.65 98.07 129.04 98.07 L 110.50 98.07 C 108.89 98.07 107.58 96.75 107.58 95.10 L 107.58 94.34 C 107.58 92.71 108.89 91.37 110.50 91.37 "/><path fill="#3573c2" d="M 129.31 135.22 C 123.36 140.94 116.15 143.97 107.10 143.97 C 89.88 143.97 75.92 130.92 75.92 114.81 C 75.92 105.47 80.10 97.56 87.41 92.22 L 88.74 91.28 C 90.54 90.11 93.02 90.66 94.19 92.46 L 94.55 93.01 C 95.72 94.82 95.21 97.22 93.41 98.39 L 92.74 99.01 C 88.08 102.76 85.26 108.04 85.26 114.19 C 85.26 125.50 95.21 134.67 107.48 134.67 C 113.98 134.67 119.88 132.09 123.96 127.98 L 125.18 127.03 C 126.87 125.70 129.55 126.40 130.86 128.08 L 131.28 128.61 C 132.60 130.30 132.30 132.75 130.60 134.07 Z M 129.31 135.22 "/><path fill="#3573c2" d="M 110.07 78.59 L 112.78 104.67 L 136.76 104.67 C 139.53 104.67 141.85 106.16 142.44 108.15 C 142.64 108.48 142.81 108.85 142.95 109.24 L 150.07 128.79 L 154.92 127.49 C 158.03 126.66 161.12 128.12 161.83 130.76 C 162.53 133.39 160.59 136.20 157.48 137.04 L 150.15 139.20 C 149.79 139.50 149.37 139.55 148.92 139.72 C 148.10 140.01 147.03 140.42 146.21 140.20 C 144.05 140.17 143.00 138.14 142.41 135.96 L 134.30 113.65 L 107.84 113.64 C 104.62 113.64 102.01 111.64 102.01 109.16 C 102.01 108.77 101.68 108.40 101.80 108.05 L 101.16 78.17 C 100.75 73.08 110.26 72.21 110.07 78.59 "/><path fill="#3573c2" d="M 100.24 62 C 100.24 56.23 104.92 51.55 110.69 51.55 C 116.46 51.55 121.13 56.23 121.13 62 C 121.13 67.76 116.46 72.44 110.69 72.44 C 104.92 72.44 100.24 67.76 100.24 62 "/><path fill="#3573c2" d="M 201.98 159.52 L 201.98 40.41 C 201.98 34.92 197.53 30.48 192.04 30.48 L 34.49 30.48 C 29.01 30.48 24.56 34.92 24.56 40.41 L 24.56 159.52 C 24.56 165.01 29.01 169.45 34.49 169.45 L 192.04 169.45 C 197.53 169.45 201.98 165.01 201.98 159.52 M 187.07 88.03 L 187.07 152.37 L 39.46 152.37 L 39.46 45.38 L 187.07 45.38 Z M 187.07 88.03 "/><path fill="#3573c2" d="M 144.33 181.57 L 131.37 181.57 L 131.37 174.33 L 95.16 174.33 L 95.16 181.57 L 82.20 181.57 C 79.01 181.57 76.41 184.82 76.41 188.82 C 76.41 192.82 79.01 196.06 82.20 196.06 L 144.33 196.06 C 147.53 196.06 150.12 192.82 150.12 188.82 C 150.12 184.82 147.53 181.57 144.33 181.57 "/><path fill="#fff" d="M 117.46 162.48 L 115.37 164.58 L 111.17 164.58 L 109.07 162.48 L 109.07 158.29 L 111.17 156.19 L 115.37 156.19 L 117.46 158.29 Z M 117.46 162.48 "/><path fill="#3573c2" d="M 168.67 65.11 L 157.64 60.62 C 156.47 60.14 154.55 59.36 153.38 58.88 L 142.35 54.39 C 141.18 53.91 140.61 54.48 141.08 55.66 L 145.58 66.68 C 146.06 67.85 146.83 69.77 147.31 70.94 L 151.81 81.98 C 152.28 83.15 153.57 83.22 154.65 82.14 L 159.51 77.28 L 167.87 85.64 C 168.35 86.12 169.07 86.16 169.5 85.74 L 172.44 82.80 C 172.86 82.38 172.82 81.65 172.33 81.17 L 163.97 72.81 L 168.83 67.95 C 169.92 66.87 169.85 65.59 168.67 65.11 "/></svg></button>
+<button id="accessibility-btn" aria-label="תפריט נגישות" title="נגישות" aria-expanded="false" aria-controls="accessibility-panel" onclick="toggleA11yPanel()"><span class="a11y-active-dot" aria-hidden="true"></span><svg width="34" height="34" viewBox="20 20 186.772 186.772" aria-hidden="true" focusable="false"><path fill="#3573c2" d="M 110.50 91.37 L 129.04 91.37 C 130.65 91.37 131.96 92.71 131.96 94.34 L 131.96 95.10 C 131.96 96.75 130.65 98.07 129.04 98.07 L 110.50 98.07 C 108.89 98.07 107.58 96.75 107.58 95.10 L 107.58 94.34 C 107.58 92.71 108.89 91.37 110.50 91.37 "/><path fill="#3573c2" d="M 129.31 135.22 C 123.36 140.94 116.15 143.97 107.10 143.97 C 89.88 143.97 75.92 130.92 75.92 114.81 C 75.92 105.47 80.10 97.56 87.41 92.22 L 88.74 91.28 C 90.54 90.11 93.02 90.66 94.19 92.46 L 94.55 93.01 C 95.72 94.82 95.21 97.22 93.41 98.39 L 92.74 99.01 C 88.08 102.76 85.26 108.04 85.26 114.19 C 85.26 125.50 95.21 134.67 107.48 134.67 C 113.98 134.67 119.88 132.09 123.96 127.98 L 125.18 127.03 C 126.87 125.70 129.55 126.40 130.86 128.08 L 131.28 128.61 C 132.60 130.30 132.30 132.75 130.60 134.07 Z M 129.31 135.22 "/><path fill="#3573c2" d="M 110.07 78.59 L 112.78 104.67 L 136.76 104.67 C 139.53 104.67 141.85 106.16 142.44 108.15 C 142.64 108.48 142.81 108.85 142.95 109.24 L 150.07 128.79 L 154.92 127.49 C 158.03 126.66 161.12 128.12 161.83 130.76 C 162.53 133.39 160.59 136.20 157.48 137.04 L 150.15 139.20 C 149.79 139.50 149.37 139.55 148.92 139.72 C 148.10 140.01 147.03 140.42 146.21 140.20 C 144.05 140.17 143.00 138.14 142.41 135.96 L 134.30 113.65 L 107.84 113.64 C 104.62 113.64 102.01 111.64 102.01 109.16 C 102.01 108.77 101.68 108.40 101.80 108.05 L 101.16 78.17 C 100.75 73.08 110.26 72.21 110.07 78.59 "/><path fill="#3573c2" d="M 100.24 62 C 100.24 56.23 104.92 51.55 110.69 51.55 C 116.46 51.55 121.13 56.23 121.13 62 C 121.13 67.76 116.46 72.44 110.69 72.44 C 104.92 72.44 100.24 67.76 100.24 62 "/><path fill="#3573c2" d="M 201.98 159.52 L 201.98 40.41 C 201.98 34.92 197.53 30.48 192.04 30.48 L 34.49 30.48 C 29.01 30.48 24.56 34.92 24.56 40.41 L 24.56 159.52 C 24.56 165.01 29.01 169.45 34.49 169.45 L 192.04 169.45 C 197.53 169.45 201.98 165.01 201.98 159.52 M 187.07 88.03 L 187.07 152.37 L 39.46 152.37 L 39.46 45.38 L 187.07 45.38 Z M 187.07 88.03 "/><path fill="#3573c2" d="M 144.33 181.57 L 131.37 181.57 L 131.37 174.33 L 95.16 174.33 L 95.16 181.57 L 82.20 181.57 C 79.01 181.57 76.41 184.82 76.41 188.82 C 76.41 192.82 79.01 196.06 82.20 196.06 L 144.33 196.06 C 147.53 196.06 150.12 192.82 150.12 188.82 C 150.12 184.82 147.53 181.57 144.33 181.57 "/><path fill="#fff" d="M 117.46 162.48 L 115.37 164.58 L 111.17 164.58 L 109.07 162.48 L 109.07 158.29 L 111.17 156.19 L 115.37 156.19 L 117.46 158.29 Z M 117.46 162.48 "/><path fill="#3573c2" d="M 168.67 65.11 L 157.64 60.62 C 156.47 60.14 154.55 59.36 153.38 58.88 L 142.35 54.39 C 141.18 53.91 140.61 54.48 141.08 55.66 L 145.58 66.68 C 146.06 67.85 146.83 69.77 147.31 70.94 L 151.81 81.98 C 152.28 83.15 153.57 83.22 154.65 82.14 L 159.51 77.28 L 167.87 85.64 C 168.35 86.12 169.07 86.16 169.5 85.74 L 172.44 82.80 C 172.86 82.38 172.82 81.65 172.33 81.17 L 163.97 72.81 L 168.83 67.95 C 169.92 66.87 169.85 65.59 168.67 65.11 "/></svg></button>
 
 <div id="accessibility-panel" role="dialog" aria-label="כלי נגישות">
-  <h3>🌐 כלי נגישות</h3>
-  <button class="a11y-btn" id="btn-big-text" onclick="toggleA11y('big-text','btn-big-text')">🔠 הגדלת טקסט</button>
-  <button class="a11y-btn" id="btn-high-contrast" onclick="toggleA11y('high-contrast','btn-high-contrast')">🔆 ניגודיות גבוהה</button>
-  <button class="a11y-btn" id="btn-grayscale" onclick="toggleA11y('grayscale','btn-grayscale')">🩶 גווני אפור</button>
-  <button class="a11y-btn" id="btn-no-animations" onclick="toggleA11y('no-animations','btn-no-animations')">⏸ עצירת אנימציות</button>
-  <button class="a11y-btn" id="btn-big-cursor" onclick="toggleA11y('big-cursor','btn-big-cursor')">🖱 סמן גדול</button>
+  <div class="a11y-head"><h3>🌐 כלי נגישות</h3><button type="button" class="a11y-x" onclick="toggleA11yPanel(false)" aria-label="סגירת תפריט הנגישות">✕</button></div>
+  <button type="button" class="a11y-btn" id="btn-text" onclick="cycleTextSize()" aria-pressed="false">🔠 הגדלת טקסט <span class="a11y-level" id="a11y-text-level"></span></button>
+  <button type="button" class="a11y-btn" id="btn-high-contrast" onclick="toggleA11y('high-contrast')" aria-pressed="false">🔆 ניגודיות גבוהה</button>
+  <button type="button" class="a11y-btn" id="btn-grayscale" onclick="toggleA11y('grayscale')" aria-pressed="false">🩶 גווני אפור</button>
+  <button type="button" class="a11y-btn" id="btn-links" onclick="toggleA11y('links')" aria-pressed="false">🔗 הדגשת קישורים</button>
+  <button type="button" class="a11y-btn" id="btn-readable" onclick="toggleA11y('readable')" aria-pressed="false">🔤 גופן קריא</button>
+  <button type="button" class="a11y-btn" id="btn-no-animations" onclick="toggleA11y('no-animations')" aria-pressed="false">⏸ עצירת אנימציות</button>
+  <button type="button" class="a11y-btn" id="btn-big-cursor" onclick="toggleA11y('big-cursor')" aria-pressed="false">🖱 סמן גדול</button>
   <div class="a11y-divider"></div>
-  <button class="a11y-btn" onclick="resetA11y()">🔄 איפוס הגדרות</button>
+  <button type="button" class="a11y-btn a11y-reset" onclick="resetA11y()">🔄 ביטול כל ההגדרות</button>
   <div class="a11y-divider"></div>
-  <button class="a11y-link" onclick="openA11yStatement()">הצהרת נגישות</button>
+  <button type="button" class="a11y-link" onclick="openA11yStatement()">הצהרת נגישות</button>
 </div>
 
 <!-- הצהרת נגישות -->
@@ -3858,53 +3888,116 @@ setTimeout(clearSearchAutofill, 1000);
     <p>האתר שואף לעמוד ברמת התאמה <strong>AA</strong> של תקן WCAG 2.0.</p>
     <p><strong>נגישויות קיימות באתר:</strong></p>
     <ul>
-      <li>תפריט נגישות עם כלים להגדלת טקסט, ניגודיות וגווני אפור</li>
-      <li>תמיכה בניווט מקלדת</li>
-      <li>טקסטים חלופיים לתמונות</li>
+      <li>תפריט נגישות: הגדלת טקסט (שתי רמות), ניגודיות גבוהה (רקע שחור וטקסט בהיר), גווני אפור, הדגשת קישורים, גופן קריא, עצירת אנימציות וסמן גדול — וביטול כל ההגדרות בלחיצה אחת</li>
+      <li>ניווט מלא במקלדת: מיקוד בולט, קישור "דילוג לרשימת האירועים", פתיחת אירוע ב-Enter וסגירת חלונות ב-Esc</li>
+      <li>טקסטים חלופיים לתמונות, ותוויות לכל השדות והכפתורים עבור קוראי מסך</li>
       <li>הגדרת שפה ברמת הדף (עברית)</li>
       <li>כותרות ומבנה היררכי ברור</li>
     </ul>
     <p><strong>פניות בנושא נגישות:</strong><br>
     נתקלתם בבעיה? נשמח לשמוע.<br>
     מייל: <a href="mailto:heifait.batahtit@gmail.com">heifait.batahtit@gmail.com</a></p>
-    <p style="color:rgba(255,255,255,0.4);font-size:12px;">הצהרה זו עודכנה בספטמבר 2026.</p>
+    <p style="color:rgba(255,255,255,0.4);font-size:12px;">הצהרה זו עודכנה בנובמבר 2026.</p>
     <button id="a11y-close-stmt" onclick="closeA11yStatement()">סגירה</button>
   </div>
 </div>
 
 <script>
-function toggleA11yPanel(){
-    const p=document.getElementById('accessibility-panel');
-    p.classList.toggle('open');
+const A11Y_TOGGLES = ['high-contrast', 'grayscale', 'links', 'readable', 'no-animations', 'big-cursor'];
+let a11yText = 0;   // 0 = רגיל, 1 = 115%, 2 = 130%
+function toggleA11yPanel(force) {
+    const p = document.getElementById('accessibility-panel'), b = document.getElementById('accessibility-btn');
+    const open = typeof force === 'boolean' ? force : !p.classList.contains('open');
+    p.classList.toggle('open', open);
+    b.setAttribute('aria-expanded', open);
+    if (open) { const f = p.querySelector('.a11y-btn'); f && f.focus(); } else if (force === false) b.focus();
 }
-function toggleA11y(cls,btnId){
-    document.body.classList.toggle('a11y-'+cls);
-    document.getElementById(btnId).classList.toggle('active');
-    saveA11yPrefs();
+function applyA11y() {
+    const root = document.documentElement;
+    root.classList.toggle('a11y-text-1', a11yText === 1);
+    root.classList.toggle('a11y-text-2', a11yText === 2);
+    const tb = document.getElementById('btn-text');
+    tb.classList.toggle('active', a11yText > 0); tb.setAttribute('aria-pressed', a11yText > 0);
+    document.getElementById('a11y-text-level').textContent = a11yText ? (a11yText === 1 ? '115%' : '130%') : '';
+    A11Y_TOGGLES.forEach(c => { const on = root.classList.contains('a11y-' + c), btn = document.getElementById('btn-' + c); if (btn) { btn.classList.toggle('active', on); btn.setAttribute('aria-pressed', on); } });
+    const any = a11yText > 0 || A11Y_TOGGLES.some(c => root.classList.contains('a11y-' + c));
+    document.getElementById('accessibility-btn').classList.toggle('has-active', any);
 }
-function resetA11y(){
-    ['big-text','high-contrast','grayscale','no-animations','big-cursor'].forEach(cls=>{
-        document.body.classList.remove('a11y-'+cls);
-        const btn=document.getElementById('btn-'+cls);
-        if(btn) btn.classList.remove('active');
-    });
-    localStorage.removeItem('a11y');
+function cycleTextSize() { a11yText = (a11yText + 1) % 3; applyA11y(); saveA11yPrefs(); }
+function toggleA11y(cls) {
+    document.documentElement.classList.toggle('a11y-' + cls);
+    if (cls === 'high-contrast' && document.documentElement.classList.contains('a11y-high-contrast')) document.documentElement.classList.remove('a11y-grayscale');
+    if (cls === 'grayscale' && document.documentElement.classList.contains('a11y-grayscale')) document.documentElement.classList.remove('a11y-high-contrast');
+    applyA11y(); saveA11yPrefs();
 }
-function saveA11yPrefs(){
-    const active=['big-text','high-contrast','grayscale','no-animations','big-cursor']
-        .filter(c=>document.body.classList.contains('a11y-'+c));
-    localStorage.setItem('a11y',JSON.stringify(active));
+function resetA11y() {
+    a11yText = 0;
+    A11Y_TOGGLES.forEach(c => document.documentElement.classList.remove('a11y-' + c));
+    document.body.classList.remove('a11y-big-text', 'a11y-high-contrast', 'a11y-grayscale', 'a11y-no-animations', 'a11y-big-cursor');   // שאריות מהגרסה הקודמת
+    try { localStorage.removeItem('a11y'); } catch (e) {}
+    applyA11y();
+    if (typeof showToast === 'function') showToast('הגדרות הנגישות בוטלו ✓');
 }
-function loadA11yPrefs(){
-    try{
-        const saved=JSON.parse(localStorage.getItem('a11y')||'[]');
-        saved.forEach(cls=>{
-            document.body.classList.add('a11y-'+cls);
-            const btn=document.getElementById('btn-'+cls);
-            if(btn) btn.classList.add('active');
+function saveA11yPrefs() {
+    const active = A11Y_TOGGLES.filter(c => document.documentElement.classList.contains('a11y-' + c));
+    if (a11yText) active.push('text-' + a11yText);
+    try { localStorage.setItem('a11y', JSON.stringify(active)); } catch (e) {}
+}
+function loadA11yPrefs() {
+    try {
+        if (/[?&]a11y=reset/.test(location.search)) { localStorage.removeItem('a11y'); return applyA11y(); }   // קישור חירום לאיפוס
+        const saved = JSON.parse(localStorage.getItem('a11y') || '[]');
+        saved.forEach(c => {
+            if (c === 'big-text') a11yText = 1;                       // הגדרה ישנה
+            else if (/^text-[12]$/.test(c)) a11yText = +c.slice(5);
+            else if (A11Y_TOGGLES.includes(c)) document.documentElement.classList.add('a11y-' + c);
         });
-    }catch(e){}
+    } catch (e) {}
+    applyA11y();
 }
+// ── תיקוני נגישות אוטומטיים: תוויות לשדות, שמות לכפתורי אייקון, הפעלה במקלדת ──
+const A11Y_BTN_NAMES = { 'btn-clear-date': 'ניקוי סינון התאריך', 'btn-close-auth': 'סגירה', 'btn-remove-img': 'הסרת התמונה', 'view-modal-close': 'סגירת חלון האירוע', 'modal-x': 'סגירה', 'link-row-x': 'הסרת קישור' };
+const cleanTxt = s => String(s || '').replace(/[\u{1F000}-\u{1FFFF}☀-➿️‍🔍×✕]/gu, '').replace(/\s+/g, ' ').trim();
+let a11yUid = 0;
+function a11yFix(root) {
+    root = root || document;
+    root.querySelectorAll('.form-group > label:not([for])').forEach(l => {
+        const c = l.parentElement.querySelector('input:not([type=file]):not([type=checkbox]),textarea,select');
+        if (!c) return;
+        if (!c.id) c.id = 'a11y-f' + (++a11yUid);
+        l.setAttribute('for', c.id);
+    });
+    root.querySelectorAll('input:not([type=hidden]):not([type=file]),textarea,select').forEach(c => {
+        if (c.getAttribute('aria-label') || c.closest('label') || (c.id && document.querySelector(`label[for="${c.id}"]`))) return;
+        const t = cleanTxt(c.placeholder || c.title || (c.tagName === 'SELECT' ? 'בחירה' : ''));
+        if (t) c.setAttribute('aria-label', t);
+    });
+    root.querySelectorAll('button:not([aria-label])').forEach(b => {
+        if (cleanTxt(b.innerText) || b.title) return;
+        const cls = Object.keys(A11Y_BTN_NAMES).find(k => b.classList.contains(k));
+        if (cls) b.setAttribute('aria-label', A11Y_BTN_NAMES[cls]);
+        else if (/togglePassVis/.test(b.getAttribute('onclick') || '')) b.setAttribute('aria-label', 'הצגה או הסתרה של הסיסמה');
+    });
+}
+// Enter / רווח על כרטיס אירוע = לחיצה
+document.addEventListener('keydown', e => {
+    if ((e.key === 'Enter' || e.key === ' ') && e.target.matches && e.target.matches('[data-kbd-click]')) { e.preventDefault(); e.target.click(); }
+});
+{
+    let t = null;
+    const mo = new MutationObserver(() => { clearTimeout(t); t = setTimeout(() => a11yFix(), 150); });
+    const start = () => { a11yFix(); mo.observe(document.body, { childList: true, subtree: true }); };
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start); else start();
+}
+document.addEventListener('keydown', e => {
+    if (e.key !== 'Escape') return;
+    if (document.getElementById('a11y-statement').classList.contains('open')) closeA11yStatement();
+    else if (document.getElementById('accessibility-panel').classList.contains('open')) toggleA11yPanel(false);
+    else if (document.getElementById('view-overlay').style.display !== 'none' && typeof closeViewModal === 'function') closeViewModal();
+    else if (document.getElementById('overlay').classList.contains('open') && typeof closeModal === 'function') closeModal();
+    else if (document.getElementById('auth-overlay').classList.contains('open') && typeof closeAuth === 'function') closeAuth();
+    else if (document.getElementById('notify-overlay').classList.contains('open') && typeof closeNotify === 'function') closeNotify();
+});
 function openA11yStatement(){
     document.getElementById('a11y-statement').classList.add('open');
     document.getElementById('accessibility-panel').classList.remove('open');
@@ -3951,7 +4044,7 @@ loadA11yPrefs();
 </footer>
 
 <!-- מודל חוקי -->
-<div id="legal-overlay" role="dialog" aria-modal="true">
+<div id="legal-overlay" role="dialog" aria-modal="true" aria-label="מידע משפטי">
   <div id="legal-box">
     <button id="btn-close-legal" onclick="closeLegal()" aria-label="סגירה">✕</button>
     <div id="legal-tabs">
