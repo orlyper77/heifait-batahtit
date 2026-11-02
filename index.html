@@ -1157,7 +1157,7 @@ button.user-stats:hover{background:rgba(212,224,52,0.22);}
         <div class="user-dropdown" id="user-dropdown">
             <button class="user-dropdown-item" onclick="closeUserMenu();openMyPanel()">📋 האירועים שלי והנתונים</button>
             <button class="user-dropdown-item" id="dd-change-pass" style="display:none" onclick="changePassword();closeUserMenu()">🔑 שנה סיסמה</button>
-            <a class="user-dropdown-item" href="https://buymeacoffee.com/heifait_batahtit" target="_blank" rel="noopener" onclick="closeUserMenu()">☕ לתמיכה בחיפאית בתחתית</a>
+            <a class="user-dropdown-item" data-support style="display:none" href="https://buymeacoffee.com/heifait_batahtit" target="_blank" rel="noopener" onclick="closeUserMenu()">☕ לתמיכה בחיפאית בתחתית</a>
             <div class="user-dropdown-divider"></div>
             <button class="user-dropdown-item danger" onclick="logout()">יציאה ←</button>
         </div>
@@ -2403,8 +2403,12 @@ document.addEventListener('click', ev => {
 });
 // ── תמיכה באתר (Buy Me a Coffee): הצעה עדינה אחרי הוספה ליומן — לכל היותר פעם ב-3 שבועות ──
 const SUPPORT_URL = 'https://buymeacoffee.com/heifait_batahtit';
+// כפתורי התמיכה כבויים כרגע. להפעלה מחדש: לשנות ל-true
+const SUPPORT_ENABLED = false;
+if (SUPPORT_ENABLED) document.addEventListener('DOMContentLoaded', () => document.querySelectorAll('[data-support]').forEach(el => el.style.display = ''));
 function trackSupport() { try { localStorage.setItem('supportClicked', Date.now()); } catch (_) {} }
 function supportNudge() {
+    if (!SUPPORT_ENABLED) return;
     if (currentRole === 'admin' || document.getElementById('support-nudge')) return;
     let last = 0, clicked = 0;
     try { last = +localStorage.getItem('supportNudge') || 0; clicked = +localStorage.getItem('supportClicked') || 0; } catch (_) { return; }
@@ -4340,7 +4344,7 @@ loadA11yPrefs();
 
 <!-- פוטר -->
 <footer class="site-footer">
-  <div class="footer-support">
+  <div class="footer-support" data-support style="display:none">
     <p class="fs-title">☕ אוהבים את חיפאית בתחתית?</p>
     <p>חיפאית בתחתית הוא פרויקט עצמאי וחינמי, שמחזיק את כל האירועים של חיפה במקום אחד. אפשר לעזור לו להמשיך ולגדול בקנייה של "קפה":</p>
     <ul class="fs-list">
