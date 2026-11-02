@@ -523,6 +523,15 @@ body:has(#overlay.open),body:has(.auth-overlay.open),body:has(#legal-overlay.ope
 .st-tickets .ic{color:#f0b040;} .st-links .ic{color:#7fd6c2;} .st-shares .ic{color:#c9a0ff;}
 .st-box .ic{margin-bottom:2px;}
 .st-head{display:flex;align-items:center;gap:6px;}
+/* תיבת "נתוני האירוע" בחלון האירוע — באותו סגול כמו דף הניהול */
+#view-modal-stats{background:linear-gradient(165deg,#86629f 0%,#7d5a9e 100%)!important;border:1px solid #a487c0!important;border-radius:16px;}
+#view-modal-stats .st-head{color:#fff;font-weight:700;}
+#view-modal-stats .st-head small{color:rgba(255,255,255,0.8);opacity:1;}
+#view-modal-stats .st-head .ic{color:#ffe0ee;}
+#view-modal-stats .st-box{background:rgba(40,15,60,0.35);}
+#view-modal-stats .st-box b{color:#fff;}
+#view-modal-stats .st-box span{color:rgba(255,255,255,0.85);opacity:1;}
+#view-modal-stats .btn-link{color:#ffe0ee;}
 .st-head .ic{color:#c9a0ff;}
 .ue-stats{gap:12px !important;opacity:1 !important;}
 .ic-btn{display:inline-flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;min-width:58px;padding:7px 8px !important;font-size:11.5px !important;line-height:1.1;}
@@ -1023,6 +1032,15 @@ button.user-stats:hover{background:rgba(212,224,52,0.22);}
 .st-box{display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 4px;border-radius:10px;background:rgba(255,255,255,0.04);}
 .st-box b{font-size:1rem;color:#f5ede8;}
 .st-box span{font-size:.7rem;opacity:.6;text-align:center;}
+/* חלון נתוני האירוע — בסגול-לבנדר כמו דף הניהול */
+#view-modal-stats{background:linear-gradient(165deg,#86629f 0%,#7d5a9e 55%,#6c4c8e 100%);border:1px solid #a487c0;box-shadow:0 6px 18px rgba(40,15,60,0.35);}
+#view-modal-stats .st-head{color:#fff;font-weight:700;font-size:.95rem;}
+#view-modal-stats .st-head small{opacity:.85;color:#f3e8ff;}
+#view-modal-stats .st-head .ic{color:#fff;}
+#view-modal-stats .st-box{background:rgba(40,15,60,0.32);border:1px solid rgba(255,255,255,0.16);}
+#view-modal-stats .st-box b{color:#fff;font-size:1.1rem;}
+#view-modal-stats .st-box span{color:#f3e8ff;opacity:.9;}
+#view-modal-stats .btn-link{color:#ffe0ee;}
 .ue-stats{display:flex;gap:8px;flex-wrap:wrap;font-size:11px;opacity:.75;}
 .st-chip{white-space:nowrap;}
 .ue-row{display:flex;align-items:center;gap:10px;padding:5px 0;border-bottom:1px solid rgba(255,255,255,0.05);}
