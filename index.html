@@ -592,6 +592,38 @@ body:has(#overlay.open),body:has(.auth-overlay.open),body:has(#legal-overlay.ope
 .ov-msg{display:flex;justify-content:space-between;gap:10px;padding:7px 0;border-bottom:1px solid rgba(255,255,255,0.06);font-size:13px;color:rgba(255,255,255,0.75);}
 .ov-msg.unread span{color:#f5ede8;font-weight:600;}
 .ov-msg small{color:rgba(255,255,255,0.4);white-space:nowrap;}
+.tab-venues{}
+.venues-panel{background:#1a0505!important;}
+.venues-panel .admin-top{background:#1a0505!important;}
+.venues-panel .approval-header h2{color:#d4e034!important;}
+.vd-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:12px;}
+.vd-card{background:rgba(255,255,255,0.05)!important;border:1px solid rgba(255,255,255,0.12)!important;border-radius:16px;padding:16px 18px;display:flex;flex-direction:column;gap:9px;}
+.vd-card.focus{border-color:#d4e034!important;box-shadow:0 0 0 2px rgba(212,224,52,0.35);}
+.vd-head{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+.vd-head h3{margin:0;font-size:1.15rem;color:#f5ede8;}
+.vd-addr{font-size:14px;color:rgba(255,255,255,0.75);}
+.vd-addr a{color:#9cc9f0;}
+.vd-about{margin:0;font-size:14.5px;line-height:1.6;color:rgba(255,255,255,0.85);}
+.vd-contacts{display:flex;flex-wrap:wrap;gap:8px;align-items:center;}
+.vd-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 13px;border-radius:999px;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.18);color:#f5ede8;text-decoration:none;font-size:14px;font-weight:600;}
+.vd-btn:hover{background:rgba(255,255,255,0.14);}
+.vd-wa{border-color:rgba(37,211,102,0.6);} .vd-tel{border-color:rgba(107,170,220,0.6);direction:ltr;} .vd-mail{border-color:rgba(212,224,52,0.6);} .vd-form{border-color:rgba(240,176,64,0.6);}
+.vd-contacts .link-btn.link-ico{flex:0 0 auto;}
+.vd-events{display:flex;flex-direction:column;gap:4px;font-size:13.5px;border-top:1px solid rgba(255,255,255,0.08);padding-top:8px;}
+.vd-ev{background:none;border:none;color:#9cc9f0;text-align:right;font-family:inherit;font-size:13.5px;cursor:pointer;padding:2px 0;}
+.vd-ev:hover{color:#d4e034;}
+.vm-venue{padding:0!important;font-size:14px!important;color:#9cc9f0!important;}
+.venue-offer{margin:-4px 0 14px;}
+.vo-state{font-size:14px;padding:8px 12px;border-radius:10px;background:rgba(255,255,255,0.05);}
+#overlay .vo-state{background:#fff;border:1.5px solid #9cc9f0;color:#2a0808;}
+#overlay .vo-state .btn-link{color:#1d5f94;padding:0;}
+#vo-fields{border:1.5px dashed #9cc9f0;border-radius:12px;padding:12px 14px 4px;margin-top:-4px;margin-bottom:6px;background:rgba(255,255,255,0.35);}
+.mv-title{color:#ffe0ee;font-size:1rem;margin:16px 0 10px;}
+.pv-title{color:#ffe0ee;font-size:1rem;margin:0 0 10px;}
+.pv-card{margin-bottom:12px;}
+#pending-venues:empty{display:none;}
+#pending-venues{margin-bottom:18px;}
+@media(max-width:600px){.vd-list{grid-template-columns:1fr;}.tab-venues{margin-inline-start:0;}}
 .my-intro{font-size:13px;color:rgba(255,255,255,0.6);line-height:1.6;margin-bottom:12px;}
 .my-totals{margin-bottom:12px;}
 .btn-link{background:none;border:none;color:#9cc9f0;font-family:inherit;font-size:13px;cursor:pointer;padding:8px 0 0;}
@@ -1145,12 +1177,39 @@ button.user-stats:hover{background:rgba(212,224,52,0.22);}
         <button class="adm-chip active" data-f="up" onclick="setMyFilter('up')">אירועים קרובים</button>
         <button class="adm-chip" data-f="past" onclick="setMyFilter('past')">אירועים שעברו</button>
         <button class="adm-chip" data-f="defaults" onclick="setMyFilter('defaults')">⚙️ הפרטים הקבועים שלי</button>
+        <button class="adm-chip" data-f="venues" onclick="setMyFilter('venues')">🏠 המקומות שלי</button>
     </div>
     </div>
     <div class="admin-tab-panel">
         <div class="my-intro">כאן רואים כמה אנשים התעניינו בכל אירוע שלך: 👁 צפיות · ❤️ לבבות · 📅 הוסיפו ליומן · 🎟 לחצו על כרטיסים · 🔗 לחצו על קישורים · 📤 שיתפו. כל אדם נספר פעם אחת. רק את/ה והנהלת האתר רואים את הנתונים.</div>
         <div class="ov-kpi ov-wide my-totals" id="my-totals" style="display:none"></div>
         <div id="my-list"></div>
+        <div id="my-venues" class="my-defaults" style="display:none">
+            <div id="mv-list"></div>
+            <div id="mv-editor" style="display:none">
+                <h3 class="mv-title">✏️ עריכת פרטי המקום</h3>
+                <div class="form-group"><label>🏠 שם המקום</label><input type="text" id="mv-name" maxlength="120"></div>
+                <div class="form-group"><label>📍 כתובת</label><input type="text" id="mv-address" maxlength="200" placeholder="רחוב ומספר, עיר"></div>
+            <div class="form-group"><label>✍️ כמה מילים על המקום (לא חובה)</label><textarea id="mv-about" maxlength="600" placeholder="למשל: בר קטן עם במה פתוחה, מתאים להופעות אקוסטיות ולקהל של עד 60 איש"></textarea></div>
+            <div class="form-group"><label>📞 טלפון / וואטסאפ של המקום</label>
+                <div class="contact-row"><input type="tel" id="mv-contact" placeholder="050-1234567" dir="ltr" inputmode="tel">
+                <div class="contact-kind" id="mv-contact-kind">
+                    <button type="button" data-k="wa" class="selected" onclick="setContactKind('wa','mv')">💬 וואטסאפ</button>
+                    <button type="button" data-k="tel" onclick="setContactKind('tel','mv')">📞 שיחה</button>
+                    <button type="button" data-k="both" onclick="setContactKind('both','mv')">שניהם</button>
+                </div></div></div>
+            <div class="form-row">
+                <div class="form-group"><label>✉️ מייל</label><input type="email" id="mv-email" placeholder="name@example.com" dir="ltr"></div>
+                <div class="form-group"><label>📝 קישור לטופס פנייה / הזמנת במה</label><input type="url" id="mv-form" placeholder="https://..." dir="ltr"></div>
+            </div>
+            <div class="form-group"><label>🌐 אתר</label><input type="url" id="mv-website" placeholder="https://..." dir="ltr"></div>
+            <div class="form-row">
+                <div class="form-group"><label>📸 אינסטגרם</label><input type="url" id="mv-instagram" placeholder="https://instagram.com/..." dir="ltr"></div>
+                <div class="form-group"><label>👍 פייסבוק</label><input type="url" id="mv-facebook" placeholder="https://facebook.com/..." dir="ltr"></div>
+            </div>
+                <div class="modal-btns"><button class="btn-submit" onclick="saveMyVenue()">💾 שמירה</button><button class="btn-cancel" onclick="deleteMyVenue()">🗑 הסרה מהרשימה</button></div>
+            </div>
+        </div>
         <div id="my-defaults" class="my-defaults" style="display:none">
             <p class="my-intro">הפרטים כאן ימולאו אוטומטית בכל פעם שתוסיפו אירוע חדש, ותמיד אפשר לשנות אותם באירוע עצמו. מלאו רק את מה שקבוע אצלכם.</p>
             <div class="form-group"><label>📍 מקום קבוע</label><input type="text" id="d-loc" placeholder="שם המקום, רחוב ומספר, עיר"></div>
@@ -1176,6 +1235,21 @@ button.user-stats:hover{background:rgba(212,224,52,0.22);}
             </div>
             <div class="modal-btns"><button class="btn-submit" onclick="saveDefaultsFromPanel()">💾 שמירה</button></div>
         </div>
+    </div>
+</div>
+
+<!-- רשימת המקומות -->
+<div class="approval-panel venues-panel" id="venues-panel" role="dialog" aria-label="רשימת המקומות">
+    <div class="admin-top">
+    <div class="approval-header">
+        <h2>📍 המקומות של חיפה</h2>
+        <button class="btn-close-approval" onclick="closeVenuesPanel()">✕ סגור</button>
+    </div>
+    <div class="adm-tools"><input type="search" class="adm-search" id="vd-search" placeholder="🔍 חיפוש מקום…" oninput="renderVenuesDir()"></div>
+    </div>
+    <div class="admin-tab-panel">
+        <p class="my-intro">מקומות שמארחים אירועים בחיפה, עם דרכים ליצור איתם קשר — לאמנים שמחפשים במה ולקהל עם שאלות. יש לכם מקום? הוסיפו אותו כשאתם מפרסמים אירוע.</p>
+        <div id="vd-list" class="vd-list"></div>
     </div>
 </div>
 
@@ -1221,6 +1295,7 @@ button.user-stats:hover{background:rgba(212,224,52,0.22);}
         <div id="adm-ev-list"></div>
     </div>
     <div class="admin-tab-panel" id="tab-pending" style="display:none">
+        <div id="pending-venues"></div>
         <div class="approval-grid" id="approval-grid"></div>
     </div>
     <div class="admin-tab-panel" id="tab-messages" style="display:none">
@@ -1259,6 +1334,7 @@ button.user-stats:hover{background:rgba(212,224,52,0.22);}
 <div class="tab-bar">
     <div class="tab active" onclick="switchTab('all',this)">כל האירועים</div>
     <div class="tab" onclick="switchTab('favs',this)">❤️ מועדפים <span id="fav-count"></span></div>
+    <div class="tab tab-venues" onclick="openVenuesPanel()" role="button" tabindex="0" data-kbd-click>📍 מקומות</div>
 </div>
 
 <!-- Toolbar -->
@@ -1529,6 +1605,32 @@ button.user-stats:hover{background:rgba(212,224,52,0.22);}
             <input type="text" id="f-loc" autocomplete="off" placeholder="התחילו להקליד שם מקום או כתובת…">
             <div class="loc-suggest" id="loc-suggest" role="listbox"></div>
             <div class="field-hint">בחרו מהרשימה שנפתחת. מקום חדש? כתבו: <b>שם המקום, רחוב ומספר, עיר</b> — למשל: <i>רודיאו, בלפור 23, חיפה</i></div>
+        </div>
+        <div class="venue-offer" id="venue-offer" style="display:none">
+            <div class="vo-state" id="vo-state"></div>
+            <div id="vo-offer">
+                <label class="remember-defaults vo-check"><input type="checkbox" id="vo-add" onchange="toggleVenueFields()"><span>🏠 להוסיף את <b id="vo-name"></b> ל<b>רשימת המקומות</b> באתר, עם פרטי קשר — כדי שאמנים וקהל יוכלו לפנות אליכם</span></label>
+                <div id="vo-fields" style="display:none">
+            <div class="form-group"><label>✍️ כמה מילים על המקום (לא חובה)</label><textarea id="vo-about" maxlength="600" placeholder="למשל: בר קטן עם במה פתוחה, מתאים להופעות אקוסטיות ולקהל של עד 60 איש"></textarea></div>
+            <div class="form-group"><label>📞 טלפון / וואטסאפ של המקום</label>
+                <div class="contact-row"><input type="tel" id="vo-contact" placeholder="050-1234567" dir="ltr" inputmode="tel">
+                <div class="contact-kind" id="vo-contact-kind">
+                    <button type="button" data-k="wa" class="selected" onclick="setContactKind('wa','vo')">💬 וואטסאפ</button>
+                    <button type="button" data-k="tel" onclick="setContactKind('tel','vo')">📞 שיחה</button>
+                    <button type="button" data-k="both" onclick="setContactKind('both','vo')">שניהם</button>
+                </div></div></div>
+            <div class="form-row">
+                <div class="form-group"><label>✉️ מייל</label><input type="email" id="vo-email" placeholder="name@example.com" dir="ltr"></div>
+                <div class="form-group"><label>📝 קישור לטופס פנייה / הזמנת במה</label><input type="url" id="vo-form" placeholder="https://..." dir="ltr"></div>
+            </div>
+            <div class="form-group"><label>🌐 אתר</label><input type="url" id="vo-website" placeholder="https://..." dir="ltr"></div>
+            <div class="form-row">
+                <div class="form-group"><label>📸 אינסטגרם</label><input type="url" id="vo-instagram" placeholder="https://instagram.com/..." dir="ltr"></div>
+                <div class="form-group"><label>👍 פייסבוק</label><input type="url" id="vo-facebook" placeholder="https://facebook.com/..." dir="ltr"></div>
+            </div>
+                    <div class="field-hint">הפרטים יוצגו לכל הגולשים ברשימת המקומות, אחרי אישור. אפשר לערוך או למחוק אותם בכל רגע ב"האירועים שלי".</div>
+                </div>
+            </div>
         </div>
         <div class="form-row">
             <div class="form-group"><label>תאריך *</label><input type="date" id="f-date"></div>
@@ -1905,6 +2007,7 @@ async function loadEvents() {
             return false;
         }).map(rowToEvent).filter(e => !eventIsOver(e));   // אירוע שנגמר (כולל שעת סיום של היום) יורד מהלוח
         applyFilter();
+        loadVenues();
         // רשימות פתוחות מתעדכנות אחרי עריכה / מחיקה
         if (document.getElementById('my-panel')?.classList.contains('open')) loadMyEvents();
         if (document.getElementById('approval-panel')?.classList.contains('open') && adminTab === 'events') renderAdminEvents(true);
@@ -2210,6 +2313,11 @@ function openViewModal(id) {
         <div class="meta-item"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" style="opacity:.5;flex-shrink:0;margin-left:6px"><circle cx="8" cy="8" r="6"/><path d="M8 5v3l2 2"/></svg><bdi dir="ltr">${e.time}</bdi></div>
         <div class="meta-item"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" style="opacity:.5;flex-shrink:0;margin-left:6px"><path d="M8 2C5.8 2 4 3.8 4 6c0 3.5 4 8 4 8s4-4.5 4-8c0-2.2-1.8-4-4-4z"/><circle cx="8" cy="6" r="1.5"/></svg>${e.location}</div>
         <div class="meta-item"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" style="opacity:.5;flex-shrink:0;margin-left:6px"><path d="M2 4h12v8a2 2 0 01-2 2H4a2 2 0 01-2-2V4zM2 4l2-2h8l2 2"/></svg>${e.price}</div>`;
+    {   // המקום ברשימת המקומות → קישור לפרטי הקשר שלו
+        const vv = venueByKey(venueKey(raw.location));
+        if (vv && vv.status === 'approved') document.getElementById('view-modal-meta').insertAdjacentHTML('beforeend',
+            `<div class="meta-item"><button type="button" class="btn-link vm-venue" onclick="closeViewModal();openVenuesPanel('${escHtml(vv.venue_key)}')">🏠 על המקום ויצירת קשר ←</button></div>`);
+    }
     // כפתורים
 
     document.getElementById('nav-wrap').style.display = navQuery(raw) ? '' : 'none';
@@ -2251,6 +2359,7 @@ function popLayer(key, useBack) {
 const LAYERS = {
     panel:  { open: () => document.getElementById('approval-panel').classList.contains('open'), close: () => closeApprovalPanel(true) },
     mine:   { open: () => document.getElementById('my-panel').classList.contains('open'), close: () => closeMyPanel(true) },
+    venues: { open: () => document.getElementById('venues-panel').classList.contains('open'), close: () => closeVenuesPanel(true) },
     notify: { open: () => document.getElementById('notify-overlay').classList.contains('open'), close: () => closeNotify(true) },
     auth:   { open: () => document.getElementById('auth-overlay').classList.contains('open'), close: () => closeAuth(true) },
     legal:  { open: () => document.getElementById('legal-overlay').classList.contains('open'), close: () => closeLegal(true) }
@@ -2668,6 +2777,7 @@ function closeApprovalPanel(fromBack) {
 }
 
 async function loadPendingEvents() {
+    loadPendingVenues();
     const { data, error } = await db.from('events').select('*').eq('status','pending').order('created_at', {ascending:false});
     const grid = document.getElementById('approval-grid');
     if (!data || data.length === 0) {
@@ -2991,8 +3101,9 @@ async function admDelete(id, ev) { await deleteEvent(id, ev); renderAdminEvents(
 
 // ── "האירועים שלי": כל מפרסם רואה את האירועים שלו עם הנתונים ──
 let myFilter = 'up', myRows = [];
-function openMyPanel() {
+function openMyPanel(tab) {
     if (!currentUser) { openAuth(); return; }
+    if (tab) setMyFilter(tab);
     document.getElementById('my-panel').classList.add('open');
     pushLayer('mine');
     loadMyEvents();
@@ -3020,11 +3131,13 @@ async function loadMyEvents() {
 }
 function renderMyEvents() {
     const list = document.getElementById('my-list');
-    const isDef = myFilter === 'defaults';
+    const isDef = myFilter === 'defaults', isVen = myFilter === 'venues';
     document.getElementById('my-defaults').style.display = isDef ? '' : 'none';
-    list.style.display = isDef ? 'none' : '';
-    document.querySelector('#my-panel .my-intro').style.display = isDef ? 'none' : '';
+    document.getElementById('my-venues').style.display = isVen ? '' : 'none';
+    list.style.display = isDef || isVen ? 'none' : '';
+    document.querySelector('#my-panel .my-intro').style.display = isDef || isVen ? 'none' : '';
     if (isDef) { document.getElementById('my-totals').style.display = 'none'; fillDefaultsPanel(); return; }
+    if (isVen) { document.getElementById('my-totals').style.display = 'none'; loadVenues().then(renderMyVenues); return; }
     const up = myRows.filter(e => !rowIsOver(e)), past = myRows.filter(e => rowIsOver(e)).reverse();
     const arr = myFilter === 'up' ? up : past;
     document.querySelector('#my-chips [data-f="up"]').textContent = `אירועים קרובים (${up.length})`;
@@ -3063,6 +3176,183 @@ async function myOpen(id, mode) {
     if (mode === 'edit') openModal(String(id)); else openViewModal(String(id));
 }
 async function myDelete(id, ev) { await deleteEvent(id, ev); }
+// ══ רשימת המקומות: מקומות עם פרטי קשר ══
+let venuesDir = [], venuesLoaded = false;
+async function loadVenues() {
+    try {
+        const { data, error } = await db.from('venues').select('*').order('name');
+        if (error) { venuesLoaded = false; return; }
+        venuesDir = data || []; venuesLoaded = true;
+    } catch (_) { venuesLoaded = false; }
+}
+const venueByKey = k => venuesDir.find(v => v.venue_key === k);
+const ICON_MAIL_C = `<svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="12" fill="#d4e034"/><rect x="6" y="8" width="12" height="9" rx="1.5" fill="none" stroke="#1a0505" stroke-width="1.6"/><path d="M6.5 9l5.5 4 5.5-4" fill="none" stroke="#1a0505" stroke-width="1.6"/></svg>`;
+const okEmail = s => /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(String(s || '').trim()) && String(s).length <= 120;
+// כפתורי יצירת קשר עם מקום — עם מילים, ברורים
+function venueContactHtml(v) {
+    const out = [], m = /^(wa|tel|both):(\d{7,15})$/.exec(v.contact || '');
+    if (m && m[1] !== 'tel') out.push(`<a class="vd-btn vd-wa" href="https://wa.me/${m[2]}" target="_blank" rel="noopener">${ICON_WA}<span>וואטסאפ</span></a>`);
+    if (m && m[1] !== 'wa') out.push(`<a class="vd-btn vd-tel" href="tel:+${m[2]}">${ICON_PHONE}<span>${escHtml(prettyPhone(m[2]))}</span></a>`);
+    if (okEmail(v.email)) out.push(`<a class="vd-btn vd-mail" href="mailto:${escHtml(v.email.trim())}">${ICON_MAIL_C}<span>מייל</span></a>`);
+    if (safeUrl(v.form_url)) out.push(`<a class="vd-btn vd-form" href="${escHtml(safeUrl(v.form_url))}" target="_blank" rel="noopener">📝 <span>טופס פנייה</span></a>`);
+    [v.website, v.instagram, v.facebook].map(safeUrl).filter(Boolean).forEach(u => out.push(linkIconHtml(escHtml(u))));
+    return out.join('');
+}
+function venueCardHtml(v, focus, inner) {
+    const name = escHtml(v.name), addr = escHtml(v.address || '');
+    const q = encodeURIComponent([v.name, v.address].filter(Boolean).join(', '));
+    const evs = events.filter(e => !eventIsOver(e) && e.status !== 'pending' && venueKey(e.location) === v.venue_key).slice(0, 6);
+    const mine = currentUser && v.user_id === currentUser.id;
+    const body = `
+        <div class="vd-head"><h3>🏠 ${name}</h3>${v.status === 'pending' ? '<span class="ue-st pend">ממתין לאישור</span>' : ''}${mine ? '<span class="ue-st ok">המקום שלך</span>' : ''}</div>
+        ${addr ? `<div class="vd-addr">📍 ${addr} · <a href="https://waze.com/ul?q=${q}&navigate=yes" target="_blank" rel="noopener">Waze</a> · <a href="https://www.google.com/maps/search/?api=1&query=${q}" target="_blank" rel="noopener">מפות</a></div>` : ''}
+        ${v.about ? `<p class="vd-about">${escHtml(v.about)}</p>` : ''}
+        <div class="vd-contacts">${venueContactHtml(v) || '<span class="users-empty">אין פרטי קשר</span>'}</div>
+        ${evs.length ? `<div class="vd-events"><b>📅 אירועים קרובים כאן:</b>${evs.map(e => `<button type="button" class="vd-ev" onclick="openViewModal('${escHtml(String(e.id))}')">${escHtml(formatEventDate(e))} · ${escHtml(e.title)}</button>`).join('')}</div>` : ''}
+        ${!inner && currentRole === 'admin' ? `<div class="vd-admin"><button class="btn-reject" onclick="adminDeleteVenue(${v.id})">🗑 הסרה מהרשימה</button></div>` : ''}`;
+    return inner ? body : `<div class="vd-card${focus ? ' focus' : ''}">${body}</div>`;
+}
+let vdFocus = '';
+async function openVenuesPanel(key) {
+    vdFocus = key || '';
+    document.getElementById('venues-panel').classList.add('open');
+    pushLayer('venues');
+    document.getElementById('vd-search').value = '';
+    document.getElementById('vd-list').innerHTML = '<div class="users-empty">טוען…</div>';
+    await loadVenues();
+    renderVenuesDir();
+    if (vdFocus) setTimeout(() => { const el = document.querySelector('.vd-card.focus'); if (el) el.scrollIntoView({ block: 'center' }); }, 60);
+}
+function closeVenuesPanel(fromBack) {
+    const el = document.getElementById('venues-panel');
+    if (!el.classList.contains('open')) return;
+    el.classList.remove('open');
+    if (fromBack !== true) popLayer('venues', true);
+}
+function renderVenuesDir() {
+    const list = document.getElementById('vd-list');
+    if (!venuesLoaded) { list.innerHTML = '<div class="users-empty">רשימת המקומות תיפתח בקרוב.</div>'; return; }
+    const q = (document.getElementById('vd-search').value || '').trim().toLowerCase();
+    const upCount = k => events.filter(e => !eventIsOver(e) && venueKey(e.location) === k).length;
+    let arr = venuesDir.filter(v => v.status === 'approved' || (currentUser && v.user_id === currentUser.id) || currentRole === 'admin');
+    if (q) arr = arr.filter(v => [v.name, v.address, v.about].join(' ').toLowerCase().includes(q));
+    arr.sort((a, b) => (b.venue_key === vdFocus) - (a.venue_key === vdFocus) || upCount(b.venue_key) - upCount(a.venue_key) || a.name.localeCompare(b.name, 'he'));
+    list.innerHTML = arr.map(v => venueCardHtml(v, v.venue_key === vdFocus)).join('')
+        || `<div class="users-empty">${q ? 'לא נמצאו מקומות' : 'עוד אין מקומות ברשימה. מפרסמים יכולים להוסיף את המקום שלהם בטופס הוספת אירוע.'}</div>`;
+}
+async function adminDeleteVenue(id) {
+    if (!confirm('להסיר את המקום מהרשימה?')) return;
+    const { error } = await db.from('venues').delete().eq('id', id);
+    if (error) { showToast('המחיקה לא הצליחה'); return; }
+    await loadVenues(); renderVenuesDir();
+    if (document.getElementById('approval-panel').classList.contains('open')) loadPendingVenues();
+}
+
+// ── בטופס האירוע: הצעה להוסיף את המקום לרשימה ──
+const VO_FIELDS = ['about', 'contact', 'email', 'form', 'website', 'instagram', 'facebook'];
+function resetVenueFields(pre) {
+    VO_FIELDS.forEach(f => { const el = document.getElementById(pre + '-' + f); if (el) el.value = ''; });
+    setContactKind('wa', pre);
+}
+function toggleVenueFields() { document.getElementById('vo-fields').style.display = document.getElementById('vo-add').checked ? '' : 'none'; }
+function updateVenueOffer() {
+    const box = document.getElementById('venue-offer');
+    if (!box) return;
+    const loc = (document.getElementById('f-loc').value || '').trim(), k = venueKey(loc);
+    if (!venuesLoaded || !currentUser || !k || k.length < 2) { box.style.display = 'none'; return; }
+    const v = venueByKey(k), st = document.getElementById('vo-state'), off = document.getElementById('vo-offer');
+    box.style.display = '';
+    if (v) {
+        off.style.display = 'none'; st.style.display = '';
+        const mine = v.user_id === currentUser.id;
+        st.innerHTML = v.status === 'approved'
+            ? `✓ <b>${escHtml(v.name)}</b> מופיע ב<button type="button" class="btn-link" onclick="openVenuesPanel('${escHtml(v.venue_key)}')">רשימת המקומות</button>` + (mine ? ` · אפשר לערוך את הפרטים ב"האירועים שלי" ← "המקומות שלי"` : '')
+            : (mine ? '⏳ המקום שלך נשלח לרשימת המקומות וממתין לאישור' : '');
+        if (!st.innerHTML) box.style.display = 'none';
+    } else {
+        st.style.display = 'none'; off.style.display = '';
+        document.getElementById('vo-name').textContent = loc.split(',')[0].trim();
+    }
+}
+function readVenueFields(pre) {
+    const g = f => (document.getElementById(pre + '-' + f)?.value || '').trim();
+    const errs = [];
+    const email = g('email'); if (email && !okEmail(email)) errs.push('כתובת המייל של המקום לא תקינה');
+    if (g('contact') && !readContactField(pre)) errs.push('מספר הטלפון של המקום לא תקין');
+    const url = f => { const raw = g(f); if (!raw) return null; const u = cleanLink(raw); if (!u) errs.push('אחד הקישורים של המקום לא תקין'); return u || null; };
+    const d = { about: g('about').slice(0, 600) || null, contact: readContactField(pre), email: email || null,
+        form_url: url('form'), website: url('website'), instagram: url('instagram'), facebook: url('facebook') };
+    return { d, errs };
+}
+async function saveVenueFromEvent(loc) {
+    const { d } = readVenueFields('vo');
+    const parts = loc.split(',');
+    const row = { name: parts[0].trim().slice(0, 120), address: parts.slice(1).join(',').trim().slice(0, 200) || null, ...d };
+    const { error } = await db.from('venues').insert(row);
+    if (error) { showToast(/duplicate|unique/i.test(error.message || '') ? 'המקום כבר קיים ברשימת המקומות' : 'לא הצלחנו להוסיף את המקום לרשימה'); return; }
+    showToast(currentRole === 'admin' || currentTrusted ? '🏠 המקום נוסף לרשימת המקומות' : '🏠 המקום נשלח לרשימת המקומות ויופיע אחרי אישור');
+    loadVenues();
+}
+
+// ── "המקומות שלי" ב"האירועים שלי" ──
+let mvEditing = null;
+function renderMyVenues() {
+    const mine = venuesDir.filter(v => currentUser && v.user_id === currentUser.id);
+    const list = document.getElementById('mv-list');
+    document.getElementById('mv-editor').style.display = 'none';
+    if (!venuesLoaded) { list.innerHTML = '<div class="users-empty">האפשרות הזאת תופעל בקרוב.</div>'; return; }
+    list.innerHTML = mine.length ? mine.map(v => `<div class="adm-ev"><div class="adm-ev-main"><div class="adm-ev-title">🏠 ${escHtml(v.name)} ${v.status === 'pending' ? '<span class="ue-st pend">ממתין לאישור</span>' : '<span class="ue-st ok">מופיע ברשימה</span>'}</div><div class="adm-ev-sub">${escHtml(v.address || '')}</div></div>
+        <div class="adm-ev-btns"><button class="btn-preview ic-btn" onclick="editMyVenue(${v.id})">${svgIc('edit', 20)}<span>עריכה</span></button>${v.status === 'approved' ? `<button class="btn-preview ic-btn" onclick="openVenuesPanel('${escHtml(v.venue_key)}')">${svgIc('views', 20)}<span>צפייה</span></button>` : ''}</div></div>`).join('')
+        : '<div class="users-empty">עוד לא הוספת מקום. כשמפרסמים אירוע, אפשר לסמן "להוסיף את המקום לרשימת המקומות".</div>';
+}
+function editMyVenue(id) {
+    const v = venuesDir.find(x => x.id === id); if (!v) return;
+    mvEditing = v;
+    document.getElementById('mv-name').value = v.name || '';
+    document.getElementById('mv-address').value = v.address || '';
+    document.getElementById('mv-about').value = v.about || '';
+    fillContactField(v.contact || '', 'mv');
+    document.getElementById('mv-email').value = v.email || '';
+    document.getElementById('mv-form').value = v.form_url || '';
+    document.getElementById('mv-website').value = v.website || '';
+    document.getElementById('mv-instagram').value = v.instagram || '';
+    document.getElementById('mv-facebook').value = v.facebook || '';
+    const ed = document.getElementById('mv-editor'); ed.style.display = ''; ed.scrollIntoView({ block: 'start', behavior: 'smooth' });
+}
+async function saveMyVenue() {
+    if (!mvEditing) return;
+    const { d, errs } = readVenueFields('mv');
+    const name = (document.getElementById('mv-name').value || '').trim();
+    if (name.length < 2) errs.push('צריך שם למקום');
+    if (errs.length) { showToast(errs[0]); return; }
+    const { error } = await db.from('venues').update({ name, address: (document.getElementById('mv-address').value || '').trim() || null, ...d }).eq('id', mvEditing.id);
+    if (error) { showToast(/duplicate|unique/i.test(error.message || '') ? 'כבר יש מקום בשם הזה ברשימה' : 'השמירה לא הצליחה'); return; }
+    showToast(currentRole === 'admin' || currentTrusted ? 'הפרטים נשמרו ✓' : 'הפרטים נשמרו ✓ — יופיעו אחרי אישור');
+    await loadVenues(); renderMyVenues();
+}
+async function deleteMyVenue() {
+    if (!mvEditing || !confirm('להסיר את המקום מרשימת המקומות?')) return;
+    const { error } = await db.from('venues').delete().eq('id', mvEditing.id);
+    if (error) { showToast('ההסרה לא הצליחה'); return; }
+    mvEditing = null; await loadVenues(); renderMyVenues();
+}
+
+// ── מנהלת: מקומות שממתינים לאישור ──
+async function loadPendingVenues() {
+    const box = document.getElementById('pending-venues'); if (!box) return;
+    const { data, error } = await db.from('venues').select('*').eq('status', 'pending');
+    if (error || !data || !data.length) { box.innerHTML = ''; return; }
+    box.innerHTML = `<h3 class="pv-title">🏠 מקומות שממתינים לאישור ברשימת המקומות (${data.length})</h3>` + data.map(v => `
+        <div class="vd-card pv-card">${venueCardHtml({ ...v, status: 'approved' }, false, true)}
+            <div class="approval-btns"><button class="btn-approve" onclick="approveVenue(${v.id})">${svgIc('check', 18)} אשרי</button><button class="btn-reject" onclick="adminDeleteVenue(${v.id})">${svgIc('x', 18)} דחי</button></div>
+        </div>`).join('');
+}
+async function approveVenue(id) {
+    const { error } = await db.from('venues').update({ status: 'approved' }).eq('id', id);
+    if (error) { showToast('האישור לא הצליח'); return; }
+    showToast('המקום אושר ✓'); await loadVenues(); loadPendingVenues();
+}
+
 
 // ── הפרטים הקבועים של המפרסם ──
 let myDefaults = null, myDefaultsLoaded = false;
@@ -3327,6 +3617,8 @@ function openModal(id) {
     fillVenueList();
     showFormErrors([], []);
     prepareNewEventForm();
+    document.getElementById('vo-add').checked = false; toggleVenueFields(); resetVenueFields('vo');
+    updateVenueOffer();
     document.getElementById('overlay').classList.add('open');
     { const hs = history.state || {}; if (!hs.form) history.pushState({ ...hs, form: true }, '', location.href); }
 }
@@ -3500,7 +3792,7 @@ async function pickGooglePlace(g) {
         setLoc(v);
     } catch (err) { console.warn(err); setLoc([g.main, g.sub.replace(/,?\s*ישראל$/, '')].filter(Boolean).join(', ')); }
 }
-document.addEventListener('input', ev => { if (ev.target && ev.target.id === 'f-loc' && ev.isTrusted) onLocInput(); });
+document.addEventListener('input', ev => { if (ev.target && ev.target.id === 'f-loc') { if (ev.isTrusted) onLocInput(); updateVenueOffer(); } });
 document.addEventListener('focusout', ev => { if (ev.target && ev.target.id === 'f-loc') setTimeout(hideLocSuggest, 150); });
 document.addEventListener('keydown', ev => { if (ev.target && ev.target.id === 'f-loc' && ev.key === 'Escape') hideLocSuggest(); });
 
@@ -3634,6 +3926,9 @@ async function saveEvent() {
     if ((document.getElementById('f-contact').value || '').trim() && !readContactField('f')) {
         showFormErrors(['מספר הטלפון ליצירת קשר לא תקין — כתבו למשל 050-1234567'], ['f-contact'], 'כמעט מוכן:'); return;
     }
+    const addVenue = document.getElementById('vo-add').checked && document.getElementById('vo-offer').style.display !== 'none' && document.getElementById('venue-offer').style.display !== 'none';
+    if (addVenue) { const { errs } = readVenueFields('vo'); if (errs.length) { showFormErrors(errs, [], 'פרטי המקום:'); return; } }
+    const locForVenue = document.getElementById('f-loc').value;
 
     const selectedCats = [...document.querySelectorAll('#f-cats .cat-pick-btn.selected')].map(b => b.dataset.c);
     if (!selectedCats.length) selectedCats.push('other');
@@ -3694,6 +3989,7 @@ async function saveEvent() {
             await saveMyDefaults(defaultsFromForm());
             showToast('💾 הפרטים נשמרו לאירוע הבא — אפשר לשנות אותם ב"האירועים שלי"');
         }
+        if (addVenue) await saveVenueFromEvent(locForVenue);
         closeModal();
         if (document.getElementById('approval-panel')?.classList.contains('open')) loadPendingEvents();
         if (currentRole !== 'admin' && !currentTrusted && !editingId) {
@@ -4093,6 +4389,7 @@ loadA11yPrefs();
         <li><strong>פרטי חשבון</strong> — ההתחברות היא דרך חשבון Google. אנו מקבלים מ-Google את השם, כתובת המייל ותמונת הפרופיל בלבד (לא את הסיסמה ולא מידע אחר מהחשבון). המטרה: זיהוי, ניהול החשבון ויצירת קשר בנוגע לאירועים שפרסמתם.</li>
         <li><strong>אירועים שפרסמתם</strong> — שם האירוע, תיאור, תאריך, מקום, מחיר, תמונה וקישורים. אלה מיועדים לפרסום ומוצגים לכל הגולשים לאחר אישור.</li>
         <li><strong>טלפון / וואטסאפ ליצירת קשר (לא חובה)</strong> — אם בחרתם להוסיף מספר לאירוע, הוא מוצג לכל הגולשים כדי שיוכלו לפנות אליכם. אל תוסיפו מספר שאינכם רוצים שיהיה פומבי.</li>
+        <li><strong>רשימת המקומות (לא חובה)</strong> — מפרסם שבוחר להוסיף מקום לרשימת המקומות מוסר את שם המקום, הכתובת, תיאור קצר ודרכי יצירת קשר (טלפון / וואטסאפ, מייל, טופס, אתר ורשתות). פרטים אלה מוצגים לכל הגולשים לאחר אישור, ואפשר לערוך או להסיר אותם בכל עת.</li>
         <li><strong>"הפרטים הקבועים שלי"</strong> — מקום, שעות, מחיר, קישורים וטלפון שבחרתם לשמור כדי שימולאו אוטומטית. נשמרים בחשבון שלכם ונראים רק לכם.</li>
         <li><strong>התראות לטלפון (לא חובה)</strong> — אם הפעלתם התראות, נשמרת כתובת טכנית שהדפדפן יוצר לצורך שליחת התראות, יחד עם הקטגוריות והמקומות שבחרתם. אפשר לבטל בכל רגע מכפתור הפעמון.</li>
         <li><strong>נתוני צפייה באירועים</strong> — האתר סופר באופן אנונימי כמה פעמים צפו באירוע, סימנו לב, הוסיפו ליומן, לחצו על כרטיסים, קישורים או יצירת קשר, ושיתפו. לא נשמר מי לחץ — רק מספרים. הנתונים מוצגים למפרסם של האירוע ולהנהלת האתר בלבד.</li>
@@ -4159,6 +4456,7 @@ loadA11yPrefs();
         <li>בפרסום תמונה, טקסט או לוגו אתם מצהירים שהם שלכם או שקיבלתם רשות להשתמש בהם, ושאין בהם הפרה של זכויות של אחרים (כמו זכויות יוצרים של צלם או מעצב).</li>
         <li>אתם מעניקים לאתר רשות להציג את התוכן, להתאים אותו טכנית (למשל לכווץ תמונה) ולהציגו בשיתופים ברשתות חברתיות ובהתראות — לצורך הפעלת האתר וקידום האירוע בלבד. הזכויות בתוכן נשארות שלכם.</li>
         <li>פרטי יצירת קשר (טלפון / וואטסאפ) שתוסיפו לאירוע יוצגו לכל הגולשים.</li>
+        <li>מי שמוסיף מקום לרשימת המקומות מצהיר שהוא מוסמך לעשות זאת מטעם המקום, ושפרטי הקשר שמסר מיועדים לפרסום. הנהלת האתר רשאית לערוך או להסיר מקום מהרשימה.</li>
         <li>אסור לפרסם תוכן פוגעני, מטעה, מפלה, מסית או בלתי חוקי, או לעשות באתר שימוש מסחרי שאינו פרסום אירוע.</li>
       </ul>
 
