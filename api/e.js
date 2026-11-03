@@ -30,7 +30,7 @@ module.exports = async (req, res) => {
   const img = e.image ? `${SITE}/api/img?id=${encodeURIComponent(e.id)}&v=${String(e.image).length}` : `${SITE}/og-image-2.jpg`;
   const sid = /^[0-9a-f]{8}-[0-9a-f]{4}-/i.test(String(e.id)) ? String(e.id).slice(0, 8).toLowerCase() : String(e.id);
   const url = `${SITE}/e/${encodeURIComponent(sid)}`;
-  const title = `${e.title} | חיפאית בתחתית`;
+  const title = String(e.title || '');   // רק שם האירוע, בלי שם האתר
 
   res.setHeader('Content-Type', 'text/html; charset=utf-8');
   res.end(`<!doctype html><html lang="he" dir="rtl"><head><meta charset="utf-8">
