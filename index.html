@@ -2397,7 +2397,11 @@ window.addEventListener('popstate', ev => {
 let viewEventId = null;
 let deepLinkHandled = false;
 const SITE_URL = 'https://heifait-batahtit.co.il/';
-const eventUrl = e => SITE_URL + 'e/' + encodeURIComponent(e.id);   // קישור שיתוף עם תמונה וכותרת של האירוע
+// קישור שיתוף קצר: לאירוע עם מזהה ארוך (uuid) — רק 8 התווים הראשונים, למשל /e/adde252b
+const shortId = id => { id = String(id); return /^[0-9a-f]{8}-[0-9a-f]{4}-/i.test(id) ? id.slice(0, 8).toLowerCase() : id; };
+const eventUrl = e => SITE_URL + 'e/' + encodeURIComponent(shortId(e.id));   // קישור שיתוף עם תמונה וכותרת של האירוע
+// מזהה מקישור (מלא או מקוצר) → האירוע
+const findEventById = id => { id = String(id || '').toLowerCase(); return events.find(x => String(x.id).toLowerCase() === id) || (/^[0-9a-f]{8}$/.test(id) ? events.find(x => String(x.id).toLowerCase().startsWith(id + '-')) : null); };
 const curViewEvent = () => events.find(x => x.id == viewEventId);
 
 // תפריטי יומן/שיתוף: פתיחה מוסיפה צעד להיסטוריה, כך ש"אחורה" בטלפון סוגר את התפריט ולא יוצא מהאתר
@@ -2636,7 +2640,8 @@ function handleEventDeepLink() {
     const id = new URLSearchParams(location.search).get('event');
     if (!id) return;
     history.replaceState(null, '', location.pathname);   // מתחת לאירוע יש את העמוד הראשי, כך ש"אחורה" מחזיר אליו
-    if (events.some(x => x.id == id)) openViewModal(id);
+    const found = findEventById(id);
+    if (found) openViewModal(found.id);
     else { history.replaceState(null, '', location.pathname); showToast('האירוע כבר עבר או לא נמצא'); }
 }
 

@@ -8,8 +8,16 @@ async function getEvent(id, columns) {
   const r = await fetch(`${SUPABASE_URL}/rest/v1/events?id=eq.${encodeURIComponent(id)}&select=${columns}`, {
     headers: { apikey: SUPABASE_ANON_KEY, Authorization: 'Bearer ' + SUPABASE_ANON_KEY }
   });
-  if (!r.ok) return null;
-  const rows = await r.json();
+  let rows = r.ok ? await r.json() : [];
+  // קישור מקוצר: 8 התווים הראשונים של מזהה ארוך (uuid), למשל adde252b
+  if ((!rows || !rows.length) && /^[0-9a-f]{8}$/i.test(id)) {
+    const p = id.toLowerCase();
+    const r2 = await fetch(`${SUPABASE_URL}/rest/v1/events?id=gte.${p}-0000-0000-0000-000000000000&id=lte.${p}-ffff-ffff-ffff-ffffffffffff&select=${columns}&limit=2`, {
+      headers: { apikey: SUPABASE_ANON_KEY, Authorization: 'Bearer ' + SUPABASE_ANON_KEY }
+    });
+    rows = r2.ok ? await r2.json() : [];
+    if (rows.length !== 1) return null;   // לא נמצא, או (נדיר מאוד) שני אירועים עם אותה התחלה
+  }
   const e = rows && rows[0];
   if (!e || (e.status && e.status !== 'approved')) return null;
   return e;

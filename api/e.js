@@ -28,7 +28,8 @@ module.exports = async (req, res) => {
   const when = [heDate(e.date_raw) + (e.date_end_raw && e.date_end_raw > e.date_raw ? ' – ' + heDate(e.date_end_raw) : ''), e.time && e.time !== '-' ? e.time : '', e.location].filter(Boolean).join(' | ');
   const desc = when + (e.description ? ' — ' + String(e.description).replace(/\s+/g, ' ').slice(0, 160) : '');
   const img = e.image ? `${SITE}/api/img?id=${encodeURIComponent(e.id)}&v=${String(e.image).length}` : `${SITE}/og-image-2.jpg`;
-  const url = `${SITE}/e/${encodeURIComponent(e.id)}`;
+  const sid = /^[0-9a-f]{8}-[0-9a-f]{4}-/i.test(String(e.id)) ? String(e.id).slice(0, 8).toLowerCase() : String(e.id);
+  const url = `${SITE}/e/${encodeURIComponent(sid)}`;
   const title = `${e.title} | חיפאית בתחתית`;
 
   res.setHeader('Content-Type', 'text/html; charset=utf-8');
