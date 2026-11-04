@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="חיפאית בתחתית — כל האירועים והבילויים בחיפה במקום אחד. קונצרטים, תיאטרון, קולנוע, הרצאות, סדנאות ועוד.">
+    <meta name="description" content="לוח האירועים של חיפה: הופעות, ג׳אז, מסיבות, תאטרון, הרצאות, סדנאות, ירידים ועוד — עם סינון לפי תאריך וקטגוריה, הוספה ליומן והתראות לטלפון. מארגנים ואמנים מפרסמים בחינם.">
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"חיפאית בתחתית","alternateName":"Heifait Batahtit","url":"https://heifait-batahtit.co.il/","inLanguage":"he","description":"לוח האירועים והבילויים של חיפה"}</script>
     <meta name="keywords" content="אירועים בחיפה, בילויים חיפה, חיפאית בתחתית, מה לעשות בחיפה, קונצרטים חיפה">
-    <title>חיפאית בתחתית - אירועי העיר</title>
+    <title>חיפאית בתחתית — כל האירועים והבילויים בחיפה</title>
     <link rel="apple-touch-icon" href="/apple-touch-icon.png">
     <meta name="theme-color" content="#1a0505">
     <link rel="manifest" href="/manifest.webmanifest">
@@ -802,6 +803,7 @@ html.a11y-high-contrast :focus-visible{outline-color:#00e5ff!important;}
 .rules-check-item.field-error{border-radius:8px;outline:2px solid rgba(240,117,168,0.6);outline-offset:3px;box-shadow:none !important;}
 .btn-contact:hover{background:rgba(212,224,52,0.24);}
 .footer-support{display:flex;flex-direction:column;align-items:center;gap:10px;margin-bottom:18px;text-align:center;}
+.footer-about{max-width:560px;margin:0 auto 16px;font-size:14px;line-height:1.7;color:rgba(255,255,255,0.6);text-align:center;}
 .footer-support-mini{text-align:center;margin:0 0 14px;}
 .footer-support-mini a{font-size:13px;color:rgba(255,255,255,0.55);text-decoration:none;border-bottom:1px dotted rgba(255,255,255,0.35);padding-bottom:1px;}
 .footer-support-mini a:hover{color:#ffdd00;border-color:#ffdd00;}
@@ -1496,7 +1498,7 @@ button.user-stats:hover{background:rgba(212,224,52,0.22);}
 
 
 <!-- Auth Modal -->
-<div class="auth-overlay" id="notify-overlay" role="dialog" aria-modal="true" aria-label="התראות על אירועים" onclick="if(event.target===this)closeNotify()">
+<div class="auth-overlay" id="notify-overlay" role="dialog" data-nosnippet aria-modal="true" aria-label="התראות על אירועים" onclick="if(event.target===this)closeNotify()">
     <div class="auth-modal notify-modal">
         <button class="btn-close-auth" onclick="closeNotify()">×</button>
         <h2>🔔 התראות על אירועים</h2>
@@ -1529,7 +1531,7 @@ button.user-stats:hover{background:rgba(212,224,52,0.22);}
     </div>
 </div>
 
-<div class="auth-overlay" id="auth-overlay" role="dialog" aria-modal="true" aria-label="התחברות">
+<div class="auth-overlay" id="auth-overlay" role="dialog" data-nosnippet aria-modal="true" aria-label="התחברות">
     <div class="auth-modal">
         <button class="btn-close-auth" onclick="closeAuth()">×</button>
         <h2>הצטרפו לקהילה</h2>
@@ -1566,7 +1568,7 @@ button.user-stats:hover{background:rgba(212,224,52,0.22);}
 </div>
 
 <!-- Event Modal -->
-<div class="overlay" id="overlay" role="dialog" aria-modal="true" aria-label="טופס הוספת אירוע" onclick="overlayClick(event)">
+<div class="overlay" id="overlay" role="dialog" data-nosnippet aria-modal="true" aria-label="טופס הוספת אירוע" onclick="overlayClick(event)">
     <div class="modal">
         <button type="button" class="modal-x" onclick="closeModal()" aria-label="סגירה" title="סגירה">✕</button>
         <h2 id="modal-title">✦ הוסף אירוע חדש</h2>
@@ -4223,7 +4225,7 @@ setTimeout(clearSearchAutofill, 1000);
 </div>
 
 <!-- הצהרת נגישות -->
-<div id="a11y-statement" role="dialog" aria-modal="true" aria-label="הצהרת נגישות">
+<div id="a11y-statement" role="dialog" aria-modal="true" aria-label="הצהרת נגישות" data-nosnippet>
   <div id="a11y-statement-box">
     <h2>♿ הצהרת נגישות</h2>
     <p><strong>חיפאית בתחתית</strong> רואה חשיבות רבה בהנגשת האתר לכל הגולשים, כולל אנשים עם מוגבלות, בהתאם לחוק שוויון זכויות לאנשים עם מוגבלות, התשנ"ח–1998, ולתקנות הנגישות.</p>
@@ -4370,6 +4372,7 @@ loadA11yPrefs();
 
 <!-- פוטר -->
 <footer class="site-footer">
+  <p class="footer-about">חיפאית בתחתית — לוח האירועים של חיפה והסביבה: הופעות, ג׳אז, מסיבות, תאטרון, הרצאות, סדנאות, ירידים ובמות פתוחות, במקום אחד. מארגנים ואמנים מוזמנים לפרסם את האירועים שלהם בחינם.</p>
   <div class="footer-support-mini">
     <a href="https://buymeacoffee.com/heifait_batahtit" target="_blank" rel="noopener" onclick="trackSupport()">☕ אוהבים את האתר? אפשר לפנק בקפה</a>
   </div>
@@ -4384,11 +4387,11 @@ loadA11yPrefs();
     <button class="footer-link" onclick="openA11yStatement()">הצהרת נגישות</button>
   </div>
   <div>© 2026 חיפאית בתחתית · כל הזכויות שמורות</div>
-  <div style="font-size:11px;color:rgba(255,255,255,0.2);max-width:560px;margin:0 auto;line-height:1.6;font-family:'Secular One',sans-serif;">התוכן המפורסם באתר הוא באחריות המפרסמים בלבד. האתר אינו אחראי לדיוק, נכונות או חוקיות המידע המפורסם. האתר "חיפאית בתחתית" שומר לעצמו את הזכות לערוך, להסיר, לשנות, למחוק כל תוכן, מידע או אירוע המתפרסם באתר, בכל עת וללא הודעה מוקדמת, על פי שיקול דעתו הבלעדי.</div>
+  <div data-nosnippet style="font-size:11px;color:rgba(255,255,255,0.2);max-width:560px;margin:0 auto;line-height:1.6;font-family:'Secular One',sans-serif;">התוכן המפורסם באתר הוא באחריות המפרסמים בלבד. האתר אינו אחראי לדיוק, נכונות או חוקיות המידע המפורסם. האתר "חיפאית בתחתית" שומר לעצמו את הזכות לערוך, להסיר, לשנות, למחוק כל תוכן, מידע או אירוע המתפרסם באתר, בכל עת וללא הודעה מוקדמת, על פי שיקול דעתו הבלעדי.</div>
 </footer>
 
 <!-- מודל חוקי -->
-<div id="legal-overlay" role="dialog" aria-modal="true" aria-label="מידע משפטי">
+<div id="legal-overlay" role="dialog" aria-modal="true" aria-label="מידע משפטי" data-nosnippet>
   <div id="legal-box">
     <button id="btn-close-legal" onclick="closeLegal()" aria-label="סגירה">✕</button>
     <div id="legal-tabs">
