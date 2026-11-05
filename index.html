@@ -603,6 +603,37 @@ body:has(#overlay.open),body:has(.auth-overlay.open),body:has(#legal-overlay.ope
 .ov-msg.unread span{color:#f5ede8;font-weight:600;}
 .ov-msg small{color:rgba(255,255,255,0.4);white-space:nowrap;}
 .tab-venues{}
+.cat-details{border-radius:14px;}
+.cat-sum{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:11px 14px;border-radius:12px;background:rgba(255,255,255,0.06);border:1.5px solid rgba(255,255,255,0.2);font-size:15px;}
+.cat-sum::-webkit-details-marker{display:none;}
+.cat-sum .cs-sel{font-weight:700;}
+.cat-sum .cs-empty{opacity:.75;}
+.cat-sum .cs-edit{font-size:13px;opacity:.75;white-space:nowrap;}
+.cat-details[open] .cat-sum{margin-bottom:10px;}
+.cat-details[open] .cs-edit{transform:none;}
+#overlay .cat-sum,.ar-editor .cat-sum{background:#fff;border-color:#9cc9f0;color:#2a0808;}
+.role-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:8px 0 14px;}
+.role-cards button{display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center;background:rgba(255,255,255,0.06);border:2px solid rgba(255,255,255,0.18);color:#f5ede8;border-radius:16px;padding:14px 10px;font-family:inherit;cursor:pointer;}
+.role-cards button b{font-size:16px;}
+.role-cards button small{font-size:12.5px;opacity:.8;line-height:1.5;}
+.role-cards .rc-ic{display:flex;}
+.role-ico{width:56px;height:56px;flex-shrink:0;filter:drop-shadow(0 3px 6px rgba(0,0,0,.35));transition:transform .2s;}
+.role-cards button:hover .role-ico,.role-cards button.selected .role-ico{transform:scale(1.08) rotate(-4deg);}
+.who-pick .role-ico,.tab .role-ico{width:24px;height:24px;vertical-align:-6px;filter:none;margin-inline-end:2px;}
+.who-pick button{display:inline-flex;align-items:center;gap:6px;}
+.tab .role-ico{width:20px;height:20px;}
+@media(max-width:600px){.tab-bar{padding:0 .5rem;gap:0;justify-content:space-between;}.tab-bar .tab{padding:10px 8px;font-size:13.5px;}}
+@media(max-width:600px){.role-ico{width:46px;height:46px;}}
+.role-cards button.selected{border-color:#d4e034;background:rgba(212,224,52,0.16);box-shadow:0 0 0 2px rgba(212,224,52,0.3);}
+.roles-modal{max-width:620px!important;}
+@media(max-width:600px){.role-cards{grid-template-columns:1fr;}.role-cards button{flex-direction:row;text-align:right;}.role-cards button small{display:block;}}
+.act-badges{display:flex;flex-wrap:wrap;gap:6px;margin-top:2px;}
+.act-b{font-size:12px;padding:1px 9px;border-radius:999px;background:rgba(255,255,255,0.12);white-space:nowrap;}
+.act-tickets{background:rgba(240,176,64,0.3);} .act-like{background:rgba(255,107,138,0.25);} .act-calendar{background:rgba(212,224,52,0.25);}
+.act-sum{display:flex;gap:16px;flex-wrap:wrap;font-size:15px;margin-bottom:6px;}
+.act-sum b{font-size:1.3rem;}
+.ev-over{opacity:.7;}
+
 .who-pick{display:flex;gap:8px;flex-wrap:wrap;}
 .who-pick button{background:#fff;border:1.5px solid #9cc9f0;color:#2a0808;border-radius:999px;padding:9px 15px;font-family:inherit;font-size:15px;font-weight:700;cursor:pointer;}
 .who-pick button.selected{background:#8a1530;border-color:#8a1530;color:#fff;}
@@ -1191,6 +1222,7 @@ button.user-stats:hover{background:rgba(212,224,52,0.22);}
 </style>
 </head>
 <body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs><clipPath id="rcClip"><circle cx="32" cy="32" r="30"/></clipPath></defs><symbol id="ri-aud" viewBox="0 0 64 64"><g clip-path="url(#rcClip)"><circle cx="32" cy="32" r="30" fill="#f5d90a"/> <g transform="translate(-9 6) scale(.82)"><path d="M19 24c-2 9-1 20-5 26 5 2 30 2 36 0-4-6-3-17-5-26z" fill="#7a2e3e" stroke="#1a0505" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/> <path d="M8 64c1-12 9-19 24-19s23 7 24 19z" fill="#c9df3a" stroke="#1a0505" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/> <path d="M22 46c3 3 7 4 10 4s7-1 10-4" fill="none" stroke="#1a0505" stroke-width="1.6" stroke-linecap="round"/> <path d="M28 41h8v6c-2 1.6-6 1.6-8 0z" fill="#e3b08f" stroke="#1a0505" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/> <path d="M21 28c0-9 5-14 11-14s11 5 11 14c0 9-5 15-11 15s-11-6-11-15z" fill="#f2c4a4" stroke="#1a0505" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/> <path d="M19 30c-1-12 5-19 13-19s14 7 13 19c-1-5-3-8-5-9-1 3-6 5-12 4-3-1-4-3-4-5-3 2-5 6-5 10z" fill="#7a2e3e" stroke="#1a0505" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/> <path d="M25.2 30c1.3 1.1 3.1 1.1 4.4 0M34.4 30c1.3 1.1 3.1 1.1 4.4 0" fill="none" stroke="#1a0505" stroke-width="1.7" stroke-linecap="round"/> <path d="M28.5 36.5c2 1.6 5 1.6 7 0" fill="none" stroke="#c8243f" stroke-width="2" stroke-linecap="round"/> <circle cx="22" cy="37" r="1.6" fill="#f5d90a" stroke="#1a0505" stroke-width="1.3" stroke-linejoin="round" stroke-linecap="round"/><circle cx="42" cy="37" r="1.6" fill="#f5d90a" stroke="#1a0505" stroke-width="1.3" stroke-linejoin="round" stroke-linecap="round"/></g> <g transform="translate(18 9) scale(.78)"><path d="M8 64c1-12 9-19 24-19s23 7 24 19z" fill="#8ec5e8" stroke="#1a0505" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/> <path d="M27 42h10v6c-2 2-8 2-10 0z" fill="#d9a0b8" stroke="#1a0505" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/> <path d="M20 26c0-9 5-14 12-14s12 5 12 14v6c0 9-6 14-12 14s-12-5-12-14z" fill="#e8b4c8" stroke="#1a0505" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/> <path d="M20 30c1 9 5 16 12 16s11-7 12-16c-2 4-5 6-7 6h-10c-2 0-5-2-7-6z" fill="#4a3a4a" stroke="#1a0505" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/> <path d="M27.5 37.5c2.5 1.6 6.5 1.6 9 0" fill="none" stroke="#e8b4c8" stroke-width="2" stroke-linecap="round"/> <path d="M20 25c0-8 5-13 12-13s12 5 12 13c-2-4-4-6-6-6.5-3 2-9 2-12 0-2 .5-4 2.5-6 6.5z" fill="#3a2e3a" stroke="#1a0505" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/> <path d="M24.5 28.5c1.4 1.2 3.4 1.2 4.8 0M34.7 28.5c1.4 1.2 3.4 1.2 4.8 0" fill="none" stroke="#1a0505" stroke-width="1.8" stroke-linecap="round"/> <path d="M32 29v4.5l-1.6 1" fill="none" stroke="#b07a92" stroke-width="1.5" stroke-linecap="round"/></g> <g transform="translate(30 12) scale(1)"><path d="M0 0v8a2.6 2.6 0 1 1-1.7-2.4V-1.6l5.4-1.4v2z" fill="#fff" stroke="#1a0505" stroke-width="1.3" stroke-linejoin="round" stroke-linecap="round"/></g><g transform="translate(9 26) scale(0.85)"><path d="M0 0v8a2.6 2.6 0 1 1-1.7-2.4V-1.6l5.4-1.4v2z" fill="#fff" stroke="#1a0505" stroke-width="1.3" stroke-linejoin="round" stroke-linecap="round"/></g><g transform="translate(53 22) scale(0.8)"><path d="M0 0v8a2.6 2.6 0 1 1-1.7-2.4V-1.6l5.4-1.4v2z" fill="#fff" stroke="#1a0505" stroke-width="1.3" stroke-linejoin="round" stroke-linecap="round"/></g></g><circle cx="32" cy="32" r="30" fill="none" stroke="#1a0505" stroke-width="2.2"/></symbol><symbol id="ri-art" viewBox="0 0 64 64"><g clip-path="url(#rcClip)"><circle cx="32" cy="32" r="30" fill="#8ec5e8"/> <g opacity=".25" fill="#fff"><circle cx="14" cy="16" r="1.4"/><circle cx="50" cy="12" r="1"/><circle cx="54" cy="44" r="1.2"/></g> <path d="M30 16 L40 14 L40 50 L30 48z" fill="#c8243f" stroke="#1a0505" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/> <g stroke="#1a0505" stroke-width="1.2" opacity=".55"><path d="M32.5 15.5v33M35 15v34.5M37.5 14.6v35"/></g> <rect x="15" y="14" width="15" height="36" rx="2" fill="#a9c7d9" stroke="#1a0505" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/> <g stroke="#1a0505" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round"><rect x="17.5" y="17" width="10" height="3" fill="#f5d90a"/><rect x="17.5" y="21.5" width="10" height="3" fill="#b38ae0"/><rect x="17.5" y="26" width="10" height="3" fill="#f7b6cf"/><rect x="17.5" y="30.5" width="10" height="3" fill="#8ec5e8"/><rect x="17.5" y="35" width="10" height="3" fill="#f5d90a"/><rect x="17.5" y="39.5" width="10" height="3" fill="#b38ae0"/><rect x="17.5" y="44" width="10" height="3" fill="#f7b6cf"/></g> <rect x="40" y="13" width="11" height="38" rx="2" fill="#c8243f" stroke="#1a0505" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/> <rect x="42.3" y="16" width="6.4" height="32" rx="1" fill="#c9df3a" stroke="#1a0505" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round"/> <g fill="none" stroke="#1a0505" stroke-width="1.8" stroke-linecap="round"><path d="M9 26c-1.5 2-1.5 6 0 8"/><path d="M6 23.5c-2.4 3.5-2.4 9.5 0 13"/></g> <path d="M54.5 22v7.5a2.4 2.4 0 1 1-1.6-2.3V20.5l5-1.3v1.8z" fill="#fff" stroke="#1a0505" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round"/></g><circle cx="32" cy="32" r="30" fill="none" stroke="#1a0505" stroke-width="2.2"/></symbol><symbol id="ri-ven" viewBox="0 0 64 64"><g clip-path="url(#rcClip)"><circle cx="32" cy="32" r="30" fill="#b38ae0"/> <g opacity=".3" fill="#fff"><circle cx="14" cy="24" r="1.2"/><circle cx="50" cy="26" r="1"/></g> <path d="M32 18 L22 46 H42Z" fill="#fff6b0" opacity=".85"/> <path d="M8 46h48v6H8z" fill="#c9884a" stroke="#1a0505" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/><path d="M8 52h48v8H8z" fill="#7a4a2a" stroke="#1a0505" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/> <path d="M12 16h3c7 4 8 16 4 30h-7z" fill="#c8243f" stroke="#1a0505" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/><path d="M52 16h-3c-7 4-8 16-4 30h7z" fill="#c8243f" stroke="#1a0505" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/> <path d="M14.5 20c2.5 6 2.5 14 .5 24M49.5 20c-2.5 6-2.5 14-.5 24" fill="none" stroke="#1a0505" stroke-width="1.2" opacity=".5"/> <path d="M8 9h48v8H8z" fill="#c8243f" stroke="#1a0505" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/> <g fill="#f5d90a" stroke="#1a0505" stroke-width="1"><circle cx="15" cy="13" r="1.8"/><circle cx="23.5" cy="13" r="1.8"/><circle cx="32" cy="13" r="1.8"/><circle cx="40.5" cy="13" r="1.8"/><circle cx="49" cy="13" r="1.8"/></g> <path d="M32 27 l2.3 4.8 5.2.7-3.8 3.6 1 5.2-4.7-2.6-4.7 2.6 1-5.2-3.8-3.6 5.2-.7z" fill="#f5d90a" stroke="#1a0505" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"/></g><circle cx="32" cy="32" r="30" fill="none" stroke="#1a0505" stroke-width="2.2"/></symbol></svg>
 <a class="skip-link" href="#grid">דילוג לרשימת האירועים</a>
 <h1 class="sr-only">חיפאית בתחתית — לוח האירועים של חיפה</h1>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><linearGradient id="igg" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#FEDA75"/><stop offset=".35" stop-color="#FA7E1E"/><stop offset=".6" stop-color="#D62976"/><stop offset=".85" stop-color="#962FBF"/><stop offset="1" stop-color="#4F5BD5"/></linearGradient></defs></svg>
@@ -1210,7 +1242,7 @@ button.user-stats:hover{background:rgba(212,224,52,0.22);}
             👤 <span id="user-name">-</span> <span id="user-role-badge" class="role-badge"></span> ▾
         </button>
         <div class="user-dropdown" id="user-dropdown">
-            <button class="user-dropdown-item" onclick="closeUserMenu();openMyPanel()">📋 האירועים שלי והנתונים</button>
+            <button class="user-dropdown-item" onclick="closeUserMenu();openMyPanel()">👤 האזור האישי</button>
             <button class="user-dropdown-item" id="dd-change-pass" style="display:none" onclick="changePassword();closeUserMenu()">🔑 שנה סיסמה</button>
             <a class="user-dropdown-item" data-support style="display:none" href="https://buymeacoffee.com/heifait_batahtit" target="_blank" rel="noopener" onclick="closeUserMenu()">☕ לתמיכה בחיפאית בתחתית</a>
             <div class="user-dropdown-divider"></div>
@@ -1225,15 +1257,18 @@ button.user-stats:hover{background:rgba(212,224,52,0.22);}
 <div class="approval-panel" id="my-panel">
     <div class="admin-top">
     <div class="approval-header">
-        <h2>📋 האירועים שלי</h2>
+        <h2>👤 האזור האישי</h2>
         <button class="btn-close-approval" onclick="closeMyPanel()">✕ סגור</button>
     </div>
     <div class="adm-chips" id="my-chips" style="margin-bottom:.8rem">
-        <button class="adm-chip active" data-f="up" onclick="setMyFilter('up')">אירועים קרובים</button>
-        <button class="adm-chip" data-f="past" onclick="setMyFilter('past')">אירועים שעברו</button>
-        <button class="adm-chip" data-f="defaults" onclick="setMyFilter('defaults')">⚙️ הפרטים הקבועים שלי</button>
-        <button class="adm-chip" data-f="venues" onclick="setMyFilter('venues')">🏠 המקומות שלי</button>
-        <button class="adm-chip" data-f="artists" onclick="setMyFilter('artists')">🎤 דפי האמן שלי</button>
+        <button class="adm-chip" data-f="likes" onclick="setMyFilter('likes')">❤️ אהבתי</button>
+        <button class="adm-chip" data-f="activity" onclick="setMyFilter('activity')">🎟 הפעילות שלי</button>
+        <button class="adm-chip active" data-f="up" data-pub onclick="setMyFilter('up')">אירועים קרובים</button>
+        <button class="adm-chip" data-f="past" data-pub onclick="setMyFilter('past')">אירועים שעברו</button>
+        <button class="adm-chip" data-f="defaults" data-pub onclick="setMyFilter('defaults')">⚙️ הפרטים הקבועים שלי</button>
+        <button class="adm-chip" data-f="venues" data-role="venue" onclick="setMyFilter('venues')">🏠 המקום שלי</button>
+        <button class="adm-chip" data-f="artists" data-role="artist" onclick="setMyFilter('artists')">🎤 דף האמן שלי</button>
+        <button class="adm-chip" data-f="profile" onclick="setMyFilter('profile')">👤 הפרופיל שלי</button>
     </div>
     </div>
     <div class="admin-tab-panel">
@@ -1241,6 +1276,19 @@ button.user-stats:hover{background:rgba(212,224,52,0.22);}
         <div class="ov-kpi ov-wide my-totals" id="my-totals" style="display:none"></div>
         <div id="my-list"></div>
         <div id="my-artists" class="my-defaults" style="display:none"><div id="ma-list"></div></div>
+        <div id="my-likes" style="display:none"></div>
+        <div id="my-activity" style="display:none"></div>
+        <div id="my-profile" class="my-defaults" style="display:none">
+            <h3 class="mv-title">מה אתם באתר?</h3>
+            <p class="my-intro">אפשר לבחור יותר מאחד. הבחירה קובעת מה יופיע לכם באזור האישי ובטופס הוספת אירוע.</p>
+            <div class="role-cards" id="pf-roles">
+                <button type="button" data-r="audience" onclick="this.classList.toggle('selected')"><span class="rc-ic"><svg class="role-ico" viewBox="0 0 64 64" aria-hidden="true"><use href="#ri-aud"/></svg></span><b>קהל</b><small>אני בא/ה לאירועים — שומר/ת אירועים, מקבל/ת התראות</small></button>
+                <button type="button" data-r="artist" onclick="this.classList.toggle('selected')"><span class="rc-ic"><svg class="role-ico" viewBox="0 0 64 64" aria-hidden="true"><use href="#ri-art"/></svg></span><b>אמן / להקה</b><small>מופיע/ה ומפרסם/ת את ההופעות שלי, עם דף אמן</small></button>
+                <button type="button" data-r="venue" onclick="this.classList.toggle('selected')"><span class="rc-ic"><svg class="role-ico" viewBox="0 0 64 64" aria-hidden="true"><use href="#ri-ven"/></svg></span><b>מקום</b><small>מארח/ת אירועים — עם דף מקום ופרטי קשר</small></button>
+            </div>
+            <div class="modal-btns"><button class="btn-submit" onclick="saveRolesFrom('pf')">💾 שמירה</button></div>
+            <p class="my-intro" style="margin-top:14px">🔔 להתראות על אירועים חדשים — כפתור הפעמון בפס העליון.</p>
+        </div>
         <div id="my-venues" class="my-defaults" style="display:none">
             <div id="mv-list"></div>
             <div id="mv-editor" style="display:none">
@@ -1335,6 +1383,20 @@ button.user-stats:hover{background:rgba(212,224,52,0.22);}
             <div class="modal-btns"><button class="btn-submit" id="ar-save" onclick="saveArtist()">💾 שמירה</button><button class="btn-cancel" onclick="closeArtistEditor()">ביטול</button><button class="btn-cancel" id="ar-delete" style="display:none" onclick="deleteArtist()">🗑 מחיקת הדף</button></div>
         </div>
         <div id="ar-list" class="vd-list"></div>
+    </div>
+</div>
+
+<!-- בחירת סוג פרופיל (פעם ראשונה) -->
+<div class="auth-overlay" id="roles-overlay" role="dialog" aria-modal="true" aria-label="בחירת סוג פרופיל" data-nosnippet>
+    <div class="auth-modal roles-modal">
+        <h2>ברוכים הבאים לחיפאית בתחתית 👋</h2>
+        <p class="auth-subtitle">מה אתם באתר? אפשר לבחור יותר מאחד, ולשנות בכל רגע באזור האישי.</p>
+        <div class="role-cards" id="ob-roles">
+                <button type="button" data-r="audience" onclick="this.classList.toggle('selected')"><span class="rc-ic"><svg class="role-ico" viewBox="0 0 64 64" aria-hidden="true"><use href="#ri-aud"/></svg></span><b>קהל</b><small>אני בא/ה לאירועים — שומר/ת אירועים, מקבל/ת התראות</small></button>
+                <button type="button" data-r="artist" onclick="this.classList.toggle('selected')"><span class="rc-ic"><svg class="role-ico" viewBox="0 0 64 64" aria-hidden="true"><use href="#ri-art"/></svg></span><b>אמן / להקה</b><small>מופיע/ה ומפרסם/ת את ההופעות שלי, עם דף אמן</small></button>
+                <button type="button" data-r="venue" onclick="this.classList.toggle('selected')"><span class="rc-ic"><svg class="role-ico" viewBox="0 0 64 64" aria-hidden="true"><use href="#ri-ven"/></svg></span><b>מקום</b><small>מארח/ת אירועים — עם דף מקום ופרטי קשר</small></button>
+            </div>
+        <div class="modal-btns"><button class="btn-submit" onclick="saveRolesFrom('ob')">המשך</button><button class="btn-cancel" onclick="closeRolesOverlay(true)">אחר כך</button></div>
     </div>
 </div>
 
@@ -1435,8 +1497,8 @@ button.user-stats:hover{background:rgba(212,224,52,0.22);}
 <div class="tab-bar">
     <div class="tab active" onclick="switchTab('all',this)">כל האירועים</div>
     <div class="tab" onclick="switchTab('favs',this)">❤️ מועדפים <span id="fav-count"></span></div>
-    <div class="tab tab-venues" onclick="openVenuesPanel()" role="button" tabindex="0" data-kbd-click>📍 מקומות</div>
-    <div class="tab tab-artists" onclick="openArtistsPanel()" role="button" tabindex="0" data-kbd-click>🎤 אמנים</div>
+    <div class="tab tab-venues" onclick="openVenuesPanel()" role="button" tabindex="0" data-kbd-click><svg class="role-ico" viewBox="0 0 64 64" aria-hidden="true"><use href="#ri-ven"/></svg> מקומות</div>
+    <div class="tab tab-artists" onclick="openArtistsPanel()" role="button" tabindex="0" data-kbd-click><svg class="role-ico" viewBox="0 0 64 64" aria-hidden="true"><use href="#ri-art"/></svg> אמנים</div>
 </div>
 
 <!-- Toolbar -->
@@ -1669,8 +1731,8 @@ button.user-stats:hover{background:rgba(212,224,52,0.22);}
         </div>
         <div class="form-group who-group"><label>מי מפרסם את האירוע? <span class="cat-pick-hint">(אפשר לבחור יותר מאחד)</span></label>
             <div class="who-pick" id="f-who">
-                <button type="button" data-r="artist" onclick="toggleWho(this)">🎤 אני האמן / הלהקה</button>
-                <button type="button" data-r="venue" onclick="toggleWho(this)">🏠 אני המקום</button>
+                <button type="button" data-r="artist" onclick="toggleWho(this)"><svg class="role-ico" viewBox="0 0 64 64" aria-hidden="true"><use href="#ri-art"/></svg> אני האמן / הלהקה</button>
+                <button type="button" data-r="venue" onclick="toggleWho(this)"><svg class="role-ico" viewBox="0 0 64 64" aria-hidden="true"><use href="#ri-ven"/></svg> אני המקום</button>
                 <button type="button" data-r="producer" onclick="toggleWho(this)">🎟 מפיק/ה או אחר</button>
             </div>
             <div class="field-hint">אמנים ומקומות יכולים למלא כאן גם את פרטי דף האמן או דף המקום — והם יופיעו באתר יחד עם האירוע.</div>
@@ -1920,6 +1982,7 @@ async function checkAuth() {
             if (ADMIN_EMAILS.includes((user.email || '').toLowerCase())) currentRole = 'admin';
             currentTrusted = profile?.trusted || false;
             currentBlocked = profile?.blocked || false;
+            setTimeout(afterLoginProfile, 400);   // סוג פרופיל + סנכרון "אהבתי"
             // שמירת מייל+שם בפרופיל תמיד
             const userName = user.user_metadata?.full_name || user.user_metadata?.name || user.email?.split('@')[0] || '';
             await db.from('user_profiles').upsert({ id: user.id, email: user.email, name: userName }, { onConflict: 'id' });
@@ -2101,7 +2164,7 @@ async function changePassword() {
 
 async function logout() {
     await db.auth.signOut();
-    currentUser = null; currentRole = null; myDefaults = null; myDefaultsLoaded = false;
+    currentUser = null; currentRole = null; myDefaults = null; myDefaultsLoaded = false; myRoles = []; rolesLoaded = false; myActivity = []; activityLoaded = false;
     closeUserMenu();
     document.getElementById('user-menu-wrap').style.display = 'none';
     document.getElementById('btn-approval-panel').style.display = 'none';
@@ -2203,6 +2266,7 @@ if (document.readyState === 'loading') document.addEventListener('DOMContentLoad
 const STAT_KINDS = [['views','views','צפיות'],['likes','likes','לבבות'],['calendar','calplus','הוסיפו ליומן'],['tickets','tickets','לחצו על כרטיסים / הרשמה'],['links','links','לחצו על קישורים / יצירת קשר'],['shares','shares','שיתופים']];
 function trackEv(id, kind, delta = 1) {
     id = String(id || ''); if (!id || !db) return;
+    if (kind !== 'likes' && kind !== 'views') recordActivity(id, kind);
     if (kind !== 'likes') {
         let seen = {}; try { seen = JSON.parse(localStorage.getItem('evTrack') || '{}'); } catch (_) {}
         const k = id + ':' + kind; if (seen[k]) return;
@@ -2405,6 +2469,7 @@ function toggleFav(id, ev) {
     if (liked) favs.add(id); else favs.delete(id);
     try { localStorage.setItem('favs', JSON.stringify([...favs])); } catch (_) {}
     trackEv(id, 'likes', liked ? 1 : -1);
+    recordActivity(id, 'like', liked);
     applyFilter();
 }
 
@@ -3238,7 +3303,8 @@ async function admDelete(id, ev) { await deleteEvent(id, ev); renderAdminEvents(
 let myFilter = 'up', myRows = [];
 function openMyPanel(tab) {
     if (!currentUser) { openAuth(); return; }
-    if (tab) setMyFilter(tab);
+    updateMyChips();
+    setMyFilter(tab || (hasPubRole() ? 'up' : 'likes'));
     document.getElementById('my-panel').classList.add('open');
     pushLayer('mine');
     loadMyEvents();
@@ -3267,11 +3333,16 @@ async function loadMyEvents() {
 function renderMyEvents() {
     const list = document.getElementById('my-list');
     const isDef = myFilter === 'defaults', isVen = myFilter === 'venues', isArt = myFilter === 'artists';
-    document.getElementById('my-defaults').style.display = isDef ? '' : 'none';
-    document.getElementById('my-venues').style.display = isVen ? '' : 'none';
-    document.getElementById('my-artists').style.display = isArt ? '' : 'none';
-    list.style.display = isDef || isVen || isArt ? 'none' : '';
-    document.querySelector('#my-panel .my-intro').style.display = isDef || isVen || isArt ? 'none' : '';
+    const SECTIONS = { defaults: 'my-defaults', venues: 'my-venues', artists: 'my-artists', likes: 'my-likes', activity: 'my-activity', profile: 'my-profile' };
+    Object.entries(SECTIONS).forEach(([k, id]) => document.getElementById(id).style.display = myFilter === k ? '' : 'none');
+    const isPubList = myFilter === 'up' || myFilter === 'past';
+    list.style.display = isPubList ? '' : 'none';
+    document.querySelector('#my-panel .my-intro').style.display = isPubList ? '' : 'none';
+    if (!isPubList) document.getElementById('my-totals').style.display = 'none';
+    updateMyChips();
+    if (myFilter === 'likes') { renderMyLikes(); return; }
+    if (myFilter === 'activity') { renderMyActivity(); return; }
+    if (myFilter === 'profile') { fillRoleCards('pf'); return; }
     if (isArt) { document.getElementById('my-totals').style.display = 'none'; loadArtists().then(renderMyArtists); return; }
     if (isDef) { document.getElementById('my-totals').style.display = 'none'; fillDefaultsPanel(); return; }
     if (isVen) { document.getElementById('my-totals').style.display = 'none'; loadVenues().then(renderMyVenues); return; }
@@ -3528,6 +3599,151 @@ async function approveVenue(id) {
     const { error } = await db.from('venues').update({ status: 'approved' }).eq('id', id);
     if (error) { showToast('האישור לא הצליח'); return; }
     showToast('המקום אושר ✓'); await loadVenues(); loadPendingVenues();
+}
+
+
+
+// ── בחירת קטגוריות מקופלת: שורה אחת עם מה שנבחר, ונפתחת בלחיצה ──
+function setupCatDetails() {
+    ['f-cats', 'd-cats', 'ar-cats'].forEach(id => {
+        const el = document.getElementById(id);
+        if (!el || el.closest('.cat-details')) return;
+        const det = document.createElement('details'); det.className = 'cat-details';
+        const sum = document.createElement('summary'); sum.className = 'cat-sum';
+        el.parentNode.insertBefore(det, el); det.appendChild(sum); det.appendChild(el);
+        const refresh = () => {
+            const sel = [...el.querySelectorAll('.cat-pick-btn.selected')].map(b => b.textContent.trim());
+            sum.innerHTML = sel.length ? `<span class="cs-sel">${sel.map(escHtml).join(' · ')}</span><span class="cs-edit">שינוי ▾</span>` : '<span class="cs-empty">🏷 בחירת קטגוריות</span><span class="cs-edit">▾</span>';
+        };
+        new MutationObserver(refresh).observe(el, { subtree: true, childList: true, attributes: true, attributeFilter: ['class'] });
+        refresh();
+    });
+}
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', setupCatDetails); else setupCatDetails();
+
+// ══ סוגי פרופיל (קהל / אמן / מקום) + "הפעילות שלי" ══
+let myRoles = [], rolesLoaded = false, myActivity = [], activityLoaded = false;
+const hasPubRole = () => myRoles.includes('artist') || myRoles.includes('venue') || currentRole === 'admin' || (myRows && myRows.length > 0);
+function updateMyChips() {
+    const pub = hasPubRole();
+    document.querySelectorAll('#my-chips [data-pub]').forEach(b => b.style.display = pub ? '' : 'none');
+    document.querySelectorAll('#my-chips [data-role]').forEach(b => {
+        const r = b.dataset.role;
+        const own = r === 'venue' ? venuesDir.some(v => currentUser && v.user_id === currentUser.id) : artistsDir.some(a => currentUser && a.user_id === currentUser.id);
+        b.style.display = myRoles.includes(r) || own ? '' : 'none';
+    });
+}
+async function afterLoginProfile() {
+    if (!currentUser) return;
+    try {
+        const { data, error } = await db.from('user_profiles').select('roles').eq('id', currentUser.id).maybeSingle();
+        if (!error) { myRoles = (data && data.roles) || []; rolesLoaded = true; }
+    } catch (_) {}
+    syncActivity();
+    // פעם ראשונה: לשאול מה המשתמש באתר (לא למנהלת, ולא אם כבר דילג במכשיר הזה)
+    let skipped = false; try { skipped = !!localStorage.getItem('rolesAsked:' + currentUser.id); } catch (_) {}
+    if (rolesLoaded && !myRoles.length && currentRole !== 'admin' && !skipped) setTimeout(openRolesOverlay, 800);
+}
+function fillRoleCards(pre) { document.querySelectorAll(`#${pre}-roles button`).forEach(b => b.classList.toggle('selected', myRoles.includes(b.dataset.r))); }
+function openRolesOverlay() {
+    if (document.querySelector('.overlay.open, #view-overlay[style*="flex"]')) return;   // לא להפריע באמצע פעולה
+    fillRoleCards('ob');
+    document.getElementById('roles-overlay').classList.add('open');
+}
+function closeRolesOverlay(skip) {
+    document.getElementById('roles-overlay').classList.remove('open');
+    if (skip && currentUser) { try { localStorage.setItem('rolesAsked:' + currentUser.id, '1'); } catch (_) {} }
+}
+async function saveRolesFrom(pre) {
+    const roles = [...document.querySelectorAll(`#${pre}-roles button.selected`)].map(b => b.dataset.r);
+    if (!roles.length) { showToast('בחרו לפחות אפשרות אחת'); return; }
+    const { error } = await db.rpc('set_my_roles', { p_roles: roles });
+    if (error) { showToast('השמירה לא הצליחה'); return; }
+    myRoles = roles; rolesLoaded = true;
+    if (pre === 'ob') {
+        closeRolesOverlay(true);
+        showToast(roles.includes('artist') || roles.includes('venue') ? 'מעולה! האזור האישי שלכם מוכן 🎉' : 'מעולה! סמנו ❤️ על אירועים, והם יחכו לכם באזור האישי');
+    } else { showToast('נשמר ✓'); updateMyChips(); }
+    // בטופס הוספת אירוע: ברירת המחדל של "מי מפרסם"
+}
+// סנכרון: הלבבות שבמכשיר ↔ החשבון, וטעינת הפעילות
+async function syncActivity() {
+    if (!currentUser) return;
+    try {
+        const { data, error } = await db.from('user_activity').select('event_id,kind,created_at').order('created_at', { ascending: false }).limit(1000);
+        if (error) { activityLoaded = false; return; }
+        myActivity = data || []; activityLoaded = true;
+        const serverLikes = new Set(myActivity.filter(a => a.kind === 'like').map(a => String(a.event_id)));
+        const missing = [...favs].filter(id => !serverLikes.has(id));
+        if (missing.length) await db.from('user_activity').upsert(missing.map(id => ({ event_id: id, kind: 'like' })), { onConflict: 'user_id,event_id,kind', ignoreDuplicates: true });
+        let changed = false;
+        serverLikes.forEach(id => { if (!favs.has(id)) { favs.add(id); changed = true; } });
+        missing.forEach(id => myActivity.unshift({ event_id: id, kind: 'like', created_at: new Date().toISOString() }));
+        if (changed) { try { localStorage.setItem('favs', JSON.stringify([...favs])); } catch (_) {} applyFilter(); }
+    } catch (_) {}
+}
+function recordActivity(id, kind, on = true) {
+    if (!currentUser || !activityLoaded || !['like', 'calendar', 'tickets', 'links', 'shares'].includes(kind)) return;
+    id = String(id);
+    if (on) {
+        if (!myActivity.some(a => a.event_id === id && a.kind === kind)) myActivity.unshift({ event_id: id, kind, created_at: new Date().toISOString() });
+        db.from('user_activity').upsert({ event_id: id, kind }, { onConflict: 'user_id,event_id,kind', ignoreDuplicates: true }).then(() => {}, () => {});
+    } else {
+        myActivity = myActivity.filter(a => !(a.event_id === id && a.kind === kind));
+        db.from('user_activity').delete().eq('event_id', id).eq('kind', kind).then(() => {}, () => {});
+    }
+}
+// פרטי אירועים לפי מזהים (גם כאלה שכבר לא בעמוד הראשי)
+async function eventsByIds(ids) {
+    const have = new Map(events.map(e => [String(e.id), e]));
+    const need = ids.filter(id => !have.has(id));
+    for (let i = 0; i < need.length; i += 100) {
+        try {
+            const { data } = await db.from('events').select('*').in('id', need.slice(i, i + 100));
+            (data || []).forEach(r => have.set(String(r.id), rowToEvent(r)));
+        } catch (_) {}
+    }
+    return have;
+}
+function myEventRow(e, badges) {
+    const over = eventIsOver(e), id = escHtml(String(e.id));
+    const d = e.dateRaw ? new Date(e.dateRaw + 'T12:00:00').toLocaleDateString('he-IL', { weekday: 'short', day: 'numeric', month: 'numeric' }) : '';
+    return `<div class="adm-ev${over ? ' ev-over' : ''}">
+        <div class="adm-ev-date">${escHtml(d)}<small>${escHtml(e.time && e.time !== '-' ? e.time : '')}</small></div>
+        <div class="adm-ev-main"><div class="adm-ev-title">${escHtml(e.title)}${over ? ' <span class="ue-st past">עבר</span>' : ''}</div>
+            <div class="adm-ev-sub">📍 ${escHtml(e.location || '')}</div>
+            ${badges ? `<div class="act-badges">${badges}</div>` : ''}</div>
+        <div class="adm-ev-btns">${over ? '' : `<button class="btn-preview ic-btn" onclick="myOpen('${id}','view')">${svgIc('views', 20)}<span>פתיחה</span></button>`}</div>
+    </div>`;
+}
+async function renderMyLikes() {
+    const box = document.getElementById('my-likes');
+    const ids = [...favs];
+    if (!ids.length) { box.innerHTML = '<div class="users-empty">עוד לא סימנתם ❤️ על אירועים. לחצו על הלב בכל אירוע שמעניין אתכם, והוא יחכה לכם כאן.</div>'; return; }
+    box.innerHTML = '<div class="users-empty">טוען…</div>';
+    const map = await eventsByIds(ids);
+    const list = ids.map(id => map.get(id)).filter(Boolean);
+    const up = list.filter(e => !eventIsOver(e)).sort((a, b) => (a.dateRaw || '').localeCompare(b.dateRaw || ''));
+    const past = list.filter(e => eventIsOver(e)).sort((a, b) => (b.dateRaw || '').localeCompare(a.dateRaw || ''));
+    box.innerHTML = (up.length ? `<h3 class="mv-title">❤️ אירועים קרובים שאהבתם (${up.length})</h3>` + up.map(e => myEventRow(e)).join('') : '<div class="users-empty">אין כרגע אירועים קרובים שסימנתם.</div>')
+        + (past.length ? `<h3 class="mv-title">🕘 אירועים שעברו (${past.length})</h3>` + past.map(e => myEventRow(e)).join('') : '')
+        + (!currentUser || activityLoaded ? '' : '<p class="my-intro">הלבבות נשמרים כרגע רק במכשיר הזה.</p>');
+}
+const ACT_LABEL = { like: '❤️ אהבתי', calendar: '📅 הוספתי ליומן', tickets: '🎟 לחצתי על כרטיסים', links: '🔗 קישורים / יצירת קשר', shares: '📤 שיתפתי' };
+async function renderMyActivity() {
+    const box = document.getElementById('my-activity');
+    if (!activityLoaded) await syncActivity();
+    if (!activityLoaded) { box.innerHTML = '<div class="users-empty">הפעילות האישית תופעל בקרוב.</div>'; return; }
+    if (!myActivity.length) { box.innerHTML = '<div class="users-empty">עוד אין פעילות. כשתסמנו ❤️, תוסיפו ליומן, תלחצו על כרטיסים או תשתפו — זה יופיע כאן.</div>'; return; }
+    box.innerHTML = '<div class="users-empty">טוען…</div>';
+    const byEvent = new Map();
+    myActivity.forEach(a => { const k = String(a.event_id); if (!byEvent.has(k)) byEvent.set(k, { kinds: new Set(), at: a.created_at }); byEvent.get(k).kinds.add(a.kind); });
+    const map = await eventsByIds([...byEvent.keys()]);
+    const rows = [...byEvent.entries()].map(([id, v]) => ({ e: map.get(id), ...v })).filter(r => r.e);
+    const tix = rows.filter(r => r.kinds.has('tickets')).length, cal = rows.filter(r => r.kinds.has('calendar')).length;
+    box.innerHTML = `<div class="act-sum"><span>🎟 <b>${tix}</b> כרטיסים</span><span>📅 <b>${cal}</b> ביומן</span><span>❤️ <b>${rows.filter(r => r.kinds.has('like')).length}</b> אהבתי</span></div>
+        <p class="my-intro">רק אתם רואים את הפעילות שלכם. "לחצתי על כרטיסים" אומר שנכנסתם לדף הכרטיסים — האתר לא יודע אם הקנייה הושלמה.</p>`
+        + rows.sort((a, b) => (b.at || '').localeCompare(a.at || '')).map(r => myEventRow(r.e, ['like', 'calendar', 'tickets', 'links', 'shares'].filter(k => r.kinds.has(k)).map(k => `<span class="act-b act-${k}">${ACT_LABEL[k]}</span>`).join(''))).join('');
 }
 
 // ══ דפי אמנים ══
@@ -3959,7 +4175,8 @@ function openModal(id) {
     showFormErrors([], []);
     prepareNewEventForm();
     document.getElementById('vo-add').checked = false; toggleVenueFields(); resetVenueFields('vo');
-    setWho(id === null && myDefaults && myDefaults.who ? myDefaults.who : []);
+    document.querySelectorAll('#overlay .cat-details').forEach(d => d.open = false);
+    setWho(id === null ? (myDefaults && myDefaults.who ? myDefaults.who : myRoles.filter(r => r === 'artist' || r === 'venue')) : []);
     ['fa-name', 'fa-bio', 'fa-email'].forEach(x => document.getElementById(x).value = '');
     document.getElementById('fa-use-img').checked = true;
     document.getElementById('overlay').classList.add('open');
@@ -4734,6 +4951,7 @@ loadA11yPrefs();
         <li><strong>אירועים שפרסמתם</strong> — שם האירוע, תיאור, תאריך, מקום, מחיר, תמונה וקישורים. אלה מיועדים לפרסום ומוצגים לכל הגולשים לאחר אישור.</li>
         <li><strong>טלפון / וואטסאפ ליצירת קשר (לא חובה)</strong> — אם בחרתם להוסיף מספר לאירוע, הוא מוצג לכל הגולשים כדי שיוכלו לפנות אליכם. אל תוסיפו מספר שאינכם רוצים שיהיה פומבי.</li>
         <li><strong>רשימת המקומות (לא חובה)</strong> — מפרסם שבוחר להוסיף מקום לרשימת המקומות מוסר את שם המקום, הכתובת, תיאור קצר ודרכי יצירת קשר (טלפון / וואטסאפ, מייל, טופס, אתר ורשתות). פרטים אלה מוצגים לכל הגולשים לאחר אישור, ואפשר לערוך או להסיר אותם בכל עת.</li>
+        <li><strong>סוג הפרופיל והפעילות האישית</strong> — סוג הפרופיל שבחרתם (קהל / אמן / מקום), והפעילות שלכם באתר כשאתם מחוברים: אירועים שסימנתם ❤️, שהוספתם ליומן, ששיתפתם, ושלחצתם בהם על כרטיסים או קישורים. המטרה: להציג לכם את "האזור האישי". רק אתם רואים את הפעילות האישית שלכם — מפרסמים רואים רק מספרים אנונימיים, בלי שמות.</li>
         <li><strong>דפי אמנים (לא חובה)</strong> — מי שיוצר דף אמן מוסר שם, סגנון, תיאור, תמונה, קישורים ופרטי קשר להזמנת הופעות. הדף מוצג לכל הגולשים לאחר אישור, ואפשר לערוך או למחוק אותו בכל עת.</li>
         <li><strong>"הפרטים הקבועים שלי"</strong> — מקום, שעות, מחיר, קישורים וטלפון שבחרתם לשמור כדי שימולאו אוטומטית. נשמרים בחשבון שלכם ונראים רק לכם.</li>
         <li><strong>התראות לטלפון (לא חובה)</strong> — אם הפעלתם התראות, נשמרת כתובת טכנית שהדפדפן יוצר לצורך שליחת התראות, יחד עם הקטגוריות והמקומות שבחרתם. אפשר לבטל בכל רגע מכפתור הפעמון.</li>
