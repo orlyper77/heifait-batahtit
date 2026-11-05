@@ -3,7 +3,7 @@
 // • וואטסאפ / פייסבוק וכו' — מקבלים כותרת ותמונה לתצוגה המקדימה.
 // • גוגל ומנועי חיפוש — מקבלים דף מלא של האירוע (שם, תאריך, מקום, תיאור) + "נתוני אירוע" (schema.org/Event),
 //   כדי שהאירוע יופיע בחיפוש. זה אותו תוכן שמופיע בחלון האירוע באתר.
-const { getEvent } = require('./_db');
+const { getEvent, SUPABASE_URL, SUPABASE_ANON_KEY } = require('./_db');
 const SITE = 'https://heifait-batahtit.co.il';
 const BOTS = /facebookexternalhit|facebot|whatsapp|twitterbot|telegrambot|slackbot|linkedinbot|discordbot|skypeuripreview|pinterest|vkshare|redditbot|applebot|googlebot|google-inspectiontool|googleother|bingbot|duckduckbot|yandex|embedly|iframely|viber|snapchat|instagram|threads|bot|crawler|spider|preview/i;
 
@@ -67,7 +67,7 @@ module.exports = async (req, res) => {
       const crosses = !e.date_end_raw && tt[1][0] * 60 + tt[1][1] <= tt[0][0] * 60 + tt[0][1];   // מסתיים אחרי חצות
       const d2 = crosses ? addDays(endDay, 1) : endDay;
       ld.endDate = `${d2}T${hhmm(tt[1])}:00${ilOffset(d2)}`;
-    } else if (endDay !== e.date_raw) ld.endDate = endDay;
+    } else ld.endDate = endDay;   // בלי שעת סיום — מסתיים באותו יום (או ביום הסיום)
   }
   if (e.location) {
     const parts = String(e.location).split(',').map(s => s.trim()).filter(Boolean);
@@ -76,8 +76,22 @@ module.exports = async (req, res) => {
   }
   if (descFull) ld.description = descFull.slice(0, 5000);
   ld.image = [img];
-  if (tickets || free) ld.offers = { '@type': 'Offer', url: tickets || url, availability: 'https://schema.org/InStock',
-    ...(free ? { price: 0, priceCurrency: 'ILS' } : {}) };
+  // מחיר: "כניסה חופשית" → 0, "₪50" / "50 ש״ח" / "40-60" → המספר הראשון
+  const num = (price.replace(/,/g, '').match(/\d+(?:\.\d+)?/) || [])[0];
+  if (free || num) ld.offers = { '@type': 'Offer', url: tickets || url, availability: 'https://schema.org/InStock',
+    price: free ? 0 : Number(num), priceCurrency: 'ILS', validFrom: (e.date_raw || todayIL()) < todayIL() ? e.date_raw : todayIL() };
+  // מארגן: המקום שבו מתקיים האירוע
+  if (e.location) ld.organizer = { '@type': 'Organization', name: String(e.location).split(',')[0].trim() };
+  // אמנים: דפי אמן מאושרים שהשם שלהם מופיע בשם האירוע; אחרת — שם האירוע עצמו
+  try {
+    const r = await fetch(`${SUPABASE_URL}/rest/v1/artists?status=eq.approved&select=id,name&limit=500`, { headers: { apikey: SUPABASE_ANON_KEY, Authorization: 'Bearer ' + SUPABASE_ANON_KEY } });
+    const arts = r.ok ? await r.json() : [];
+    const norm = s => String(s || '').toLowerCase().replace(/["'״׳.,!?־\-–—:;()]/g, ' ').replace(/\s+/g, ' ').trim();
+    const t = ' ' + norm(title) + ' ';
+    const hit = (arts || []).filter(a => norm(a.name).length >= 2 && t.includes(' ' + norm(a.name) + ' ')).slice(0, 5);
+    if (hit.length) ld.performer = hit.map(a => ({ '@type': 'PerformingGroup', name: a.name }));
+  } catch (_) {}
+  if (!ld.performer) ld.performer = { '@type': 'PerformingGroup', name: title };
 
   // אירוע שעבר לפני יותר משבוע — לא להציג בחיפוש
   const last = e.date_end_raw || e.date_raw || '';
