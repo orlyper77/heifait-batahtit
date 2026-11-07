@@ -649,6 +649,11 @@ body:has(#overlay.open),body:has(.auth-overlay.open),body:has(#legal-overlay.ope
 .mail-menu a,.mail-menu button{display:block;text-align:right;background:none;border:none;color:#2a0808;font-family:inherit;font-size:14.5px;padding:9px 12px;border-radius:9px;text-decoration:none;cursor:pointer;}
 .mail-menu a:hover,.mail-menu button:hover,.mail-menu a:focus,.mail-menu button:focus{background:#c3e0f7;outline:none;}
 @media(min-width:769px){.fbar-row{justify-content:center;}.fb-search{flex:0 1 260px;}}
+.rec-check{margin:-4px 0 12px;}
+#rec-box{margin-top:-4px;}
+#rec-box select{width:100%;}
+.rec-sibs{flex-wrap:wrap;gap:4px;}
+.rec-meta{color:#ffe0ee!important;font-weight:600;}
 .tab-venues{}
 .cat-details{border-radius:14px;}
 .cat-sum{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:11px 14px;border-radius:12px;background:rgba(255,255,255,0.06);border:1.5px solid rgba(255,255,255,0.2);font-size:15px;}
@@ -1840,6 +1845,22 @@ function toggleCatsDrawer(force) {
             <div class="form-group"><label>תאריך *</label><input type="date" id="f-date"></div>
             <div class="form-group"><label>תאריך סיום (אופציונלי)</label><input type="date" id="f-date-end"></div>
         </div>
+        <div id="rec-wrap">
+            <label class="remember-defaults rec-check"><input type="checkbox" id="f-rec" onchange="updateRec()"><span>🔁 אירוע שחוזר על עצמו</span></label>
+            <div id="rec-box" class="role-box" style="display:none">
+                <div class="form-row">
+                    <div class="form-group"><label>כל כמה זמן?</label>
+                        <select id="f-rec-freq" onchange="updateRec()">
+                            <option value="w1">כל שבוע</option>
+                            <option value="w2">כל שבועיים</option>
+                            <option value="mN">פעם בחודש, באותו יום בשבוע</option>
+                            <option value="mD">פעם בחודש, באותו תאריך</option>
+                        </select></div>
+                    <div class="form-group"><label>עד תאריך</label><input type="date" id="f-rec-until" onchange="updateRec()"></div>
+                </div>
+                <div class="field-hint" id="rec-preview"></div>
+            </div>
+        </div>
         <div class="form-row">
             <div class="form-group"><label>שעת התחלה *</label><input type="text" id="f-time" class="time-input" inputmode="numeric" maxlength="5" placeholder="20:00" dir="ltr" autocomplete="off"></div>
             <div class="form-group"><label>שעת סיום (אופציונלי)</label><input type="text" id="f-time-end" class="time-input" inputmode="numeric" maxlength="5" placeholder="23:00" dir="ltr" autocomplete="off"></div>
@@ -2336,6 +2357,8 @@ function rowToEvent(e) {
         materials: e.materials || '',
         materials2: e.materials2 || '',
         contact: e.contact || '',
+        seriesId: e.series_id || '',
+        seriesPos: e.series_pos || null,
         image: e.image || null,
         user_id: e.user_id,
         status: e.status || 'approved'
@@ -2523,6 +2546,9 @@ function openViewModal(id) {
         const vv = venueByKey(venueKey(raw.location));
         if (vv && vv.status === 'approved') document.getElementById('view-modal-meta').insertAdjacentHTML('beforeend',
             `<div class="meta-item"><button type="button" class="btn-link vm-venue" onclick="closeViewModal();openVenuesPanel('${escHtml(vv.venue_key)}')">🏠 על המקום ויצירת קשר ←</button></div>`);
+        const sibs = raw.seriesId ? events.filter(x => x.seriesId === raw.seriesId && String(x.id) !== String(raw.id) && !eventIsOver(x)).sort((a, b) => (a.dateRaw || '').localeCompare(b.dateRaw || '')) : [];
+        if (sibs.length) document.getElementById('view-modal-meta').insertAdjacentHTML('beforeend',
+            `<div class="meta-item rec-sibs">🔁 מועדים נוספים: ${sibs.slice(0, 8).map(x => `<button type="button" class="btn-link vm-venue" onclick="openViewModal('${escHtml(String(x.id))}')">${escHtml(new Date(x.dateRaw + 'T12:00:00').toLocaleDateString('he-IL', { weekday: 'short', day: 'numeric', month: 'numeric' }))}</button>`).join(' · ')}</div>`);
         const prods = eventProducers(raw);
         if (prods.length) document.getElementById('view-modal-meta').insertAdjacentHTML('beforeend',
             `<div class="meta-item vm-artists">${prods.map(a => `<button type="button" class="btn-link vm-venue" onclick="closeViewModal();openArtistsPanel(${a.id})"><svg class="role-ico ico-in" viewBox="0 0 64 64" aria-hidden="true"><use href="#ri-pro"/></svg> הפקה: ${escHtml(a.name)} — דף המפיק ←</button>`).join('')}</div>`);
@@ -3015,21 +3041,27 @@ async function loadPendingEvents() {
         userEmails[uid] = (profile?.name ? profile.name + ' · ' : '') + (profile?.email || uid.substring(0,8)+'...');
     }
     pendingRows = {}; data.forEach(r => { pendingRows[r.id] = r; });
-    grid.innerHTML = data.map(r => { const e = escEvent(r); return `
+    // סדרה (אירוע חוזר): כרטיס אחד לכל הסדרה
+    const series = {}; data.forEach(r => { if (r.series_id) (series[r.series_id] = series[r.series_id] || []).push(r); });
+    Object.values(series).forEach(l => l.sort((a, b) => (a.date_raw || '').localeCompare(b.date_raw || '')));
+    const shown = data.filter(r => !r.series_id || series[r.series_id][0].id === r.id);
+    grid.innerHTML = shown.map(r => { const e = escEvent(r); const ser = r.series_id && series[r.series_id].length > 1 ? series[r.series_id] : null; return `
         <div class="approval-card" id="acard-${e.id}">
             ${e.image ? `<img class="approval-card-img" src="${e.image}" alt="">` : `<div class="approval-card-img">${CAT_EMOJI[e.cat]||'📌'}</div>`}
             <div class="approval-card-body">
                 <div class="approval-card-title">${e.title}</div>
                 <div class="approval-card-meta">📅 ${e.date_display||e.date_raw||'-'} · 📍 ${e.location||'חיפה'}</div>
                 <div class="approval-card-meta">👤 <span id="user-email-${e.id}">${escHtml(userEmails[r.user_id]||'לא ידוע')}</span></div>
+                ${ser ? `<div class="approval-card-meta rec-meta">🔁 אירוע חוזר — ${ser.length} מועדים: ${ser.map(x => escHtml(new Date(x.date_raw + 'T12:00:00').toLocaleDateString('he-IL', { day: 'numeric', month: 'numeric' }))).join(' · ')}</div>` : ''}
                 <div class="approval-card-desc">${e.description||''}</div>
                 <div class="approval-btns">
                     <button class="btn-preview" onclick="previewPending('${e.id}')">${svgIc('views', 18)} צפייה מלאה</button>
                     <button class="btn-preview" onclick="editPending('${e.id}')">✏️ עריכה</button>
                 </div>
                 <div class="approval-btns">
-                    <button class="btn-approve" onclick="approveEvent('${e.id}')">${svgIc('check', 18)} אשרי</button>
-                    <button class="btn-reject" onclick="rejectEvent('${e.id}')">${svgIc('x', 18)} דחי</button>
+                    ${ser ? `<button class="btn-approve" onclick="approveSeries('${escHtml(r.series_id)}')">${svgIc('check', 18)} אשרי את כל ${ser.length} המועדים</button>
+                    <button class="btn-reject" onclick="rejectSeries('${escHtml(r.series_id)}')">${svgIc('x', 18)} דחי</button>` : `<button class="btn-approve" onclick="approveEvent('${e.id}')">${svgIc('check', 18)} אשרי</button>
+                    <button class="btn-reject" onclick="rejectEvent('${e.id}')">${svgIc('x', 18)} דחי</button>`}
                 </div>
             </div>
         </div>`; }).join('');
@@ -3121,6 +3153,59 @@ function mailAllUsers() {
     if (!allUserEmails.length) { showToast('אין עדיין מיילים'); return; }
     // כל הנמענים בעותק מוסתר (BCC) — כך אף אחד לא רואה את הכתובות של האחרים
     openMail('heifait.batahtit@gmail.com', allUserEmails);
+}
+
+// ── אירוע חוזר ──
+const REC_MAX = 12;
+const isoOf = d => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+function recDates(start, freq, until) {
+    if (!start) return [];
+    const s = new Date(start + 'T12:00:00'), end = until ? new Date(until + 'T12:00:00') : null, out = [];
+    if (isNaN(s)) return [];
+    const nth = Math.ceil(s.getDate() / 7), wd = s.getDay();
+    for (let i = 0; out.length < REC_MAX && i < 60; i++) {
+        let d;
+        if (freq === 'w1' || freq === 'w2') { d = new Date(s); d.setDate(s.getDate() + i * (freq === 'w1' ? 7 : 14)); }
+        else if (freq === 'mD') { d = new Date(s.getFullYear(), s.getMonth() + i, s.getDate(), 12); if (d.getDate() !== s.getDate()) continue; }
+        else {   // mN: אותו יום בשבוע ואותו "שבוע בחודש" (למשל: יום שלישי השני בחודש)
+            const first = new Date(s.getFullYear(), s.getMonth() + i, 1, 12);
+            d = new Date(first); d.setDate(1 + ((wd - first.getDay() + 7) % 7) + (nth - 1) * 7);
+            if (d.getMonth() !== first.getMonth()) continue;
+        }
+        if (end && d > end) break;
+        out.push(isoOf(d));
+    }
+    return out;
+}
+function updateRec() {
+    const on = document.getElementById('f-rec').checked;
+    document.getElementById('rec-box').style.display = on ? '' : 'none';
+    if (!on) return;
+    const start = document.getElementById('f-date').value, until = document.getElementById('f-rec-until');
+    if (start && !until.value) { const d = new Date(start + 'T12:00:00'); d.setMonth(d.getMonth() + 2); until.value = isoOf(d); }
+    const opt = document.querySelector('#f-rec-freq option[value="mN"]');
+    if (start) {
+        const s = new Date(start + 'T12:00:00'), n = Math.ceil(s.getDate() / 7);
+        opt.textContent = `פעם בחודש — ${s.toLocaleDateString('he-IL', { weekday: 'long' })} ה${['ראשון', 'שני', 'שלישי', 'רביעי', 'חמישי'][n - 1]} בחודש`;
+    }
+    const list = recDates(start, document.getElementById('f-rec-freq').value, until.value);
+    const pv = document.getElementById('rec-preview');
+    if (!start) { pv.textContent = 'בחרו קודם את התאריך הראשון'; return; }
+    pv.innerHTML = `ייווצרו <b>${list.length} מועדים</b>: ` + list.map(d => '<bdi>' + new Date(d + 'T12:00:00').toLocaleDateString('he-IL', { day: 'numeric', month: 'numeric' }) + '</bdi>').join(' · ')
+        + (list.length >= REC_MAX ? ` <small>(עד ${REC_MAX} מועדים בכל פעם)</small>` : '')
+        + '<br><small>כל מועד יופיע באתר בתאריך שלו, ואפשר לערוך או למחוק כל אחד בנפרד.</small>';
+}
+document.addEventListener('change', ev => { if (ev.target && ev.target.id === 'f-date' && document.getElementById('f-rec')?.checked) updateRec(); });
+// מנהלת: אישור / דחייה של סדרה שלמה
+async function approveSeries(sid) {
+    const { error } = await db.from('events').update({ status: 'approved' }).eq('series_id', sid).eq('status', 'pending');
+    if (error) { alert('שגיאה: ' + error.message); return; }
+    showToast('כל המועדים בסדרה אושרו ✓'); loadPendingEvents(); loadEvents();
+}
+async function rejectSeries(sid) {
+    if (!confirm('למחוק את כל המועדים בסדרה?')) return;
+    await db.from('events').delete().eq('series_id', sid).eq('status', 'pending');
+    loadPendingEvents(); loadEvents();
 }
 
 async function approveEvent(id) {
@@ -4268,6 +4353,8 @@ function openModal(id) {
     prepareNewEventForm();
     document.getElementById('vo-add').checked = false; toggleVenueFields(); resetVenueFields('vo');
     document.querySelectorAll('#overlay .cat-details').forEach(d => d.open = false);
+    document.getElementById('f-rec').checked = false; document.getElementById('f-rec-until').value = ''; document.getElementById('f-rec-freq').value = 'w1'; updateRec();
+    document.getElementById('rec-wrap').style.display = id === null ? '' : 'none';
     setWho(id === null ? (myDefaults && myDefaults.who ? myDefaults.who : myRoles.filter(r => r === 'artist' || r === 'venue' || r === 'producer')) : []);
     ['fa-name', 'fa-bio', 'fa-email'].forEach(x => document.getElementById(x).value = '');
     document.getElementById('fa-use-img').checked = true;
@@ -4638,8 +4725,27 @@ async function saveEvent() {
     }
     try {
         let error;
-        const run = pl => editingId !== null ? db.from('events').update(pl).eq('id', editingId) : db.from('events').insert({ ...pl, user_id: currentUser.id });
+        // אירוע חוזר: שורה לכל מועד, כולן באותה "סדרה"
+        let recRows = null;
+        if (editingId === null && document.getElementById('f-rec').checked) {
+            const dates = recDates(payload.date_raw, document.getElementById('f-rec-freq').value, document.getElementById('f-rec-until').value);
+            if (dates.length > 1) {
+                const sid = 's' + Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+                const span = payload.date_end_raw ? Math.round((new Date(payload.date_end_raw) - new Date(payload.date_raw)) / 864e5) : 0;
+                recRows = dates.map((d, i) => {
+                    const dd = new Date(d + 'T12:00:00'), de = new Date(dd); de.setDate(dd.getDate() + span);
+                    return { date_raw: d, date_end_raw: span ? isoOf(de) : null,
+                        date_display: dd.toLocaleDateString('he-IL', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }),
+                        series_id: sid, series_pos: i + 1 };
+                });
+            }
+        }
+        let noSeries = false;
+        const run = pl => editingId !== null ? db.from('events').update(pl).eq('id', editingId)
+            : recRows ? db.from('events').insert(recRows.map(r => { const o = { ...pl, ...r, user_id: currentUser.id }; if (noSeries) { delete o.series_id; delete o.series_pos; } return o; }))
+            : db.from('events').insert({ ...pl, user_id: currentUser.id });
         let res = await run(payload);
+        if (res.error && recRows && /series/i.test(res.error.message || '')) { noSeries = true; res = await run(payload); }   // לפני שהרצתם את recurring.sql
         if (res.error && /contact/i.test(res.error.message || '')) { const { contact, ...rest } = payload; res = await run(rest); }   // לפני שהעמודה הוקמה במסד
         error = res.error;
         if (error) throw error;
@@ -4649,6 +4755,7 @@ async function saveEvent() {
         }
         if (addVenue) await saveVenueFromEvent(locForVenue);
         if (addArtist) await saveArtistFromEvent(payload);
+        if (recRows) showToast(`🔁 נוצרו ${recRows.length} מועדים`);
         closeModal();
         if (document.getElementById('approval-panel')?.classList.contains('open')) loadPendingEvents();
         if (currentRole !== 'admin' && !currentTrusted && !editingId) {
