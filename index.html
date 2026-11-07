@@ -927,6 +927,19 @@ html.a11y-high-contrast :focus-visible{outline-color:#00e5ff!important;}
 .btn-contact:hover{background:rgba(212,224,52,0.24);}
 .footer-support{display:flex;flex-direction:column;align-items:center;gap:10px;margin-bottom:18px;text-align:center;}
 .card-title-link{color:inherit;text-decoration:none;}
+/* ── הזמנה להוספה למסך הבית ── */
+#a2hs{position:fixed;left:50%;bottom:calc(88px + env(safe-area-inset-bottom));transform:translate(-50%,calc(100% + 110px));z-index:2500;width:min(440px,calc(100vw - 24px));background:#2a0d12;color:#fff;border:1px solid rgba(212,224,52,0.45);border-radius:18px;box-shadow:0 10px 40px rgba(0,0,0,0.55);padding:14px 16px 14px 44px;display:flex;gap:12px;align-items:center;transition:transform .45s cubic-bezier(.2,.9,.3,1.2);}
+#a2hs.show{transform:translate(-50%,0);}
+#a2hs[hidden],#a2hs [hidden]{display:none !important;}
+#a2hs img{width:52px;height:52px;border-radius:12px;flex:none;}
+#a2hs .a2hs-txt{flex:1;font-size:14px;line-height:1.5;}
+#a2hs .a2hs-txt b{display:block;font-size:15.5px;color:#d4e034;margin-bottom:2px;}
+#a2hs .a2hs-go{flex:none;background:#d4e034;color:#1a0505;border:0;border-radius:999px;padding:9px 16px;font-weight:800;font-size:14px;cursor:pointer;font-family:inherit;}
+#a2hs .a2hs-x{position:absolute;top:8px;left:8px;width:30px;height:30px;border-radius:50%;border:0;background:rgba(255,255,255,0.1);color:#fff;font-size:15px;cursor:pointer;}
+#a2hs .a2hs-ios{display:block;margin-top:6px;font-size:13.5px;color:rgba(255,255,255,0.85);}
+#a2hs .a2hs-ios svg{vertical-align:-4px;margin:0 2px;}
+.footer-a2hs{display:none;margin:0 auto 14px;background:none;border:1px solid rgba(255,255,255,0.25);color:rgba(255,255,255,0.75);border-radius:999px;padding:6px 14px;font-size:13px;cursor:pointer;font-family:inherit;}
+.footer-a2hs.can{display:inline-block;}
 .footer-topics{max-width:620px;margin:0 auto 16px;font-size:13px;line-height:2;text-align:center;color:rgba(255,255,255,0.35);}
 .footer-topics a{color:rgba(255,255,255,0.65);text-decoration:none;white-space:nowrap;}
 .footer-topics a:hover{color:#d4e034;text-decoration:underline;}
@@ -2516,6 +2529,7 @@ function toggleFav(id, ev) {
     trackEv(id, 'likes', liked ? 1 : -1);
     recordActivity(id, 'like', liked);
     applyFilter();
+    if (liked && typeof a2hsMaybe === 'function') a2hsMaybe();
 }
 
 function openViewModal(id) {
@@ -5122,6 +5136,7 @@ loadA11yPrefs();
 <footer class="site-footer">
   <p class="footer-about"><b>חיפאית בתחתית</b> — כל האירועים בחיפה והסביבה במקום אחד: הופעות בחיפה, ג׳אז, סטנדאפ, מסיבות, תאטרון, קולנוע, הרצאות, סדנאות, ירידים ובמות פתוחות. מחפשים מה לעשות בחיפה היום, השבוע או בסופ״ש? כאן תמצאו את כל אירועי התרבות והבילוי בעיר — מהדר ועיר תחתית ועד הכרמל. מארגנים, אמנים ומקומות מוזמנים לפרסם בחינם.</p>
   <nav class="footer-topics" aria-label="אירועים בחיפה לפי נושא"><a href="/week">מה עושים בחיפה השבוע</a> · <a href="/c/music">הופעות בחיפה</a> · <a href="/c/jazz">ג׳אז בחיפה</a> · <a href="/c/standup">סטנדאפ בחיפה</a> · <a href="/c/parties">מסיבות בחיפה</a> · <a href="/c/theater">תאטרון בחיפה</a> · <a href="/c/kids">אירועים לילדים</a> · <a href="/c/lectures">הרצאות בחיפה</a> · <a href="/c/workshops">סדנאות בחיפה</a> · <a href="/c/fairs">ירידים בחיפה</a> · <a href="/c/openstage">במה פתוחה</a> · <a href="/c/cinema">קולנוע בחיפה</a></nav>
+  <div style="text-align:center"><button type="button" class="footer-a2hs" id="footer-a2hs" onclick="a2hsMaybe(true)">📲 הוספת האתר למסך הבית</button></div>
   <div class="footer-support-mini">
     <a href="https://buymeacoffee.com/heifait_batahtit" target="_blank" rel="noopener" onclick="trackSupport()">☕ אוהבים את האתר? אפשר לפנק בקפה</a>
   </div>
@@ -5557,6 +5572,76 @@ async function notifyUnsubscribe() {
     closeNotify();
     ntRefreshBell();
 }
+</script>
+
+<!-- הזמנה להוספה למסך הבית -->
+<div id="a2hs" role="dialog" aria-label="הוספת האתר למסך הבית" hidden>
+  <button type="button" class="a2hs-x" onclick="a2hsClose(true)" aria-label="סגירה">✕</button>
+  <img src="/icon-192.png" alt="">
+  <div class="a2hs-txt"><b>📲 שימו אותנו על מסך הבית</b>
+    <span id="a2hs-body">נפתח בלחיצה אחת, כמו אפליקציה — בלי להוריד כלום.</span>
+    <span class="a2hs-ios" id="a2hs-ios" hidden>לוחצים על כפתור השיתוף
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#d4e034" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-label="שיתוף"><path d="M12 15V3"/><path d="M8 7l4-4 4 4"/><path d="M6 11H5a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-8a1 1 0 0 0-1-1h-1"/></svg>
+      ואז על <b style="display:inline;color:#fff;font-size:inherit">"הוספה למסך הבית"</b> <span aria-hidden="true">➕</span></span>
+  </div>
+  <button type="button" class="a2hs-go" id="a2hs-go" onclick="a2hsInstall()">הוספה</button>
+</div>
+<script>
+// ── הזמנה להוספה למסך הבית ──
+// מופיעה פעם אחת, בעדינות: רק בביקור השני ומעלה (או אחרי שסימנו לב לאירוע), לא כשחלון פתוח,
+// לא למי שכבר הוסיף, ולא בתוך פייסבוק/אינסטגרם. מי שסוגר — לא יראה אותה שוב.
+let a2hsEvt = null;
+const a2hsStore = (k, v) => { try { if (v === undefined) return localStorage.getItem(k); localStorage.setItem(k, v); } catch (_) { return null; } };
+const a2hsIOS = () => /iphone|ipad|ipod/i.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+const a2hsInstalled = () => matchMedia('(display-mode: standalone)').matches || navigator.standalone === true;
+const a2hsInApp = () => /FBAN|FBAV|FB_IAB|Instagram|Line\/|WhatsApp|Telegram/i.test(navigator.userAgent);
+const a2hsCan = () => !a2hsInstalled() && !a2hsInApp() && (!!a2hsEvt || a2hsIOS());
+(function () {
+  try {
+    if (!sessionStorage.getItem('a2hsSeen')) { sessionStorage.setItem('a2hsSeen', '1'); a2hsStore('visits', String((+a2hsStore('visits') || 0) + 1)); }
+  } catch (_) {}
+})();
+window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); a2hsEvt = e; a2hsFooter(); a2hsMaybe(); });
+window.addEventListener('appinstalled', () => { a2hsStore('a2hsDone', 'installed'); a2hsClose(false); a2hsFooter(); });
+function a2hsFooter() { const b = document.getElementById('footer-a2hs'); if (b) b.classList.toggle('can', a2hsCan()); }
+function a2hsMaybe(force) {
+  if (!a2hsCan()) return;
+  if (!force) {
+    if (a2hsStore('a2hsDone')) return;
+    const visits = +a2hsStore('visits') || 0;
+    let liked = false; try { liked = JSON.parse(localStorage.getItem('favs') || '[]').length > 0; } catch (_) {}
+    if (visits < 2 && !liked) return;
+  }
+  setTimeout(() => {
+    const hs = history.state || {};
+    if (!force && Object.values(hs).some(Boolean)) { setTimeout(() => a2hsMaybe(), 15000); return; }   // חלון פתוח — ננסה שוב אחר כך
+    a2hsShow();
+  }, force ? 0 : 8000);
+}
+function a2hsShow() {
+  const box = document.getElementById('a2hs');
+  if (!box || !box.hidden) return;
+  const ios = a2hsIOS() && !a2hsEvt;
+  document.getElementById('a2hs-ios').hidden = !ios;
+  document.getElementById('a2hs-body').hidden = ios;
+  document.getElementById('a2hs-go').textContent = ios ? 'הבנתי' : 'הוספה';
+  box.hidden = false;
+  requestAnimationFrame(() => requestAnimationFrame(() => box.classList.add('show')));
+}
+function a2hsClose(remember) {
+  const box = document.getElementById('a2hs');
+  if (remember) a2hsStore('a2hsDone', 'closed');
+  if (!box || box.hidden) return;
+  box.classList.remove('show');
+  setTimeout(() => { box.hidden = true; }, 450);
+}
+async function a2hsInstall() {
+  if (!a2hsEvt) { a2hsClose(true); return; }   // אייפון: "הבנתי"
+  a2hsEvt.prompt();
+  try { const r = await a2hsEvt.userChoice; a2hsStore('a2hsDone', r && r.outcome === 'accepted' ? 'installed' : 'closed'); } catch (_) {}
+  a2hsEvt = null; a2hsClose(false); a2hsFooter();
+}
+window.addEventListener('load', () => { a2hsFooter(); if (a2hsIOS()) a2hsMaybe(); });
 </script>
 </body>
 </html>
