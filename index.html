@@ -1328,7 +1328,8 @@ button.user-stats:hover{background:rgba(212,224,52,0.22);}
     </div>
     </div>
     <div class="admin-tab-panel">
-        <div class="my-intro">כאן רואים כמה אנשים התעניינו בכל אירוע שלך: 👁 צפיות · ❤️ לבבות · 📅 הוסיפו ליומן · 🎟 לחצו על כרטיסים · 🔗 לחצו על קישורים · 📤 שיתפו. כל אדם נספר פעם אחת. רק את/ה והנהלת האתר רואים את הנתונים.</div>
+        <div class="my-intro">🔔 רוצים לקבל כל ערב סיכום קצר לטלפון? הפעילו התראות בכפתור הפעמון בפס העליון. ·
+        כאן רואים כמה אנשים התעניינו בכל אירוע שלך: 👁 צפיות · ❤️ לבבות · 📅 הוסיפו ליומן · 🎟 לחצו על כרטיסים · 🔗 לחצו על קישורים · 📤 שיתפו. כל אדם נספר פעם אחת. רק את/ה והנהלת האתר רואים את הנתונים.</div>
         <div class="ov-kpi ov-wide my-totals" id="my-totals" style="display:none"></div>
         <div id="my-list"></div>
         <div id="my-artists" class="my-defaults" style="display:none"><div id="ma-list"></div></div>
@@ -3709,6 +3710,8 @@ async function afterLoginProfile() {
         if (!error) { myRoles = (data && data.roles) || []; rolesLoaded = true; updateAvatars(); }
     } catch (_) {}
     syncActivity();
+    // לחיצה על הסיכום היומי (?my=stats) → פותח את האזור האישי עם הנתונים
+    if (/[?&]my=/.test(location.search)) { try { history.replaceState(null, '', location.pathname); } catch (_) {} setTimeout(() => openMyPanel('up'), 300); return; }
     // פעם ראשונה: לשאול מה המשתמש באתר (לא למנהלת, ולא אם כבר דילג במכשיר הזה)
     let skipped = false; try { skipped = !!localStorage.getItem('rolesAsked:' + currentUser.id); } catch (_) {}
     if (rolesLoaded && !myRoles.length && currentRole !== 'admin' && !skipped) setTimeout(openRolesOverlay, 800);
