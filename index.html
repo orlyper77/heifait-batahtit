@@ -927,6 +927,9 @@ html.a11y-high-contrast :focus-visible{outline-color:#00e5ff!important;}
 .btn-contact:hover{background:rgba(212,224,52,0.24);}
 .footer-support{display:flex;flex-direction:column;align-items:center;gap:10px;margin-bottom:18px;text-align:center;}
 .card-title-link{color:inherit;text-decoration:none;}
+.footer-topics{max-width:620px;margin:0 auto 16px;font-size:13px;line-height:2;text-align:center;color:rgba(255,255,255,0.35);}
+.footer-topics a{color:rgba(255,255,255,0.65);text-decoration:none;white-space:nowrap;}
+.footer-topics a:hover{color:#d4e034;text-decoration:underline;}
 .footer-about{max-width:560px;margin:0 auto 16px;font-size:14px;line-height:1.7;color:rgba(255,255,255,0.6);text-align:center;}
 .footer-support-mini{text-align:center;margin:0 0 14px;}
 .footer-support-mini a{font-size:13px;color:rgba(255,255,255,0.55);text-decoration:none;border-bottom:1px dotted rgba(255,255,255,0.35);padding-bottom:1px;}
@@ -2855,6 +2858,17 @@ async function shareTo(kind) {
 function handleEventDeepLink() {
     if (deepLinkHandled) return;
     deepLinkHandled = true;
+    // דף נושא: /?cat=jazz (מגיעים מ־/c/jazz) — מדליק את הסינון של הנושא
+    const catQ = new URLSearchParams(location.search).get('cat');
+    if (catQ) {
+        const b = document.querySelector('.filter-btn[data-cat="' + String(catQ).replace(/[^a-z]/g, '') + '"]');
+        history.replaceState(null, '', location.pathname);
+        if (b) {   // (הכפתורים עוד לא מחוברים בשלב הזה — מדליקים ידנית)
+            activeCats.clear(); activeCats.add(b.dataset.cat);
+            document.querySelectorAll('.filter-btn').forEach(x => x.classList.toggle('active', x === b));
+            applyFilter();
+        }
+    }
     const id = new URLSearchParams(location.search).get('event');
     if (!id) return;
     history.replaceState(null, '', location.pathname);   // מתחת לאירוע יש את העמוד הראשי, כך ש"אחורה" מחזיר אליו
@@ -5107,6 +5121,7 @@ loadA11yPrefs();
 <!-- פוטר -->
 <footer class="site-footer">
   <p class="footer-about"><b>חיפאית בתחתית</b> — כל האירועים בחיפה והסביבה במקום אחד: הופעות בחיפה, ג׳אז, סטנדאפ, מסיבות, תאטרון, קולנוע, הרצאות, סדנאות, ירידים ובמות פתוחות. מחפשים מה לעשות בחיפה היום, השבוע או בסופ״ש? כאן תמצאו את כל אירועי התרבות והבילוי בעיר — מהדר ועיר תחתית ועד הכרמל. מארגנים, אמנים ומקומות מוזמנים לפרסם בחינם.</p>
+  <nav class="footer-topics" aria-label="אירועים בחיפה לפי נושא"><a href="/week">מה עושים בחיפה השבוע</a> · <a href="/c/music">הופעות בחיפה</a> · <a href="/c/jazz">ג׳אז בחיפה</a> · <a href="/c/standup">סטנדאפ בחיפה</a> · <a href="/c/parties">מסיבות בחיפה</a> · <a href="/c/theater">תאטרון בחיפה</a> · <a href="/c/kids">אירועים לילדים</a> · <a href="/c/lectures">הרצאות בחיפה</a> · <a href="/c/workshops">סדנאות בחיפה</a> · <a href="/c/fairs">ירידים בחיפה</a> · <a href="/c/openstage">במה פתוחה</a> · <a href="/c/cinema">קולנוע בחיפה</a></nav>
   <div class="footer-support-mini">
     <a href="https://buymeacoffee.com/heifait_batahtit" target="_blank" rel="noopener" onclick="trackSupport()">☕ אוהבים את האתר? אפשר לפנק בקפה</a>
   </div>

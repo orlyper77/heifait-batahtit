@@ -7,6 +7,14 @@
     {
       "source": "/sitemap.xml",
       "destination": "/api/sitemap"
+    },
+    {
+      "source": "/c/:cat",
+      "destination": "/api/cat?c=:cat"
+    },
+    {
+      "source": "/week",
+      "destination": "/api/cat?c=week"
     }
   ],
   "crons": [
