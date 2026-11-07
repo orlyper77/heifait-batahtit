@@ -1565,7 +1565,7 @@ button.user-stats:hover{background:rgba(212,224,52,0.22);}
         <input type="date" class="date-input" id="date-filter" aria-label="סינון לפי תאריך">
     </label>
     <button class="btn-clear-date" onclick="clearDate()">×</button>
-    <input type="search" class="search-input fb-search" id="search-input" placeholder="🔍 חיפוש חופשי…" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" oninput="applyFilter()">
+    <input type="search" class="search-input fb-search" id="search-input" name="site-q" placeholder="🔍 חיפוש חופשי…" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" data-lpignore="true" data-1p-ignore data-form-type="other" readonly onfocus="this.removeAttribute('readonly')" onblur="if(!this.value)this.setAttribute('readonly','')" oninput="applyFilter()">
     <button type="button" class="fb-cats-btn" id="fb-cats-btn" onclick="toggleCatsDrawer()" aria-expanded="false" aria-controls="fbar-cats">🏷<span class="fb-lbl"> קטגוריות</span> <span id="fb-cats-n"></span>▾</button>
     <button type="button" class="fb-tab fb-link" onclick="openVenuesPanel()" aria-label="מקומות"><svg class="role-ico" viewBox="0 0 64 64" aria-hidden="true"><use href="#ri-ven"/></svg><span class="fb-lbl"> מקומות</span></button>
     <button type="button" class="fb-tab fb-link" onclick="openArtistsPanel()" aria-label="אמנים"><svg class="role-ico" viewBox="0 0 64 64" aria-hidden="true"><use href="#ri-art"/></svg><span class="fb-lbl"> אמנים</span></button>
@@ -1607,6 +1607,13 @@ button.user-stats:hover{background:rgba(212,224,52,0.22);}
 </div>
 <script>
 // פתיחה / סגירה של הקטגוריות, ומונה הקטגוריות שנבחרו
+// דפדפנים לפעמים "ממלאים אוטומטית" מייל בשדה החיפוש — מנקים
+(function () {
+    const s = document.getElementById('search-input');
+    const clean = () => { if (s && /@/.test(s.value) && document.activeElement !== s) { s.value = ''; if (typeof applyFilter === 'function') try { applyFilter(); } catch (_) {} } };
+    [300, 1000, 2500].forEach(t => setTimeout(clean, t));
+    s && s.addEventListener('change', clean);
+})();
 function toggleCatsDrawer(force) {
     const d = document.getElementById('fbar-cats'), b = document.getElementById('fb-cats-btn');
     const open = typeof force === 'boolean' ? force : !d.classList.contains('open');
@@ -3658,10 +3665,9 @@ if (document.readyState === 'loading') document.addEventListener('DOMContentLoad
         const q = encodeURIComponent;
         menu = document.createElement('div'); menu.className = 'mail-menu'; menu.setAttribute('role', 'menu');
         menu.innerHTML = `<div class="mm-to">✉️ ${escHtml(to)}</div>
-            <a role="menuitem" target="_blank" rel="noopener" href="https://mail.google.com/mail/?view=cm&fs=1&to=${q(to)}${subject ? '&su=' + q(subject) : ''}">כתיבה בג'ימייל</a>
-            <a role="menuitem" target="_blank" rel="noopener" href="https://outlook.live.com/mail/0/deeplink/compose?to=${q(to)}${subject ? '&subject=' + q(subject) : ''}">כתיבה באאוטלוק</a>
-            <button type="button" role="menuitem" data-act="copy">העתקת הכתובת</button>
-            <button type="button" role="menuitem" data-act="app">תוכנת המייל במחשב</button>`;
+            <a role="menuitem" target="_blank" rel="noopener" href="https://mail.google.com/mail/?view=cm&fs=1&to=${q(to)}${subject ? '&su=' + q(subject) : ''}">שליחת הודעה בג'ימייל</a>
+            <a role="menuitem" target="_blank" rel="noopener" href="https://outlook.live.com/mail/0/deeplink/compose?to=${q(to)}${subject ? '&subject=' + q(subject) : ''}">שליחת הודעה באאוטלוק</a>
+            <button type="button" role="menuitem" data-act="copy">העתקת הכתובת</button>`;
         document.body.appendChild(menu);
         const r = a.getBoundingClientRect();
         menu.style.top = Math.min(window.innerHeight - menu.offsetHeight - 8, r.bottom + 6) + 'px';
@@ -3669,7 +3675,6 @@ if (document.readyState === 'loading') document.addEventListener('DOMContentLoad
         menu.addEventListener('click', e2 => {
             const b = e2.target.closest('[data-act]');
             if (b && b.dataset.act === 'copy') { (navigator.clipboard ? navigator.clipboard.writeText(to) : Promise.reject()).then(() => showToast('הכתובת הועתקה ✓'), () => showToast(to)); }
-            if (b && b.dataset.act === 'app') location.href = a.href;
             setTimeout(close, 50);
         });
         menu.querySelector('a').focus();
