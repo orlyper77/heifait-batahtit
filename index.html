@@ -616,6 +616,39 @@ body:has(#overlay.open),body:has(.auth-overlay.open),body:has(#legal-overlay.ope
 .ov-msg{display:flex;justify-content:space-between;gap:10px;padding:7px 0;border-bottom:1px solid rgba(255,255,255,0.06);font-size:13px;color:rgba(255,255,255,0.75);}
 .ov-msg.unread span{color:#f5ede8;font-weight:600;}
 .ov-msg small{color:rgba(255,255,255,0.4);white-space:nowrap;}
+.fbar{position:sticky;top:0;z-index:240;background:rgba(42,8,8,0.97);backdrop-filter:blur(6px);border-bottom:1px solid rgba(255,255,255,0.08);box-shadow:0 6px 16px -10px rgba(0,0,0,.6);padding:.55rem 1rem;}
+.fbar-row{display:flex;align-items:center;gap:8px;max-width:1300px;margin:0 auto;}
+.fb-tab{flex-shrink:0;display:inline-flex;align-items:center;gap:5px;background:none;border:none;border-bottom:2px solid transparent;color:rgba(255,255,255,0.65);font-family:inherit;font-size:14.5px;padding:7px 6px;cursor:pointer;white-space:nowrap;}
+.fb-tab.active{color:#d4e034;border-bottom-color:#d4e034;}
+.fb-tab:hover{color:#fff;}
+.fb-tab .role-ico{width:22px;height:22px;filter:none;}
+.fb-date{position:relative;flex-shrink:0;display:inline-flex;align-items:center;gap:4px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.25);border-radius:999px;padding:6px 11px;cursor:pointer;font-size:13.5px;color:#fff;white-space:nowrap;}
+.fb-date .date-input{position:absolute;inset:0;opacity:0;width:100%;height:100%;cursor:pointer;}
+.fbar .btn-clear-date{flex-shrink:0;display:none;}
+.fbar.has-date .btn-clear-date{display:inline-flex;}
+.fbar.has-date .fb-date{background:#d4e034;border-color:#d4e034;color:#1a0505;font-weight:700;}
+.fb-search{flex:1 1 160px;min-width:0;width:0;background:rgba(255,255,255,0.08)!important;border:1px solid rgba(255,255,255,0.25)!important;border-radius:999px!important;color:#fff!important;font-family:inherit;font-size:14px!important;padding:7px 14px!important;}
+.fb-cats-btn{flex-shrink:0;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.25);color:#fff;border-radius:999px;font-family:inherit;font-size:13.5px;padding:6px 12px;cursor:pointer;white-space:nowrap;}
+.fb-cats-btn.active,.fb-cats-btn.has-sel{background:#d4e034;border-color:#d4e034;color:#1a0505;font-weight:700;}
+.fbar-cats{display:none!important;flex-wrap:wrap;gap:7px;justify-content:center;max-width:1300px;margin:.6rem auto .1rem;max-height:60vh;overflow-y:auto;}
+.fbar-cats.open{display:flex!important;}
+.fbar-cats .filter-btn{padding:6px 13px;font-size:13px;}
+@media(max-width:768px){
+  .fbar{padding:.45rem .6rem;}
+  .fbar-row{gap:5px;}
+  .fb-lbl,.fb-all{display:none;}
+  .fb-tab{padding:6px 3px;font-size:15px;}
+  .fb-tab.active{border-bottom-width:2px;}
+  .fb-date{padding:6px 9px;font-size:13px;}
+  .fb-lbl-d{max-width:46px;overflow:hidden;text-overflow:ellipsis;}
+  .fb-search{font-size:14px!important;padding:6px 10px!important;}
+  .fb-cats-btn{padding:6px 9px;}
+}
+.mail-menu{position:fixed;z-index:3000;background:#fff;color:#2a0808;border-radius:14px;box-shadow:0 12px 30px rgba(0,0,0,.45);padding:6px;min-width:210px;display:flex;flex-direction:column;}
+.mail-menu .mm-to{font-size:12.5px;color:#666;padding:6px 10px 8px;border-bottom:1px solid #eee;margin-bottom:4px;direction:ltr;text-align:right;}
+.mail-menu a,.mail-menu button{display:block;text-align:right;background:none;border:none;color:#2a0808;font-family:inherit;font-size:14.5px;padding:9px 12px;border-radius:9px;text-decoration:none;cursor:pointer;}
+.mail-menu a:hover,.mail-menu button:hover,.mail-menu a:focus,.mail-menu button:focus{background:#c3e0f7;outline:none;}
+@media(min-width:769px){.fbar-row{justify-content:center;}.fb-search{flex:0 1 260px;}}
 .tab-venues{}
 .cat-details{border-radius:14px;}
 .cat-sum{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:11px 14px;border-radius:12px;background:rgba(255,255,255,0.06);border:1.5px solid rgba(255,255,255,0.2);font-size:15px;}
@@ -626,7 +659,7 @@ body:has(#overlay.open),body:has(.auth-overlay.open),body:has(#legal-overlay.ope
 .cat-details[open] .cat-sum{margin-bottom:10px;}
 .cat-details[open] .cs-edit{transform:none;}
 #overlay .cat-sum,.ar-editor .cat-sum{background:#fff;border-color:#9cc9f0;color:#2a0808;}
-.role-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:8px 0 14px;}
+.role-cards{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin:8px 0 14px;}
 .role-cards button{display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center;background:rgba(255,255,255,0.06);border:2px solid rgba(255,255,255,0.18);color:#f5ede8;border-radius:16px;padding:14px 10px;font-family:inherit;cursor:pointer;}
 .role-cards button b{font-size:16px;}
 .role-cards button small{font-size:12.5px;opacity:.8;line-height:1.5;}
@@ -637,6 +670,11 @@ body:has(#overlay.open),body:has(.auth-overlay.open),body:has(#legal-overlay.ope
 .who-pick button{display:inline-flex;align-items:center;gap:6px;}
 .tab .role-ico{width:20px;height:20px;}
 .ava{display:inline-flex;vertical-align:middle;}
+.ar-add-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;}
+.ico-in{width:20px!important;height:20px!important;vertical-align:-5px;filter:none!important;}
+.ico-h2{width:32px!important;height:32px!important;vertical-align:-8px;}
+.ar-ph{background:none!important;border:none!important;}
+.ico-ph{width:84px!important;height:84px!important;filter:none!important;}
 .ava .role-ico{width:22px;height:22px;filter:none;}
 .ava-lg .role-ico{width:34px;height:34px;filter:drop-shadow(0 2px 4px rgba(0,0,0,.3));}
 .adm-chip .ava .role-ico{width:18px;height:18px;}
@@ -1240,7 +1278,7 @@ button.user-stats:hover{background:rgba(212,224,52,0.22);}
 </style>
 </head>
 <body>
-<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs><clipPath id="rcClip"><circle cx="32" cy="32" r="30"/></clipPath></defs><symbol id="ri-aud" viewBox="0 0 64 64"><g clip-path="url(#rcClip)"><circle cx="32" cy="32" r="30" fill="#f5d90a"/> <g transform="translate(-9 6) scale(.82)"><path d="M19 24c-2 9-1 20-5 26 5 2 30 2 36 0-4-6-3-17-5-26z" fill="#7a2e3e" stroke="#1a0505" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/> <path d="M8 64c1-12 9-19 24-19s23 7 24 19z" fill="#c9df3a" stroke="#1a0505" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/> <path d="M22 46c3 3 7 4 10 4s7-1 10-4" fill="none" stroke="#1a0505" stroke-width="1.6" stroke-linecap="round"/> <path d="M28 41h8v6c-2 1.6-6 1.6-8 0z" fill="#e3b08f" stroke="#1a0505" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/> <path d="M21 28c0-9 5-14 11-14s11 5 11 14c0 9-5 15-11 15s-11-6-11-15z" fill="#f2c4a4" stroke="#1a0505" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/> <path d="M19 30c-1-12 5-19 13-19s14 7 13 19c-1-5-3-8-5-9-1 3-6 5-12 4-3-1-4-3-4-5-3 2-5 6-5 10z" fill="#7a2e3e" stroke="#1a0505" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/> <path d="M25.2 30c1.3 1.1 3.1 1.1 4.4 0M34.4 30c1.3 1.1 3.1 1.1 4.4 0" fill="none" stroke="#1a0505" stroke-width="1.7" stroke-linecap="round"/> <path d="M28.5 36.5c2 1.6 5 1.6 7 0" fill="none" stroke="#c8243f" stroke-width="2" stroke-linecap="round"/> <circle cx="22" cy="37" r="1.6" fill="#f5d90a" stroke="#1a0505" stroke-width="1.3" stroke-linejoin="round" stroke-linecap="round"/><circle cx="42" cy="37" r="1.6" fill="#f5d90a" stroke="#1a0505" stroke-width="1.3" stroke-linejoin="round" stroke-linecap="round"/></g> <g transform="translate(18 9) scale(.78)"><path d="M8 64c1-12 9-19 24-19s23 7 24 19z" fill="#8ec5e8" stroke="#1a0505" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/> <path d="M27 42h10v6c-2 2-8 2-10 0z" fill="#d9a0b8" stroke="#1a0505" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/> <path d="M20 26c0-9 5-14 12-14s12 5 12 14v6c0 9-6 14-12 14s-12-5-12-14z" fill="#e8b4c8" stroke="#1a0505" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/> <path d="M20 30c1 9 5 16 12 16s11-7 12-16c-2 4-5 6-7 6h-10c-2 0-5-2-7-6z" fill="#4a3a4a" stroke="#1a0505" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/> <path d="M27.5 37.5c2.5 1.6 6.5 1.6 9 0" fill="none" stroke="#e8b4c8" stroke-width="2" stroke-linecap="round"/> <path d="M20 25c0-8 5-13 12-13s12 5 12 13c-2-4-4-6-6-6.5-3 2-9 2-12 0-2 .5-4 2.5-6 6.5z" fill="#3a2e3a" stroke="#1a0505" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/> <path d="M24.5 28.5c1.4 1.2 3.4 1.2 4.8 0M34.7 28.5c1.4 1.2 3.4 1.2 4.8 0" fill="none" stroke="#1a0505" stroke-width="1.8" stroke-linecap="round"/> <path d="M32 29v4.5l-1.6 1" fill="none" stroke="#b07a92" stroke-width="1.5" stroke-linecap="round"/></g> <g transform="translate(30 12) scale(1)"><path d="M0 0v8a2.6 2.6 0 1 1-1.7-2.4V-1.6l5.4-1.4v2z" fill="#fff" stroke="#1a0505" stroke-width="1.3" stroke-linejoin="round" stroke-linecap="round"/></g><g transform="translate(9 26) scale(0.85)"><path d="M0 0v8a2.6 2.6 0 1 1-1.7-2.4V-1.6l5.4-1.4v2z" fill="#fff" stroke="#1a0505" stroke-width="1.3" stroke-linejoin="round" stroke-linecap="round"/></g><g transform="translate(53 22) scale(0.8)"><path d="M0 0v8a2.6 2.6 0 1 1-1.7-2.4V-1.6l5.4-1.4v2z" fill="#fff" stroke="#1a0505" stroke-width="1.3" stroke-linejoin="round" stroke-linecap="round"/></g></g><circle cx="32" cy="32" r="30" fill="none" stroke="#1a0505" stroke-width="2.2"/></symbol><symbol id="ri-art" viewBox="0 0 64 64"><g clip-path="url(#rcClip)"><circle cx="32" cy="32" r="30" fill="#8ec5e8"/> <g opacity=".25" fill="#fff"><circle cx="14" cy="16" r="1.4"/><circle cx="50" cy="12" r="1"/><circle cx="54" cy="44" r="1.2"/></g> <path d="M30 16 L40 14 L40 50 L30 48z" fill="#c8243f" stroke="#1a0505" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/> <g stroke="#1a0505" stroke-width="1.2" opacity=".55"><path d="M32.5 15.5v33M35 15v34.5M37.5 14.6v35"/></g> <rect x="15" y="14" width="15" height="36" rx="2" fill="#a9c7d9" stroke="#1a0505" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/> <g stroke="#1a0505" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round"><rect x="17.5" y="17" width="10" height="3" fill="#f5d90a"/><rect x="17.5" y="21.5" width="10" height="3" fill="#b38ae0"/><rect x="17.5" y="26" width="10" height="3" fill="#f7b6cf"/><rect x="17.5" y="30.5" width="10" height="3" fill="#8ec5e8"/><rect x="17.5" y="35" width="10" height="3" fill="#f5d90a"/><rect x="17.5" y="39.5" width="10" height="3" fill="#b38ae0"/><rect x="17.5" y="44" width="10" height="3" fill="#f7b6cf"/></g> <rect x="40" y="13" width="11" height="38" rx="2" fill="#c8243f" stroke="#1a0505" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/> <rect x="42.3" y="16" width="6.4" height="32" rx="1" fill="#c9df3a" stroke="#1a0505" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round"/> <g fill="none" stroke="#1a0505" stroke-width="1.8" stroke-linecap="round"><path d="M9 26c-1.5 2-1.5 6 0 8"/><path d="M6 23.5c-2.4 3.5-2.4 9.5 0 13"/></g> <path d="M54.5 22v7.5a2.4 2.4 0 1 1-1.6-2.3V20.5l5-1.3v1.8z" fill="#fff" stroke="#1a0505" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round"/></g><circle cx="32" cy="32" r="30" fill="none" stroke="#1a0505" stroke-width="2.2"/></symbol><symbol id="ri-ven" viewBox="0 0 64 64"><g clip-path="url(#rcClip)"><circle cx="32" cy="32" r="30" fill="#b38ae0"/> <g opacity=".3" fill="#fff"><circle cx="14" cy="24" r="1.2"/><circle cx="50" cy="26" r="1"/></g> <path d="M32 18 L22 46 H42Z" fill="#fff6b0" opacity=".85"/> <path d="M8 46h48v6H8z" fill="#c9884a" stroke="#1a0505" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/><path d="M8 52h48v8H8z" fill="#7a4a2a" stroke="#1a0505" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/> <path d="M12 16h3c7 4 8 16 4 30h-7z" fill="#c8243f" stroke="#1a0505" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/><path d="M52 16h-3c-7 4-8 16-4 30h7z" fill="#c8243f" stroke="#1a0505" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/> <path d="M14.5 20c2.5 6 2.5 14 .5 24M49.5 20c-2.5 6-2.5 14-.5 24" fill="none" stroke="#1a0505" stroke-width="1.2" opacity=".5"/> <path d="M8 9h48v8H8z" fill="#c8243f" stroke="#1a0505" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/> <g fill="#f5d90a" stroke="#1a0505" stroke-width="1"><circle cx="15" cy="13" r="1.8"/><circle cx="23.5" cy="13" r="1.8"/><circle cx="32" cy="13" r="1.8"/><circle cx="40.5" cy="13" r="1.8"/><circle cx="49" cy="13" r="1.8"/></g> <path d="M32 27 l2.3 4.8 5.2.7-3.8 3.6 1 5.2-4.7-2.6-4.7 2.6 1-5.2-3.8-3.6 5.2-.7z" fill="#f5d90a" stroke="#1a0505" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"/></g><circle cx="32" cy="32" r="30" fill="none" stroke="#1a0505" stroke-width="2.2"/></symbol></svg>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs><clipPath id="rcClip"><circle cx="32" cy="32" r="30"/></clipPath></defs><symbol id="ri-aud" viewBox="0 0 64 64"><g clip-path="url(#rcClip)"><circle cx="32" cy="32" r="30" fill="#f5d90a"/> <g transform="translate(-9 6) scale(.82)"><path d="M19 24c-2 9-1 20-5 26 5 2 30 2 36 0-4-6-3-17-5-26z" fill="#7a2e3e" stroke="#1a0505" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/> <path d="M8 64c1-12 9-19 24-19s23 7 24 19z" fill="#c9df3a" stroke="#1a0505" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/> <path d="M22 46c3 3 7 4 10 4s7-1 10-4" fill="none" stroke="#1a0505" stroke-width="1.6" stroke-linecap="round"/> <path d="M28 41h8v6c-2 1.6-6 1.6-8 0z" fill="#e3b08f" stroke="#1a0505" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/> <path d="M21 28c0-9 5-14 11-14s11 5 11 14c0 9-5 15-11 15s-11-6-11-15z" fill="#f2c4a4" stroke="#1a0505" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/> <path d="M19 30c-1-12 5-19 13-19s14 7 13 19c-1-5-3-8-5-9-1 3-6 5-12 4-3-1-4-3-4-5-3 2-5 6-5 10z" fill="#7a2e3e" stroke="#1a0505" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/> <path d="M25.2 30c1.3 1.1 3.1 1.1 4.4 0M34.4 30c1.3 1.1 3.1 1.1 4.4 0" fill="none" stroke="#1a0505" stroke-width="1.7" stroke-linecap="round"/> <path d="M28.5 36.5c2 1.6 5 1.6 7 0" fill="none" stroke="#c8243f" stroke-width="2" stroke-linecap="round"/> <circle cx="22" cy="37" r="1.6" fill="#f5d90a" stroke="#1a0505" stroke-width="1.3" stroke-linejoin="round" stroke-linecap="round"/><circle cx="42" cy="37" r="1.6" fill="#f5d90a" stroke="#1a0505" stroke-width="1.3" stroke-linejoin="round" stroke-linecap="round"/></g> <g transform="translate(18 9) scale(.78)"><path d="M8 64c1-12 9-19 24-19s23 7 24 19z" fill="#8ec5e8" stroke="#1a0505" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/> <path d="M27 42h10v6c-2 2-8 2-10 0z" fill="#d9a0b8" stroke="#1a0505" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/> <path d="M20 26c0-9 5-14 12-14s12 5 12 14v6c0 9-6 14-12 14s-12-5-12-14z" fill="#e8b4c8" stroke="#1a0505" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/> <path d="M20 30c1 9 5 16 12 16s11-7 12-16c-2 4-5 6-7 6h-10c-2 0-5-2-7-6z" fill="#4a3a4a" stroke="#1a0505" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/> <path d="M27.5 37.5c2.5 1.6 6.5 1.6 9 0" fill="none" stroke="#e8b4c8" stroke-width="2" stroke-linecap="round"/> <path d="M20 25c0-8 5-13 12-13s12 5 12 13c-2-4-4-6-6-6.5-3 2-9 2-12 0-2 .5-4 2.5-6 6.5z" fill="#3a2e3a" stroke="#1a0505" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/> <path d="M24.5 28.5c1.4 1.2 3.4 1.2 4.8 0M34.7 28.5c1.4 1.2 3.4 1.2 4.8 0" fill="none" stroke="#1a0505" stroke-width="1.8" stroke-linecap="round"/> <path d="M32 29v4.5l-1.6 1" fill="none" stroke="#b07a92" stroke-width="1.5" stroke-linecap="round"/></g> <g transform="translate(30 12) scale(1)"><path d="M0 0v8a2.6 2.6 0 1 1-1.7-2.4V-1.6l5.4-1.4v2z" fill="#fff" stroke="#1a0505" stroke-width="1.3" stroke-linejoin="round" stroke-linecap="round"/></g><g transform="translate(9 26) scale(0.85)"><path d="M0 0v8a2.6 2.6 0 1 1-1.7-2.4V-1.6l5.4-1.4v2z" fill="#fff" stroke="#1a0505" stroke-width="1.3" stroke-linejoin="round" stroke-linecap="round"/></g><g transform="translate(53 22) scale(0.8)"><path d="M0 0v8a2.6 2.6 0 1 1-1.7-2.4V-1.6l5.4-1.4v2z" fill="#fff" stroke="#1a0505" stroke-width="1.3" stroke-linejoin="round" stroke-linecap="round"/></g></g><circle cx="32" cy="32" r="30" fill="none" stroke="#1a0505" stroke-width="2.2"/></symbol><symbol id="ri-art" viewBox="0 0 64 64"><g clip-path="url(#rcClip)"><circle cx="32" cy="32" r="30" fill="#8ec5e8"/> <g opacity=".25" fill="#fff"><circle cx="14" cy="16" r="1.4"/><circle cx="50" cy="12" r="1"/><circle cx="54" cy="44" r="1.2"/></g> <path d="M30 16 L40 14 L40 50 L30 48z" fill="#c8243f" stroke="#1a0505" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/> <g stroke="#1a0505" stroke-width="1.2" opacity=".55"><path d="M32.5 15.5v33M35 15v34.5M37.5 14.6v35"/></g> <rect x="15" y="14" width="15" height="36" rx="2" fill="#a9c7d9" stroke="#1a0505" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/> <g stroke="#1a0505" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round"><rect x="17.5" y="17" width="10" height="3" fill="#f5d90a"/><rect x="17.5" y="21.5" width="10" height="3" fill="#b38ae0"/><rect x="17.5" y="26" width="10" height="3" fill="#f7b6cf"/><rect x="17.5" y="30.5" width="10" height="3" fill="#8ec5e8"/><rect x="17.5" y="35" width="10" height="3" fill="#f5d90a"/><rect x="17.5" y="39.5" width="10" height="3" fill="#b38ae0"/><rect x="17.5" y="44" width="10" height="3" fill="#f7b6cf"/></g> <rect x="40" y="13" width="11" height="38" rx="2" fill="#c8243f" stroke="#1a0505" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/> <rect x="42.3" y="16" width="6.4" height="32" rx="1" fill="#c9df3a" stroke="#1a0505" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round"/> <g fill="none" stroke="#1a0505" stroke-width="1.8" stroke-linecap="round"><path d="M9 26c-1.5 2-1.5 6 0 8"/><path d="M6 23.5c-2.4 3.5-2.4 9.5 0 13"/></g> <path d="M54.5 22v7.5a2.4 2.4 0 1 1-1.6-2.3V20.5l5-1.3v1.8z" fill="#fff" stroke="#1a0505" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round"/></g><circle cx="32" cy="32" r="30" fill="none" stroke="#1a0505" stroke-width="2.2"/></symbol><symbol id="ri-ven" viewBox="0 0 64 64"><g clip-path="url(#rcClip)"><circle cx="32" cy="32" r="30" fill="#b38ae0"/> <g opacity=".3" fill="#fff"><circle cx="14" cy="24" r="1.2"/><circle cx="50" cy="26" r="1"/></g> <path d="M32 18 L22 46 H42Z" fill="#fff6b0" opacity=".85"/> <path d="M8 46h48v6H8z" fill="#c9884a" stroke="#1a0505" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/><path d="M8 52h48v8H8z" fill="#7a4a2a" stroke="#1a0505" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/> <path d="M12 16h3c7 4 8 16 4 30h-7z" fill="#c8243f" stroke="#1a0505" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/><path d="M52 16h-3c-7 4-8 16-4 30h7z" fill="#c8243f" stroke="#1a0505" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/> <path d="M14.5 20c2.5 6 2.5 14 .5 24M49.5 20c-2.5 6-2.5 14-.5 24" fill="none" stroke="#1a0505" stroke-width="1.2" opacity=".5"/> <path d="M8 9h48v8H8z" fill="#c8243f" stroke="#1a0505" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/> <g fill="#f5d90a" stroke="#1a0505" stroke-width="1"><circle cx="15" cy="13" r="1.8"/><circle cx="23.5" cy="13" r="1.8"/><circle cx="32" cy="13" r="1.8"/><circle cx="40.5" cy="13" r="1.8"/><circle cx="49" cy="13" r="1.8"/></g> <path d="M32 27 l2.3 4.8 5.2.7-3.8 3.6 1 5.2-4.7-2.6-4.7 2.6 1-5.2-3.8-3.6 5.2-.7z" fill="#f5d90a" stroke="#1a0505" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"/></g><circle cx="32" cy="32" r="30" fill="none" stroke="#1a0505" stroke-width="2.2"/></symbol><symbol id="ri-pro" viewBox="0 0 64 64"><g clip-path="url(#rcClip)"><circle cx="32" cy="32" r="30" fill="#3dbf9a"/> <g opacity=".25" fill="#fff"><circle cx="13" cy="18" r="1.4"/><circle cx="51" cy="48" r="1.2"/></g> <path d="M14 27h7l17-10v30L21 37h-7z" fill="#f5d90a" stroke="#1a0505" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/> <path d="M14 27h7v10h-7a2 2 0 0 1-2-2v-6a2 2 0 0 1 2-2z" fill="#f075a8" stroke="#1a0505" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/> <path d="M38 17c3 4 3 26 0 30" fill="none" stroke="#1a0505" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/> <path d="M19 37l3 10h5l-2-10" fill="#c8243f" stroke="#1a0505" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/> <path d="M26 20.5l11-6.5" stroke="#fff" stroke-width="1.6" stroke-linecap="round" opacity=".7"/> <g fill="none" stroke="#1a0505" stroke-width="2.2" stroke-linecap="round"><path d="M44 27c1.5 1.8 1.5 8.2 0 10"/><path d="M48.5 23c2.8 3.5 2.8 14.5 0 18"/></g> <path d="M51 12l1.4 3 3.2 1.4-3.2 1.4-1.4 3.2-1.4-3.2-3.2-1.4 3.2-1.4z" fill="#fff" stroke="#1a0505" stroke-width="1.2" stroke-linejoin="round"/></g><circle cx="32" cy="32" r="30" fill="none" stroke="#1a0505" stroke-width="2.2"/></symbol></svg>
 <a class="skip-link" href="#grid">דילוג לרשימת האירועים</a>
 <h1 class="sr-only">חיפאית בתחתית — לוח האירועים של חיפה</h1>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><linearGradient id="igg" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#FEDA75"/><stop offset=".35" stop-color="#FA7E1E"/><stop offset=".6" stop-color="#D62976"/><stop offset=".85" stop-color="#962FBF"/><stop offset="1" stop-color="#4F5BD5"/></linearGradient></defs></svg>
@@ -1285,7 +1323,7 @@ button.user-stats:hover{background:rgba(212,224,52,0.22);}
         <button class="adm-chip" data-f="past" data-pub onclick="setMyFilter('past')">אירועים שעברו</button>
         <button class="adm-chip" data-f="defaults" data-pub onclick="setMyFilter('defaults')">⚙️ הפרטים הקבועים שלי</button>
         <button class="adm-chip" data-f="venues" data-role="venue" onclick="setMyFilter('venues')">🏠 המקום שלי</button>
-        <button class="adm-chip" data-f="artists" data-role="artist" onclick="setMyFilter('artists')">🎤 דף האמן שלי</button>
+        <button class="adm-chip" data-f="artists" data-role="artist" onclick="setMyFilter('artists')"><svg class="role-ico ico-in" viewBox="0 0 64 64" aria-hidden="true"><use href="#ri-art"/></svg> דף האמן / המפיק שלי</button>
         <button class="adm-chip" data-f="profile" onclick="setMyFilter('profile')"><span class="ava" data-ava>👤</span> הפרופיל שלי</button>
     </div>
     </div>
@@ -1301,8 +1339,9 @@ button.user-stats:hover{background:rgba(212,224,52,0.22);}
             <p class="my-intro">אפשר לבחור יותר מאחד. הבחירה קובעת מה יופיע לכם באזור האישי ובטופס הוספת אירוע.</p>
             <div class="role-cards" id="pf-roles">
                 <button type="button" data-r="audience" onclick="this.classList.toggle('selected')"><span class="rc-ic"><svg class="role-ico" viewBox="0 0 64 64" aria-hidden="true"><use href="#ri-aud"/></svg></span><b>קהל</b><small>אני בא/ה לאירועים — שומר/ת אירועים, מקבל/ת התראות</small></button>
-                <button type="button" data-r="artist" onclick="this.classList.toggle('selected')"><span class="rc-ic"><svg class="role-ico" viewBox="0 0 64 64" aria-hidden="true"><use href="#ri-art"/></svg></span><b>אמן / להקה</b><small>מופיע/ה ומפרסם/ת את ההופעות שלי, עם דף אמן</small></button>
+                <button type="button" data-r="artist" onclick="this.classList.toggle('selected')"><span class="rc-ic"><svg class="role-ico" viewBox="0 0 64 64" aria-hidden="true"><use href="#ri-art"/></svg></span><b>אמן / יוצר/ת</b><small>עם דף אמן משלי</small></button>
                 <button type="button" data-r="venue" onclick="this.classList.toggle('selected')"><span class="rc-ic"><svg class="role-ico" viewBox="0 0 64 64" aria-hidden="true"><use href="#ri-ven"/></svg></span><b>מקום</b><small>מארח/ת אירועים — עם דף מקום ופרטי קשר</small></button>
+                <button type="button" data-r="producer" onclick="this.classList.toggle('selected')"><span class="rc-ic"><svg class="role-ico" viewBox="0 0 64 64" aria-hidden="true"><use href="#ri-pro"/></svg></span><b>מפיק/ה</b><small>עם דף מפיק משלי</small></button>
             </div>
             <div class="modal-btns"><button class="btn-submit" onclick="saveRolesFrom('pf')">💾 שמירה</button></div>
             <p class="my-intro" style="margin-top:14px">🔔 להתראות על אירועים חדשים — כפתור הפעמון בפס העליון.</p>
@@ -1365,31 +1404,35 @@ button.user-stats:hover{background:rgba(212,224,52,0.22);}
 <div class="approval-panel venues-panel artists-panel" id="artists-panel" role="dialog" aria-label="אמנים">
     <div class="admin-top">
     <div class="approval-header">
-        <h2>🎤 אמנים וגם להקות</h2>
+        <h2 id="ar-h2"><svg class="role-ico ico-h2" viewBox="0 0 64 64" aria-hidden="true"><use href="#ri-art"/></svg> אמנים ויוצרים</h2>
         <button class="btn-close-approval" onclick="closeArtistsPanel()">✕ סגור</button>
     </div>
     <div class="adm-tools">
-        <input type="search" class="adm-search" id="ar-search" placeholder="🔍 חיפוש אמן או להקה…" oninput="renderArtistsDir()">
-        <button type="button" class="btn-coffee ar-add" onclick="openArtistEditor()">＋ יצירת דף אמן</button>
+        <input type="search" class="adm-search" id="ar-search" placeholder="🔍 חיפוש אמן, יוצר/ת או להקה…" oninput="renderArtistsDir()">
+        <button type="button" class="btn-coffee ar-add" id="ar-add-btn" onclick="openArtistEditor()">＋ יצירת דף אמן</button>
+    </div>
+    <div class="adm-chips" id="ar-kind-chips" style="margin-bottom:.8rem">
+        <button class="adm-chip active" data-k="artist" onclick="setArKind('artist')"><svg class="role-ico ico-in" viewBox="0 0 64 64" aria-hidden="true"><use href="#ri-art"/></svg> אמנים ויוצרים</button>
+        <button class="adm-chip" data-k="producer" onclick="setArKind('producer')"><svg class="role-ico ico-in" viewBox="0 0 64 64" aria-hidden="true"><use href="#ri-pro"/></svg> מפיקים</button>
     </div>
     </div>
     <div class="admin-tab-panel">
         <div id="ar-editor" class="ar-editor" style="display:none">
-            <h3 id="ar-ed-title">🎤 דף אמן חדש</h3>
-            <p class="field-hint">דף אמן מציג אתכם לקהל ולמארגנים: תמונה, כמה מילים, קישורים להאזנה ולרשתות, ופרטי קשר להזמנת הופעות. הדף מופיע אחרי אישור. האירועים שלכם יוצגו בדף אוטומטית כששם האמן מופיע בשם האירוע.</p>
-            <div class="form-group"><label>🎤 שם האמן / הלהקה *</label><input type="text" id="ar-name" maxlength="80"></div>
-            <div class="form-group"><label>🏷 סגנון <span class="cat-pick-hint">(עד 6)</span></label><div class="cat-picker" id="ar-cats"></div></div>
-            <div class="form-group"><label>✍️ כמה מילים עליכם</label><textarea id="ar-bio" maxlength="1200" placeholder="מי אתם, מה אתם עושים, איפה אפשר לשמוע אתכם…"></textarea></div>
+            <h3 id="ar-ed-title">דף אמן חדש</h3>
+            <p class="field-hint">דף אמן מציג אתכם לקהל ולמארגנים: תמונה, כמה מילים, קישורים ופרטי קשר. הדף מופיע אחרי אישור. האירועים שלכם יוצגו בדף אוטומטית כששם האמן מופיע בשם האירוע.</p>
+            <div class="form-group"><label>שם האמן / היוצר/ת / הלהקה *</label><input type="text" id="ar-name" maxlength="80"></div>
+            <div class="form-group"><label>🏷 תחום <span class="cat-pick-hint">(עד 6)</span></label><div class="cat-picker" id="ar-cats"></div></div>
+            <div class="form-group"><label>✍️ כמה מילים עליכם</label><textarea id="ar-bio" maxlength="1200" placeholder="מי אתם, מה אתם יוצרים, איפה אפשר לראות או לשמוע אתכם…"></textarea></div>
             <div class="form-group"><label>🖼 תמונה</label>
                 <div class="ar-img-row"><img id="ar-img-preview" alt="" style="display:none"><input type="file" id="ar-img" accept="image/*" onchange="arPickImage(event)" style="display:none"><button type="button" class="btn-cancel" onclick="document.getElementById('ar-img').click()">🖼 בחירת תמונה</button><button type="button" class="btn-cancel" id="ar-img-remove" style="display:none" onclick="arRemoveImage()">הסרת התמונה</button></div></div>
-            <div class="form-group"><label>🔗 קישורים <span class="cat-pick-hint">(יוטיוב, ספוטיפיי, אינסטגרם, פייסבוק, אתר, בנדקמפ… עד 6)</span></label>
+            <div class="form-group"><label>🔗 קישורים <span class="cat-pick-hint">(עד 6)</span></label>
                 <input type="url" id="ar-link1" placeholder="https://..." dir="ltr" class="ar-link">
                 <input type="url" id="ar-link2" placeholder="https://..." dir="ltr" class="ar-link">
                 <input type="url" id="ar-link3" placeholder="https://..." dir="ltr" class="ar-link">
                 <input type="url" id="ar-link4" placeholder="https://..." dir="ltr" class="ar-link">
                 <input type="url" id="ar-link5" placeholder="https://..." dir="ltr" class="ar-link">
                 <input type="url" id="ar-link6" placeholder="https://..." dir="ltr" class="ar-link"></div>
-            <div class="form-group"><label>📞 טלפון / וואטסאפ להזמנת הופעות (לא חובה)</label>
+            <div class="form-group"><label>📞 טלפון / וואטסאפ ליצירת קשר (לא חובה)</label>
                 <div class="contact-row"><input type="tel" id="ar-contact" placeholder="050-1234567" dir="ltr" inputmode="tel">
                 <div class="contact-kind" id="ar-contact-kind">
                     <button type="button" data-k="wa" class="selected" onclick="setContactKind('wa','ar')">💬 וואטסאפ</button>
@@ -1411,8 +1454,9 @@ button.user-stats:hover{background:rgba(212,224,52,0.22);}
         <p class="auth-subtitle">מה אתם באתר? אפשר לבחור יותר מאחד, ולשנות בכל רגע באזור האישי.</p>
         <div class="role-cards" id="ob-roles">
                 <button type="button" data-r="audience" onclick="this.classList.toggle('selected')"><span class="rc-ic"><svg class="role-ico" viewBox="0 0 64 64" aria-hidden="true"><use href="#ri-aud"/></svg></span><b>קהל</b><small>אני בא/ה לאירועים — שומר/ת אירועים, מקבל/ת התראות</small></button>
-                <button type="button" data-r="artist" onclick="this.classList.toggle('selected')"><span class="rc-ic"><svg class="role-ico" viewBox="0 0 64 64" aria-hidden="true"><use href="#ri-art"/></svg></span><b>אמן / להקה</b><small>מופיע/ה ומפרסם/ת את ההופעות שלי, עם דף אמן</small></button>
+                <button type="button" data-r="artist" onclick="this.classList.toggle('selected')"><span class="rc-ic"><svg class="role-ico" viewBox="0 0 64 64" aria-hidden="true"><use href="#ri-art"/></svg></span><b>אמן / יוצר/ת</b><small>עם דף אמן משלי</small></button>
                 <button type="button" data-r="venue" onclick="this.classList.toggle('selected')"><span class="rc-ic"><svg class="role-ico" viewBox="0 0 64 64" aria-hidden="true"><use href="#ri-ven"/></svg></span><b>מקום</b><small>מארח/ת אירועים — עם דף מקום ופרטי קשר</small></button>
+                <button type="button" data-r="producer" onclick="this.classList.toggle('selected')"><span class="rc-ic"><svg class="role-ico" viewBox="0 0 64 64" aria-hidden="true"><use href="#ri-pro"/></svg></span><b>מפיק/ה</b><small>עם דף מפיק משלי</small></button>
             </div>
         <div class="modal-btns"><button class="btn-submit" onclick="saveRolesFrom('ob')">המשך</button><button class="btn-cancel" onclick="closeRolesOverlay(true)">אחר כך</button></div>
     </div>
@@ -1511,28 +1555,23 @@ button.user-stats:hover{background:rgba(212,224,52,0.22);}
     </div>
 </div>
 
-<!-- Tabs -->
-<div class="tab-bar">
-    <div class="tab active" onclick="switchTab('all',this)">כל האירועים</div>
-    <div class="tab" onclick="switchTab('favs',this)">❤️ מועדפים <span id="fav-count"></span></div>
-    <div class="tab tab-venues" onclick="openVenuesPanel()" role="button" tabindex="0" data-kbd-click><svg class="role-ico" viewBox="0 0 64 64" aria-hidden="true"><use href="#ri-ven"/></svg> מקומות</div>
-    <div class="tab tab-artists" onclick="openArtistsPanel()" role="button" tabindex="0" data-kbd-click><svg class="role-ico" viewBox="0 0 64 64" aria-hidden="true"><use href="#ri-art"/></svg> אמנים</div>
-</div>
-
-<!-- Toolbar -->
-<div class="toolbar cats-loading" id="toolbar">
-    <div class="toolbar-top">
+<!-- סרגל אחד: אירועים / מועדפים / תאריך / חיפוש / קטגוריות / מקומות / אמנים — נשאר למעלה בגלילה -->
+<div class="fbar cats-loading" id="toolbar">
+  <div class="fbar-row">
+    <button type="button" class="tab fb-tab fb-all active" onclick="switchTab('all',this)">כל האירועים</button>
+    <button type="button" class="tab fb-tab" onclick="switchTab('favs',this)" aria-label="מועדפים">❤️<span class="fb-lbl"> מועדפים</span> <span id="fav-count"></span></button>
+    <label class="fb-date" title="סינון לפי תאריך" onclick="document.getElementById('date-filter').showPicker && document.getElementById('date-filter').showPicker()">
+        📅<span id="date-label-text" class="fb-lbl-d">תאריך</span>
+        <input type="date" class="date-input" id="date-filter" aria-label="סינון לפי תאריך">
+    </label>
+    <button class="btn-clear-date" onclick="clearDate()">×</button>
+    <input type="search" class="search-input fb-search" id="search-input" placeholder="🔍 חיפוש חופשי…" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" oninput="applyFilter()">
+    <button type="button" class="fb-cats-btn" id="fb-cats-btn" onclick="toggleCatsDrawer()" aria-expanded="false" aria-controls="fbar-cats">🏷<span class="fb-lbl"> קטגוריות</span> <span id="fb-cats-n"></span>▾</button>
+    <button type="button" class="fb-tab fb-link" onclick="openVenuesPanel()" aria-label="מקומות"><svg class="role-ico" viewBox="0 0 64 64" aria-hidden="true"><use href="#ri-ven"/></svg><span class="fb-lbl"> מקומות</span></button>
+    <button type="button" class="fb-tab fb-link" onclick="openArtistsPanel()" aria-label="אמנים"><svg class="role-ico" viewBox="0 0 64 64" aria-hidden="true"><use href="#ri-art"/></svg><span class="fb-lbl"> אמנים</span></button>
+  </div>
+  <div class="toolbar-cats fbar-cats" id="fbar-cats">
         <button class="filter-btn active" data-cat="all">הכל</button>
-        <div class="toolbar-extra" style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;max-width:100%;">
-        <label style="display:flex;align-items:center;gap:4px;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.3);border-radius:20px;padding:6px 12px;cursor:pointer;font-size:13px;color:#fff;white-space:nowrap;" onclick="document.getElementById('date-filter').showPicker && document.getElementById('date-filter').showPicker()">
-            📅 <span id="date-label-text">סינון לפי תאריך</span>
-            <input type="date" class="date-input" id="date-filter" style="position:absolute;opacity:0;width:0;height:0;">
-        </label>
-        <button class="btn-clear-date" onclick="clearDate()">×</button>
-        <input type="text" class="search-input" id="search-input" placeholder="🔍 חיפוש חופשי..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" readonly onfocus="this.removeAttribute('readonly')" oninput="applyFilter()" style="flex:1;min-width:120px;">
-    </div>
-    </div>
-    <div class="toolbar-cats">
         <button class="filter-btn" data-cat="art">🎨 אמנות</button>
         <button class="filter-btn" data-cat="openstage">🗣️ במה פתוחה</button>
         <button class="filter-btn" data-cat="pride">🏳️‍🌈 גאווה</button>
@@ -1566,68 +1605,23 @@ button.user-stats:hover{background:rgba(212,224,52,0.22);}
         <button class="filter-btn" data-cat="other">📌 אחר</button>
     </div>
 </div>
-
-<div id="cat-strip" aria-label="קטגוריות"></div>
 <script>
-// טלפון: כשהסרגל יוצא מהמסך בגלילה, פס דק מחליק פנימה: "הכל" + תאריך + חיפוש + כפתור שפותח את כל הקטגוריות
-(function(){
-  const bar=document.getElementById('toolbar'), strip=document.getElementById('cat-strip');
-  const userBar=document.getElementById('user-bar');
-  const mq=window.matchMedia('(max-width:768px)');
-  strip.innerHTML='<div class="strip-top"></div><div class="strip-cats" id="strip-cats"></div>';
-  const top=strip.querySelector('.strip-top'), catsBox=strip.querySelector('.strip-cats');
-  const allOrig=bar.querySelector('.filter-btn[data-cat="all"]');
-  const catOrigs=[...bar.querySelectorAll('.toolbar-cats .filter-btn')];
-  const pairs=[];
-  const mkClone=(orig,parent)=>{
-    const c=orig.cloneNode(true);
-    c.removeAttribute('id');
-    c.addEventListener('click',e=>{ e.stopImmediatePropagation(); orig.click(); updToggle(); });
-    parent.appendChild(c); pairs.push([orig,c]); return c;
-  };
-  mkClone(allOrig, top);
-  // תאריך
-  const dateBtn=document.createElement('button'); dateBtn.type='button'; dateBtn.className='strip-date';
-  const dateInput=document.getElementById('date-filter'), dateLbl=document.getElementById('date-label-text');
-  dateBtn.addEventListener('click',()=>{ try{ dateInput.showPicker(); }catch(_){ dateInput.focus(); dateInput.click(); } });
-  top.appendChild(dateBtn);
-  // חיפוש
-  const search=document.createElement('input'); search.type='text'; search.className='strip-search'; search.placeholder='🔍 חיפוש'; search.autocomplete='off';
-  const origSearch=document.getElementById('search-input');
-  search.addEventListener('input',()=>{ origSearch.value=search.value; applyFilter(); });
-  top.appendChild(search);
-  // כפתור קטגוריות
-  const toggle=document.createElement('button'); toggle.type='button'; toggle.className='strip-toggle';
-  toggle.addEventListener('click',()=>{ catsBox.classList.toggle('open'); updToggle(); });
-  top.appendChild(toggle);
-  catOrigs.forEach(o=>mkClone(o,catsBox));
-  function updToggle(){
-    const n=catOrigs.filter(o=>o.classList.contains('active')).length;
-    toggle.textContent=(catsBox.classList.contains('open')?'סגירה ▴':'קטגוריות ▾')+(n?` (${n})`:'');
-  }
-  const sync=()=>{ pairs.forEach(([o,c])=>{ c.className=o.className; c.title=o.title; }); dateBtn.textContent='📅 '+(dateLbl && dateLbl.textContent!=='סינון לפי תאריך'?dateLbl.textContent:'תאריך'); updToggle(); };
-  const mo=new MutationObserver(sync);
-  [allOrig,...catOrigs].forEach(o=>mo.observe(o,{attributes:true,attributeFilter:['class','title']}));
-  if(dateLbl) mo.observe(dateLbl,{childList:true,characterData:true,subtree:true});
-  sync();
-  let shown=false, ticking=false;
-  function ubH(){ return userBar ? userBar.offsetHeight : 0; }
-  function check(){
-    ticking=false;
-    strip.style.top=ubH()+'px';
-    bar.style.top = mq.matches ? '' : ubH()+'px';   // מחשב: הסרגל נצמד מתחת לפס העליון
-    const show = mq.matches && bar.getBoundingClientRect().bottom < ubH() + 8;
-    if(show===shown) return;
-    shown=show;
-    strip.classList.toggle('show',show);
-    if(show){ search.value=origSearch.value; }
-    else { catsBox.classList.remove('open'); updToggle(); }
-  }
-  const req=()=>{ if(!ticking){ ticking=true; requestAnimationFrame(check); } };
-  window.addEventListener('scroll',req,{passive:true});
-  window.addEventListener('resize',req);
-  mq.addEventListener ? mq.addEventListener('change',req) : mq.addListener(req);
-  check();
+// פתיחה / סגירה של הקטגוריות, ומונה הקטגוריות שנבחרו
+function toggleCatsDrawer(force) {
+    const d = document.getElementById('fbar-cats'), b = document.getElementById('fb-cats-btn');
+    const open = typeof force === 'boolean' ? force : !d.classList.contains('open');
+    d.classList.toggle('open', open); b.classList.toggle('active', open); b.setAttribute('aria-expanded', open);
+}
+(function () {
+    const bar = document.getElementById('toolbar'), ub = document.getElementById('user-bar');
+    const place = () => { bar.style.top = (ub ? ub.offsetHeight : 0) + 'px'; };
+    place(); window.addEventListener('resize', place);
+    const n = document.getElementById('fb-cats-n');
+    const upd = () => { const k = bar.querySelectorAll('.fbar-cats .filter-btn.active:not([data-cat="all"])').length; n.textContent = k ? '(' + k + ')' : ''; document.getElementById('fb-cats-btn').classList.toggle('has-sel', k > 0); };
+    new MutationObserver(upd).observe(document.getElementById('fbar-cats'), { subtree: true, attributes: true, attributeFilter: ['class'] });
+    upd();
+    // סגירה בלחיצה מחוץ לסרגל
+    document.addEventListener('click', ev => { if (!bar.contains(ev.target)) toggleCatsDrawer(false); });
 })();
 </script>
 
@@ -1749,9 +1743,9 @@ button.user-stats:hover{background:rgba(212,224,52,0.22);}
         </div>
         <div class="form-group who-group"><label>מי מפרסם את האירוע? <span class="cat-pick-hint">(אפשר לבחור יותר מאחד)</span></label>
             <div class="who-pick" id="f-who">
-                <button type="button" data-r="artist" onclick="toggleWho(this)"><svg class="role-ico" viewBox="0 0 64 64" aria-hidden="true"><use href="#ri-art"/></svg> אני האמן / הלהקה</button>
+                <button type="button" data-r="artist" onclick="toggleWho(this)"><svg class="role-ico" viewBox="0 0 64 64" aria-hidden="true"><use href="#ri-art"/></svg> אני האמן / היוצר/ת</button>
                 <button type="button" data-r="venue" onclick="toggleWho(this)"><svg class="role-ico" viewBox="0 0 64 64" aria-hidden="true"><use href="#ri-ven"/></svg> אני המקום</button>
-                <button type="button" data-r="producer" onclick="toggleWho(this)">🎟 מפיק/ה או אחר</button>
+                <button type="button" data-r="producer" onclick="toggleWho(this)"><svg class="role-ico" viewBox="0 0 64 64" aria-hidden="true"><use href="#ri-pro"/></svg> אני המפיק/ה</button>
             </div>
             <div class="field-hint">אמנים ומקומות יכולים למלא כאן גם את פרטי דף האמן או דף המקום — והם יופיעו באתר יחד עם האירוע.</div>
         </div>
@@ -1794,10 +1788,10 @@ button.user-stats:hover{background:rgba(212,224,52,0.22);}
         <div class="artist-offer" id="artist-offer" style="display:none">
             <div class="vo-state" id="fa-state"></div>
             <div id="fa-fields" class="role-box">
-                <div class="role-box-title">🎤 דף האמן שלכם באתר</div>
-                <div class="form-group"><label>שם האמן / הלהקה *</label><input type="text" id="fa-name" maxlength="80" placeholder="כמו שהוא מופיע בשם האירוע"></div>
+                <div class="role-box-title" id="fa-title"><svg class="role-ico ico-in" viewBox="0 0 64 64" aria-hidden="true"><use href="#ri-art"/></svg> דף האמן שלכם באתר</div>
+                <div class="form-group"><label id="fa-name-lbl">שם האמן / היוצר/ת / הלהקה *</label><input type="text" id="fa-name" maxlength="80" placeholder="כמו שהוא מופיע בשם האירוע"></div>
                 <div class="form-group"><label>כמה מילים עליכם</label><textarea id="fa-bio" maxlength="1200" placeholder="מי אתם, מה אתם עושים…"></textarea></div>
-                <div class="form-group"><label>✉️ מייל להזמנת הופעות (לא חובה)</label><input type="email" id="fa-email" dir="ltr" placeholder="name@example.com"></div>
+                <div class="form-group"><label>✉️ מייל ליצירת קשר (לא חובה)</label><input type="email" id="fa-email" dir="ltr" placeholder="name@example.com"></div>
                 <label class="remember-defaults"><input type="checkbox" id="fa-use-img" checked><span>להשתמש בתמונת האירוע גם כתמונת דף האמן</span></label>
                 <div class="field-hint">הסגנון, הקישורים (יוטיוב, ספוטיפיי, אינסטגרם…) והטלפון ייקחו מפרטי האירוע שתמלאו למטה. אפשר לערוך את הדף אחר כך ב"האירועים שלי" ← "דפי האמן שלי".</div>
             </div>
@@ -2388,7 +2382,6 @@ function updateCatAvailability(list) {
         btn.title = n ? `${n} אירועים` : 'אין כרגע אירועים בקטגוריה הזו';
     });
     document.getElementById('toolbar').classList.remove('cats-loading');
-    const strip = document.getElementById('cat-strip'); if (strip) strip.classList.remove('cats-loading');
 }
 
 function render() {
@@ -2522,9 +2515,12 @@ function openViewModal(id) {
         const vv = venueByKey(venueKey(raw.location));
         if (vv && vv.status === 'approved') document.getElementById('view-modal-meta').insertAdjacentHTML('beforeend',
             `<div class="meta-item"><button type="button" class="btn-link vm-venue" onclick="closeViewModal();openVenuesPanel('${escHtml(vv.venue_key)}')">🏠 על המקום ויצירת קשר ←</button></div>`);
+        const prods = eventProducers(raw);
+        if (prods.length) document.getElementById('view-modal-meta').insertAdjacentHTML('beforeend',
+            `<div class="meta-item vm-artists">${prods.map(a => `<button type="button" class="btn-link vm-venue" onclick="closeViewModal();openArtistsPanel(${a.id})"><svg class="role-ico ico-in" viewBox="0 0 64 64" aria-hidden="true"><use href="#ri-pro"/></svg> הפקה: ${escHtml(a.name)} — דף המפיק ←</button>`).join('')}</div>`);
         const arts = eventArtists(raw);
         if (arts.length) document.getElementById('view-modal-meta').insertAdjacentHTML('beforeend',
-            `<div class="meta-item vm-artists">${arts.map(a => `<button type="button" class="btn-link vm-venue" onclick="closeViewModal();openArtistsPanel(${a.id})">🎤 ${escHtml(a.name)} — דף האמן ←</button>`).join('')}</div>`);
+            `<div class="meta-item vm-artists">${arts.map(a => `<button type="button" class="btn-link vm-venue" onclick="closeViewModal();openArtistsPanel(${a.id})"><svg class="role-ico ico-in" viewBox="0 0 64 64" aria-hidden="true"><use href="#ri-art"/></svg> ${escHtml(a.name)} — דף האמן ←</button>`).join('')}</div>`);
     }
     // כפתורים
 
@@ -2891,8 +2887,9 @@ function setupFilters() {
     });
     document.getElementById('date-filter').addEventListener('change', e => {
         dateFilter = e.target.value;
+        document.getElementById('toolbar').classList.toggle('has-date', !!dateFilter);
         const lbl = document.getElementById('date-label-text');
-        if (lbl) lbl.textContent = dateFilter ? new Date(dateFilter + 'T12:00:00').toLocaleDateString('he-IL', {day:'numeric',month:'long'}) : 'סינון לפי תאריך';
+        if (lbl) lbl.textContent = dateFilter ? new Date(dateFilter + 'T12:00:00').toLocaleDateString('he-IL', {day:'numeric',month:'numeric'}) : 'תאריך';
         applyFilter();
     });
 }
@@ -3522,14 +3519,18 @@ function toggleWho(b) { b.classList.toggle('selected'); updateWhoBoxes(); }
 function updateWhoBoxes() {
     updateVenueOffer();
     const box = document.getElementById('artist-offer');
-    if (!whoHas('artist') || !currentUser) { box.style.display = 'none'; return; }
+    const fk = whoHas('artist') ? 'artist' : whoHas('producer') ? 'producer' : '';
+    if (!fk || !currentUser) { box.style.display = 'none'; return; }
+    box.dataset.kind = fk;
     box.style.display = '';
+    document.getElementById('fa-title').innerHTML = `<svg class="role-ico ico-in" viewBox="0 0 64 64" aria-hidden="true"><use href="#${KIND_TXT[fk].sym}"/></svg> ${fk === 'producer' ? 'דף המפיק שלכם באתר' : 'דף האמן שלכם באתר'}`;
+    document.getElementById('fa-name-lbl').textContent = fk === 'producer' ? 'שם המפיק/ה או ההפקה *' : 'שם האמן / היוצר/ת / הלהקה *';
     const st = document.getElementById('fa-state'), fields = document.getElementById('fa-fields');
-    const mine = artistsLoaded ? artistsDir.filter(a => a.user_id === currentUser.id) : [];
+    const mine = artistsLoaded ? artistsDir.filter(a => a.user_id === currentUser.id && kindOf(a) === fk) : [];
     if (!artistsLoaded) { st.style.display = 'none'; fields.style.display = 'none'; box.style.display = 'none'; return; }
     if (mine.length) {
         fields.style.display = 'none'; st.style.display = '';
-        st.innerHTML = mine.map(a => `✓ דף האמן שלך: <b>${escHtml(a.name)}</b>${a.status === 'pending' ? ' (ממתין לאישור)' : ''}`).join('<br>') + ' · האירוע יופיע בדף אוטומטית כשהשם מופיע בשם האירוע';
+        st.innerHTML = mine.map(a => `✓ ${KIND_TXT[fk].page} שלך: <b>${escHtml(a.name)}</b>${a.status === 'pending' ? ' (ממתין לאישור)' : ''}`).join('<br>') + (fk === 'producer' ? ' · האירוע יופיע בדף המפיק אוטומטית' : ' · האירוע יופיע בדף אוטומטית כשהשם מופיע בשם האירוע');
     } else {
         st.style.display = 'none'; fields.style.display = '';
         const n = document.getElementById('fa-name');
@@ -3544,9 +3545,11 @@ async function saveArtistFromEvent(payload) {
         image: useImg ? payload.image : null,
         links: [payload.tickets2, payload.materials, payload.materials2].filter(u => /^https?:\/\//.test(u || '')).slice(0, 6),
         contact: payload.contact || null, email: (document.getElementById('fa-email').value || '').trim() || null };
+    if (document.getElementById('artist-offer').dataset.kind === 'producer') row.kind = 'producer';
     const { error } = await db.from('artists').insert(row);
-    if (error) { showToast(/duplicate|unique/i.test(error.message || '') ? 'כבר יש דף אמן בשם הזה' : 'לא הצלחנו ליצור את דף האמן'); return; }
-    showToast(currentRole === 'admin' || currentTrusted ? '🎤 דף האמן נוצר' : '🎤 דף האמן נוצר ויופיע אחרי אישור');
+    const pg = KIND_TXT[row.kind || 'artist'].page;
+    if (error) { showToast(/duplicate|unique/i.test(error.message || '') ? 'כבר יש דף בשם הזה' : 'לא הצלחנו ליצור את ' + pg); return; }
+    showToast(currentRole === 'admin' || currentTrusted ? pg + ' נוצר ✓' : pg + ' נוצר ✓ — יופיע אחרי אישור');
     loadArtists();
 }
 
@@ -3639,21 +3642,57 @@ function setupCatDetails() {
 }
 if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', setupCatDetails); else setupCatDetails();
 
+
+// ── מייל: במחשב, במקום חלון "בחירת אפליקציה" של המערכת — תפריט קטן: ג'ימייל / אאוטלוק / העתקה / תוכנת מייל ──
+(function () {
+    const touch = () => window.matchMedia && matchMedia('(pointer:coarse)').matches;
+    let menu = null;
+    const close = () => { if (menu) { menu.remove(); menu = null; } };
+    document.addEventListener('click', ev => {
+        const a = ev.target.closest && ev.target.closest('a[href^="mailto:"]');
+        if (!a) { if (menu && !menu.contains(ev.target)) close(); return; }
+        if (ev.defaultPrevented || touch()) return;          // בטלפון — אפליקציית המייל כרגיל
+        ev.preventDefault(); ev.stopPropagation(); close();
+        let to = '', subject = '';
+        try { const u = new URL(a.href); to = decodeURIComponent(u.pathname); subject = u.searchParams.get('subject') || ''; } catch (_) { to = a.href.replace(/^mailto:/, '').split('?')[0]; }
+        const q = encodeURIComponent;
+        menu = document.createElement('div'); menu.className = 'mail-menu'; menu.setAttribute('role', 'menu');
+        menu.innerHTML = `<div class="mm-to">✉️ ${escHtml(to)}</div>
+            <a role="menuitem" target="_blank" rel="noopener" href="https://mail.google.com/mail/?view=cm&fs=1&to=${q(to)}${subject ? '&su=' + q(subject) : ''}">כתיבה בג'ימייל</a>
+            <a role="menuitem" target="_blank" rel="noopener" href="https://outlook.live.com/mail/0/deeplink/compose?to=${q(to)}${subject ? '&subject=' + q(subject) : ''}">כתיבה באאוטלוק</a>
+            <button type="button" role="menuitem" data-act="copy">העתקת הכתובת</button>
+            <button type="button" role="menuitem" data-act="app">תוכנת המייל במחשב</button>`;
+        document.body.appendChild(menu);
+        const r = a.getBoundingClientRect();
+        menu.style.top = Math.min(window.innerHeight - menu.offsetHeight - 8, r.bottom + 6) + 'px';
+        menu.style.left = Math.max(8, Math.min(window.innerWidth - menu.offsetWidth - 8, r.left + r.width / 2 - menu.offsetWidth / 2)) + 'px';
+        menu.addEventListener('click', e2 => {
+            const b = e2.target.closest('[data-act]');
+            if (b && b.dataset.act === 'copy') { (navigator.clipboard ? navigator.clipboard.writeText(to) : Promise.reject()).then(() => showToast('הכתובת הועתקה ✓'), () => showToast(to)); }
+            if (b && b.dataset.act === 'app') location.href = a.href;
+            setTimeout(close, 50);
+        });
+        menu.querySelector('a').focus();
+    }, true);
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') close(); });
+    window.addEventListener('scroll', close, { passive: true });
+})();
+
 // ══ סוגי פרופיל (קהל / אמן / מקום) + "הפעילות שלי" ══
 let myRoles = [], rolesLoaded = false, myActivity = [], activityLoaded = false;
-const hasPubRole = () => myRoles.includes('artist') || myRoles.includes('venue') || currentRole === 'admin' || (myRows && myRows.length > 0);
+const hasPubRole = () => myRoles.includes('artist') || myRoles.includes('venue') || myRoles.includes('producer') || currentRole === 'admin' || (myRows && myRows.length > 0);
 function updateMyChips() {
     const pub = hasPubRole();
     document.querySelectorAll('#my-chips [data-pub]').forEach(b => b.style.display = pub ? '' : 'none');
     document.querySelectorAll('#my-chips [data-role]').forEach(b => {
         const r = b.dataset.role;
         const own = r === 'venue' ? venuesDir.some(v => currentUser && v.user_id === currentUser.id) : artistsDir.some(a => currentUser && a.user_id === currentUser.id);
-        b.style.display = myRoles.includes(r) || own ? '' : 'none';
+        b.style.display = myRoles.includes(r) || (r === 'artist' && myRoles.includes('producer')) || own ? '' : 'none';
     });
 }
 // הדמות של המשתמש לפי הפרופיל שבחר: אמן → אקורדיון, מקום → במה, קהל → הזוג מהציור
 function updateAvatars() {
-    const r = myRoles.includes('artist') ? 'ri-art' : myRoles.includes('venue') ? 'ri-ven' : myRoles.includes('audience') ? 'ri-aud' : '';
+    const r = myRoles.includes('artist') ? 'ri-art' : myRoles.includes('producer') ? 'ri-pro' : myRoles.includes('venue') ? 'ri-ven' : myRoles.includes('audience') ? 'ri-aud' : '';
     document.querySelectorAll('[data-ava]').forEach(el => {
         el.innerHTML = r ? `<svg class="role-ico" viewBox="0 0 64 64" aria-hidden="true"><use href="#${r}"/></svg>` : '👤';
     });
@@ -3787,35 +3826,51 @@ function artistInEvent(a, e) {
     const re = new RegExp('(^|\\s)' + n.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '($|\\s)');
     return re.test(artistNorm(e.title)) || (n.length >= 5 && re.test(artistNorm(e.desc)));
 }
-const eventArtists = e => artistsDir.filter(a => a.status === 'approved' && artistInEvent(a, e));
+const kindOf = a => a.kind === 'producer' ? 'producer' : 'artist';
+const KIND_TXT = { artist: { page: 'דף אמן', the: 'האמן', sym: 'ri-art' }, producer: { page: 'דף מפיק', the: 'המפיק/ה', sym: 'ri-pro' } };
+// אירוע של מפיק: אירועים שהוא פרסם, או ששמו מופיע בשם האירוע
+const inPage = (a, e) => kindOf(a) === 'producer' ? (a.user_id && e.user_id === a.user_id) || artistInEvent(a, e) : artistInEvent(a, e);
+const eventArtists = e => artistsDir.filter(a => a.status === 'approved' && kindOf(a) === 'artist' && artistInEvent(a, e));
+const eventProducers = e => artistsDir.filter(a => a.status === 'approved' && kindOf(a) === 'producer' && inPage(a, e));
+let arKind = 'artist';
+function setArKind(k) {
+    arKind = k;
+    document.querySelectorAll('#ar-kind-chips .adm-chip').forEach(b => b.classList.toggle('active', b.dataset.k === k));
+    document.getElementById('ar-add-btn').textContent = '＋ יצירת ' + KIND_TXT[k].page;
+    document.getElementById('ar-h2').innerHTML = `<svg class="role-ico ico-h2" viewBox="0 0 64 64" aria-hidden="true"><use href="#${KIND_TXT[k].sym}"/></svg> ${k === 'producer' ? 'מפיקים' : 'אמנים ויוצרים'}`;
+    closeArtistEditor(); renderArtistsDir();
+}
 function artistCardHtml(a, focus, inner) {
-    const evs = events.filter(e => !eventIsOver(e) && e.status !== 'pending' && artistInEvent(a, e)).slice(0, 6);
+    const evs = events.filter(e => !eventIsOver(e) && e.status !== 'pending' && inPage(a, e)).slice(0, 6);
     const mine = currentUser && a.user_id === currentUser.id;
     const img = safeImg(a.image || '');
     const links = (a.links || []).map(safeUrl).filter(Boolean).map(u => linkIconHtml(escHtml(u))).join('');
     const contact = venueContactHtml({ contact: a.contact, email: a.email });
     const body = `
-        <div class="ar-head">${img ? `<img class="ar-photo" src="${escHtml(img)}" alt="${escHtml(a.name)}" loading="lazy">` : '<div class="ar-photo ar-ph">🎤</div>'}
+        <div class="ar-head">${img ? `<img class="ar-photo" src="${escHtml(img)}" alt="${escHtml(a.name)}" loading="lazy">` : `<div class="ar-photo ar-ph"><svg class="role-ico ico-ph" viewBox="0 0 64 64" aria-hidden="true"><use href="#${KIND_TXT[kindOf(a)].sym}"/></svg></div>`}
             <div><h3>${escHtml(a.name)}</h3>
             <div class="ar-cats">${(a.cats || []).map(c => `<span class="card-cat cat-${escHtml(c)}">${escHtml(CAT_LABEL[c] || c)}</span>`).join('')}</div>
             ${a.status === 'pending' ? '<span class="ue-st pend">ממתין לאישור</span>' : ''}${mine ? ' <span class="ue-st ok">הדף שלך</span>' : ''}</div></div>
         ${a.bio ? `<p class="vd-about">${escHtml(a.bio)}</p>` : ''}
         ${links ? `<div class="vd-contacts">${links}</div>` : ''}
-        ${contact ? `<div class="vd-contacts"><span class="ar-booking">להזמנת הופעות:</span>${contact}</div>` : ''}
-        ${evs.length ? `<div class="vd-events"><b>📅 הופעות קרובות:</b>${evs.map(e => `<button type="button" class="vd-ev" onclick="openViewModal('${escHtml(String(e.id))}')">${escHtml(formatEventDate(e))} · ${escHtml(e.title)}</button>`).join('')}</div>` : ''}
+        ${contact ? `<div class="vd-contacts"><span class="ar-booking">ליצירת קשר:</span>${contact}</div>` : ''}
+        ${evs.length ? `<div class="vd-events"><b>📅 אירועים קרובים:</b>${evs.map(e => `<button type="button" class="vd-ev" onclick="openViewModal('${escHtml(String(e.id))}')">${escHtml(formatEventDate(e))} · ${escHtml(e.title)}</button>`).join('')}</div>` : ''}
         ${!inner && (mine || currentRole === 'admin') ? `<div class="vd-admin">${mine ? `<button class="btn-preview" onclick="openArtistEditor(${a.id})">✏️ עריכה</button>` : ''}${currentRole === 'admin' ? `<button class="btn-reject" onclick="adminDeleteArtist(${a.id})">🗑 הסרה</button>` : ''}</div>` : ''}`;
     return inner ? body : `<div class="vd-card ar-card${focus ? ' focus' : ''}">${body}</div>`;
 }
 let arFocus = 0;
-async function openArtistsPanel(focusId) {
+async function openArtistsPanel(focusId, kind) {
     arFocus = +focusId || 0;
+    const fa = arFocus && artistsDir.find(x => x.id === arFocus);
+    arKind = kind || (fa ? kindOf(fa) : 'artist');
     document.getElementById('artists-panel').classList.add('open');
     pushLayer('artists');
     document.getElementById('ar-search').value = '';
     closeArtistEditor();
     document.getElementById('ar-list').innerHTML = '<div class="users-empty">טוען…</div>';
     await loadArtists();
-    renderArtistsDir();
+    { const fa2 = arFocus && artistsDir.find(x => x.id === arFocus); if (fa2) arKind = kindOf(fa2); }
+    setArKind(arKind);
     if (arFocus) setTimeout(() => { const el = document.querySelector('.ar-card.focus'); if (el) el.scrollIntoView({ block: 'center' }); }, 60);
 }
 function closeArtistsPanel(fromBack) {
@@ -3828,23 +3883,25 @@ function renderArtistsDir() {
     const list = document.getElementById('ar-list');
     if (!artistsLoaded) { list.innerHTML = '<div class="users-empty">דפי האמנים ייפתחו בקרוב.</div>'; return; }
     const q = artistNorm(document.getElementById('ar-search').value);
-    const up = a => events.filter(e => !eventIsOver(e) && artistInEvent(a, e)).length;
-    let arr = artistsDir.filter(a => a.status === 'approved' || (currentUser && a.user_id === currentUser.id) || currentRole === 'admin');
+    const up = a => events.filter(e => !eventIsOver(e) && inPage(a, e)).length;
+    let arr = artistsDir.filter(a => kindOf(a) === arKind && (a.status === 'approved' || (currentUser && a.user_id === currentUser.id) || currentRole === 'admin'));
     if (q) arr = arr.filter(a => artistNorm([a.name, a.bio, (a.cats || []).map(c => CAT_LABEL[c] || c).join(' ')].join(' ')).includes(q));
     arr.sort((x, y) => (y.id === arFocus) - (x.id === arFocus) || up(y) - up(x) || x.name.localeCompare(y.name, 'he'));
     list.innerHTML = arr.map(a => artistCardHtml(a, a.id === arFocus)).join('')
-        || `<div class="users-empty">${q ? 'לא נמצאו אמנים' : 'עוד אין דפי אמנים. אמנים ולהקות מוזמנים ליצור דף — לחצו "＋ יצירת דף אמן".'}</div>`;
+        || `<div class="users-empty">${q ? 'לא נמצאו תוצאות' : arKind === 'producer' ? 'עוד אין דפי מפיקים. מפיקים מוזמנים ליצור דף — לחצו "＋ יצירת דף מפיק".' : 'עוד אין דפי אמנים. אמנים ויוצרים מכל תחום מוזמנים ליצור דף — לחצו "＋ יצירת דף אמן".'}</div>`;
 }
 // עורך דף אמן (חדש / עריכה)
 function openArtistEditor(id) {
     if (!currentUser) { pendingAction = null; openAuth(); return; }
     const a = id ? artistsDir.find(x => x.id === id) : null;
-    if (!document.getElementById('artists-panel').classList.contains('open')) { openArtistsPanel().then(() => openArtistEditor(id)); return; }
+    if (!document.getElementById('artists-panel').classList.contains('open')) { openArtistsPanel(0, a ? kindOf(a) : (typeof id === 'string' ? id : arKind)).then(() => openArtistEditor(id)); return; }
+    if (typeof id === 'string') { if (arKind !== id) setArKind(id); }   // openArtistEditor('producer') = דף מפיק חדש
+    if (a && kindOf(a) !== arKind) setArKind(kindOf(a));
     arEditing = a; arImage = a ? (a.image || null) : null;
     const box = document.getElementById('ar-cats');
     if (!box.children.length) box.innerHTML = document.getElementById('f-cats').innerHTML.replace(/toggleCatPick\(this\)/g, "arToggleCat(this)");
     box.querySelectorAll('.cat-pick-btn').forEach(b => b.classList.toggle('selected', !!a && (a.cats || []).includes(b.dataset.c)));
-    document.getElementById('ar-ed-title').textContent = a ? '✏️ עריכת דף אמן' : '🎤 דף אמן חדש';
+    document.getElementById('ar-ed-title').textContent = a ? '✏️ עריכת ' + KIND_TXT[kindOf(a)].page : KIND_TXT[arKind].page + ' חדש';
     document.getElementById('ar-name').value = a ? a.name : '';
     document.getElementById('ar-bio').value = a ? (a.bio || '') : '';
     for (let i = 1; i <= 6; i++) document.getElementById('ar-link' + i).value = a && a.links && a.links[i - 1] ? a.links[i - 1] : '';
@@ -3859,7 +3916,7 @@ function openArtistEditor(id) {
 }
 function closeArtistEditor() { document.getElementById('ar-editor').style.display = 'none'; arEditing = null; }
 function arToggleCat(b) {
-    if (!b.classList.contains('selected') && document.querySelectorAll('#ar-cats .cat-pick-btn.selected').length >= 6) { showToast('אפשר לבחור עד 6 סגנונות'); return; }
+    if (!b.classList.contains('selected') && document.querySelectorAll('#ar-cats .cat-pick-btn.selected').length >= 6) { showToast('אפשר לבחור עד 6 תחומים'); return; }
     b.classList.toggle('selected');
 }
 function arShowImage() {
@@ -3877,7 +3934,7 @@ function arPickImage(ev) {
 async function saveArtist() {
     const name = (document.getElementById('ar-name').value || '').trim();
     const errs = [];
-    if (name.length < 2) errs.push('צריך שם לאמן או ללהקה');
+    if (name.length < 2) errs.push('צריך שם לאמן / ליוצר/ת');
     const links = [];
     for (let i = 1; i <= 6; i++) { const raw = (document.getElementById('ar-link' + i).value || '').trim(); if (!raw) continue; const u = cleanLink(raw); if (u) links.push(u); else errs.push(`קישור ${i} לא תקין`); }
     const email = (document.getElementById('ar-email').value || '').trim();
@@ -3891,21 +3948,22 @@ async function saveArtist() {
         const row = { name, cats: [...document.querySelectorAll('#ar-cats .cat-pick-btn.selected')].map(b => b.dataset.c).slice(0, 6),
             bio: (document.getElementById('ar-bio').value || '').trim().slice(0, 1200) || null, image: image || null,
             links, contact: readContactField('ar'), email: email || null };
+        if (!arEditing && arKind === 'producer') row.kind = 'producer';
         const res = arEditing ? await db.from('artists').update(row).eq('id', arEditing.id) : await db.from('artists').insert(row);
-        if (res.error) { showToast(/duplicate|unique/i.test(res.error.message || '') ? 'כבר יש דף אמן בשם הזה' : 'השמירה לא הצליחה'); return; }
-        showToast(currentRole === 'admin' || currentTrusted ? 'דף האמן נשמר ✓' : 'דף האמן נשמר ✓ — יופיע אחרי אישור');
+        if (res.error) { showToast(/duplicate|unique/i.test(res.error.message || '') ? 'כבר יש דף בשם הזה' : 'השמירה לא הצליחה'); return; }
+        showToast(currentRole === 'admin' || currentTrusted ? 'הדף נשמר ✓' : 'הדף נשמר ✓ — יופיע אחרי אישור');
         closeArtistEditor(); await loadArtists(); renderArtistsDir();
     } catch (err) { showToast('השמירה לא הצליחה — נסו תמונה אחרת'); }
     finally { btn.disabled = false; btn.textContent = '💾 שמירה'; }
 }
 async function deleteArtist() {
-    if (!arEditing || !confirm('למחוק את דף האמן?')) return;
+    if (!arEditing || !confirm('למחוק את הדף?')) return;
     const { error } = await db.from('artists').delete().eq('id', arEditing.id);
     if (error) { showToast('המחיקה לא הצליחה'); return; }
     closeArtistEditor(); await loadArtists(); renderArtistsDir();
 }
 async function adminDeleteArtist(id) {
-    if (!confirm('להסיר את דף האמן?')) return;
+    if (!confirm('להסיר את הדף?')) return;
     const { error } = await db.from('artists').delete().eq('id', id);
     if (error) { showToast('המחיקה לא הצליחה'); return; }
     await loadArtists(); renderArtistsDir(); loadPendingArtists();
@@ -3914,16 +3972,16 @@ function renderMyArtists() {
     const list = document.getElementById('ma-list');
     if (!artistsLoaded) { list.innerHTML = '<div class="users-empty">האפשרות הזאת תופעל בקרוב.</div>'; return; }
     const mine = artistsDir.filter(a => currentUser && a.user_id === currentUser.id);
-    list.innerHTML = (mine.length ? mine.map(a => `<div class="adm-ev"><div class="adm-ev-main"><div class="adm-ev-title">🎤 ${escHtml(a.name)} ${a.status === 'pending' ? '<span class="ue-st pend">ממתין לאישור</span>' : '<span class="ue-st ok">מופיע באתר</span>'}</div></div>
+    list.innerHTML = (mine.length ? mine.map(a => `<div class="adm-ev"><div class="adm-ev-main"><div class="adm-ev-title"><svg class="role-ico ico-in" viewBox="0 0 64 64" aria-hidden="true"><use href="#${KIND_TXT[kindOf(a)].sym}"/></svg> ${escHtml(a.name)} ${a.status === 'pending' ? '<span class="ue-st pend">ממתין לאישור</span>' : '<span class="ue-st ok">מופיע באתר</span>'}</div></div>
         <div class="adm-ev-btns"><button class="btn-preview ic-btn" onclick="closeMyPanel();setTimeout(()=>openArtistEditor(${a.id}),350)">${svgIc('edit', 20)}<span>עריכה</span></button>${a.status === 'approved' ? `<button class="btn-preview ic-btn" onclick="closeMyPanel();setTimeout(()=>openArtistsPanel(${a.id}),350)">${svgIc('views', 20)}<span>צפייה</span></button>` : ''}</div></div>`).join('')
-        : '<div class="users-empty">עוד אין לך דף אמן.</div>') + `<button class="btn-coffee ar-add" style="margin-top:12px" onclick="closeMyPanel();setTimeout(()=>openArtistEditor(),350)">＋ יצירת דף אמן</button>`;
+        : '<div class="users-empty">עוד אין לך דף.</div>') + `<div class="ar-add-row"><button class="btn-coffee ar-add" onclick="closeMyPanel();setTimeout(()=>openArtistEditor('artist'),350)">＋ יצירת דף אמן</button><button class="btn-coffee ar-add" onclick="closeMyPanel();setTimeout(()=>openArtistEditor('producer'),350)">＋ יצירת דף מפיק</button></div>`;
 }
 async function loadPendingArtists() {
     const box = document.getElementById('pending-artists'); if (!box) return;
     const { data, error } = await db.from('artists').select('*').eq('status', 'pending');
     if (error || !data || !data.length) { box.innerHTML = ''; return; }
-    box.innerHTML = `<h3 class="pv-title">🎤 דפי אמנים שממתינים לאישור (${data.length})</h3>` + data.map(a => `
-        <div class="vd-card pv-card">${artistCardHtml({ ...a, status: 'approved' }, false, true)}
+    box.innerHTML = `<h3 class="pv-title"><svg class="role-ico ico-in" viewBox="0 0 64 64" aria-hidden="true"><use href="#ri-art"/></svg> דפי אמנים ומפיקים שממתינים לאישור (${data.length})</h3>` + data.map(a => `
+        <div class="vd-card pv-card"><span class="ue-st pend">${KIND_TXT[kindOf(a)].page}</span>${artistCardHtml({ ...a, status: 'approved' }, false, true)}
             <div class="approval-btns"><button class="btn-approve" onclick="approveArtist(${a.id})">${svgIc('check', 18)} אשרי</button><button class="btn-reject" onclick="adminDeleteArtist(${a.id})">${svgIc('x', 18)} דחי</button></div>
         </div>`).join('');
 }
@@ -4134,7 +4192,8 @@ function clearDate() {
     document.getElementById('date-filter').value = '';
     dateFilter = '';
     const lbl = document.getElementById('date-label-text');
-    if (lbl) lbl.textContent = 'סינון לפי תאריך';
+    if (lbl) lbl.textContent = 'תאריך';
+    document.getElementById('toolbar').classList.remove('has-date');
     applyFilter();
 }
 
@@ -4142,7 +4201,7 @@ function toggleCatPick(btn) {
     btn.classList.toggle('selected');
 }
 
-function switchTab(t, el) { activeTab = t; document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active')); el.classList.add('active'); applyFilter(); }
+function switchTab(t, el) { activeTab = (t === 'favs' && activeTab === 'favs') ? 'all' : t; document.querySelectorAll('.fbar .tab').forEach(tab => tab.classList.remove('active')); (activeTab === 'all' ? document.querySelector('.fbar .fb-all') : el).classList.add('active'); applyFilter(); }
 
 // ── Modal ──
 function openModal(id) {
@@ -4201,7 +4260,7 @@ function openModal(id) {
     prepareNewEventForm();
     document.getElementById('vo-add').checked = false; toggleVenueFields(); resetVenueFields('vo');
     document.querySelectorAll('#overlay .cat-details').forEach(d => d.open = false);
-    setWho(id === null ? (myDefaults && myDefaults.who ? myDefaults.who : myRoles.filter(r => r === 'artist' || r === 'venue')) : []);
+    setWho(id === null ? (myDefaults && myDefaults.who ? myDefaults.who : myRoles.filter(r => r === 'artist' || r === 'venue' || r === 'producer')) : []);
     ['fa-name', 'fa-bio', 'fa-email'].forEach(x => document.getElementById(x).value = '');
     document.getElementById('fa-use-img').checked = true;
     document.getElementById('overlay').classList.add('open');
@@ -4512,11 +4571,11 @@ async function saveEvent() {
         showFormErrors(['מספר הטלפון ליצירת קשר לא תקין — כתבו למשל 050-1234567'], ['f-contact'], 'כמעט מוכן:'); return;
     }
     const addVenue = whoHas('venue') && document.getElementById('vo-add').checked && document.getElementById('vo-offer').style.display !== 'none' && document.getElementById('venue-offer').style.display !== 'none';
-    const addArtist = whoHas('artist') && document.getElementById('fa-fields').style.display !== 'none' && document.getElementById('artist-offer').style.display !== 'none';
+    const addArtist = (whoHas('artist') || whoHas('producer')) && document.getElementById('fa-fields').style.display !== 'none' && document.getElementById('artist-offer').style.display !== 'none';
     if (addArtist) {
         const an = (document.getElementById('fa-name').value || '').trim(), ae = (document.getElementById('fa-email').value || '').trim();
-        if (an.length < 2) { showFormErrors(['כתבו את שם האמן / הלהקה לדף האמן'], ['fa-name'], 'דף האמן:'); return; }
-        if (ae && !okEmail(ae)) { showFormErrors(['המייל להזמנת הופעות לא תקין'], ['fa-email'], 'דף האמן:'); return; }
+        if (an.length < 2) { showFormErrors(['כתבו את שם האמן / היוצר/ת לדף האמן'], ['fa-name'], 'דף האמן:'); return; }
+        if (ae && !okEmail(ae)) { showFormErrors(['המייל ליצירת קשר לא תקין'], ['fa-email'], 'דף האמן:'); return; }
     }
     if (addVenue) { const { errs } = readVenueFields('vo'); if (errs.length) { showFormErrors(errs, [], 'פרטי המקום:'); return; } }
     const locForVenue = document.getElementById('f-loc').value;
@@ -4977,7 +5036,7 @@ loadA11yPrefs();
         <li><strong>טלפון / וואטסאפ ליצירת קשר (לא חובה)</strong> — אם בחרתם להוסיף מספר לאירוע, הוא מוצג לכל הגולשים כדי שיוכלו לפנות אליכם. אל תוסיפו מספר שאינכם רוצים שיהיה פומבי.</li>
         <li><strong>רשימת המקומות (לא חובה)</strong> — מפרסם שבוחר להוסיף מקום לרשימת המקומות מוסר את שם המקום, הכתובת, תיאור קצר ודרכי יצירת קשר (טלפון / וואטסאפ, מייל, טופס, אתר ורשתות). פרטים אלה מוצגים לכל הגולשים לאחר אישור, ואפשר לערוך או להסיר אותם בכל עת.</li>
         <li><strong>סוג הפרופיל והפעילות האישית</strong> — סוג הפרופיל שבחרתם (קהל / אמן / מקום), והפעילות שלכם באתר כשאתם מחוברים: אירועים שסימנתם ❤️, שהוספתם ליומן, ששיתפתם, ושלחצתם בהם על כרטיסים או קישורים. המטרה: להציג לכם את "האזור האישי". רק אתם רואים את הפעילות האישית שלכם — מפרסמים רואים רק מספרים אנונימיים, בלי שמות.</li>
-        <li><strong>דפי אמנים (לא חובה)</strong> — מי שיוצר דף אמן מוסר שם, סגנון, תיאור, תמונה, קישורים ופרטי קשר להזמנת הופעות. הדף מוצג לכל הגולשים לאחר אישור, ואפשר לערוך או למחוק אותו בכל עת.</li>
+        <li><strong>דפי אמנים ומפיקים (לא חובה)</strong> — מי שיוצר דף אמן מוסר שם, סגנון, תיאור, תמונה, קישורים ופרטי קשר. הדף מוצג לכל הגולשים לאחר אישור, ואפשר לערוך או למחוק אותו בכל עת.</li>
         <li><strong>"הפרטים הקבועים שלי"</strong> — מקום, שעות, מחיר, קישורים וטלפון שבחרתם לשמור כדי שימולאו אוטומטית. נשמרים בחשבון שלכם ונראים רק לכם.</li>
         <li><strong>התראות לטלפון (לא חובה)</strong> — אם הפעלתם התראות, נשמרת כתובת טכנית שהדפדפן יוצר לצורך שליחת התראות, יחד עם הקטגוריות והמקומות שבחרתם. אפשר לבטל בכל רגע מכפתור הפעמון.</li>
         <li><strong>נתוני צפייה באירועים</strong> — האתר סופר באופן אנונימי כמה פעמים צפו באירוע, סימנו לב, הוסיפו ליומן, לחצו על כרטיסים, קישורים או יצירת קשר, ושיתפו. לא נשמר מי לחץ — רק מספרים. הנתונים מוצגים למפרסם של האירוע ולהנהלת האתר בלבד.</li>
@@ -5044,7 +5103,7 @@ loadA11yPrefs();
         <li>בפרסום תמונה, טקסט או לוגו אתם מצהירים שהם שלכם או שקיבלתם רשות להשתמש בהם, ושאין בהם הפרה של זכויות של אחרים (כמו זכויות יוצרים של צלם או מעצב).</li>
         <li>אתם מעניקים לאתר רשות להציג את התוכן, להתאים אותו טכנית (למשל לכווץ תמונה) ולהציגו בשיתופים ברשתות חברתיות ובהתראות — לצורך הפעלת האתר וקידום האירוע בלבד. הזכויות בתוכן נשארות שלכם.</li>
         <li>פרטי יצירת קשר (טלפון / וואטסאפ) שתוסיפו לאירוע יוצגו לכל הגולשים.</li>
-        <li>מי שיוצר דף אמן מצהיר שהוא האמן, חבר בלהקה או מורשה מטעמם, ושיש לו זכות להשתמש בתמונה ובתוכן שהעלה.</li>
+        <li>מי שיוצר דף אמן מצהיר שהוא האמן / היוצר/ת, חבר בלהקה או בקבוצה, או מורשה מטעמם, ושיש לו זכות להשתמש בתמונה ובתוכן שהעלה.</li>
         <li>מי שמוסיף מקום לרשימת המקומות מצהיר שהוא מוסמך לעשות זאת מטעם המקום, ושפרטי הקשר שמסר מיועדים לפרסום. הנהלת האתר רשאית לערוך או להסיר מקום מהרשימה.</li>
         <li>אסור לפרסם תוכן פוגעני, מטעה, מפלה, מסית או בלתי חוקי, או לעשות באתר שימוש מסחרי שאינו פרסום אירוע.</li>
       </ul>

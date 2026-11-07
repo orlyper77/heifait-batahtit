@@ -39,7 +39,7 @@ module.exports = async (req, res) => {
   if (!BOTS.test(ua)) { res.statusCode = 302; res.setHeader('Location', target); return res.end(); }
 
   let e = null;
-  try { e = await getEvent(id, 'id,title,description,date_raw,date_end_raw,time,location,price,tickets,status,image'); } catch (_) {}
+  try { e = await getEvent(id, 'id,title,description,date_raw,date_end_raw,time,location,price,tickets,status,image,user_id'); } catch (_) {}
   if (!e) { res.statusCode = 404; res.setHeader('Content-Type', 'text/html; charset=utf-8'); return res.end(`<!doctype html><html lang="he" dir="rtl"><head><meta charset="utf-8"><meta name="robots" content="noindex"><title>האירוע לא נמצא</title></head><body><p>האירוע לא נמצא. <a href="${SITE}/">לכל האירועים בחיפה</a></p></body></html>`); }
 
   const sid = shortId(e.id);
@@ -84,11 +84,13 @@ module.exports = async (req, res) => {
   if (e.location) ld.organizer = { '@type': 'Organization', name: String(e.location).split(',')[0].trim() };
   // אמנים: דפי אמן מאושרים שהשם שלהם מופיע בשם האירוע; אחרת — שם האירוע עצמו
   try {
-    const r = await fetch(`${SUPABASE_URL}/rest/v1/artists?status=eq.approved&select=id,name&limit=500`, { headers: { apikey: SUPABASE_ANON_KEY, Authorization: 'Bearer ' + SUPABASE_ANON_KEY } });
+    const r = await fetch(`${SUPABASE_URL}/rest/v1/artists?status=eq.approved&select=*&limit=500`, { headers: { apikey: SUPABASE_ANON_KEY, Authorization: 'Bearer ' + SUPABASE_ANON_KEY } });
     const arts = r.ok ? await r.json() : [];
     const norm = s => String(s || '').toLowerCase().replace(/["'״׳.,!?־\-–—:;()]/g, ' ').replace(/\s+/g, ' ').trim();
     const t = ' ' + norm(title) + ' ';
-    const hit = (arts || []).filter(a => norm(a.name).length >= 2 && t.includes(' ' + norm(a.name) + ' ')).slice(0, 5);
+    const hit = (arts || []).filter(a => a.kind !== 'producer' && norm(a.name).length >= 2 && t.includes(' ' + norm(a.name) + ' ')).slice(0, 5);
+    const prod = (arts || []).find(a => a.kind === 'producer' && e.user_id && a.user_id === e.user_id);
+    if (prod) ld.organizer = { '@type': 'Organization', name: prod.name };
     if (hit.length) ld.performer = hit.map(a => ({ '@type': 'PerformingGroup', name: a.name }));
   } catch (_) {}
   if (!ld.performer) ld.performer = { '@type': 'PerformingGroup', name: title };
