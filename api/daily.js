@@ -31,11 +31,13 @@ async function publisherDigest() {
   byUser.forEach((list, uid) => {
     list.sort((a, b) => (b.d_views + b.d_tickets * 5) - (a.d_views + a.d_tickets * 5));
     if (list.length === 1) {
-      msgs.set(uid, { title: `📊 "${list[0].title}" היום`, body: line(list[0]) });
+      msgs.set(uid, { title: `📊 הסיכום היומי — "${list[0].title}"`, body: line(list[0]).split(' · ').join('\n') });
     } else {
       const sum = { d_views: 0, d_likes: 0, d_tickets: 0, d_calendar: 0, d_links: 0, d_shares: 0 };
       list.forEach(r => Object.keys(sum).forEach(k => sum[k] += r[k] || 0));
-      msgs.set(uid, { title: `📊 הסיכום היומי שלך — ${list.length} אירועים`, body: line(sum) + `\nהכי פופולרי: ${list[0].title}` });
+      const top = list.slice(0, 4).map(r => `• ${r.title}: ${line(r)}`);
+      if (list.length > 4) top.push(`ועוד ${list.length - 4} אירועים`);
+      msgs.set(uid, { title: `📊 הסיכום היומי — ${list.length} אירועים`, body: `סה״כ היום: ${line(sum)}\n` + top.join('\n') });
     }
   });
 
@@ -46,8 +48,9 @@ async function publisherDigest() {
   await Promise.all((subs || []).map(async s => {
     const m = s.user_id && msgs.get(String(s.user_id));
     if (!m) return;
-    const payload = JSON.stringify({ title: m.title, body: m.body, url: '/?my=stats', tag: 'daily-digest' });
-    try { await wp.sendNotification({ endpoint: s.endpoint, keys: { p256dh: s.p256dh, auth: s.auth } }, payload, { TTL: 60 * 60 * 12, urgency: 'low' }); sent++; }
+    const payload = JSON.stringify({ title: m.title, body: m.body, url: '/?my=stats', tag: 'daily-digest', sticky: true,
+      actions: [{ action: 'open', title: '📊 לכל הנתונים' }, { action: 'close', title: 'סגירה' }] });
+    try { await wp.sendNotification({ endpoint: s.endpoint, keys: { p256dh: s.p256dh, auth: s.auth } }, payload, { TTL: 60 * 60 * 12, urgency: 'normal' }); sent++; }
     catch (err) {
       if (err && (err.statusCode === 404 || err.statusCode === 410)) await rpc('push_remove', { p_secret: secret, p_endpoint: s.endpoint }).catch(() => {});
       else failed++;

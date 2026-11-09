@@ -1,4 +1,4 @@
-// v2 — Service Worker — מקבל התראות על אירועים חדשים ומציג אותן גם כשהאתר סגור
+// v3 — Service Worker — מקבל התראות על אירועים חדשים ומציג אותן גם כשהאתר סגור
 self.addEventListener('install', () => self.skipWaiting());
 self.addEventListener('activate', e => e.waitUntil(self.clients.claim()));
 
@@ -11,6 +11,10 @@ self.addEventListener('push', event => {
     badge: '/badge-96.png',   // אייקון קטן בשורת המצב: לבן על שקוף (אנדרואיד צובע אותו)
     image: d.image,
     tag: d.tag,
+    renotify: !!d.tag,
+    requireInteraction: !!d.sticky,   // סיכום יומי: נשאר על המסך עד שסוגרים אותו
+    actions: Array.isArray(d.actions) ? d.actions.slice(0, 2) : undefined,
+    timestamp: Date.now(),
     dir: 'rtl',
     lang: 'he',
     data: { url: d.url || '/' }
@@ -20,6 +24,7 @@ self.addEventListener('push', event => {
 
 self.addEventListener('notificationclick', event => {
   event.notification.close();
+  if (event.action === 'close') return;
   const url = new URL((event.notification.data && event.notification.data.url) || '/', self.location.origin).href;
   event.waitUntil((async () => {
     const all = await self.clients.matchAll({ type: 'window', includeUncontrolled: true });

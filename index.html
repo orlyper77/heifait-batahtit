@@ -743,6 +743,14 @@ body:has(#overlay.open),body:has(.auth-overlay.open),body:has(#legal-overlay.ope
 .vd-wa{border-color:rgba(37,211,102,0.6);} .vd-tel{border-color:rgba(107,170,220,0.6);direction:ltr;} .vd-mail{border-color:rgba(212,224,52,0.6);} .vd-form{border-color:rgba(240,176,64,0.6);}
 .vd-contacts .link-btn.link-ico{flex:0 0 auto;}
 .vd-events{display:flex;flex-direction:column;gap:4px;font-size:13.5px;border-top:1px solid rgba(255,255,255,0.08);padding-top:8px;}
+.vd-past{border-top:1px solid rgba(255,255,255,0.08);padding-top:8px;font-size:13.5px;}
+.vd-past summary{cursor:pointer;color:rgba(255,255,255,0.7);font-weight:600;list-style:none;display:inline-flex;align-items:center;gap:6px;padding:4px 12px;border:1px solid rgba(255,255,255,0.18);border-radius:999px;}
+.vd-past summary::-webkit-details-marker{display:none;}
+.vd-past summary::after{content:'▾';transition:transform .2s;}
+.vd-past[open] summary::after{transform:rotate(180deg);}
+.vd-past summary:hover{color:#fff;border-color:rgba(255,255,255,0.4);}
+.vd-past-list{display:flex;flex-direction:column;gap:4px;margin-top:8px;}
+.vd-ev-past{color:rgba(255,255,255,0.6) !important;}
 .vd-ev{background:none;border:none;color:#9cc9f0;text-align:right;font-family:inherit;font-size:13.5px;cursor:pointer;padding:2px 0;}
 .vd-ev:hover{color:#d4e034;}
 .vm-venue{padding:0!important;font-size:14px!important;color:#9cc9f0!important;}
@@ -1207,6 +1215,68 @@ button.user-stats:hover{background:rgba(212,224,52,0.22);}
   .user-bar .btn-add,.user-bar .btn-login{padding:7px 12px;white-space:nowrap;}
 }
 
+/* אודות */
+#about-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:9998;align-items:center;justify-content:center;padding:1rem;}
+#about-overlay.open{display:flex;}
+body:has(#about-overlay.open){overflow:hidden;}
+#about-box{background:#1e0606;border:1px solid rgba(212,224,52,0.25);border-radius:20px;padding:1.8rem 1.6rem;max-width:620px;width:100%;max-height:88vh;overflow-y:auto;position:relative;}
+#about-box .about-x{position:absolute;top:12px;left:12px;width:34px;height:34px;border-radius:50%;border:0;background:rgba(255,255,255,0.08);color:#fff;font-size:16px;cursor:pointer;}
+.about-hero{display:flex;align-items:center;gap:14px;margin-bottom:1rem;padding-left:40px;}
+.about-hero img{border-radius:16px;flex:none;}
+.about-hero h2{color:#d4e034;font-size:1.5rem;margin:0;}
+.about-hero p{margin:2px 0 0;color:rgba(255,255,255,0.7);font-size:14px;}
+.about-lead{font-size:15.5px !important;color:#f5ede8 !important;line-height:1.8;}
+#about-box h3{color:#f5ede8;font-size:1.02rem;margin:1.4rem 0 .5rem;}
+#about-box p,#about-box li{color:rgba(255,255,255,0.75);font-size:14.5px;line-height:1.85;margin:0 0 .5rem;}
+#about-box ul{padding-right:1.2rem;margin:0 0 .6rem;}
+#about-box a{color:#d4e034;}
+.about-cta{background:#c3e0f7;color:#2a0808;border:1px solid #9cc9f0;border-radius:999px;padding:8px 18px;font-weight:700;font-size:14px;cursor:pointer;font-family:'Rubik',sans-serif;}
+a.about-press{display:block;text-decoration:none;background:rgba(240,117,168,0.1);border:1px solid rgba(240,117,168,0.4);border-radius:14px;padding:12px 14px;transition:background .2s;}
+a.about-press:hover{background:rgba(240,117,168,0.2);}
+a.about-press b{display:block;color:#fff;font-size:15px;line-height:1.5;}
+a.about-press span{display:block;color:#ffb0d0;font-size:13px;margin-top:4px;}
+.footer-pills{display:flex;flex-wrap:wrap;justify-content:center;align-items:flex-start;gap:8px;margin:0 auto 16px;max-width:680px;}
+.footer-pills .footer-info{margin:0;flex-basis:auto;}
+.footer-pills .footer-info[open]{flex-basis:100%;order:2;}
+.footer-about-btn{background:rgba(212,224,52,0.12);border:1px solid rgba(212,224,52,0.4);color:#d4e034;border-radius:999px;padding:6px 14px;font-size:13px;cursor:pointer;font-family:inherit;font-weight:600;}
+.footer-about-btn:hover{background:rgba(212,224,52,0.22);}
+/* מידע על האתר בתחתית — לשונית סגורה */
+.footer-info{max-width:640px;margin:0 auto 16px;text-align:center;}
+.footer-info summary{cursor:pointer;list-style:none;display:inline-flex;align-items:center;gap:6px;font-size:13px;color:rgba(255,255,255,0.6);padding:6px 14px;border:1px solid rgba(255,255,255,0.15);border-radius:999px;}
+.footer-info summary::-webkit-details-marker{display:none;}
+.footer-info summary::after{content:'▾';transition:transform .2s;}
+.footer-info[open] summary::after{transform:rotate(180deg);}
+.footer-info summary:hover{color:#fff;border-color:rgba(255,255,255,0.35);}
+.footer-info[open] summary{margin-bottom:12px;}
+/* ── פס עליון: קפה מימין · התראות / משתמש / הוספת אירוע משמאל ── */
+.user-bar{justify-content:space-between !important;flex-wrap:nowrap !important;gap:10px;}
+.ub-start{display:flex;align-items:center;gap:8px;}
+.user-bar .user-bar-actions{flex-wrap:nowrap !important;}
+.btn-coffee-top{display:inline-flex;align-items:center;gap:7px;text-decoration:none;color:#ffd9e8;font-family:'Rubik',sans-serif;font-size:13px;font-weight:600;padding:3px 12px 3px 4px;border-radius:999px;border:1px solid rgba(240,117,168,0.45);background:rgba(240,117,168,0.1);transition:background .2s,border-color .2s;}
+.btn-coffee-top:hover{background:rgba(240,117,168,0.22);border-color:#f075a8;color:#fff;}
+.btn-coffee-top .cof-ico{width:30px;height:30px;flex:none;transition:transform .3s;}
+.btn-coffee-top:hover .cof-ico{transform:rotate(-10deg) scale(1.08);}
+.btn-bell{gap:6px;padding:7px 14px !important;font-family:'Rubik',sans-serif;font-size:13px;font-weight:500;}
+.btn-bell.on::after{content:'';position:absolute;top:5px;inset-inline-start:9px;width:7px;height:7px;border-radius:50%;background:#3dbf9a;border:2px solid #0f0202;}
+.btn-bell.on{background:rgba(212,224,52,0.12);color:#d4e034;}
+.user-avatar-btn{border-radius:999px !important;padding:3px 12px 3px 4px !important;font-family:'Rubik',sans-serif !important;font-weight:500;}
+.user-avatar-btn .ava .role-ico{width:28px;height:28px;}
+.ub-caret{opacity:.7;font-size:11px;}
+.user-bar .btn-bell,.user-bar .btn-login,.user-bar .btn-add,.user-bar .user-avatar-btn,.user-bar .btn-approval-panel{height:36px;box-sizing:border-box;display:inline-flex;align-items:center;}
+.user-bar .user-avatar-btn{gap:6px;color:#d4e034;background:rgba(212,224,52,0.12);font-size:13px;}
+.user-bar .user-avatar-btn .ava{font-size:18px;line-height:1;}
+.user-bar .role-badge{background:rgba(125,90,158,0.35);color:#e6d6f5;}
+.role-badge:empty{display:none;}
+@media(max-width:600px){
+  .ub-lbl{display:none;}
+  .btn-coffee-top{padding:2px;border-color:transparent;background:none;}
+  .btn-coffee-top .cof-ico{width:34px;height:34px;}
+  .btn-bell{padding:0 10px !important;width:38px;justify-content:center;}
+  .btn-bell.on::after{top:3px;inset-inline-start:3px;}
+  .user-bar .btn-bell,.user-bar .user-avatar-btn,.user-bar .btn-add,.user-bar .btn-login{height:38px;}
+  .user-avatar-btn{padding:2px 8px 2px 2px !important;}
+}
+
 /* חלון הוספת אירוע גדול יותר */
 #overlay .modal{max-width:820px;}
 /* טופס הוספת אירוע — כתב גדול וקריא יותר */
@@ -1299,29 +1369,32 @@ button.user-stats:hover{background:rgba(212,224,52,0.22);}
 </style>
 </head>
 <body>
-<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs><clipPath id="rcClip"><circle cx="32" cy="32" r="30"/></clipPath></defs><symbol id="ri-aud" viewBox="0 0 64 64"><g clip-path="url(#rcClip)"><circle cx="32" cy="32" r="30" fill="#f5d90a"/> <g transform="translate(-9 6) scale(.82)"><path d="M19 24c-2 9-1 20-5 26 5 2 30 2 36 0-4-6-3-17-5-26z" fill="#7a2e3e" stroke="#1a0505" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/> <path d="M8 64c1-12 9-19 24-19s23 7 24 19z" fill="#c9df3a" stroke="#1a0505" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/> <path d="M22 46c3 3 7 4 10 4s7-1 10-4" fill="none" stroke="#1a0505" stroke-width="1.6" stroke-linecap="round"/> <path d="M28 41h8v6c-2 1.6-6 1.6-8 0z" fill="#e3b08f" stroke="#1a0505" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/> <path d="M21 28c0-9 5-14 11-14s11 5 11 14c0 9-5 15-11 15s-11-6-11-15z" fill="#f2c4a4" stroke="#1a0505" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/> <path d="M19 30c-1-12 5-19 13-19s14 7 13 19c-1-5-3-8-5-9-1 3-6 5-12 4-3-1-4-3-4-5-3 2-5 6-5 10z" fill="#7a2e3e" stroke="#1a0505" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/> <path d="M25.2 30c1.3 1.1 3.1 1.1 4.4 0M34.4 30c1.3 1.1 3.1 1.1 4.4 0" fill="none" stroke="#1a0505" stroke-width="1.7" stroke-linecap="round"/> <path d="M28.5 36.5c2 1.6 5 1.6 7 0" fill="none" stroke="#c8243f" stroke-width="2" stroke-linecap="round"/> <circle cx="22" cy="37" r="1.6" fill="#f5d90a" stroke="#1a0505" stroke-width="1.3" stroke-linejoin="round" stroke-linecap="round"/><circle cx="42" cy="37" r="1.6" fill="#f5d90a" stroke="#1a0505" stroke-width="1.3" stroke-linejoin="round" stroke-linecap="round"/></g> <g transform="translate(18 9) scale(.78)"><path d="M8 64c1-12 9-19 24-19s23 7 24 19z" fill="#8ec5e8" stroke="#1a0505" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/> <path d="M27 42h10v6c-2 2-8 2-10 0z" fill="#d9a0b8" stroke="#1a0505" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/> <path d="M20 26c0-9 5-14 12-14s12 5 12 14v6c0 9-6 14-12 14s-12-5-12-14z" fill="#e8b4c8" stroke="#1a0505" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/> <path d="M20 30c1 9 5 16 12 16s11-7 12-16c-2 4-5 6-7 6h-10c-2 0-5-2-7-6z" fill="#4a3a4a" stroke="#1a0505" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/> <path d="M27.5 37.5c2.5 1.6 6.5 1.6 9 0" fill="none" stroke="#e8b4c8" stroke-width="2" stroke-linecap="round"/> <path d="M20 25c0-8 5-13 12-13s12 5 12 13c-2-4-4-6-6-6.5-3 2-9 2-12 0-2 .5-4 2.5-6 6.5z" fill="#3a2e3a" stroke="#1a0505" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/> <path d="M24.5 28.5c1.4 1.2 3.4 1.2 4.8 0M34.7 28.5c1.4 1.2 3.4 1.2 4.8 0" fill="none" stroke="#1a0505" stroke-width="1.8" stroke-linecap="round"/> <path d="M32 29v4.5l-1.6 1" fill="none" stroke="#b07a92" stroke-width="1.5" stroke-linecap="round"/></g> <g transform="translate(30 12) scale(1)"><path d="M0 0v8a2.6 2.6 0 1 1-1.7-2.4V-1.6l5.4-1.4v2z" fill="#fff" stroke="#1a0505" stroke-width="1.3" stroke-linejoin="round" stroke-linecap="round"/></g><g transform="translate(9 26) scale(0.85)"><path d="M0 0v8a2.6 2.6 0 1 1-1.7-2.4V-1.6l5.4-1.4v2z" fill="#fff" stroke="#1a0505" stroke-width="1.3" stroke-linejoin="round" stroke-linecap="round"/></g><g transform="translate(53 22) scale(0.8)"><path d="M0 0v8a2.6 2.6 0 1 1-1.7-2.4V-1.6l5.4-1.4v2z" fill="#fff" stroke="#1a0505" stroke-width="1.3" stroke-linejoin="round" stroke-linecap="round"/></g></g><circle cx="32" cy="32" r="30" fill="none" stroke="#1a0505" stroke-width="2.2"/></symbol><symbol id="ri-art" viewBox="0 0 64 64"><g clip-path="url(#rcClip)"><circle cx="32" cy="32" r="30" fill="#8ec5e8"/> <g opacity=".25" fill="#fff"><circle cx="14" cy="16" r="1.4"/><circle cx="50" cy="12" r="1"/><circle cx="54" cy="44" r="1.2"/></g> <path d="M30 16 L40 14 L40 50 L30 48z" fill="#c8243f" stroke="#1a0505" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/> <g stroke="#1a0505" stroke-width="1.2" opacity=".55"><path d="M32.5 15.5v33M35 15v34.5M37.5 14.6v35"/></g> <rect x="15" y="14" width="15" height="36" rx="2" fill="#a9c7d9" stroke="#1a0505" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/> <g stroke="#1a0505" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round"><rect x="17.5" y="17" width="10" height="3" fill="#f5d90a"/><rect x="17.5" y="21.5" width="10" height="3" fill="#b38ae0"/><rect x="17.5" y="26" width="10" height="3" fill="#f7b6cf"/><rect x="17.5" y="30.5" width="10" height="3" fill="#8ec5e8"/><rect x="17.5" y="35" width="10" height="3" fill="#f5d90a"/><rect x="17.5" y="39.5" width="10" height="3" fill="#b38ae0"/><rect x="17.5" y="44" width="10" height="3" fill="#f7b6cf"/></g> <rect x="40" y="13" width="11" height="38" rx="2" fill="#c8243f" stroke="#1a0505" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/> <rect x="42.3" y="16" width="6.4" height="32" rx="1" fill="#c9df3a" stroke="#1a0505" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round"/> <g fill="none" stroke="#1a0505" stroke-width="1.8" stroke-linecap="round"><path d="M9 26c-1.5 2-1.5 6 0 8"/><path d="M6 23.5c-2.4 3.5-2.4 9.5 0 13"/></g> <path d="M54.5 22v7.5a2.4 2.4 0 1 1-1.6-2.3V20.5l5-1.3v1.8z" fill="#fff" stroke="#1a0505" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round"/></g><circle cx="32" cy="32" r="30" fill="none" stroke="#1a0505" stroke-width="2.2"/></symbol><symbol id="ri-ven" viewBox="0 0 64 64"><g clip-path="url(#rcClip)"><circle cx="32" cy="32" r="30" fill="#b38ae0"/> <g opacity=".3" fill="#fff"><circle cx="14" cy="24" r="1.2"/><circle cx="50" cy="26" r="1"/></g> <path d="M32 18 L22 46 H42Z" fill="#fff6b0" opacity=".85"/> <path d="M8 46h48v6H8z" fill="#c9884a" stroke="#1a0505" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/><path d="M8 52h48v8H8z" fill="#7a4a2a" stroke="#1a0505" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/> <path d="M12 16h3c7 4 8 16 4 30h-7z" fill="#c8243f" stroke="#1a0505" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/><path d="M52 16h-3c-7 4-8 16-4 30h7z" fill="#c8243f" stroke="#1a0505" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/> <path d="M14.5 20c2.5 6 2.5 14 .5 24M49.5 20c-2.5 6-2.5 14-.5 24" fill="none" stroke="#1a0505" stroke-width="1.2" opacity=".5"/> <path d="M8 9h48v8H8z" fill="#c8243f" stroke="#1a0505" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/> <g fill="#f5d90a" stroke="#1a0505" stroke-width="1"><circle cx="15" cy="13" r="1.8"/><circle cx="23.5" cy="13" r="1.8"/><circle cx="32" cy="13" r="1.8"/><circle cx="40.5" cy="13" r="1.8"/><circle cx="49" cy="13" r="1.8"/></g> <path d="M32 27 l2.3 4.8 5.2.7-3.8 3.6 1 5.2-4.7-2.6-4.7 2.6 1-5.2-3.8-3.6 5.2-.7z" fill="#f5d90a" stroke="#1a0505" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"/></g><circle cx="32" cy="32" r="30" fill="none" stroke="#1a0505" stroke-width="2.2"/></symbol><symbol id="ri-pro" viewBox="0 0 64 64"><g clip-path="url(#rcClip)"><circle cx="32" cy="32" r="30" fill="#3dbf9a"/> <g opacity=".25" fill="#fff"><circle cx="13" cy="18" r="1.4"/><circle cx="51" cy="48" r="1.2"/></g> <path d="M14 27h7l17-10v30L21 37h-7z" fill="#f5d90a" stroke="#1a0505" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/> <path d="M14 27h7v10h-7a2 2 0 0 1-2-2v-6a2 2 0 0 1 2-2z" fill="#f075a8" stroke="#1a0505" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/> <path d="M38 17c3 4 3 26 0 30" fill="none" stroke="#1a0505" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/> <path d="M19 37l3 10h5l-2-10" fill="#c8243f" stroke="#1a0505" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/> <path d="M26 20.5l11-6.5" stroke="#fff" stroke-width="1.6" stroke-linecap="round" opacity=".7"/> <g fill="none" stroke="#1a0505" stroke-width="2.2" stroke-linecap="round"><path d="M44 27c1.5 1.8 1.5 8.2 0 10"/><path d="M48.5 23c2.8 3.5 2.8 14.5 0 18"/></g> <path d="M51 12l1.4 3 3.2 1.4-3.2 1.4-1.4 3.2-1.4-3.2-3.2-1.4 3.2-1.4z" fill="#fff" stroke="#1a0505" stroke-width="1.2" stroke-linejoin="round"/></g><circle cx="32" cy="32" r="30" fill="none" stroke="#1a0505" stroke-width="2.2"/></symbol></svg>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs><clipPath id="rcClip"><circle cx="32" cy="32" r="30"/></clipPath></defs><symbol id="ri-aud" viewBox="0 0 64 64"><g clip-path="url(#rcClip)"><circle cx="32" cy="32" r="30" fill="#f5d90a"/> <g transform="translate(-9 6) scale(.82)"><path d="M19 24c-2 9-1 20-5 26 5 2 30 2 36 0-4-6-3-17-5-26z" fill="#7a2e3e" stroke="#1a0505" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/> <path d="M8 64c1-12 9-19 24-19s23 7 24 19z" fill="#c9df3a" stroke="#1a0505" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/> <path d="M22 46c3 3 7 4 10 4s7-1 10-4" fill="none" stroke="#1a0505" stroke-width="1.6" stroke-linecap="round"/> <path d="M28 41h8v6c-2 1.6-6 1.6-8 0z" fill="#e3b08f" stroke="#1a0505" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/> <path d="M21 28c0-9 5-14 11-14s11 5 11 14c0 9-5 15-11 15s-11-6-11-15z" fill="#f2c4a4" stroke="#1a0505" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/> <path d="M19 30c-1-12 5-19 13-19s14 7 13 19c-1-5-3-8-5-9-1 3-6 5-12 4-3-1-4-3-4-5-3 2-5 6-5 10z" fill="#7a2e3e" stroke="#1a0505" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/> <path d="M25.2 30c1.3 1.1 3.1 1.1 4.4 0M34.4 30c1.3 1.1 3.1 1.1 4.4 0" fill="none" stroke="#1a0505" stroke-width="1.7" stroke-linecap="round"/> <path d="M28.5 36.5c2 1.6 5 1.6 7 0" fill="none" stroke="#c8243f" stroke-width="2" stroke-linecap="round"/> <circle cx="22" cy="37" r="1.6" fill="#f5d90a" stroke="#1a0505" stroke-width="1.3" stroke-linejoin="round" stroke-linecap="round"/><circle cx="42" cy="37" r="1.6" fill="#f5d90a" stroke="#1a0505" stroke-width="1.3" stroke-linejoin="round" stroke-linecap="round"/></g> <g transform="translate(18 9) scale(.78)"><path d="M8 64c1-12 9-19 24-19s23 7 24 19z" fill="#8ec5e8" stroke="#1a0505" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/> <path d="M27 42h10v6c-2 2-8 2-10 0z" fill="#d9a0b8" stroke="#1a0505" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/> <path d="M20 26c0-9 5-14 12-14s12 5 12 14v6c0 9-6 14-12 14s-12-5-12-14z" fill="#e8b4c8" stroke="#1a0505" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/> <path d="M20 30c1 9 5 16 12 16s11-7 12-16c-2 4-5 6-7 6h-10c-2 0-5-2-7-6z" fill="#4a3a4a" stroke="#1a0505" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/> <path d="M27.5 37.5c2.5 1.6 6.5 1.6 9 0" fill="none" stroke="#e8b4c8" stroke-width="2" stroke-linecap="round"/> <path d="M20 25c0-8 5-13 12-13s12 5 12 13c-2-4-4-6-6-6.5-3 2-9 2-12 0-2 .5-4 2.5-6 6.5z" fill="#3a2e3a" stroke="#1a0505" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/> <path d="M24.5 28.5c1.4 1.2 3.4 1.2 4.8 0M34.7 28.5c1.4 1.2 3.4 1.2 4.8 0" fill="none" stroke="#1a0505" stroke-width="1.8" stroke-linecap="round"/> <path d="M32 29v4.5l-1.6 1" fill="none" stroke="#b07a92" stroke-width="1.5" stroke-linecap="round"/></g> <g transform="translate(30 12) scale(1)"><path d="M0 0v8a2.6 2.6 0 1 1-1.7-2.4V-1.6l5.4-1.4v2z" fill="#fff" stroke="#1a0505" stroke-width="1.3" stroke-linejoin="round" stroke-linecap="round"/></g><g transform="translate(9 26) scale(0.85)"><path d="M0 0v8a2.6 2.6 0 1 1-1.7-2.4V-1.6l5.4-1.4v2z" fill="#fff" stroke="#1a0505" stroke-width="1.3" stroke-linejoin="round" stroke-linecap="round"/></g><g transform="translate(53 22) scale(0.8)"><path d="M0 0v8a2.6 2.6 0 1 1-1.7-2.4V-1.6l5.4-1.4v2z" fill="#fff" stroke="#1a0505" stroke-width="1.3" stroke-linejoin="round" stroke-linecap="round"/></g></g><circle cx="32" cy="32" r="30" fill="none" stroke="#1a0505" stroke-width="2.2"/></symbol><symbol id="ri-art" viewBox="0 0 64 64"><g clip-path="url(#rcClip)"><circle cx="32" cy="32" r="30" fill="#8ec5e8"/> <g opacity=".25" fill="#fff"><circle cx="14" cy="16" r="1.4"/><circle cx="50" cy="12" r="1"/><circle cx="54" cy="44" r="1.2"/></g> <path d="M30 16 L40 14 L40 50 L30 48z" fill="#c8243f" stroke="#1a0505" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/> <g stroke="#1a0505" stroke-width="1.2" opacity=".55"><path d="M32.5 15.5v33M35 15v34.5M37.5 14.6v35"/></g> <rect x="15" y="14" width="15" height="36" rx="2" fill="#a9c7d9" stroke="#1a0505" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/> <g stroke="#1a0505" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round"><rect x="17.5" y="17" width="10" height="3" fill="#f5d90a"/><rect x="17.5" y="21.5" width="10" height="3" fill="#b38ae0"/><rect x="17.5" y="26" width="10" height="3" fill="#f7b6cf"/><rect x="17.5" y="30.5" width="10" height="3" fill="#8ec5e8"/><rect x="17.5" y="35" width="10" height="3" fill="#f5d90a"/><rect x="17.5" y="39.5" width="10" height="3" fill="#b38ae0"/><rect x="17.5" y="44" width="10" height="3" fill="#f7b6cf"/></g> <rect x="40" y="13" width="11" height="38" rx="2" fill="#c8243f" stroke="#1a0505" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/> <rect x="42.3" y="16" width="6.4" height="32" rx="1" fill="#c9df3a" stroke="#1a0505" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round"/> <g fill="none" stroke="#1a0505" stroke-width="1.8" stroke-linecap="round"><path d="M9 26c-1.5 2-1.5 6 0 8"/><path d="M6 23.5c-2.4 3.5-2.4 9.5 0 13"/></g> <path d="M54.5 22v7.5a2.4 2.4 0 1 1-1.6-2.3V20.5l5-1.3v1.8z" fill="#fff" stroke="#1a0505" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round"/></g><circle cx="32" cy="32" r="30" fill="none" stroke="#1a0505" stroke-width="2.2"/></symbol><symbol id="ri-ven" viewBox="0 0 64 64"><g clip-path="url(#rcClip)"><circle cx="32" cy="32" r="30" fill="#b38ae0"/> <g opacity=".3" fill="#fff"><circle cx="14" cy="24" r="1.2"/><circle cx="50" cy="26" r="1"/></g> <path d="M32 18 L22 46 H42Z" fill="#fff6b0" opacity=".85"/> <path d="M8 46h48v6H8z" fill="#c9884a" stroke="#1a0505" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/><path d="M8 52h48v8H8z" fill="#7a4a2a" stroke="#1a0505" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/> <path d="M12 16h3c7 4 8 16 4 30h-7z" fill="#c8243f" stroke="#1a0505" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/><path d="M52 16h-3c-7 4-8 16-4 30h7z" fill="#c8243f" stroke="#1a0505" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/> <path d="M14.5 20c2.5 6 2.5 14 .5 24M49.5 20c-2.5 6-2.5 14-.5 24" fill="none" stroke="#1a0505" stroke-width="1.2" opacity=".5"/> <path d="M8 9h48v8H8z" fill="#c8243f" stroke="#1a0505" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/> <g fill="#f5d90a" stroke="#1a0505" stroke-width="1"><circle cx="15" cy="13" r="1.8"/><circle cx="23.5" cy="13" r="1.8"/><circle cx="32" cy="13" r="1.8"/><circle cx="40.5" cy="13" r="1.8"/><circle cx="49" cy="13" r="1.8"/></g> <path d="M32 27 l2.3 4.8 5.2.7-3.8 3.6 1 5.2-4.7-2.6-4.7 2.6 1-5.2-3.8-3.6 5.2-.7z" fill="#f5d90a" stroke="#1a0505" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"/></g><circle cx="32" cy="32" r="30" fill="none" stroke="#1a0505" stroke-width="2.2"/></symbol><symbol id="ri-cof" viewBox="0 0 64 64"><g clip-path="url(#rcClip)"><circle cx="32" cy="32" r="30" fill="#f075a8"/><g opacity=".3" fill="#fff"><circle cx="12" cy="20" r="1.4"/><circle cx="53" cy="44" r="1.2"/></g><ellipse cx="30" cy="50" rx="19" ry="4.5" fill="#f5d90a" stroke="#1a0505" stroke-width="2.4"/><path d="M44 31h3.5a6 6 0 0 1 0 12H43" fill="none" stroke="#1a0505" stroke-width="2.6" stroke-linecap="round"/><path d="M15 29h30v7a13 13 0 0 1-13 13h-4a13 13 0 0 1-13-13z" fill="#fff5e6" stroke="#1a0505" stroke-width="2.4" stroke-linejoin="round"/><ellipse cx="30" cy="29" rx="15" ry="3.2" fill="#7a3b1e" stroke="#1a0505" stroke-width="2.2"/><path d="M30 44.5c-3.6-2.4-5.6-4.3-5.6-6.3a2.8 2.8 0 0 1 5.6-.7 2.8 2.8 0 0 1 5.6.7c0 2-2 3.9-5.6 6.3z" fill="#c8243f" stroke="#1a0505" stroke-width="1.4" stroke-linejoin="round"/><g fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round"><path d="M24 22c-2-2.5 2-4.5 0-7.5"/><path d="M31 21c-2-2.5 2-4.5 0-7.5"/><path d="M38 22c-2-2.5 2-4.5 0-7.5"/></g></g><circle cx="32" cy="32" r="30" fill="none" stroke="#1a0505" stroke-width="2.2"/></symbol><symbol id="ri-pro" viewBox="0 0 64 64"><g clip-path="url(#rcClip)"><circle cx="32" cy="32" r="30" fill="#3dbf9a"/> <g opacity=".25" fill="#fff"><circle cx="13" cy="18" r="1.4"/><circle cx="51" cy="48" r="1.2"/></g> <path d="M14 27h7l17-10v30L21 37h-7z" fill="#f5d90a" stroke="#1a0505" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/> <path d="M14 27h7v10h-7a2 2 0 0 1-2-2v-6a2 2 0 0 1 2-2z" fill="#f075a8" stroke="#1a0505" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/> <path d="M38 17c3 4 3 26 0 30" fill="none" stroke="#1a0505" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/> <path d="M19 37l3 10h5l-2-10" fill="#c8243f" stroke="#1a0505" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/> <path d="M26 20.5l11-6.5" stroke="#fff" stroke-width="1.6" stroke-linecap="round" opacity=".7"/> <g fill="none" stroke="#1a0505" stroke-width="2.2" stroke-linecap="round"><path d="M44 27c1.5 1.8 1.5 8.2 0 10"/><path d="M48.5 23c2.8 3.5 2.8 14.5 0 18"/></g> <path d="M51 12l1.4 3 3.2 1.4-3.2 1.4-1.4 3.2-1.4-3.2-3.2-1.4 3.2-1.4z" fill="#fff" stroke="#1a0505" stroke-width="1.2" stroke-linejoin="round"/></g><circle cx="32" cy="32" r="30" fill="none" stroke="#1a0505" stroke-width="2.2"/></symbol></svg>
 <a class="skip-link" href="#grid">דילוג לרשימת האירועים</a>
 <h1 class="sr-only">אירועים בחיפה והופעות בחיפה — חיפאית בתחתית</h1>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><linearGradient id="igg" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#FEDA75"/><stop offset=".35" stop-color="#FA7E1E"/><stop offset=".6" stop-color="#D62976"/><stop offset=".85" stop-color="#962FBF"/><stop offset="1" stop-color="#4F5BD5"/></linearGradient></defs></svg>
 
 <!-- User Bar -->
 <div class="user-bar show" id="user-bar">
-    <div style="display:flex;align-items:center;gap:10px;">
+    <div class="ub-start">
+        <a class="btn-coffee-top" href="https://buymeacoffee.com/heifait_batahtit" target="_blank" rel="noopener" onclick="trackSupport()" title="אוהבים את חיפאית בתחתית? אפשר לפנק בקפה ☕" aria-label="תמיכה בחיפאית בתחתית — לפנק בקפה"><svg class="cof-ico" viewBox="0 0 64 64" aria-hidden="true"><use href="#ri-cof"/></svg><span class="ub-lbl">לפנק בקפה</span></a>
         <button class="btn-approval-panel" id="btn-approval-panel" onclick="openApprovalPanel()">
             ✦ ניהול <span class="approval-badge" id="approval-badge" style="display:none" title="ממתינים לאישור">0</span><span class="msg-badge" id="msg-badge" style="display:none" title="הודעות חדשות">📬 0</span>
         </button>
     </div>
     <div class="user-bar-actions">
-    <button class="btn-bell" id="btn-bell" onclick="openNotify()" title="התראות על אירועים חדשים" aria-label="התראות על אירועים חדשים"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg><span class="bell-dot" id="bell-dot"></span></button>
+    <button class="btn-bell" id="btn-bell" onclick="openNotify()" title="התראות לטלפון על אירועים חדשים" aria-label="התראות"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg><span class="ub-lbl" id="bell-lbl">התראות</span><span class="bell-dot" id="bell-dot"></span></button>
     <button class="btn-login" id="btn-login-toolbar" onclick="openAuth()" style="display:none;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="10" r="3"/><path d="M6.168 18.849A4 4 0 0 1 10 16h4a4 4 0 0 1 3.834 2.855"/></svg><span>התחברות</span></button>
     <div class="user-menu-wrap" id="user-menu-wrap" style="display:none;">
-        <button class="user-avatar-btn" onclick="toggleUserMenu()">
-            <span class="ava" data-ava>👤</span> <span id="user-name">-</span> <span id="user-role-badge" class="role-badge"></span> ▾
+        <button class="user-avatar-btn" onclick="toggleUserMenu()" aria-haspopup="true" title="האזור האישי">
+            <span class="ava" data-ava>👤</span> <span id="user-name">-</span> <span id="user-role-badge" class="role-badge"></span> <span class="ub-caret" aria-hidden="true">▾</span>
         </button>
         <div class="user-dropdown" id="user-dropdown">
             <button class="user-dropdown-item" onclick="closeUserMenu();openMyPanel()"><span class="ava" data-ava>👤</span> האזור האישי</button>
             <button class="user-dropdown-item" id="dd-change-pass" style="display:none" onclick="changePassword();closeUserMenu()">🔑 שנה סיסמה</button>
-            <a class="user-dropdown-item" data-support style="display:none" href="https://buymeacoffee.com/heifait_batahtit" target="_blank" rel="noopener" onclick="closeUserMenu()">☕ לתמיכה בחיפאית בתחתית</a>
+            <button class="user-dropdown-item" onclick="closeUserMenu();openMyPanel('up')">📅 האירועים שפרסמתי</button>
+            <button class="user-dropdown-item" onclick="closeUserMenu();openMyPanel('likes')">❤️ מה שאהבתי</button>
+            <button class="user-dropdown-item" onclick="closeUserMenu();openNotify()">🔔 הגדרות התראות</button>
             <div class="user-dropdown-divider"></div>
             <button class="user-dropdown-item danger" onclick="logout()">יציאה ←</button>
         </div>
@@ -1433,7 +1506,7 @@ button.user-stats:hover{background:rgba(212,224,52,0.22);}
         <input type="search" class="adm-search" id="ar-search" placeholder="🔍 חיפוש אמן, יוצר/ת או להקה…" oninput="renderArtistsDir()">
         <button type="button" class="btn-coffee ar-add" id="ar-add-btn" onclick="openArtistEditor()">＋ יצירת דף אמן</button>
     </div>
-    <div class="adm-chips" id="ar-kind-chips" style="margin-bottom:.8rem">
+    <div class="adm-chips" id="ar-kind-chips" style="display:none">
         <button class="adm-chip active" data-k="artist" onclick="setArKind('artist')"><svg class="role-ico ico-in" viewBox="0 0 64 64" aria-hidden="true"><use href="#ri-art"/></svg> אמנים ויוצרים</button>
         <button class="adm-chip" data-k="producer" onclick="setArKind('producer')"><svg class="role-ico ico-in" viewBox="0 0 64 64" aria-hidden="true"><use href="#ri-pro"/></svg> מפיקים</button>
     </div>
@@ -1591,6 +1664,7 @@ button.user-stats:hover{background:rgba(212,224,52,0.22);}
     <button type="button" class="fb-cats-btn" id="fb-cats-btn" onclick="toggleCatsDrawer()" aria-expanded="false" aria-controls="fbar-cats">🏷<span class="fb-lbl"> קטגוריות</span> <span id="fb-cats-n"></span>▾</button>
     <button type="button" class="fb-tab fb-link" onclick="openVenuesPanel()" aria-label="מקומות"><svg class="role-ico" viewBox="0 0 64 64" aria-hidden="true"><use href="#ri-ven"/></svg><span class="fb-lbl"> מקומות</span></button>
     <button type="button" class="fb-tab fb-link" onclick="openArtistsPanel()" aria-label="אמנים"><svg class="role-ico" viewBox="0 0 64 64" aria-hidden="true"><use href="#ri-art"/></svg><span class="fb-lbl"> אמנים</span></button>
+    <button type="button" class="fb-tab fb-link" onclick="openArtistsPanel(0,'producer')" aria-label="מפיקים"><svg class="role-ico" viewBox="0 0 64 64" aria-hidden="true"><use href="#ri-pro"/></svg><span class="fb-lbl"> מפיקים</span></button>
   </div>
   <div class="toolbar-cats fbar-cats" id="fbar-cats">
         <button class="filter-btn active" data-cat="all">הכל</button>
@@ -2043,8 +2117,8 @@ async function checkAuth() {
             // שמירת מייל+שם בפרופיל תמיד
             const userName = user.user_metadata?.full_name || user.user_metadata?.name || user.email?.split('@')[0] || '';
             await db.from('user_profiles').upsert({ id: user.id, email: user.email, name: userName }, { onConflict: 'id' });
-            document.getElementById('user-name').textContent = user.user_metadata?.full_name || user.user_metadata?.name || user.email?.split('@')[0] || 'משתמש';
-            document.getElementById('user-role-badge').textContent = currentRole === 'admin' ? 'מנהל' : 'עורך';
+            document.getElementById('user-name').textContent = String(user.user_metadata?.full_name || user.user_metadata?.name || user.email?.split('@')[0] || 'האזור שלי').trim().split(/\s+/)[0];
+            document.getElementById('user-role-badge').textContent = currentRole === 'admin' ? 'מנהלת' : '';
             document.getElementById('user-role-badge').className = `role-badge role-${currentRole === 'admin' ? 'admin' : 'editor'}`;
             document.getElementById('user-menu-wrap').style.display = 'block';
             document.getElementById('btn-login-toolbar').style.display = 'none';
@@ -2533,7 +2607,7 @@ function toggleFav(id, ev) {
 }
 
 function openViewModal(id) {
-    let e = events.find(x => x.id == id);
+    let e = events.find(x => x.id == id) || (pastEvents || []).find(x => x.id == id);
     if (!e) return;
     viewEventId = e.id;
     const hs = history.state || {};
@@ -2618,7 +2692,8 @@ const LAYERS = {
     artists: { open: () => document.getElementById('artists-panel').classList.contains('open'), close: () => closeArtistsPanel(true) },
     notify: { open: () => document.getElementById('notify-overlay').classList.contains('open'), close: () => closeNotify(true) },
     auth:   { open: () => document.getElementById('auth-overlay').classList.contains('open'), close: () => closeAuth(true) },
-    legal:  { open: () => document.getElementById('legal-overlay').classList.contains('open'), close: () => closeLegal(true) }
+    legal:  { open: () => document.getElementById('legal-overlay').classList.contains('open'), close: () => closeLegal(true) },
+    about:  { open: () => !!document.getElementById('about-overlay')?.classList.contains('open'), close: () => closeAbout(true) }
 };
 window.addEventListener('popstate', ev => {
     const s = ev.state || {};
@@ -3553,8 +3628,38 @@ function venueCardHtml(v, focus, inner) {
         ${v.about ? `<p class="vd-about">${escHtml(v.about)}</p>` : ''}
         <div class="vd-contacts">${venueContactHtml(v) || '<span class="users-empty">אין פרטי קשר</span>'}</div>
         ${evs.length ? `<div class="vd-events"><b>📅 אירועים קרובים כאן:</b>${evs.map(e => `<button type="button" class="vd-ev" onclick="openViewModal('${escHtml(String(e.id))}')">${escHtml(formatEventDate(e))} · ${escHtml(e.title)}</button>`).join('')}</div>` : ''}
+        <details class="vd-past" data-m="v:${escHtml(v.venue_key)}" ontoggle="pastToggle(this)"><summary>🕰 אירועים קודמים</summary><div class="vd-past-list">טוען…</div></details>
         ${!inner && currentRole === 'admin' ? `<div class="vd-admin"><button class="btn-reject" onclick="adminDeleteVenue(${v.id})">🗑 הסרה מהרשימה</button></div>` : ''}`;
     return inner ? body : `<div class="vd-card${focus ? ' focus' : ''}">${body}</div>`;
+}
+// ── אירועים קודמים בדף מקום / אמן / מפיק (נטען רק כשפותחים את הלשונית) ──
+let pastEvents = null, pastLoading = null;
+async function loadPastEvents() {
+    if (pastEvents) return pastEvents;
+    if (!pastLoading) pastLoading = (async () => {
+        const t = new Date(), today = `${t.getFullYear()}-${String(t.getMonth()+1).padStart(2,'0')}-${String(t.getDate()).padStart(2,'0')}`;
+        const { data, error } = await db.from('events').select('id,title,description,date_raw,date_end_raw,time,location,price,tickets,cat,cats,user_id,status,image,contact')
+            .eq('status', 'approved').lt('date_raw', today).order('date_raw', { ascending: false }).limit(1500);
+        if (error) { pastLoading = null; throw error; }
+        pastEvents = (data || []).filter(e => e.date_raw < today && (!e.date_end_raw || e.date_end_raw < today)).map(rowToEvent);
+        return pastEvents;
+    })();
+    return pastLoading;
+}
+async function pastToggle(d) {
+    if (!d.open || d.dataset.done) return;
+    const box = d.querySelector('.vd-past-list');
+    try {
+        const all = await loadPastEvents();
+        const [k, v] = [d.dataset.m.slice(0, 1), d.dataset.m.slice(2)];
+        const a = k === 'a' ? artistsDir.find(x => String(x.id) === v) : null;
+        const list = all.filter(e => k === 'v' ? venueKey(e.location) === v : a && inPage(a, e));
+        d.dataset.done = '1';
+        if (!list.length) { box.innerHTML = '<span class="users-empty">עוד אין כאן אירועים קודמים.</span>'; return; }
+        const show = list.slice(0, 40);
+        box.innerHTML = show.map(e => `<button type="button" class="vd-ev vd-ev-past" onclick="openViewModal('${escHtml(String(e.id))}')">${escHtml(formatEventDate(e))} · ${escHtml(e.title)}</button>`).join('')
+            + (list.length > show.length ? `<span class="users-empty">ועוד ${list.length - show.length} אירועים…</span>` : '');
+    } catch (_) { box.innerHTML = '<span class="users-empty">לא הצלחנו לטעון כרגע. נסו שוב.</span>'; }
 }
 let vdFocus = '';
 async function openVenuesPanel(key) {
@@ -3959,6 +4064,8 @@ function setArKind(k) {
     document.querySelectorAll('#ar-kind-chips .adm-chip').forEach(b => b.classList.toggle('active', b.dataset.k === k));
     document.getElementById('ar-add-btn').textContent = '＋ יצירת ' + KIND_TXT[k].page;
     document.getElementById('ar-h2').innerHTML = `<svg class="role-ico ico-h2" viewBox="0 0 64 64" aria-hidden="true"><use href="#${KIND_TXT[k].sym}"/></svg> ${k === 'producer' ? 'מפיקים' : 'אמנים ויוצרים'}`;
+    const s = document.getElementById('ar-search'); if (s) s.placeholder = k === 'producer' ? '🔍 חיפוש מפיק/ה או הפקה…' : '🔍 חיפוש אמן, יוצר/ת או להקה…';
+    document.getElementById('artists-panel').setAttribute('aria-label', k === 'producer' ? 'מפיקים' : 'אמנים');
     closeArtistEditor(); renderArtistsDir();
 }
 function artistCardHtml(a, focus, inner) {
@@ -3976,6 +4083,7 @@ function artistCardHtml(a, focus, inner) {
         ${links ? `<div class="vd-contacts">${links}</div>` : ''}
         ${contact ? `<div class="vd-contacts"><span class="ar-booking">ליצירת קשר:</span>${contact}</div>` : ''}
         ${evs.length ? `<div class="vd-events"><b>📅 אירועים קרובים:</b>${evs.map(e => `<button type="button" class="vd-ev" onclick="openViewModal('${escHtml(String(e.id))}')">${escHtml(formatEventDate(e))} · ${escHtml(e.title)}</button>`).join('')}</div>` : ''}
+        <details class="vd-past" data-m="a:${a.id}" ontoggle="pastToggle(this)"><summary>🕰 אירועים קודמים</summary><div class="vd-past-list">טוען…</div></details>
         ${!inner && (mine || currentRole === 'admin') ? `<div class="vd-admin">${mine ? `<button class="btn-preview" onclick="openArtistEditor(${a.id})">✏️ עריכה</button>` : ''}${currentRole === 'admin' ? `<button class="btn-reject" onclick="adminDeleteArtist(${a.id})">🗑 הסרה</button>` : ''}</div>` : ''}`;
     return inner ? body : `<div class="vd-card ar-card${focus ? ' focus' : ''}">${body}</div>`;
 }
@@ -5134,17 +5242,21 @@ loadA11yPrefs();
 
 <!-- פוטר -->
 <footer class="site-footer">
+  <div class="footer-pills">
+  <button type="button" class="footer-about-btn" onclick="openAbout()">✨ אודות חיפאית בתחתית</button>
+  <details class="footer-info">
+    <summary>🗂 אירועים לפי נושא</summary>
   <p class="footer-about"><b>חיפאית בתחתית</b> — כל האירועים בחיפה והסביבה במקום אחד: הופעות בחיפה, ג׳אז, סטנדאפ, מסיבות, תאטרון, קולנוע, הרצאות, סדנאות, ירידים ובמות פתוחות. מחפשים מה לעשות בחיפה היום, השבוע או בסופ״ש? כאן תמצאו את כל אירועי התרבות והבילוי בעיר — מהדר ועיר תחתית ועד הכרמל. מארגנים, אמנים ומקומות מוזמנים לפרסם בחינם.</p>
   <nav class="footer-topics" aria-label="אירועים בחיפה לפי נושא"><a href="/week">מה עושים בחיפה השבוע</a> · <a href="/c/music">הופעות בחיפה</a> · <a href="/c/jazz">ג׳אז בחיפה</a> · <a href="/c/standup">סטנדאפ בחיפה</a> · <a href="/c/parties">מסיבות בחיפה</a> · <a href="/c/theater">תאטרון בחיפה</a> · <a href="/c/kids">אירועים לילדים</a> · <a href="/c/lectures">הרצאות בחיפה</a> · <a href="/c/workshops">סדנאות בחיפה</a> · <a href="/c/fairs">ירידים בחיפה</a> · <a href="/c/openstage">במה פתוחה</a> · <a href="/c/cinema">קולנוע בחיפה</a></nav>
-  <div style="text-align:center"><button type="button" class="footer-a2hs" id="footer-a2hs" onclick="a2hsMaybe(true)">📲 הוספת האתר למסך הבית</button></div>
-  <div class="footer-support-mini">
-    <a href="https://buymeacoffee.com/heifait_batahtit" target="_blank" rel="noopener" onclick="trackSupport()">☕ אוהבים את האתר? אפשר לפנק בקפה</a>
+  </details>
   </div>
+  <div style="text-align:center"><button type="button" class="footer-a2hs" id="footer-a2hs" onclick="a2hsMaybe(true)">📲 הוספת האתר למסך הבית</button></div>
   <div class="footer-contact">
     <a class="btn-contact" href="mailto:heifait.batahtit@gmail.com?subject=%D7%A4%D7%A0%D7%99%D7%99%D7%94%20%D7%9E%D7%94%D7%90%D7%AA%D7%A8%20%D7%97%D7%99%D7%A4%D7%90%D7%99%D7%AA%20%D7%91%D7%AA%D7%97%D7%AA%D7%99%D7%AA"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>צור קשר</a>
     <button class="contact-mail" onclick="copyContactMail(this)" title="העתקת כתובת המייל">heifait.batahtit@gmail.com</button>
   </div>
   <div class="footer-links">
+    <button class="footer-link" onclick="openAbout()">אודות</button>
     <button class="footer-link" onclick="openLegal('privacy')">מדיניות פרטיות</button>
     <button class="footer-link" onclick="openLegal('terms')">תנאי שימוש</button>
     <button class="footer-link" onclick="openLegal('rules')">כללי פרסום</button>
@@ -5155,6 +5267,68 @@ loadA11yPrefs();
 </footer>
 
 <!-- מודל חוקי -->
+
+<!-- אודות -->
+<div id="about-overlay" role="dialog" aria-modal="true" aria-labelledby="about-h">
+  <div id="about-box">
+    <button class="about-x" onclick="closeAbout()" aria-label="סגירה">✕</button>
+    <div class="about-hero">
+      <img src="/icon-192.png" alt="" width="64" height="64">
+      <div><h2 id="about-h">חיפאית בתחתית</h2><p>כל מה שקורה בחיפה — במקום אחד</p></div>
+    </div>
+
+    <p class="about-lead">חיפאית בתחתית הוא לוח האירועים של חיפה: הופעות, ג׳אז, מסיבות, סטנדאפ, תאטרון, הרצאות, סדנאות, תערוכות וירידים — מסודרים לפי תאריך ונושא, מעיר תחתית והדר ועד הכרמל.</p>
+
+    <h3>🌱 איך זה התחיל</h3>
+    <p>לפני כארבע שנים פתחה <b>אורלי פרץ</b> — חיפאית מבחירה, זמרת, כותבת ומלחינה ומורה לעברית — קבוצת פייסבוק בשם "חיפאית בתחתית", כדי לרכז במקום אחד את התרבות האלטרנטיבית של העיר. ההשראה הייתה המדריך של "עכבר העיר" שהיה פעם בתל אביב.</p>
+    <p>הקבוצה גדלה לכ־14 אלף חברים, ולצידה יצא לוח אירועים יומי בקבוצות וואטסאפ עם כ־3,000 חברים. כשהעבודה הידנית וההתנדבותית על הלוחות נעשתה כבדה מדי, נולד האתר: מקום שבו מקומות, מפיקים ואמנים מפרסמים בעצמם, וכל אירוע עובר אישור לפני שהוא עולה.</p>
+
+    <h3>💛 למה</h3>
+    <p>בחיפה יש תרבות עשירה ואווירה של פרגון וחום, אבל הקהל נוטה להגיע שוב ושוב לאותם מקומות. המטרה היא לחשוף את מה שקורה בעיר ולהביא קהלים חדשים. יש מי שכתבו שהכירו מקומות חדשים בזכות הלוחות — ויש אפילו מי שעברו לגור בחיפה בזכותם.</p>
+
+    <h3>🎟 מה אפשר לעשות כאן</h3>
+    <ul>
+      <li>לחפש ולסנן אירועים לפי תאריך ונושא</li>
+      <li>לסמן ❤️, להוסיף ליומן ולשתף עם חברים</li>
+      <li>לקבל התראות לטלפון על אירועים חדשים בנושאים ובמקומות שאוהבים</li>
+      <li>להכיר מקומות, אמנים ומפיקים — עם פרטי קשר, אירועים קרובים ואירועים קודמים</li>
+      <li>להוסיף את האתר למסך הבית, כמו אפליקציה</li>
+    </ul>
+
+    <h3>📣 למקומות, אמנים ומפיקים</h3>
+    <ul>
+      <li>הפרסום חינם</li>
+      <li>דף קבוע עם הפרטים שלכם, כך שלא צריך למלא אותם כל פעם מחדש</li>
+      <li>אירועים שחוזרים על עצמם מפרסמים פעם אחת</li>
+      <li>נתוני צפייה וסיכום יומי לטלפון: כמה צפו, סימנו לב ולחצו על כרטיסים</li>
+    </ul>
+    <p><button type="button" class="about-cta" onclick="closeAbout();setTimeout(handleAddEvent,250)">＋ הוספת אירוע</button></p>
+
+    <h3>🔭 מה הלאה</h3>
+    <p>החלומות להמשך: מגזין תרבות שבועי, פודקאסט שמארח אמנים מהעיר, תחנת רדיו עם פלייליסטים של מוזיקאים חיפאים — ואולי גם אתר כזה לערים נוספות, אתר מקומי לכל עיר.</p>
+
+    <h3>📰 כתבו עלינו</h3>
+    <a class="about-press" href="https://1075.fm/item/227472" target="_blank" rel="noopener">
+      <b>קבוצת הפייסבוק שנתנה במה לתרבות האלטרנטיבית בחיפה קיבלה פנים חדשות</b>
+      <span>עומר מוזר · 107.5FM · נובמבר 2026 ←</span>
+    </a>
+
+    <h3>✉️ יצירת קשר ותמיכה</h3>
+    <p>רעיונות, הערות או שאלות — נשמח לשמוע: <a href="mailto:heifait.batahtit@gmail.com">heifait.batahtit@gmail.com</a></p>
+    <p>האתר מופעל בהתנדבות. אוהבים אותו? <a href="https://buymeacoffee.com/heifait_batahtit" target="_blank" rel="noopener" onclick="trackSupport()">אפשר לפנק בקפה ☕</a></p>
+  </div>
+</div>
+<script>
+function openAbout() { document.getElementById('about-overlay').classList.add('open'); document.getElementById('about-box').scrollTop = 0; pushLayer('about'); }
+function closeAbout(fromBack) {
+  const el = document.getElementById('about-overlay'); if (!el.classList.contains('open')) return;
+  el.classList.remove('open'); if (location.hash === '#about') history.replaceState(history.state, '', location.pathname + location.search);
+  if (fromBack !== true) popLayer('about', true);
+}
+document.getElementById('about-overlay').addEventListener('click', function (e) { if (e.target === this) closeAbout(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && document.getElementById('about-overlay').classList.contains('open')) closeAbout(); });
+if (location.hash === '#about') setTimeout(openAbout, 300);
+</script>
 <div id="legal-overlay" role="dialog" aria-modal="true" aria-label="מידע משפטי" data-nosnippet>
   <div id="legal-box">
     <button id="btn-close-legal" onclick="closeLegal()" aria-label="סגירה">✕</button>
@@ -5424,6 +5598,8 @@ async function ntCurrentSub() {
 async function ntRefreshBell() {
     const sub = await ntCurrentSub();
     document.getElementById('btn-bell').classList.toggle('on', !!sub);
+    const bl = document.getElementById('bell-lbl'); if (bl) bl.textContent = sub ? 'התראות פעילות' : 'התראות';
+    document.getElementById('btn-bell').title = sub ? 'ההתראות פעילות — לחיצה לשינוי ההגדרות' : 'הפעלת התראות לטלפון על אירועים חדשים';
 }
 // רישום ה-Service Worker (ברקע, לא מעכב את האתר)
 if ('serviceWorker' in navigator) {
