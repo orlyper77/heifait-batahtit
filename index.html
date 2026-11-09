@@ -94,7 +94,7 @@ body{font-family:'Secular One',sans-serif;background:#1a0505;color:#f5ede8;direc
 .forgot-link button:hover{color:#d4e034;}
 
 /* User Bar */
-.user-bar{display:none;padding:.5rem 1.5rem;background:#0f0202;border-bottom:1px solid rgba(255,255,255,0.06);font-size:13px;color:rgba(255,255,255,0.5);justify-content:space-between;align-items:center;position:sticky;top:0;z-index:300;}
+.user-bar{display:none;padding:.5rem 1.5rem;background:#0f0202;border-bottom:1px solid rgba(255,255,255,0.06);font-size:13px;color:rgba(255,255,255,0.5);justify-content:space-between;align-items:center;position:relative;z-index:300;}
 .user-bar.show{display:flex;}
 .user-menu-wrap{position:relative;}
 .user-bar-actions{display:flex;align-items:center;gap:8px;}
@@ -1403,9 +1403,6 @@ a.about-press span{display:block;color:#ffb0d0;font-size:13px;margin-top:4px;}
 <div class="user-bar show" id="user-bar">
     <div class="ub-start">
         <a class="btn-coffee-top" href="https://buymeacoffee.com/heifait_batahtit" target="_blank" rel="noopener" onclick="trackSupport()" title="אוהבים את חיפאית בתחתית? אפשר לפנק בקפה ☕" aria-label="תמיכה בחיפאית בתחתית — לפנק בקפה"><svg class="cof-ico" viewBox="0 0 64 64" aria-hidden="true"><use href="#ri-cof"/></svg><span class="ub-lbl cof-lbl"><small>תמיכה בחיפאית בתחתית</small>לפנק בקפה ☕</span></a>
-        <button class="btn-approval-panel" id="btn-approval-panel" onclick="openApprovalPanel()">
-            ✦ ניהול <span class="approval-badge" id="approval-badge" style="display:none" title="ממתינים לאישור">0</span><span class="msg-badge" id="msg-badge" style="display:none" title="הודעות חדשות">📬 0</span>
-        </button>
     </div>
     <div class="user-bar-actions">
     <button class="btn-bell" id="btn-bell" onclick="openNotify()" title="התראות לטלפון על אירועים חדשים" aria-label="התראות"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg><span class="ub-lbl" id="bell-lbl">התראות</span><span class="bell-dot" id="bell-dot"></span></button>
@@ -1425,6 +1422,9 @@ a.about-press span{display:block;color:#ffb0d0;font-size:13px;margin-top:4px;}
         </div>
     </div>
     <button class="btn-add" onclick="handleAddEvent()">+ הוסף אירוע</button>
+    <button class="btn-approval-panel" id="btn-approval-panel" onclick="openApprovalPanel()">
+            ✦ ניהול <span class="approval-badge" id="approval-badge" style="display:none" title="ממתינים לאישור">0</span><span class="msg-badge" id="msg-badge" style="display:none" title="הודעות חדשות">📬 0</span>
+        </button>
     </div>
 </div>
 
@@ -1742,7 +1742,7 @@ function toggleCatsDrawer(force) {
 }
 (function () {
     const bar = document.getElementById('toolbar'), ub = document.getElementById('user-bar');
-    const place = () => { bar.style.top = (ub ? ub.offsetHeight : 0) + 'px'; };
+    const place = () => { bar.style.top = '0px'; };   // רק סרגל האירועים נשאר למעלה בגלילה
     place(); window.addEventListener('resize', place);
     const n = document.getElementById('fb-cats-n');
     const upd = () => { const k = bar.querySelectorAll('.fbar-cats .filter-btn.active:not([data-cat="all"])').length; n.textContent = k ? '(' + k + ')' : ''; document.getElementById('fb-cats-btn').classList.toggle('has-sel', k > 0); };
