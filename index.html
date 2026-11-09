@@ -1215,6 +1215,28 @@ button.user-stats:hover{background:rgba(212,224,52,0.22);}
   .user-bar .btn-add,.user-bar .btn-login{padding:7px 12px;white-space:nowrap;}
 }
 
+/* ── תחתית האתר: שלוש עמודות ברורות ── */
+.site-footer{padding:2rem 1.2rem 1.5rem !important;gap:0 !important;}
+.ft-cols{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;max-width:980px;margin:0 auto 1.6rem;width:100%;}
+.ft-col{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:18px;padding:18px 16px;display:flex;flex-direction:column;align-items:center;gap:10px;}
+.ft-h{font-family:'Rubik',sans-serif;font-size:16px;font-weight:700;color:#f5ede8;margin:0;}
+.ft-tag{margin:0;font-size:13.5px;color:rgba(255,255,255,0.6);line-height:1.5;font-family:'Rubik',sans-serif;}
+.ft-btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-width:170px;padding:8px 18px;border-radius:999px;font-family:'Rubik',sans-serif;font-size:14px;font-weight:600;cursor:pointer;text-decoration:none;background:none;border:1px solid rgba(255,255,255,0.25);color:rgba(255,255,255,0.8);}
+.ft-btn:hover{border-color:rgba(255,255,255,0.5);color:#fff;}
+.ft-btn-y{background:rgba(212,224,52,0.12);border-color:rgba(212,224,52,0.45);color:#d4e034;}
+.ft-btn-y:hover{background:rgba(212,224,52,0.22);color:#e8f25a;border-color:#d4e034;}
+.footer-a2hs{display:none;margin:0;}
+.footer-a2hs.can{display:inline-flex;}
+.ft-col .contact-mail{font-size:14.5px !important;padding:6px 14px !important;}
+.ft-col .footer-info{margin:0;max-width:none;width:100%;}
+.ft-col .footer-info summary{font-size:13.5px;}
+.ft-col .footer-topics{margin:12px 0 10px;font-size:13.5px;}
+.ft-col .footer-about{font-size:12.5px;margin:0;color:rgba(255,255,255,0.45);}
+.ft-bottom{border-top:1px solid rgba(255,255,255,0.08);padding-top:1.1rem;max-width:980px;margin:0 auto;width:100%;display:flex;flex-direction:column;align-items:center;gap:8px;}
+.ft-bottom .footer-link{font-size:13px;color:rgba(255,255,255,0.5);}
+.ft-copy{font-size:12.5px;color:rgba(255,255,255,0.4);font-family:'Rubik',sans-serif;}
+.ft-disc{font-size:11px;color:rgba(255,255,255,0.25);max-width:620px;line-height:1.6;font-family:'Rubik',sans-serif;}
+@media(max-width:760px){.ft-cols{grid-template-columns:1fr;gap:12px;}.site-footer{padding-bottom:96px !important;}}
 /* אודות */
 #about-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:9998;align-items:center;justify-content:center;padding:1rem;}
 #about-overlay.open{display:flex;}
@@ -1249,11 +1271,13 @@ a.about-press span{display:block;color:#ffb0d0;font-size:13px;margin-top:4px;}
 .footer-info summary:hover{color:#fff;border-color:rgba(255,255,255,0.35);}
 .footer-info[open] summary{margin-bottom:12px;}
 /* ── פס עליון: קפה מימין · התראות / משתמש / הוספת אירוע משמאל ── */
-.user-bar{justify-content:space-between !important;flex-wrap:nowrap !important;gap:10px;}
+.user-bar{justify-content:center !important;flex-wrap:nowrap !important;gap:10px;}
 .ub-start{display:flex;align-items:center;gap:8px;}
 .user-bar .user-bar-actions{flex-wrap:nowrap !important;}
 .btn-coffee-top{display:inline-flex;align-items:center;gap:7px;text-decoration:none;color:#ffd9e8;font-family:'Rubik',sans-serif;font-size:13px;font-weight:600;padding:3px 12px 3px 4px;border-radius:999px;border:1px solid rgba(240,117,168,0.45);background:rgba(240,117,168,0.1);transition:background .2s,border-color .2s;}
 .btn-coffee-top:hover{background:rgba(240,117,168,0.22);border-color:#f075a8;color:#fff;}
+.btn-coffee-top .cof-lbl{display:flex;flex-direction:column;line-height:1.15;text-align:right;}
+.btn-coffee-top .cof-lbl small{font-size:10.5px;font-weight:500;color:rgba(255,217,232,0.75);}
 .btn-coffee-top .cof-ico{width:30px;height:30px;flex:none;transition:transform .3s;}
 .btn-coffee-top:hover .cof-ico{transform:rotate(-10deg) scale(1.08);}
 .btn-bell{gap:6px;padding:7px 14px !important;font-family:'Rubik',sans-serif;font-size:13px;font-weight:500;}
@@ -1270,6 +1294,7 @@ a.about-press span{display:block;color:#ffb0d0;font-size:13px;margin-top:4px;}
 @media(max-width:600px){
   .ub-lbl{display:none;}
   .btn-coffee-top{padding:2px;border-color:transparent;background:none;}
+  .btn-coffee-top .cof-lbl{display:none;}
   .btn-coffee-top .cof-ico{width:34px;height:34px;}
   .btn-bell{padding:0 10px !important;width:38px;justify-content:center;}
   .btn-bell.on::after{top:3px;inset-inline-start:3px;}
@@ -1377,7 +1402,7 @@ a.about-press span{display:block;color:#ffb0d0;font-size:13px;margin-top:4px;}
 <!-- User Bar -->
 <div class="user-bar show" id="user-bar">
     <div class="ub-start">
-        <a class="btn-coffee-top" href="https://buymeacoffee.com/heifait_batahtit" target="_blank" rel="noopener" onclick="trackSupport()" title="אוהבים את חיפאית בתחתית? אפשר לפנק בקפה ☕" aria-label="תמיכה בחיפאית בתחתית — לפנק בקפה"><svg class="cof-ico" viewBox="0 0 64 64" aria-hidden="true"><use href="#ri-cof"/></svg><span class="ub-lbl">לפנק בקפה</span></a>
+        <a class="btn-coffee-top" href="https://buymeacoffee.com/heifait_batahtit" target="_blank" rel="noopener" onclick="trackSupport()" title="אוהבים את חיפאית בתחתית? אפשר לפנק בקפה ☕" aria-label="תמיכה בחיפאית בתחתית — לפנק בקפה"><svg class="cof-ico" viewBox="0 0 64 64" aria-hidden="true"><use href="#ri-cof"/></svg><span class="ub-lbl cof-lbl"><small>תמיכה בחיפאית בתחתית</small>לפנק בקפה ☕</span></a>
         <button class="btn-approval-panel" id="btn-approval-panel" onclick="openApprovalPanel()">
             ✦ ניהול <span class="approval-badge" id="approval-badge" style="display:none" title="ממתינים לאישור">0</span><span class="msg-badge" id="msg-badge" style="display:none" title="הודעות חדשות">📬 0</span>
         </button>
@@ -3628,7 +3653,7 @@ function venueCardHtml(v, focus, inner) {
         ${v.about ? `<p class="vd-about">${escHtml(v.about)}</p>` : ''}
         <div class="vd-contacts">${venueContactHtml(v) || '<span class="users-empty">אין פרטי קשר</span>'}</div>
         ${evs.length ? `<div class="vd-events"><b>📅 אירועים קרובים כאן:</b>${evs.map(e => `<button type="button" class="vd-ev" onclick="openViewModal('${escHtml(String(e.id))}')">${escHtml(formatEventDate(e))} · ${escHtml(e.title)}</button>`).join('')}</div>` : ''}
-        <details class="vd-past" data-m="v:${escHtml(v.venue_key)}" ontoggle="pastToggle(this)"><summary>🕰 אירועים קודמים</summary><div class="vd-past-list">טוען…</div></details>
+        <details class="vd-past" hidden data-m="v:${escHtml(v.venue_key)}" ontoggle="pastToggle(this)"><summary>🕰 אירועים קודמים</summary><div class="vd-past-list">טוען…</div></details>
         ${!inner && currentRole === 'admin' ? `<div class="vd-admin"><button class="btn-reject" onclick="adminDeleteVenue(${v.id})">🗑 הסרה מהרשימה</button></div>` : ''}`;
     return inner ? body : `<div class="vd-card${focus ? ' focus' : ''}">${body}</div>`;
 }
@@ -3646,14 +3671,27 @@ async function loadPastEvents() {
     })();
     return pastLoading;
 }
+// מציג את הלשונית רק למי שיש לו אירועים קודמים (עם המספר)
+function pastListFor(all, m) {
+    const [k, v] = [m.slice(0, 1), m.slice(2)];
+    const a = k === 'a' ? artistsDir.find(x => String(x.id) === v) : null;
+    return all.filter(e => k === 'v' ? venueKey(e.location) === v : a && inPage(a, e));
+}
+async function markPastTabs(root) {
+    let all; try { all = await loadPastEvents(); } catch (_) { return; }
+    (root || document).querySelectorAll('.vd-past[hidden]').forEach(d => {
+        const n = pastListFor(all, d.dataset.m).length;
+        if (!n) return;
+        d.querySelector('summary').textContent = `🕰 אירועים קודמים (${n})`;
+        d.hidden = false;
+    });
+}
 async function pastToggle(d) {
     if (!d.open || d.dataset.done) return;
     const box = d.querySelector('.vd-past-list');
     try {
         const all = await loadPastEvents();
-        const [k, v] = [d.dataset.m.slice(0, 1), d.dataset.m.slice(2)];
-        const a = k === 'a' ? artistsDir.find(x => String(x.id) === v) : null;
-        const list = all.filter(e => k === 'v' ? venueKey(e.location) === v : a && inPage(a, e));
+        const list = pastListFor(all, d.dataset.m);
         d.dataset.done = '1';
         if (!list.length) { box.innerHTML = '<span class="users-empty">עוד אין כאן אירועים קודמים.</span>'; return; }
         const show = list.slice(0, 40);
@@ -3688,6 +3726,7 @@ function renderVenuesDir() {
     arr.sort((a, b) => (b.venue_key === vdFocus) - (a.venue_key === vdFocus) || upCount(b.venue_key) - upCount(a.venue_key) || a.name.localeCompare(b.name, 'he'));
     list.innerHTML = arr.map(v => venueCardHtml(v, v.venue_key === vdFocus)).join('')
         || `<div class="users-empty">${q ? 'לא נמצאו מקומות' : 'עוד אין מקומות ברשימה. מפרסמים יכולים להוסיף את המקום שלהם בטופס הוספת אירוע.'}</div>`;
+    markPastTabs(list);
 }
 async function adminDeleteVenue(id) {
     if (!confirm('להסיר את המקום מהרשימה?')) return;
@@ -4083,7 +4122,7 @@ function artistCardHtml(a, focus, inner) {
         ${links ? `<div class="vd-contacts">${links}</div>` : ''}
         ${contact ? `<div class="vd-contacts"><span class="ar-booking">ליצירת קשר:</span>${contact}</div>` : ''}
         ${evs.length ? `<div class="vd-events"><b>📅 אירועים קרובים:</b>${evs.map(e => `<button type="button" class="vd-ev" onclick="openViewModal('${escHtml(String(e.id))}')">${escHtml(formatEventDate(e))} · ${escHtml(e.title)}</button>`).join('')}</div>` : ''}
-        <details class="vd-past" data-m="a:${a.id}" ontoggle="pastToggle(this)"><summary>🕰 אירועים קודמים</summary><div class="vd-past-list">טוען…</div></details>
+        <details class="vd-past" hidden data-m="a:${a.id}" ontoggle="pastToggle(this)"><summary>🕰 אירועים קודמים</summary><div class="vd-past-list">טוען…</div></details>
         ${!inner && (mine || currentRole === 'admin') ? `<div class="vd-admin">${mine ? `<button class="btn-preview" onclick="openArtistEditor(${a.id})">✏️ עריכה</button>` : ''}${currentRole === 'admin' ? `<button class="btn-reject" onclick="adminDeleteArtist(${a.id})">🗑 הסרה</button>` : ''}</div>` : ''}`;
     return inner ? body : `<div class="vd-card ar-card${focus ? ' focus' : ''}">${body}</div>`;
 }
@@ -4118,6 +4157,7 @@ function renderArtistsDir() {
     arr.sort((x, y) => (y.id === arFocus) - (x.id === arFocus) || up(y) - up(x) || x.name.localeCompare(y.name, 'he'));
     list.innerHTML = arr.map(a => artistCardHtml(a, a.id === arFocus)).join('')
         || `<div class="users-empty">${q ? 'לא נמצאו תוצאות' : arKind === 'producer' ? 'עוד אין דפי מפיקים. מפיקים מוזמנים ליצור דף — לחצו "＋ יצירת דף מפיק".' : 'עוד אין דפי אמנים. אמנים ויוצרים מכל תחום מוזמנים ליצור דף — לחצו "＋ יצירת דף אמן".'}</div>`;
+    markPastTabs(list);
 }
 // עורך דף אמן (חדש / עריכה)
 function openArtistEditor(id) {
@@ -5242,28 +5282,38 @@ loadA11yPrefs();
 
 <!-- פוטר -->
 <footer class="site-footer">
-  <div class="footer-pills">
-  <button type="button" class="footer-about-btn" onclick="openAbout()">✨ אודות חיפאית בתחתית</button>
-  <details class="footer-info">
-    <summary>🗂 אירועים לפי נושא</summary>
-  <p class="footer-about"><b>חיפאית בתחתית</b> — כל האירועים בחיפה והסביבה במקום אחד: הופעות בחיפה, ג׳אז, סטנדאפ, מסיבות, תאטרון, קולנוע, הרצאות, סדנאות, ירידים ובמות פתוחות. מחפשים מה לעשות בחיפה היום, השבוע או בסופ״ש? כאן תמצאו את כל אירועי התרבות והבילוי בעיר — מהדר ועיר תחתית ועד הכרמל. מארגנים, אמנים ומקומות מוזמנים לפרסם בחינם.</p>
+  <div class="ft-cols">
+    <section class="ft-col">
+      <h2 class="ft-h">✨ חיפאית בתחתית</h2>
+      <p class="ft-tag">כל מה שקורה בחיפה — במקום אחד</p>
+      <button type="button" class="ft-btn ft-btn-y" onclick="openAbout()">אודות האתר</button>
+      <button type="button" class="ft-btn footer-a2hs" id="footer-a2hs" onclick="a2hsMaybe(true)">📲 הוספה למסך הבית</button>
+    </section>
+    <section class="ft-col">
+      <h2 class="ft-h">✉️ יצירת קשר</h2>
+      <p class="ft-tag">שאלות, רעיונות או בעיה באתר? כתבו לנו</p>
+      <a class="ft-btn ft-btn-y" href="mailto:heifait.batahtit@gmail.com?subject=%D7%A4%D7%A0%D7%99%D7%99%D7%94%20%D7%9E%D7%94%D7%90%D7%AA%D7%A8%20%D7%97%D7%99%D7%A4%D7%90%D7%99%D7%AA%20%D7%91%D7%AA%D7%97%D7%AA%D7%99%D7%AA">שליחת מייל</a>
+      <button type="button" class="contact-mail" onclick="copyContactMail(this)" title="העתקת כתובת המייל">heifait.batahtit@gmail.com</button>
+    </section>
+    <section class="ft-col">
+      <h2 class="ft-h">🗂 אירועים לפי נושא</h2>
+      <details class="footer-info">
+        <summary>הצגת הנושאים</summary>
   <nav class="footer-topics" aria-label="אירועים בחיפה לפי נושא"><a href="/week">מה עושים בחיפה השבוע</a> · <a href="/c/music">הופעות בחיפה</a> · <a href="/c/jazz">ג׳אז בחיפה</a> · <a href="/c/standup">סטנדאפ בחיפה</a> · <a href="/c/parties">מסיבות בחיפה</a> · <a href="/c/theater">תאטרון בחיפה</a> · <a href="/c/kids">אירועים לילדים</a> · <a href="/c/lectures">הרצאות בחיפה</a> · <a href="/c/workshops">סדנאות בחיפה</a> · <a href="/c/fairs">ירידים בחיפה</a> · <a href="/c/openstage">במה פתוחה</a> · <a href="/c/cinema">קולנוע בחיפה</a></nav>
-  </details>
+  <p class="footer-about"><b>חיפאית בתחתית</b> — כל האירועים בחיפה והסביבה במקום אחד: הופעות בחיפה, ג׳אז, סטנדאפ, מסיבות, תאטרון, קולנוע, הרצאות, סדנאות, ירידים ובמות פתוחות. מחפשים מה לעשות בחיפה היום, השבוע או בסופ״ש? כאן תמצאו את כל אירועי התרבות והבילוי בעיר — מהדר ועיר תחתית ועד הכרמל. מארגנים, אמנים ומקומות מוזמנים לפרסם בחינם.</p>
+      </details>
+    </section>
   </div>
-  <div style="text-align:center"><button type="button" class="footer-a2hs" id="footer-a2hs" onclick="a2hsMaybe(true)">📲 הוספת האתר למסך הבית</button></div>
-  <div class="footer-contact">
-    <a class="btn-contact" href="mailto:heifait.batahtit@gmail.com?subject=%D7%A4%D7%A0%D7%99%D7%99%D7%94%20%D7%9E%D7%94%D7%90%D7%AA%D7%A8%20%D7%97%D7%99%D7%A4%D7%90%D7%99%D7%AA%20%D7%91%D7%AA%D7%97%D7%AA%D7%99%D7%AA"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>צור קשר</a>
-    <button class="contact-mail" onclick="copyContactMail(this)" title="העתקת כתובת המייל">heifait.batahtit@gmail.com</button>
+  <div class="ft-bottom">
+    <nav class="footer-links" aria-label="מידע משפטי">
+      <button class="footer-link" onclick="openLegal('privacy')">מדיניות פרטיות</button>
+      <button class="footer-link" onclick="openLegal('terms')">תנאי שימוש</button>
+      <button class="footer-link" onclick="openLegal('rules')">כללי פרסום</button>
+      <button class="footer-link" onclick="openA11yStatement()">הצהרת נגישות</button>
+    </nav>
+    <div class="ft-copy">© 2026 חיפאית בתחתית · כל הזכויות שמורות</div>
+    <div class="ft-disc" data-nosnippet>התוכן המפורסם באתר הוא באחריות המפרסמים בלבד. האתר אינו אחראי לדיוק, נכונות או חוקיות המידע המפורסם. האתר "חיפאית בתחתית" שומר לעצמו את הזכות לערוך, להסיר, לשנות, למחוק כל תוכן, מידע או אירוע המתפרסם באתר, בכל עת וללא הודעה מוקדמת, על פי שיקול דעתו הבלעדי.</div>
   </div>
-  <div class="footer-links">
-    <button class="footer-link" onclick="openAbout()">אודות</button>
-    <button class="footer-link" onclick="openLegal('privacy')">מדיניות פרטיות</button>
-    <button class="footer-link" onclick="openLegal('terms')">תנאי שימוש</button>
-    <button class="footer-link" onclick="openLegal('rules')">כללי פרסום</button>
-    <button class="footer-link" onclick="openA11yStatement()">הצהרת נגישות</button>
-  </div>
-  <div>© 2026 חיפאית בתחתית · כל הזכויות שמורות</div>
-  <div data-nosnippet style="font-size:11px;color:rgba(255,255,255,0.2);max-width:560px;margin:0 auto;line-height:1.6;font-family:'Secular One',sans-serif;">התוכן המפורסם באתר הוא באחריות המפרסמים בלבד. האתר אינו אחראי לדיוק, נכונות או חוקיות המידע המפורסם. האתר "חיפאית בתחתית" שומר לעצמו את הזכות לערוך, להסיר, לשנות, למחוק כל תוכן, מידע או אירוע המתפרסם באתר, בכל עת וללא הודעה מוקדמת, על פי שיקול דעתו הבלעדי.</div>
 </footer>
 
 <!-- מודל חוקי -->
