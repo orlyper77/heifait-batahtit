@@ -29,7 +29,12 @@
     <meta name="twitter:description" content="כל האירועים והבילויים בחיפה במקום אחד — קונצרטים, תיאטרון, קולנוע, הרצאות, סדנאות, שירה ועוד.">
     <meta name="twitter:image" content="https://heifait-batahtit.co.il/og-image-2.jpg">
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGRlZnM+CjxsaW5lYXJHcmFkaWVudCBpZD0iY2xvY2siIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPgo8c3RvcCBvZmZzZXQ9IjAlIiBzdHlsZT0ic3RvcC1jb2xvcjojYzhhMDMwO3N0b3Atb3BhY2l0eToxIiAvPgo8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0eWxlPSJzdG9wLWNvbG9yOiM5OTc4MTA7c3RvcC1vcGFjaXR5OjEiIC8+CjwvbGluZWFyR3JhZGllbnQ+CjwvZGVmcz4KPGNpcmNsZSBjeD0iMTYiIGN5PSIxNiIgcj0iMTUiIGZpbGw9InVybCgjY2xvY2spIiBzdHJva2U9IiM3MzVhMGMiIHN0cm9rZS13aWR0aD0iMiIvPgo8Y2lyY2xlIGN4PSIxNiIgY3k9IjE2IiByPSIxMCIgZmlsbD0iI2ZmZiIgc3Ryb2tlPSIjOTk3ODEwIiBzdHJva2Utd2lkdGg9IjEiLz4KPCEtLSBIb3VyIG1hcmtzIC0tPgo8cmVjdCB4PSIxNSIgeT0iNCIgd2lkdGg9IjIiIGhlaWdodD0iNCIgZmlsbD0iIzMzMyIvPgo8cmVjdCB4PSIyNiIgeT0iMTUiIHdpZHRoPSI0IiBoZWlnaHQ9IjIiIGZpbGw9IiMzMzMiLz4KPHJlY3QgeD0iMTUiIHk9IjI0IiB3aWR0aD0iMiIgaGVpZ2h0PSI0IiBmaWxsPSIjMzMzIi8+CjxyZWN0IHg9IjIiIHk9IjE1IiB3aWR0aD0iNCIgaGVpZ2h0PSIyIiBmaWxsPSIjMzMzIi8+CjwhLS0gSG91ciBoYW5kIChwb2ludGluZyB0byA4KSAtLT4KPGxpbmUgeDE9IjE2IiB5MT0iMTYiIHgyPSIxMCIgeTI9IjEwIiBzdHJva2U9IiM1MGM4YjQiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+CjwhLS0gTWludXRlIGhhbmQgKHBvaW50aW5nIHRvIDEyKSAtLT4KPGxpbmUgeDE9IjE2IiB5MT0iMTYiIHgyPSIxNiIgeTI9IjciIHN0cm9rZT0iIzUwYzhiNCIgc3Ryb2tlLXdpZHRoPSIxIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz4KPCEtLSBDZW50ZXIgZG90IC0tPgo8Y2lyY2xlIGN4PSIxNiIgY3k9IjE2IiByPSIyIiBmaWxsPSIjNTBjOGI0Ii8+Cjwvc3ZnPgo=">
-    <link href="https://fonts.googleapis.com/css2?family=Secular+One&family=Rubik:wght@300;400;500;600;700;900&family=Cascadia+Code:wght@700&family=Permanent+Marker&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdn.jsdelivr.net">
+    <link rel="preconnect" href="https://sgeuvghemmscvwtpbgdo.supabase.co" crossorigin>
+    <link rel="preload" as="image" href="hero.jpg" fetchpriority="high">
+    <link href="https://fonts.googleapis.com/css2?family=Secular+One&family=Rubik:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="https://accounts.google.com/gsi/client" async defer></script>
     <!-- Vercel Web Analytics: ספירת ביקורים אנונימית, בלי עוגיות -->
@@ -1422,6 +1427,35 @@ a.about-press span{display:block;color:#ffb0d0;font-size:13px;margin-top:4px;}
 .users-group-head{justify-content:flex-start;}
 .ue-row{justify-content:flex-start;flex-wrap:wrap;}
 .ue-row .ue-title{flex:0 1 auto;max-width:260px;}
+
+/* ═══ שיפורים: ניגודיות טקסט, כפתורי מגע, תנועה מופחתת ═══ */
+.empty{color:rgba(255,255,255,0.65);}
+.empty .btn-link{font-size:15px;margin-top:10px;text-decoration:underline;}
+.ft-disc{color:rgba(255,255,255,0.5);font-size:11.5px;}
+.ft-copy{color:rgba(255,255,255,0.6);}
+.ft-bottom .footer-link{color:rgba(255,255,255,0.7);}
+.footer-topics .ft-n{color:rgba(255,255,255,0.6);}
+.btn-more{font-size:.78rem;}
+#view-modal:focus-visible{outline:none!important;}
+.mail-ok-row{text-align:right;margin-top:6px;}
+#my-panel .mail-ok-row{background:rgba(70,10,35,0.28);border-color:rgba(255,255,255,0.3);}
+#my-panel .mail-ok-row input{accent-color:#f5d90a;}
+/* התווית "חדש" מעל התמונה (קודם הייתה מוסתרת מאחוריה) */
+.new-badge{z-index:2;box-shadow:0 2px 8px rgba(0,0,0,.4);font-weight:700;}
+/* סינון מהיר: היום / מחר / סופ"ש / השבוע */
+.fbar-quick{display:flex;justify-content:center;gap:6px;max-width:1300px;margin:.45rem auto 0;}
+.fq-btn{flex:0 0 auto;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.22);color:rgba(255,255,255,0.85);border-radius:999px;font-family:inherit;font-size:13px;padding:4px 14px;cursor:pointer;white-space:nowrap;transition:background .15s;}
+.fq-btn:hover{background:rgba(255,255,255,0.14);color:#fff;}
+.fq-btn.active{background:#d4e034;border-color:#d4e034;color:#1a0505;font-weight:700;}
+@media(max-width:768px){.fbar-quick{gap:5px;margin-top:.4rem;}.fq-btn{flex:1 1 0;padding:6px 4px;font-size:13.5px;}}
+@media(max-width:600px){.fav-btn,.edit-btn,.del-btn{width:36px;height:36px;font-size:16px;}.card-actions{gap:7px;}}
+@media (prefers-reduced-motion: reduce){
+  .card,.view-modal,.notice-box,.support-nudge{animation:none!important;}
+  .card,#a2hs,.btn-coffee,.role-ico,.bell-ico,.cof-ico{transition:none!important;}
+  .card:hover{transform:none!important;}
+  .skeleton-img,.skeleton-line{animation:none!important;}
+  .user-bar .btn-bell:hover .bell-ico{animation:none!important;}
+}
 </style>
 </head>
 <body>
@@ -1498,6 +1532,10 @@ a.about-press span{display:block;color:#ffb0d0;font-size:13px;margin-top:4px;}
                 <button type="button" data-r="producer" onclick="this.classList.toggle('selected')"><span class="rc-ic"><svg class="role-ico" viewBox="0 0 64 64" aria-hidden="true"><use href="#ri-pro"/></svg></span><b>מפיק/ה</b><small>עם דף מפיק משלי</small></button>
             </div>
             <div class="modal-btns"><button class="btn-submit" onclick="saveRolesFrom('pf')">💾 שמירה</button></div>
+            <div id="pf-mail-wrap" style="display:none">
+                <h3 class="mv-title" style="margin-top:22px">✉️ עדכונים במייל</h3>
+                <label class="remember-defaults mail-ok-row"><input type="checkbox" id="pf-mail-ok" onchange="saveMailOk(this.checked)"><span>אפשר לשלוח לי במייל עדכונים מחיפאית בתחתית: חדשות האתר, המלצות על אירועים ולפעמים בקשת תמיכה. <b>לא חובה</b>, ואפשר לבטל בכל רגע.</span></label>
+            </div>
             <p class="my-intro" style="margin-top:14px">🔔 להתראות על אירועים חדשים — כפתור הפעמון בפס העליון.</p>
         </div>
         <div id="my-venues" class="my-defaults" style="display:none">
@@ -1612,6 +1650,7 @@ a.about-press span{display:block;color:#ffb0d0;font-size:13px;margin-top:4px;}
                 <button type="button" data-r="venue" onclick="this.classList.toggle('selected')"><span class="rc-ic"><svg class="role-ico" viewBox="0 0 64 64" aria-hidden="true"><use href="#ri-ven"/></svg></span><b>מקום</b><small>מארח/ת אירועים — עם דף מקום ופרטי קשר</small></button>
                 <button type="button" data-r="producer" onclick="this.classList.toggle('selected')"><span class="rc-ic"><svg class="role-ico" viewBox="0 0 64 64" aria-hidden="true"><use href="#ri-pro"/></svg></span><b>מפיק/ה</b><small>עם דף מפיק משלי</small></button>
             </div>
+        <label class="remember-defaults mail-ok-row" id="ob-mail-row" style="display:none"><input type="checkbox" id="ob-mail-ok"><span>✉️ אפשר לשלוח לי במייל עדכונים מחיפאית בתחתית: חדשות האתר, המלצות על אירועים ולפעמים בקשת תמיכה. <b>לא חובה</b>, ואפשר לבטל בכל רגע.</span></label>
         <div class="modal-btns"><button class="btn-submit" onclick="saveRolesFrom('ob')">המשך</button><button class="btn-cancel" onclick="closeRolesOverlay(true)">אחר כך</button></div>
     </div>
 </div>
@@ -1695,7 +1734,7 @@ a.about-press span{display:block;color:#ffb0d0;font-size:13px;margin-top:4px;}
         </div>
         <div class="users-mail-tools">
             <button class="btn-preview" onclick="copyAllEmails()" data-ic="copy" data-ic-size="18">העתקת כל המיילים (<span id="users-email-count">0</span>)</button>
-            <button class="btn-preview" onclick="mailAllUsers()" data-ic="mail" data-ic-size="18">מייל לכולם (בעותק מוסתר)</button>
+            <button class="btn-preview" onclick="mailAllUsers()" data-ic="mail" data-ic-size="18"><span id="mail-all-lbl">מייל לכולם (בעותק מוסתר)</span></button>
         </div>
         <div id="trusted-users-list"></div>
     </div>
@@ -1724,6 +1763,12 @@ a.about-press span{display:block;color:#ffb0d0;font-size:13px;margin-top:4px;}
     <button type="button" class="fb-tab fb-link" onclick="openVenuesPanel()" aria-label="מקומות"><svg class="role-ico" viewBox="0 0 64 64" aria-hidden="true"><use href="#ri-ven"/></svg><span class="fb-lbl"> מקומות</span></button>
     <button type="button" class="fb-tab fb-link" onclick="openArtistsPanel()" aria-label="אמנים"><svg class="role-ico" viewBox="0 0 64 64" aria-hidden="true"><use href="#ri-art"/></svg><span class="fb-lbl"> אמנים</span></button>
     <button type="button" class="fb-tab fb-link" onclick="openArtistsPanel(0,'producer')" aria-label="מפיקים"><svg class="role-ico" viewBox="0 0 64 64" aria-hidden="true"><use href="#ri-pro"/></svg><span class="fb-lbl"> מפיקים</span></button>
+  </div>
+  <div class="fbar-quick" id="fbar-quick" role="group" aria-label="סינון מהיר לפי זמן">
+    <button type="button" class="fq-btn" data-q="today" aria-pressed="false" onclick="setQuick('today')">היום</button>
+    <button type="button" class="fq-btn" data-q="tomorrow" aria-pressed="false" onclick="setQuick('tomorrow')">מחר</button>
+    <button type="button" class="fq-btn" data-q="weekend" aria-pressed="false" onclick="setQuick('weekend')">סופ״ש</button>
+    <button type="button" class="fq-btn" data-q="week" aria-pressed="false" onclick="setQuick('week')">השבוע</button>
   </div>
   <div class="toolbar-cats fbar-cats" id="fbar-cats">
         <button class="filter-btn active" data-cat="all">הכל</button>
@@ -1788,7 +1833,7 @@ function toggleCatsDrawer(force) {
 </script>
 
 <!-- Events Grid -->
-<div class="events-grid" id="grid" tabindex="-1"></div>
+<main class="events-grid" id="grid" tabindex="-1"></main>
 
 <script>
 // Show skeleton cards immediately before JS loads
@@ -2065,7 +2110,7 @@ function toggleCatsDrawer(force) {
 
 <!-- View Event Overlay -->
 <div class="overlay" id="view-overlay" role="dialog" aria-modal="true" aria-label="פרטי האירוע" onclick="if(event.target===this)closeViewModal()" style="display:none;">
-    <div class="view-modal" id="view-modal">
+    <div class="view-modal" id="view-modal" tabindex="-1">
         <button class="view-modal-close" onclick="closeViewModal()">✕</button>
         <div id="view-modal-img-wrap"></div>
         <div class="view-modal-body">
@@ -2130,7 +2175,16 @@ const CAT_EMOJI = {music:'🎵',theater:'🎭',cinema:'🎬',lectures:'🎤',kid
 const CAT_LABEL = {music:'מוזיקה',theater:'תאטרון',cinema:'קולנוע',lectures:'הרצאות',kids:'ילדים',spirit:'רוח',workshops:'סדנאות',literature:'ספרות',art:'אמנות',parties:'מסיבות',games:'משחקים',fairs:'ירידים',community:'קהילתי',standup:'סטנדאפ',tours:'סיורים',performance:'פרפורמנס',fringe:"פרינג'",festivals:'פסטיבלים',laughs:'צחוקים',jazz:"ג'אז",dance:'מחול',classic:'קלאסי',poetry:'שירה',openstage:'במה פתוחה',pubquiz:'פאב קוויז',karaoke:'קריוקי',secondhand:'יד 2',pride:'גאווה',dancing:'רוקדים',spokenword:'ספוקן וורד',other:'אחר',general:'אחר'};
 
 // מיילים של מנהלות האתר
-const ADMIN_EMAILS = ['heifait.batahtit@gmail.com', 'orlyper77@gmail.com'];
+const ADMIN_EMAILS = ['heifait.batahtit@gmail.com'];
+// מנהלות נוספות: נשמרת רק טביעת SHA-256 של הכתובת, כדי שהמייל הפרטי לא יופיע בקוד הגלוי של הדף.
+// להוספת מנהלת: בקונסול של הדפדפן  await sha256Hex('name@example.com')  ולהדביק כאן את התוצאה.
+const ADMIN_HASHES = ['125aba68a7e8fcd0fb3c3dc690766cdf7c801ce12f82fa44130ced08f48d330e'];
+async function isAdminEmail(email) {
+    email = String(email || '').toLowerCase().trim();
+    if (!email) return false;
+    if (ADMIN_EMAILS.includes(email)) return true;
+    try { return ADMIN_HASHES.includes(await sha256Hex(email)); } catch (_) { return false; }
+}
 
 let currentUser = null, currentRole = null, currentTrusted = false, currentBlocked = false;
 let events = [], filteredEvents = [];
@@ -2139,8 +2193,10 @@ let editingId = null, currentImageData = null, pendingAction = null;
 
 // ── Init ──
 async function init() {
+    // שאילתת האירועים יוצאת מיד, במקביל לבדיקת ההתחברות (ולא אחריה) — העמוד מתמלא מהר יותר
+    const evP = Promise.resolve(queryEvents()).catch(e => ({ data: null, error: e }));
     await checkAuth();
-    await loadEvents();
+    await loadEvents(evP);
     setupFilters();
     setupRealtime();
     // חזרה מהתחברות עם גוגל — המשך לפעולה שהמשתמש ביקש
@@ -2155,18 +2211,23 @@ async function init() {
     } else if (pa === 'approvals' && currentRole === 'admin') openApprovalPanel();
 }
 
+let rtTimer = null;
 function setupRealtime() {
     // האזנה לאירועים חדשים/שינויים בזמן אמת
     db.channel('events-changes')
-        .on('postgres_changes', { event: '*', schema: 'public', table: 'events' }, async (payload) => {
-            await loadEvents();
-            if (currentRole === 'admin') {
-                await updateApprovalBadge();
-                // אם פאנל האישורים פתוח — רענן אותו
-                if (document.getElementById('approval-panel').classList.contains('open')) {
-                    await loadPendingEvents();
+        .on('postgres_changes', { event: '*', schema: 'public', table: 'events' }, () => {
+            // כמה שינויים ברצף (למשל אירוע חוזר עם 12 מועדים) = טעינה אחת, לא 12
+            clearTimeout(rtTimer);
+            rtTimer = setTimeout(async () => {
+                await loadEvents();
+                if (currentRole === 'admin') {
+                    await updateApprovalBadge();
+                    // אם פאנל האישורים פתוח — רענן אותו
+                    if (document.getElementById('approval-panel').classList.contains('open')) {
+                        await loadPendingEvents();
+                    }
                 }
-            }
+            }, 700);
         })
         .subscribe();
 }
@@ -2181,13 +2242,13 @@ async function checkAuth() {
             const { data: profile } = await db.from('user_profiles').select('role,trusted,blocked').eq('id', user.id).single();
             currentRole = profile?.role || 'user';
             // רק חשבון הג'ימייל הוא מנהל
-            if (ADMIN_EMAILS.includes((user.email || '').toLowerCase())) currentRole = 'admin';
+            if (await isAdminEmail(user.email)) currentRole = 'admin';
             currentTrusted = profile?.trusted || false;
             currentBlocked = profile?.blocked || false;
             setTimeout(afterLoginProfile, 400);   // סוג פרופיל + סנכרון "אהבתי"
             // שמירת מייל+שם בפרופיל תמיד
             const userName = user.user_metadata?.full_name || user.user_metadata?.name || user.email?.split('@')[0] || '';
-            await db.from('user_profiles').upsert({ id: user.id, email: user.email, name: userName }, { onConflict: 'id' });
+            db.from('user_profiles').upsert({ id: user.id, email: user.email, name: userName }, { onConflict: 'id' }).then(() => {}, () => {});   // ברקע — לא מעכב את טעינת האירועים
             document.getElementById('user-name').textContent = String(user.user_metadata?.full_name || user.user_metadata?.name || user.email?.split('@')[0] || 'האזור שלי').trim().split(/\s+/)[0];
             document.getElementById('user-role-badge').textContent = currentRole === 'admin' ? 'מנהלת' : '';
             document.getElementById('user-role-badge').className = `role-badge role-${currentRole === 'admin' ? 'admin' : 'editor'}`;
@@ -2221,7 +2282,7 @@ function setAuthTab(tab) {
     const isRegister = tab === 'register';
     document.getElementById('register-fields').style.display = isRegister ? 'block' : 'none';
     document.getElementById('auth-submit-btn').textContent = isRegister ? 'הרשמה' : 'התחברות';
-    document.getElementById('forgot-password-link').style.display = isRegister ? 'none' : 'block';
+    { const fl = document.getElementById('forgot-password-link'); if (fl) fl.style.display = isRegister ? 'none' : 'block'; }
     document.getElementById('remember-me-row').style.display = isRegister ? 'none' : 'flex';
     clearAuthMessage();
 }
@@ -2366,6 +2427,7 @@ async function changePassword() {
 
 async function logout() {
     await db.auth.signOut();
+    myMailOk = false; mailOkSupported = false; syncMailOkUi();
     currentUser = null; currentRole = null; myDefaults = null; myDefaultsLoaded = false; myRoles = []; rolesLoaded = false; myActivity = []; activityLoaded = false; if (typeof updateAvatars === 'function') updateAvatars();
     closeUserMenu();
     document.getElementById('user-menu-wrap').style.display = 'none';
@@ -2375,14 +2437,18 @@ async function logout() {
 }
 
 // ── Events ──
-async function loadEvents() {
+// רק אירועים רלוונטיים (מאתמול והלאה — אתמול בשביל אירועים שנמשכים אחרי חצות). אירועים ישנים לא נטענים בכלל.
+function queryEvents() {
+    const _y = new Date(Date.now() - 864e5);
+    const since = `${_y.getFullYear()}-${String(_y.getMonth()+1).padStart(2,'0')}-${String(_y.getDate()).padStart(2,'0')}`;
+    return db.from('events').select('*')
+        .or(`date_raw.gte.${since},date_end_raw.gte.${since},date_raw.is.null`)
+        .order('date_raw', { ascending: true });
+}
+// pre = שאילתה שכבר יצאה (בטעינה הראשונה); בלי pre — שאילתה חדשה
+async function loadEvents(pre) {
     try {
-        // רק אירועים רלוונטיים (מאתמול והלאה — אתמול בשביל אירועים שנמשכים אחרי חצות). אירועים ישנים לא נטענים בכלל.
-        const _y = new Date(Date.now() - 864e5);
-        const since = `${_y.getFullYear()}-${String(_y.getMonth()+1).padStart(2,'0')}-${String(_y.getDate()).padStart(2,'0')}`;
-        const { data, error } = await db.from('events').select('*')
-            .or(`date_raw.gte.${since},date_end_raw.gte.${since},date_raw.is.null`)
-            .order('date_raw', { ascending: true });
+        const { data, error } = await (pre && typeof pre.then === 'function' ? pre : queryEvents());
         if (error) throw error;
         const _n = new Date(); // תאריך מקומי (ישראל), לא UTC — כדי שאירועים של אתמול ייעלמו כבר בחצות
         const today = `${_n.getFullYear()}-${String(_n.getMonth()+1).padStart(2,'0')}-${String(_n.getDate()).padStart(2,'0')}`;
@@ -2403,7 +2469,7 @@ async function loadEvents() {
         checkPublisherUpdates();
     } catch(e) {
         console.error(e);
-        document.getElementById('grid').innerHTML = '<div class="empty">שגיאה בטעינת האירועים</div>';
+        document.getElementById('grid').innerHTML = '<div class="empty" role="alert"><div style="font-size:2.5rem;margin-bottom:.75rem">📡</div><div>לא הצלחנו לטעון את האירועים. בדקו את החיבור לאינטרנט.</div><button type="button" class="btn-link" onclick="loadEvents()">לנסות שוב ↻</button></div>';
     }
 }
 
@@ -2521,10 +2587,35 @@ function rowToEvent(e) {
         contact: e.contact || '',
         seriesId: e.series_id || '',
         seriesPos: e.series_pos || null,
+        createdAt: e.created_at || '',
         image: e.image || null,
         user_id: e.user_id,
         status: e.status || 'approved'
     };
+}
+
+// ── סינון מהיר לפי זמן: היום / מחר / סופ"ש (חמישי–שבת) / השבוע (7 הימים הקרובים) ──
+let quickKey = '';
+function quickRange(k) {
+    const n = new Date(), day = i => localISO(new Date(n.getFullYear(), n.getMonth(), n.getDate() + i, 12));
+    const wd = n.getDay();   // 0 = ראשון ... 6 = שבת
+    if (k === 'today') return [day(0), day(0)];
+    if (k === 'tomorrow') return [day(1), day(1)];
+    if (k === 'week') return [day(0), day(6)];
+    if (k === 'weekend') return [day(wd >= 4 ? 0 : 4 - wd), day(6 - wd)];
+    return null;
+}
+function updQuick() {
+    document.querySelectorAll('#fbar-quick .fq-btn').forEach(b => { const on = b.dataset.q === quickKey; b.classList.toggle('active', on); b.setAttribute('aria-pressed', on); });
+}
+function setQuick(k) {
+    quickKey = quickKey === k ? '' : k;
+    if (quickKey && dateFilter) {   // סינון מהיר מחליף תאריך שנבחר
+        document.getElementById('date-filter').value = ''; dateFilter = '';
+        const lbl = document.getElementById('date-label-text'); if (lbl) lbl.textContent = 'תאריך';
+        document.getElementById('toolbar').classList.remove('has-date');
+    }
+    updQuick(); applyFilter();
 }
 
 function applyFilter() {
@@ -2532,10 +2623,12 @@ function applyFilter() {
     let list = events.filter(e => !eventIsOver(e));
     if (activeTab === 'favs') list = list.filter(e => favs.has(String(e.id)));
     if (dateFilter) list = list.filter(e => e.dateRaw === dateFilter || (e.dateEndRaw && e.dateRaw <= dateFilter && e.dateEndRaw >= dateFilter));
+    if (quickKey) { const r = quickRange(quickKey); if (r) list = list.filter(e => e.dateRaw && e.dateRaw <= r[1] && (e.dateEndRaw || e.dateRaw) >= r[0]); }
     if (searchVal) list = list.filter(e =>
         (e.title||'').toLowerCase().includes(searchVal) ||
         (e.desc||'').toLowerCase().includes(searchVal) ||
-        (e.location||'').toLowerCase().includes(searchVal)
+        (e.location||'').toLowerCase().includes(searchVal) ||
+        (e.cats||[e.cat]).some(c => (CAT_LABEL[c]||'').toLowerCase().includes(searchVal))
     );
     updateCatAvailability(list);
     if (activeCats.size > 0) list = list.filter(e => (e.cats||[e.cat]).some(c => activeCats.has(c)));
@@ -2581,8 +2674,11 @@ function render() {
     const grid = document.getElementById('grid');
     document.getElementById('fav-count').textContent = favs.size ? `(${favs.size})` : '';
     if (!filteredEvents.length) {
-        const msg = activeTab === 'favs' ? 'לא שמרת אירועים מועדפים עדיין' : 'לא נמצאו אירועים תואמים';
-        grid.innerHTML = `<div class="empty"><div style="font-size:2.5rem;margin-bottom:.75rem">${activeTab==='favs'?'💔':'🔍'}</div><div>${msg}</div></div>`;
+        const hasFilter = !!(dateFilter || quickKey || activeCats.size || (document.getElementById('search-input')?.value || '').trim());
+        const msg = activeTab === 'favs' && !hasFilter ? 'לא שמרת אירועים מועדפים עדיין' : 'לא נמצאו אירועים תואמים';
+        const action = hasFilter ? '<button type="button" class="btn-link" onclick="resetFilters()">ניקוי הסינון ←</button>'
+            : activeTab === 'favs' ? '<button type="button" class="btn-link" onclick="switchTab(\'all\')">לכל האירועים ←</button>' : '';
+        grid.innerHTML = `<div class="empty"><div style="font-size:2.5rem;margin-bottom:.75rem">${activeTab==='favs'&&!hasFilter?'💔':'🔍'}</div><div>${msg}</div>${action}</div>`;
         return;
     }
     // קיבוץ לפי ימים: כותרת לכל יום ומתחתיה האירועים שלו
@@ -2596,6 +2692,15 @@ function render() {
         lastKey = k;
         return header + cardHtml(e);
     }).join('');
+}
+
+// ניקוי כל הסינונים (חיפוש, תאריך, קטגוריות) בלחיצה אחת
+function resetFilters() {
+    const s = document.getElementById('search-input'); if (s) s.value = '';
+    activeCats.clear();
+    quickKey = ''; updQuick();
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.toggle('active', b.dataset.cat === 'all'));
+    clearDate();   // מנקה את התאריך ומרנדר מחדש
 }
 
 function localISO(d) { return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`; }
@@ -2631,20 +2736,27 @@ function cleanLink(v) {
     return safeUrl(v);
 }
 
+// "חדש ✦" — רק לאירוע שנוסף לאתר ב-4 הימים האחרונים
+const NEW_DAYS = 4;
+function isNewEvent(e) {
+    const t = e && e.createdAt ? Date.parse(e.createdAt) : NaN;
+    return !isNaN(t) && Date.now() - t < NEW_DAYS * 864e5 && Date.now() >= t - 864e5;
+}
+
 function cardHtml(e) {
     const raw = e; e = escEvent(e);
     {
         const isUserEvent = currentUser && (currentUser.id === e.user_id || currentRole === 'admin');
         return `
         <div class="card${isUserEvent?' user-event':''}" data-id="${e.id}" data-cat="${e.cat}" onclick="openViewModal('${e.id}')" style="cursor:pointer;" tabindex="0" role="button" aria-label="${e.title} — לפרטים" data-kbd-click>
-            ${e.id && !isNaN(e.id) ? '' : '<div class="new-badge">חדש ✦</div>'}
+            ${isNewEvent(raw) ? '<div class="new-badge">חדש ✦</div>' : ''}
             <div class="card-actions">
                 <button class="fav-btn" onclick="toggleFav('${e.id}',event)" aria-pressed="${favs.has(e.id)}" aria-label="${favs.has(e.id)?'הסרה מהמועדפים':'הוספה למועדפים'}: ${e.title}">${favs.has(e.id)?'❤️':'🤍'}</button>
                 ${isUserEvent ? `<button class="edit-btn" onclick="event.stopPropagation();openModal('${e.id}')">✏️</button>` : ''}
                 ${isUserEvent ? `<button class="del-btn" onclick="deleteEvent('${e.id}',event)">🗑️</button>` : ''}
             </div>
             <div class="card-img">
-                ${e.image ? `<img class="card-img-bg" src="${e.image}" alt="" aria-hidden="true" loading="lazy" decoding="async"><img class="card-img-main" src="${e.image}" alt="${e.title}" loading="lazy">` : `<span>${e.emoji}</span>`}
+                ${e.image ? `<img class="card-img-bg" src="${e.image}" alt="" aria-hidden="true" loading="lazy" decoding="async"><img class="card-img-main" src="${e.image}" alt="${e.title}" loading="lazy" decoding="async">` : `<span>${e.emoji}</span>`}
             </div>
             <div class="card-body">
                 <div class="card-cats">${(e.cats||[e.cat]).map(c=>`<span class="card-cat cat-${c}">${CAT_LABEL[c]||c}</span>`).join('')}${e.status==='pending'&&(currentRole==='admin'||(currentUser&&currentUser.id===e.user_id))?'<span style="background:rgba(255,100,100,0.3);color:#ff8080;border:1px solid rgba(255,100,100,0.5);font-size:10px;padding:2px 7px;border-radius:20px;">⏳ ממתין לאישור</span>':''}</div>
@@ -2674,13 +2786,23 @@ function toggleFav(id, ev) {
     try { localStorage.setItem('favs', JSON.stringify([...favs])); } catch (_) {}
     trackEv(id, 'likes', liked ? 1 : -1);
     recordActivity(id, 'like', liked);
-    applyFilter();
+    // בלשונית הרגילה מעדכנים רק את הלב עצמו — בלי לצייר מחדש את כל הכרטיסים (אין הבהוב)
+    const btn = ev.currentTarget;
+    if (activeTab === 'favs' || !btn || !btn.classList || !btn.classList.contains('fav-btn')) applyFilter();
+    else {
+        btn.textContent = liked ? '❤️' : '🤍';
+        btn.setAttribute('aria-pressed', liked);
+        const t = (events.find(x => String(x.id) === id) || {}).title || '';
+        btn.setAttribute('aria-label', (liked ? 'הסרה מהמועדפים' : 'הוספה למועדפים') + ': ' + t);
+        document.getElementById('fav-count').textContent = favs.size ? `(${favs.size})` : '';
+    }
     if (liked && typeof a2hsMaybe === 'function') a2hsMaybe();
 }
 
 function openViewModal(id) {
     let e = events.find(x => x.id == id) || (pastEvents || []).find(x => x.id == id);
     if (!e) return;
+    if (document.getElementById('view-overlay').style.display === 'none') viewReturnFocus = document.activeElement;   // לאן להחזיר את המיקוד בסגירה
     viewEventId = e.id;
     const hs = history.state || {};
     closeMenus('silent');
@@ -2734,12 +2856,23 @@ function openViewModal(id) {
     const vo = document.getElementById('view-overlay');
     vo.style.display = 'flex';
     setTimeout(() => vo.style.opacity = '1', 10);
+    // מקלדת וקוראי מסך: המיקוד עובר לחלון האירוע
+    setTimeout(() => { try { const m = document.getElementById('view-modal'); m.scrollTop = 0; m.focus({ preventScroll: true }); } catch (_) {} }, 30);
 }
 
 function closeViewModal(fromBack) {
     const vo = document.getElementById('view-overlay');
     if (vo.style.display === 'none') return;
     vo.style.display = 'none';
+    {   // המיקוד חוזר למקום שממנו נפתח האירוע (או לכרטיס שלו)
+        const rf = viewReturnFocus, lastId = viewEventId; viewReturnFocus = null;
+        setTimeout(() => {
+            if (document.getElementById('view-overlay').style.display !== 'none') return;
+            let t = rf && rf !== document.body && document.contains(rf) ? rf : null;
+            if (!t && lastId != null) { try { t = document.querySelector('.card[data-id="' + CSS.escape(String(lastId)) + '"]'); } catch (_) {} }
+            if (t && t.focus) { try { t.focus({ preventScroll: true }); } catch (_) {} }
+        }, 0);
+    }
     viewEventId = null;
     if (fromBack === true) return;
     const s = history.state || {};
@@ -2776,7 +2909,7 @@ window.addEventListener('popstate', ev => {
 });
 
 // ── הוספה ליומן ושיתוף ──
-let viewEventId = null;
+let viewEventId = null, viewReturnFocus = null;
 let deepLinkHandled = false;
 const SITE_URL = 'https://heifait-batahtit.co.il/';
 // קישור שיתוף קצר: לאירוע עם מזהה ארוך (uuid) — רק 8 התווים הראשונים, למשל /e/adde252b
@@ -3096,6 +3229,7 @@ function setupFilters() {
     });
     document.getElementById('date-filter').addEventListener('change', e => {
         dateFilter = e.target.value;
+        if (dateFilter && quickKey) { quickKey = ''; updQuick(); }   // תאריך שנבחר מחליף סינון מהיר
         document.getElementById('toolbar').classList.toggle('has-date', !!dateFilter);
         const lbl = document.getElementById('date-label-text');
         if (lbl) lbl.textContent = dateFilter ? new Date(dateFilter + 'T12:00:00').toLocaleDateString('he-IL', {day:'numeric',month:'numeric'}) : 'תאריך';
@@ -3211,9 +3345,10 @@ async function loadPendingEvents() {
     // שליפת מיילים של משתמשים מטבלת user_profiles
     const userIds = [...new Set(data.map(e => e.user_id).filter(Boolean))];
     const userEmails = {};
-    for (const uid of userIds) {
-        const { data: profile } = await db.from('user_profiles').select('id,email,name,trusted').eq('id', uid).single();
-        userEmails[uid] = (profile?.name ? profile.name + ' · ' : '') + (profile?.email || uid.substring(0,8)+'...');
+    userIds.forEach(uid => { userEmails[uid] = String(uid).substring(0,8)+'...'; });
+    if (userIds.length) {   // שאילתה אחת לכל המפרסמים (במקום שאילתה לכל אחד)
+        const { data: profs } = await db.from('user_profiles').select('id,email,name').in('id', userIds);
+        (profs || []).forEach(p => { userEmails[p.id] = (p.name ? p.name + ' · ' : '') + (p.email || String(p.id).substring(0,8)+'...'); });
     }
     pendingRows = {}; data.forEach(r => { pendingRows[r.id] = r; });
     // סדרה (אירוע חוזר): כרטיס אחד לכל הסדרה
@@ -3240,19 +3375,6 @@ async function loadPendingEvents() {
                 </div>
             </div>
         </div>`; }).join('');
-    // נסיון לשלוף מיילים אמיתיים
-    fetchUserEmails(data);
-
-}
-
-async function fetchUserEmails(events) {
-    for (const e of events) {
-        if (!e.user_id) continue;
-        try {
-            const { data } = await db.from('user_profiles').select('id,trusted').eq('id', e.user_id).single();
-            // חיפוש המייל — נשתמש ב-supabase admin API אם זמין
-        } catch(err) {}
-    }
 }
 
 // תצוגה מלאה / עריכה של מודעה שממתינה לאישור
@@ -3304,7 +3426,9 @@ async function migrateImages() {
 }
 
 // מיילים של המשתמשים הרשומים (למנהלת בלבד)
-let allUserEmails = [];
+let allUserEmails = [], consentEmails = [], groupConsent = { pub: [], view: [] }, mailConsentOn = false;
+// רשימת הנמענים לדיוור: אחרי mail_consent.sql — רק מי שסימן הסכמה
+const mailTargets = (all, ok) => mailConsentOn ? ok : all;
 async function copyAllEmails() {
     const t = allUserEmails.join(', ');
     if (!t) { showToast('אין עדיין מיילים'); return; }
@@ -3325,9 +3449,10 @@ function openMail(to, bccList) {
     return false;
 }
 function mailAllUsers() {
-    if (!allUserEmails.length) { showToast('אין עדיין מיילים'); return; }
+    const list = mailTargets(allUserEmails, consentEmails);
+    if (!list.length) { showToast(mailConsentOn ? 'עדיין אף אחד לא סימן הסכמה לקבל עדכונים במייל' : 'אין עדיין מיילים'); return; }
     // כל הנמענים בעותק מוסתר (BCC) — כך אף אחד לא רואה את הכתובות של האחרים
-    openMail('heifait.batahtit@gmail.com', allUserEmails);
+    openMail('heifait.batahtit@gmail.com', list);
 }
 
 // ── אירוע חוזר ──
@@ -3430,7 +3555,9 @@ async function rejectEvent(id) {
 
 async function loadAllUsers() {
     // שליפת כל הפרופילים
-    const { data: profiles } = await db.from('user_profiles').select('id,role,trusted,blocked,email,name');
+    let { data: profiles, error: pErr } = await db.from('user_profiles').select('id,role,trusted,blocked,email,name,mail_ok');
+    mailConsentOn = !pErr;
+    if (pErr) ({ data: profiles } = await db.from('user_profiles').select('id,role,trusted,blocked,email,name'));   // לפני mail_consent.sql
     // כל האירועים (כולל ישנים) — כדי לדעת מי פרסם ומה מספר האירועים של כל אחד
     const { data: allEvs } = await db.from('events').select('user_id,status,title,date_raw,date_end_raw,time');
     // ספירה אמיתית: אירועים שונים לפי שם (אותו אירוע בכמה תאריכים = "מועדים" של אירוע אחד)
@@ -3457,15 +3584,19 @@ async function loadAllUsers() {
         if (e.user_id && !profileMap[e.user_id]) profileMap[e.user_id] = { id: e.user_id, email: null, trusted: false, blocked: false };
     });
 
-    const users = Object.values(profileMap).filter(u => u.role !== 'admin' && !ADMIN_EMAILS.includes((u.email || '').toLowerCase()));
+    const _allU = Object.values(profileMap), _adm = await Promise.all(_allU.map(u => isAdminEmail(u.email)));
+    const users = _allU.filter((u, i) => u.role !== 'admin' && !_adm[i]);
     if (users.length === 0) { list.innerHTML = '<div style="color:rgba(255,255,255,0.3);font-size:.85rem;">אין משתמשים רשומים עדיין</div>'; return; }
 
     allUserEmails = users.map(u => u.email).filter(Boolean);
+    consentEmails = users.filter(u => u.mail_ok).map(u => u.email).filter(Boolean);
+    { const ml = document.getElementById('mail-all-lbl'); if (ml) ml.textContent = mailConsentOn ? `מייל למי שהסכימו לעדכונים (${consentEmails.length})` : 'מייל לכולם (בעותק מוסתר)'; }
     const cnt = document.getElementById('users-email-count'); if (cnt) cnt.textContent = allUserEmails.length;
     // הפרדה: מפרסמים (פרסמו לפחות אירוע אחד) / צופים (רק נרשמו)
     const publishers = users.filter(u => evCount[u.id]).sort((a, b) => (upCount[b.id] || 0) - (upCount[a.id] || 0) || evCount[b.id] - evCount[a.id]);
     const viewers = users.filter(u => !evCount[u.id]);
     groupEmails = { pub: publishers.map(u => u.email).filter(Boolean), view: viewers.map(u => u.email).filter(Boolean) };
+    groupConsent = { pub: publishers.filter(u => u.mail_ok).map(u => u.email).filter(Boolean), view: viewers.filter(u => u.mail_ok).map(u => u.email).filter(Boolean) };
     const rowHtml = u => {
         const displayName = u.name ? `<strong style="color:#f5ede8;">${escHtml(u.name)}</strong> ` : '';
         const displayEmail = u.email ? `<a href="mailto:${escHtml(u.email)}" data-mail="${escHtml(u.email)}" onclick="event.stopPropagation(); return openMail(this.dataset.mail)" style="color:rgba(160,200,255,0.8);font-size:.8rem;">${escHtml(u.email)}</a>` : `<span style="color:rgba(255,255,255,0.3);font-size:.8rem;">${u.id.substring(0,8)}...</span>`;
@@ -3474,7 +3605,7 @@ async function loadAllUsers() {
                     : evCount[u.id] ? `<span class="user-stats" style="opacity:.55;cursor:default;">אין אירועים קרובים</span>` : '';
         return `
         <div class="trusted-user-row" id="urow-${u.id}" data-q="${escHtml(((u.name || '') + ' ' + (u.email || '')).toLowerCase())}" data-trusted="${u.trusted ? 1 : 0}" data-blocked="${u.blocked ? 1 : 0}">
-            <span class="trusted-user-email">${displayName}${displayEmail}${stats}</span>
+            <span class="trusted-user-email">${displayName}${displayEmail}${u.mail_ok ? ' <span class="user-stats" style="cursor:default" title="סימן/ה הסכמה לקבל עדכונים במייל">✉️ עדכונים</span>' : ''}${stats}</span>
             <div style="display:flex;gap:6px;">
                 <button class="btn-trust ${u.trusted?'trusted':''}" onclick="toggleTrust('${u.id}',${!u.trusted})">
                     ${u.trusted ? svgIc('check', 16) + ' מאושר' : 'אשרי מראש'}
@@ -3491,7 +3622,7 @@ async function loadAllUsers() {
                 <h4>${title} <span class="users-group-count">${arr.length}</span></h4>
                 ${arr.some(u => u.email) ? `<div class="users-group-tools">
                     <button class="btn-preview" onclick="copyGroupEmails('${key}')">${svgIc('copy', 16)} העתקת מיילים</button>
-                    <button class="btn-preview" onclick="mailGroup('${key}')">${svgIc('mail', 16)} מייל לכולם</button>
+                    <button class="btn-preview" onclick="mailGroup('${key}')">${svgIc('mail', 16)} ${mailConsentOn ? `מייל למי שהסכימו (${groupConsent[key].length})` : 'מייל לכולם'}</button>
                 </div>` : ''}
             </div>
             ${arr.length ? arr.map(rowHtml).join('') : `<div class="users-empty">${empty}</div>`}
@@ -3988,6 +4119,32 @@ if (document.readyState === 'loading') document.addEventListener('DOMContentLoad
     window.addEventListener('scroll', close, { passive: true });
 })();
 
+// ══ הסכמה לקבלת עדכונים במייל (חוק הספאם) ══
+// נשמרת בפרופיל (העמודות mail_ok / mail_ok_at — הקובץ mail_consent.sql). "מייל לכולם" בניהול נשלח רק למי שסימן.
+// עד שמריצים את mail_consent.sql — האפשרות פשוט לא מוצגת, והכול עובד כמו קודם.
+let myMailOk = false, mailOkSupported = false;
+async function loadMailOk() {
+    if (!currentUser) return;
+    try {
+        const { data, error } = await db.from('user_profiles').select('mail_ok').eq('id', currentUser.id).maybeSingle();
+        mailOkSupported = !error;
+        myMailOk = !!(data && data.mail_ok);
+    } catch (_) { mailOkSupported = false; }
+    syncMailOkUi();
+}
+function syncMailOkUi() {
+    ['ob-mail-row', 'pf-mail-wrap'].forEach(id => { const el = document.getElementById(id); if (el) el.style.display = mailOkSupported ? '' : 'none'; });
+    ['ob-mail-ok', 'pf-mail-ok'].forEach(id => { const el = document.getElementById(id); if (el) el.checked = myMailOk; });
+}
+async function saveMailOk(on, quiet) {
+    if (!currentUser || !mailOkSupported) return;
+    on = !!on;
+    const { error } = await db.from('user_profiles').update({ mail_ok: on, mail_ok_at: new Date().toISOString() }).eq('id', currentUser.id);
+    if (error) { showToast('השמירה לא הצליחה — נסו שוב'); syncMailOkUi(); return; }
+    myMailOk = on; syncMailOkUi();
+    if (!quiet) showToast(on ? '✉️ נרשמת לעדכונים במייל' : 'בוטל — לא נשלח לך עדכונים במייל');
+}
+
 // ══ סוגי פרופיל (קהל / אמן / מקום) + "הפעילות שלי" ══
 let myRoles = [], rolesLoaded = false, myActivity = [], activityLoaded = false;
 const hasPubRole = () => myRoles.includes('artist') || myRoles.includes('venue') || myRoles.includes('producer') || currentRole === 'admin' || (myRows && myRows.length > 0);
@@ -4014,6 +4171,7 @@ async function afterLoginProfile() {
         if (!error) { myRoles = (data && data.roles) || []; rolesLoaded = true; updateAvatars(); }
     } catch (_) {}
     syncActivity();
+    loadMailOk();
     // לחיצה על הסיכום היומי (?my=stats) → פותח את האזור האישי עם הנתונים
     if (/[?&]my=/.test(location.search)) { try { history.replaceState(null, '', location.pathname); } catch (_) {} setTimeout(() => openMyPanel('up'), 300); return; }
     // פעם ראשונה: לשאול מה המשתמש באתר (לא למנהלת, ולא אם כבר דילג במכשיר הזה)
@@ -4036,6 +4194,7 @@ async function saveRolesFrom(pre) {
     const { error } = await db.rpc('set_my_roles', { p_roles: roles });
     if (error) { showToast('השמירה לא הצליחה'); return; }
     myRoles = roles; rolesLoaded = true; updateAvatars();
+    if (pre === 'ob' && mailOkSupported && document.getElementById('ob-mail-ok').checked) saveMailOk(true, true);
     if (pre === 'ob') {
         closeRolesOverlay(true);
         showToast(roles.includes('artist') || roles.includes('venue') ? 'מעולה! האזור האישי שלכם מוכן 🎉' : 'מעולה! סמנו ❤️ על אירועים, והם יחכו לכם באזור האישי');
@@ -4488,7 +4647,8 @@ async function copyGroupEmails(key) {
     showToast(`הועתקו ${arr.length} כתובות ✓`);
 }
 function mailGroup(key) {
-    const arr = groupEmails[key] || []; if (!arr.length) return;
+    const arr = mailTargets(groupEmails[key] || [], groupConsent[key] || []);
+    if (!arr.length) { showToast(mailConsentOn ? 'בקבוצה הזאת עדיין אף אחד לא סימן הסכמה לקבל עדכונים במייל' : 'אין עדיין מיילים'); return; }
     openMail('heifait.batahtit@gmail.com', arr);
 }
 
@@ -5186,7 +5346,7 @@ setTimeout(clearSearchAutofill, 1000);
   <div id="a11y-statement-box">
     <h2>♿ הצהרת נגישות</h2>
     <p><strong>חיפאית בתחתית</strong> רואה חשיבות רבה בהנגשת האתר לכל הגולשים, כולל אנשים עם מוגבלות, בהתאם לחוק שוויון זכויות לאנשים עם מוגבלות, התשנ"ח–1998, ולתקנות הנגישות.</p>
-    <p>האתר הונגש בהתאם לתקן הישראלי ת"י 5568, המבוסס על הנחיות <strong>WCAG 2.0 ברמה AA</strong>.</p>
+    <p>אנו פועלים להנגיש את האתר לפי התקן הישראלי ת"י 5568, המבוסס על הנחיות <strong>WCAG 2.0 ברמה AA</strong>, וממשיכים לשפר אותו באופן שוטף. ייתכן שיש באתר חלקים שטרם הונגשו במלואם.</p>
     <p><strong>מה עשינו באתר:</strong></p>
     <ul>
       <li>תפריט נגישות: הגדלת טקסט (שתי רמות), ניגודיות גבוהה (רקע שחור וטקסט בהיר), גווני אפור, הדגשת קישורים, גופן קריא, עצירת אנימציות וסמן גדול — וביטול כל ההגדרות בלחיצה אחת</li>
@@ -5197,6 +5357,7 @@ setTimeout(clearSearchAutofill, 1000);
     </ul>
     <p><strong>מגבלות ידועות:</strong></p>
     <ul>
+      <li>בכרטיסי האירועים ובחלק מהחלונות הקופצים הניווט במקלדת ובקורא מסך עדיין אינו מושלם, ואנו עובדים על שיפורו</li>
       <li>האירועים, התמונות והתיאורים נכתבים על ידי המפרסמים, וייתכן שחלקם לא יכללו תיאור מלא של התמונה</li>
       <li>קישורים לאתרי כרטיסים, טפסי הרשמה ורשתות חברתיות מובילים לאתרים חיצוניים שאינם בשליטתנו</li>
       <li>חלון ההתחברות של Google ובוחר התאריכים מגיעים מ-Google ומהדפדפן ואינם בשליטתנו המלאה</li>
@@ -5447,11 +5608,11 @@ if (location.hash === '#about') setTimeout(openAbout, 300);
         <li><strong>אירועים שפרסמתם</strong> — שם האירוע, תיאור, תאריך, מקום, מחיר, תמונה וקישורים. אלה מיועדים לפרסום ומוצגים לכל הגולשים לאחר אישור.</li>
         <li><strong>טלפון / וואטסאפ ליצירת קשר (לא חובה)</strong> — אם בחרתם להוסיף מספר לאירוע, הוא מוצג לכל הגולשים כדי שיוכלו לפנות אליכם. אל תוסיפו מספר שאינכם רוצים שיהיה פומבי.</li>
         <li><strong>רשימת המקומות (לא חובה)</strong> — מפרסם שבוחר להוסיף מקום לרשימת המקומות מוסר את שם המקום, הכתובת, תיאור קצר ודרכי יצירת קשר (טלפון / וואטסאפ, מייל, טופס, אתר ורשתות). פרטים אלה מוצגים לכל הגולשים לאחר אישור, ואפשר לערוך או להסיר אותם בכל עת.</li>
-        <li><strong>סוג הפרופיל והפעילות האישית</strong> — סוג הפרופיל שבחרתם (קהל / אמן / מקום), והפעילות שלכם באתר כשאתם מחוברים: אירועים שסימנתם ❤️, שהוספתם ליומן, ששיתפתם, ושלחצתם בהם על כרטיסים או קישורים. המטרה: להציג לכם את "האזור האישי". רק אתם רואים את הפעילות האישית שלכם — מפרסמים רואים רק מספרים אנונימיים, בלי שמות.</li>
+        <li><strong>סוג הפרופיל והפעילות האישית</strong> — סוג הפרופיל שבחרתם (קהל / אמן / מקום / מפיק), והפעילות שלכם באתר כשאתם מחוברים: אירועים שסימנתם ❤️, שהוספתם ליומן, ששיתפתם, ושלחצתם בהם על כרטיסים או קישורים. המטרה: להציג לכם את "האזור האישי". רק אתם רואים את הפעילות האישית שלכם — מפרסמים רואים רק מספרים אנונימיים, בלי שמות.</li>
         <li><strong>דפי אמנים ומפיקים (לא חובה)</strong> — מי שיוצר דף אמן מוסר שם, סגנון, תיאור, תמונה, קישורים ופרטי קשר. הדף מוצג לכל הגולשים לאחר אישור, ואפשר לערוך או למחוק אותו בכל עת.</li>
         <li><strong>"הפרטים הקבועים שלי"</strong> — מקום, שעות, מחיר, קישורים וטלפון שבחרתם לשמור כדי שימולאו אוטומטית. נשמרים בחשבון שלכם ונראים רק לכם.</li>
         <li><strong>התראות לטלפון (לא חובה)</strong> — אם הפעלתם התראות, נשמרת כתובת טכנית שהדפדפן יוצר לצורך שליחת התראות, יחד עם הקטגוריות והמקומות שבחרתם. אפשר לבטל בכל רגע מכפתור הפעמון.</li>
-        <li><strong>נתוני צפייה באירועים</strong> — האתר סופר באופן אנונימי כמה פעמים צפו באירוע, סימנו לב, הוסיפו ליומן, לחצו על כרטיסים, קישורים או יצירת קשר, ושיתפו. לא נשמר מי לחץ — רק מספרים. הנתונים מוצגים למפרסם של האירוע ולהנהלת האתר בלבד.</li>
+        <li><strong>נתוני צפייה באירועים</strong> — האתר סופר באופן אנונימי כמה פעמים צפו באירוע, סימנו לב, הוסיפו ליומן, לחצו על כרטיסים, קישורים או יצירת קשר, ושיתפו. בספירה הזאת לא נשמר מי לחץ — רק מספרים, והם מוצגים למפרסם של האירוע ולהנהלת האתר בלבד. (למשתמשים מחוברים נשמרת בנפרד "הפעילות האישית" שמתוארת למעלה, ורק הם רואים אותה.)</li>
         <li><strong>מדידת ביקורים באתר</strong> — באמצעות Vercel Web Analytics, שסופר ביקורים ועמודים באופן מצטבר, ללא עוגיות וללא זיהוי אישי.</li>
         <li><strong>פניות אלינו</strong> — אם כתבתם לנו במייל, נשמור את הפנייה כדי לטפל בה.</li>
       </ul>
@@ -5470,18 +5631,23 @@ if (location.hash === '#about') setTimeout(openAbout, 300);
       <p>לצורך הפעלת האתר אנו נעזרים בספקים הבאים, והמידע עשוי להיות מאוחסן בשרתים מחוץ לישראל:</p>
       <ul>
         <li><strong>Supabase</strong> — מסד הנתונים, אחסון התמונות וההתחברות (<a href="https://supabase.com/privacy" target="_blank" rel="noopener">מדיניות הפרטיות שלהם</a>).</li>
-        <li><strong>Google</strong> — התחברות לחשבון (<a href="https://policies.google.com/privacy" target="_blank" rel="noopener">מדיניות הפרטיות של Google</a>).</li>
+        <li><strong>Google</strong> — התחברות לחשבון, גופני האתר (Google Fonts), והשלמת כתובות בטופס הוספת אירוע (Google Maps) (<a href="https://policies.google.com/privacy" target="_blank" rel="noopener">מדיניות הפרטיות של Google</a>).</li>
+        <li><strong>jsDelivr</strong> — ספריית קוד שהאתר נטען איתה.</li>
         <li><strong>Vercel</strong> — אחסון האתר ומדידת ביקורים אנונימית.</li>
         <li><strong>שירותי ההתראות של הדפדפן</strong> (כמו Google, Apple או Mozilla) — מעבירים את ההתראות לטלפון, אם הפעלתם אותן.</li>
         <li><strong>Buy Me a Coffee</strong> — מי שבוחר לתמוך באתר משלם ישירות באתר שלהם. אנחנו לא מקבלים ולא שומרים פרטי תשלום.</li>
       </ul>
+      <p>כמו בכל אתר, בזמן טעינת העמוד הדפדפן שלכם פונה לשרתים של הספקים האלה, והם מקבלים פרטים טכניים כמו כתובת ה-IP וסוג הדפדפן.</p>
       <p>איננו מוכרים מידע ואיננו מעבירים אותו לאף גורם אחר, למעט אם נידרש לכך על פי דין.</p>
 
       <h3>מיילים</h3>
-      <p>נשלח אליכם מייל רק בנוגע לחשבון שלכם ולאירועים שפרסמתם, ועדכונים על שירותי האתר למפרסמים. לא נשלח דברי פרסומת בלי הסכמתכם. אפשר לבקש בכל עת שלא נשלח לכם עדכונים — פשוט השיבו למייל.</p>
+      <p>נשלח אליכם מייל בנוגע לחשבון שלכם ולאירועים שפרסמתם. עדכונים מהאתר — חדשות, המלצות על אירועים ובקשות תמיכה — נשלח רק למי שסימן שהוא מסכים לקבל אותם, בהרשמה או באזור האישי ← "הפרופיל שלי". אנו שומרים את ההסכמה ואת המועד שבו ניתנה. אפשר לבטל אותה באותו מקום בכל רגע, או פשוט להשיב למייל.</p>
 
       <h3>אבטחת מידע</h3>
       <p>הגישה למידע מוגבלת בהרשאות: כל משתמש רואה רק את המידע שלו, והנהלת האתר בלבד ניגשת לפרטי המשתמשים. אנו נוקטים אמצעים סבירים להגנה על המידע, אך אף מערכת אינה חסינה לחלוטין.</p>
+
+      <h3>קטינים</h3>
+      <p>הגלישה באתר פתוחה לכולם. פתיחת חשבון מיועדת לבני 18 ומעלה, או לצעירים יותר באישור הורה או אפוטרופוס. אם נודע לכם שקטין מסר לנו מידע בלי אישור — כתבו לנו ונמחק אותו.</p>
 
       <h3>כמה זמן נשמר המידע</h3>
       <p>פרטי החשבון נשמרים כל עוד החשבון פעיל. אירועים שעברו נשמרים כדי שתוכלו לראות את ההיסטוריה והנתונים שלכם. אפשר לבקש בכל עת למחוק את החשבון ואת כל המידע שלכם.</p>
@@ -5508,6 +5674,7 @@ if (location.hash === '#about') setTimeout(openAbout, 300);
 
       <h3>חשבון משתמש</h3>
       <p>פרסום אירועים מחייב התחברות עם חשבון Google. אתם אחראים לפעולות שנעשות בחשבון שלכם. הנהלת האתר רשאית להשעות או לחסום חשבון שמפר את התנאים.</p>
+      <p>פתיחת חשבון ופרסום אירועים מיועדים לבני 18 ומעלה. מי שטרם מלאו לו 18 רשאי לעשות זאת רק באישור הורה או אפוטרופוס.</p>
 
       <h3>תוכן שאתם מפרסמים</h3>
       <ul>
@@ -5551,7 +5718,7 @@ if (location.hash === '#about') setTimeout(openAbout, 300);
       <p>כדי לשמור על איכות התוכן ורלוונטיות האירועים לקהילה, כל אירוע המפורסם באתר חייב לעמוד בכללים הבאים:</p>
       <ul>
         <li><strong>אירוע מקומי</strong> — האירוע חייב להתקיים בחיפה והסביבה.</li>
-        <li><strong>לא מסחרי</strong> — אסור פרסום מסחרי, קידום מכירות או פרסומות.</li>
+        <li><strong>אירועים בלבד</strong> — מפרסמים כאן אירועים, גם כאלה בתשלום. אסור לפרסם פרסומות למוצרים, לשירותים או לעסקים שאינן אירוע.</li>
         <li><strong>תמונה רלוונטית</strong> — חייבת להיות תמונה הקשורה לאירוע עצמו.</li>
         <li><strong>תוכן הולם</strong> — אסור לפרסם תוכן פוגעני, מפלה, גזעני או בלתי חוקי.</li>
         <li><strong>פרטים מדויקים</strong> — חייב לכלול תאריך, שעה ומיקום מדויקים.</li>
@@ -5914,16 +6081,3 @@ window.addEventListener('load', () => { a2hsFooter(); if (a2hsIOS()) a2hsMaybe()
 </script>
 </body>
 </html>
-
-<script>
-function toggleUserMenu() {
-    document.getElementById('user-dropdown').classList.toggle('open');
-}
-function closeUserMenu() {
-    document.getElementById('user-dropdown').classList.remove('open');
-}
-document.addEventListener('click', function(e) {
-    const wrap = document.querySelector('.user-menu-wrap');
-    if (wrap && !wrap.contains(e.target)) closeUserMenu();
-});
-</script>
