@@ -1437,6 +1437,9 @@ a.about-press span{display:block;color:#ffb0d0;font-size:13px;margin-top:4px;}
 .footer-topics .ft-n{color:rgba(255,255,255,0.6);}
 .btn-more{font-size:.78rem;}
 #view-modal:focus-visible{outline:none!important;}
+.contact-mail[hidden]{display:none!important;}
+.btn-coffee-top .cof-lbl{white-space:nowrap;}
+.btn-coffee-top .cof-lbl small{font-size:11px;}
 .mail-ok-row{text-align:right;margin-top:6px;}
 #my-panel .mail-ok-row{background:rgba(70,10,35,0.28);border-color:rgba(255,255,255,0.3);}
 #my-panel .mail-ok-row input{accent-color:#f5d90a;}
@@ -1467,7 +1470,7 @@ a.about-press span{display:block;color:#ffb0d0;font-size:13px;margin-top:4px;}
 <!-- User Bar -->
 <div class="user-bar show" id="user-bar">
     <div class="ub-start">
-        <a class="btn-coffee-top" href="https://buymeacoffee.com/heifait_batahtit" target="_blank" rel="noopener" onclick="trackSupport()" title="תמיכה בחיפאית בתחתית" aria-label="תמיכה בחיפאית בתחתית"><svg class="cof-ico" viewBox="0 0 64 64" aria-hidden="true"><use href="#ri-cof"/></svg><span class="ub-lbl cof-lbl">תמיכה בחיפאית בתחתית</span></a>
+        <a class="btn-coffee-top" href="https://buymeacoffee.com/heifait_batahtit" target="_blank" rel="noopener" onclick="trackSupport()" title="תמיכה באתר חיפאית בתחתית" aria-label="תמיכה באתר חיפאית בתחתית"><svg class="cof-ico" viewBox="0 0 64 64" aria-hidden="true"><use href="#ri-cof"/></svg><span class="ub-lbl cof-lbl">תמיכה באתר<small>חיפאית בתחתית</small></span></a>
         <a class="btn-coffee-top btn-links-top" href="https://linktr.ee/heifait_batahtit" target="_blank" rel="noopener" title="כל הקישורים של חיפאית בתחתית — קבוצות, רשתות ועוד" aria-label="כל הקישורים של חיפאית בתחתית"><svg class="cof-ico" viewBox="0 0 64 64" aria-hidden="true"><use href="#ri-lnk"/></svg><span class="ub-lbl">כל הקישורים</span></a>
     </div>
     <div class="user-bar-actions">
@@ -1534,7 +1537,7 @@ a.about-press span{display:block;color:#ffb0d0;font-size:13px;margin-top:4px;}
             <div class="modal-btns"><button class="btn-submit" onclick="saveRolesFrom('pf')">💾 שמירה</button></div>
             <div id="pf-mail-wrap" style="display:none">
                 <h3 class="mv-title" style="margin-top:22px">✉️ עדכונים במייל</h3>
-                <label class="remember-defaults mail-ok-row"><input type="checkbox" id="pf-mail-ok" onchange="saveMailOk(this.checked)"><span>אפשר לשלוח לי במייל עדכונים מחיפאית בתחתית: חדשות האתר, המלצות על אירועים ולפעמים בקשת תמיכה. <b>לא חובה</b>, ואפשר לבטל בכל רגע.</span></label>
+                <label class="remember-defaults mail-ok-row"><input type="checkbox" id="pf-mail-ok" onchange="saveMailOk(this.checked)"><span>אפשר לשלוח לי במייל עדכונים מחיפאית בתחתית: חדשות האתר והמלצות על אירועים. <b>לא חובה</b>, ואפשר לבטל בכל רגע.</span></label>
             </div>
             <p class="my-intro" style="margin-top:14px">🔔 להתראות על אירועים חדשים — כפתור הפעמון בפס העליון.</p>
         </div>
@@ -1650,7 +1653,7 @@ a.about-press span{display:block;color:#ffb0d0;font-size:13px;margin-top:4px;}
                 <button type="button" data-r="venue" onclick="this.classList.toggle('selected')"><span class="rc-ic"><svg class="role-ico" viewBox="0 0 64 64" aria-hidden="true"><use href="#ri-ven"/></svg></span><b>מקום</b><small>מארח/ת אירועים — עם דף מקום ופרטי קשר</small></button>
                 <button type="button" data-r="producer" onclick="this.classList.toggle('selected')"><span class="rc-ic"><svg class="role-ico" viewBox="0 0 64 64" aria-hidden="true"><use href="#ri-pro"/></svg></span><b>מפיק/ה</b><small>עם דף מפיק משלי</small></button>
             </div>
-        <label class="remember-defaults mail-ok-row" id="ob-mail-row" style="display:none"><input type="checkbox" id="ob-mail-ok"><span>✉️ אפשר לשלוח לי במייל עדכונים מחיפאית בתחתית: חדשות האתר, המלצות על אירועים ולפעמים בקשת תמיכה. <b>לא חובה</b>, ואפשר לבטל בכל רגע.</span></label>
+        <label class="remember-defaults mail-ok-row" id="ob-mail-row" style="display:none"><input type="checkbox" id="ob-mail-ok"><span>✉️ אפשר לשלוח לי במייל עדכונים מחיפאית בתחתית: חדשות האתר והמלצות על אירועים. <b>לא חובה</b>, ואפשר לבטל בכל רגע.</span></label>
         <div class="modal-btns"><button class="btn-submit" onclick="saveRolesFrom('ob')">המשך</button><button class="btn-cancel" onclick="closeRolesOverlay(true)">אחר כך</button></div>
     </div>
 </div>
@@ -5500,8 +5503,8 @@ loadA11yPrefs();
     <section class="ft-col">
       <h2 class="ft-h">✉️ יצירת קשר</h2>
       <p class="ft-tag">שאלות, רעיונות או בעיה באתר? כתבו לנו</p>
-      <a class="ft-btn ft-btn-y" href="mailto:heifait.batahtit@gmail.com?subject=%D7%A4%D7%A0%D7%99%D7%99%D7%94%20%D7%9E%D7%94%D7%90%D7%AA%D7%A8%20%D7%97%D7%99%D7%A4%D7%90%D7%99%D7%AA%20%D7%91%D7%AA%D7%97%D7%AA%D7%99%D7%AA">שליחת מייל</a>
-      <button type="button" class="contact-mail" onclick="copyContactMail(this)" title="העתקת כתובת המייל">heifait.batahtit@gmail.com</button>
+      <a class="ft-btn ft-btn-y" id="ft-mail-btn" href="mailto:heifait.batahtit@gmail.com?subject=%D7%A4%D7%A0%D7%99%D7%99%D7%94%20%D7%9E%D7%94%D7%90%D7%AA%D7%A8%20%D7%97%D7%99%D7%A4%D7%90%D7%99%D7%AA%20%D7%91%D7%AA%D7%97%D7%AA%D7%99%D7%AA">שליחת מייל</a>
+      <button type="button" class="contact-mail" id="ft-mail-addr" hidden onclick="copyContactMail(this)" title="העתקת כתובת המייל">heifait.batahtit@gmail.com</button>
     </section>
     <section class="ft-col">
       <h2 class="ft-h">🗂 אירועים לפי נושא</h2>
@@ -5641,7 +5644,7 @@ if (location.hash === '#about') setTimeout(openAbout, 300);
       <p>איננו מוכרים מידע ואיננו מעבירים אותו לאף גורם אחר, למעט אם נידרש לכך על פי דין.</p>
 
       <h3>מיילים</h3>
-      <p>נשלח אליכם מייל בנוגע לחשבון שלכם ולאירועים שפרסמתם. עדכונים מהאתר — חדשות, המלצות על אירועים ובקשות תמיכה — נשלח רק למי שסימן שהוא מסכים לקבל אותם, בהרשמה או באזור האישי ← "הפרופיל שלי". אנו שומרים את ההסכמה ואת המועד שבו ניתנה. אפשר לבטל אותה באותו מקום בכל רגע, או פשוט להשיב למייל.</p>
+      <p>נשלח אליכם מייל בנוגע לחשבון שלכם ולאירועים שפרסמתם. עדכונים מהאתר — חדשות והמלצות על אירועים — נשלח רק למי שסימן שהוא מסכים לקבל אותם, בהרשמה או באזור האישי ← "הפרופיל שלי". אנו שומרים את ההסכמה ואת המועד שבו ניתנה. אפשר לבטל אותה באותו מקום בכל רגע, או פשוט להשיב למייל.</p>
 
       <h3>אבטחת מידע</h3>
       <p>הגישה למידע מוגבלת בהרשאות: כל משתמש רואה רק את המידע שלו, והנהלת האתר בלבד ניגשת לפרטי המשתמשים. אנו נוקטים אמצעים סבירים להגנה על המידע, אך אף מערכת אינה חסינה לחלוטין.</p>
@@ -5733,6 +5736,10 @@ if (location.hash === '#about') setTimeout(openAbout, 300);
 </div>
 
 <script>
+// כתובת המייל בתחתית מוצגת רק אחרי לחיצה על "שליחת מייל"
+document.addEventListener('click', function (e) {
+  if (e.target.closest && e.target.closest('#ft-mail-btn')) { const a = document.getElementById('ft-mail-addr'); if (a) a.hidden = false; }
+}, true);
 function copyContactMail(btn){
   const t='heifait.batahtit@gmail.com';
   const done=()=>{ if (typeof showToast==='function') showToast('כתובת המייל הועתקה ✓'); };
