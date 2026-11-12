@@ -1323,6 +1323,7 @@ a.about-press span{display:block;color:#ffb0d0;font-size:13px;margin-top:4px;}
 .user-avatar-btn .ava .role-ico{width:28px;height:28px;}
 .ub-caret{opacity:.7;font-size:11px;}
 .user-bar .btn-bell,.user-bar .btn-login,.user-bar .btn-add,.user-bar .user-avatar-btn,.user-bar .btn-approval-panel{height:36px;box-sizing:border-box;display:inline-flex;align-items:center;}
+.user-bar .btn-approval-panel{display:none;}   /* רק למנהלת: מוצג מהקוד אחרי זיהוי */
 .user-bar .user-avatar-btn{gap:6px;color:#d4e034;background:rgba(212,224,52,0.12);font-size:13px;}
 .user-bar .user-avatar-btn .ava{font-size:18px;line-height:1;}
 .user-bar .role-badge{background:rgba(125,90,158,0.35);color:#e6d6f5;}
@@ -1438,6 +1439,13 @@ a.about-press span{display:block;color:#ffb0d0;font-size:13px;margin-top:4px;}
 .btn-more{font-size:.78rem;}
 #view-modal:focus-visible{outline:none!important;}
 .contact-mail[hidden]{display:none!important;}
+.nt-daily-row{text-align:right;margin:12px 0 4px;}
+.nt-new{display:inline-block;background:#d4e034;color:#1a0505;font-size:11px;font-weight:700;border-radius:999px;padding:1px 8px;margin-left:4px;vertical-align:middle;}
+.nt-new[hidden]{display:none;}
+#btn-bell{position:relative;}
+#btn-bell.has-new::after{content:'';position:absolute;top:2px;left:2px;width:10px;height:10px;border-radius:50%;background:#d4e034;border:2px solid #1a0505;}
+.notice-box .notice-go{display:inline-block;margin-top:8px;background:#d4e034;color:#1a0505;border:none;border-radius:999px;font-family:inherit;font-size:13.5px;font-weight:700;padding:6px 16px;cursor:pointer;}
+.nt-daily-row .nt-hint{display:block;margin-top:2px;}
 .btn-coffee-top .cof-lbl{white-space:nowrap;}
 .btn-coffee-top .cof-lbl small{font-size:11px;}
 .mail-ok-row{text-align:right;margin-top:6px;}
@@ -1883,6 +1891,7 @@ function toggleCatsDrawer(force) {
                     <button type="button" onclick="ntAddVenue()">הוספה</button>
                 </div>
                 <div class="nt-cats nt-venues" id="nt-venues"></div>
+                <label class="remember-defaults nt-daily-row" id="nt-daily-row" style="display:none"><input type="checkbox" id="nt-daily"><span><span class="nt-new" id="nt-daily-new" hidden>חדש</span> ☀️ גם סיכום יומי בצהריים: <b>מה קורה היום בחיפה</b> <span class="nt-hint">(הודעה אחת ביום, לפי הקטגוריות והמקומות שבחרתם)</span></span></label>
                 <button class="nt-btn" id="nt-on" onclick="notifySubscribe()">הפעלת התראות</button>
                 <button class="nt-btn nt-off" id="nt-off" onclick="notifyUnsubscribe()" style="display:none">ביטול התראות</button>
             </div>
@@ -3171,6 +3180,10 @@ function handleEventDeepLink() {
     if (deepLinkHandled) return;
     deepLinkHandled = true;
     // דף נושא: /?cat=jazz (מגיעים מ־/c/jazz) — מדליק את הסינון של הנושא
+    if (new URLSearchParams(location.search).get('when') === 'today') {
+        history.replaceState(null, '', location.pathname);
+        quickKey = ''; setQuick('today');
+    }
     const catQ = new URLSearchParams(location.search).get('cat');
     if (catQ) {
         const b = document.querySelector('.filter-btn[data-cat="' + String(catQ).replace(/[^a-z]/g, '') + '"]');
@@ -3337,6 +3350,7 @@ async function clearReadMessages() {
 }
 
 async function openApprovalPanel() {
+    if (currentRole !== 'admin') return;   // לוח הניהול — למנהלת בלבד
     document.getElementById('approval-panel').classList.add('open');
     pushLayer('panel');
     showAdminTab(adminTab || 'overview');
@@ -5835,6 +5849,16 @@ const ntIsIOS = () => /iphone|ipad|ipod/i.test(navigator.userAgent) || (navigato
 const ntStandalone = () => matchMedia('(display-mode: standalone)').matches || navigator.standalone === true;
 function ntGetCats() { try { return JSON.parse(localStorage.getItem('ntCats') || '[]'); } catch (_) { return []; } }
 function ntSetCats(c) { try { localStorage.setItem('ntCats', JSON.stringify(c)); } catch (_) {} }
+function ntGetDaily() { try { return localStorage.getItem('ntDaily') === '1'; } catch (_) { return false; } }
+function ntSetDaily(on) { try { localStorage.setItem('ntDaily', on ? '1' : '0'); } catch (_) {} }
+// האם השרת כבר תומך בסיכום היומי (daily_today.sql)? בודקים פעם אחת — קריאה שלא משנה כלום
+let ntDailyOk = null;
+async function ntDailySupported() {
+    if (ntDailyOk !== null) return ntDailyOk;
+    try { const r = await db.rpc('push_set_daily', { p_endpoint: '', p_daily: false }); ntDailyOk = !r.error; }
+    catch (_) { ntDailyOk = false; }
+    return ntDailyOk;
+}
 function ntGetVenues() { try { return JSON.parse(localStorage.getItem('ntVenues') || '[]'); } catch (_) { return []; } }
 function ntSetVenues(v) { try { localStorage.setItem('ntVenues', JSON.stringify(v)); } catch (_) {} }
 // מקומות להתראות: שם המקום בלבד (החלק הראשון בכתובת)
@@ -5882,6 +5906,20 @@ async function ntRefreshBell() {
     document.getElementById('btn-bell').classList.toggle('on', !!sub);
     const bl = document.getElementById('bell-lbl'); if (bl) bl.textContent = sub ? 'התראות פעילות' : 'התראות';
     document.getElementById('btn-bell').title = sub ? 'ההתראות פעילות — לחיצה לשינוי ההגדרות' : 'הפעלת התראות לטלפון על אירועים חדשים';
+    if (sub && !ntAnnounceTried) { ntAnnounceTried = true; setTimeout(ntDailyAnnounce, 4000); }
+}
+// ── הודעה חד־פעמית למי שכבר רשום להתראות: יש אפשרות חדשה — סיכום יומי ──
+// מופיעה פעם אחת במכשיר (ועוד נקודה על הפעמון עד שפותחים את חלון ההתראות). לא למנהלת, ולא למי שכבר הפעיל.
+let ntAnnounceTried = false;
+const ntLs = (k, v) => { try { if (v === undefined) return localStorage.getItem(k); localStorage.setItem(k, v); } catch (_) { return null; } };
+async function ntDailyAnnounce() {
+    if (currentRole === 'admin' || ntGetDaily() || ntLs('ntDailyPanelSeen') === '1') return;
+    if (!(await ntCurrentSub()) || !(await ntDailySupported())) return;
+    document.getElementById('btn-bell').classList.add('has-new');
+    if (ntLs('ntDailyNoticeSeen') === '1' || document.getElementById('notice-box')) return;   // לא דורסים הודעה אחרת שמוצגת כרגע
+    if (document.querySelector('.auth-overlay.open, .overlay.open, .approval-panel.open')) return;   // לא מעל חלון פתוח — ננסה בביקור הבא
+    ntLs('ntDailyNoticeSeen', '1');
+    showNotice('<b>☀️ חדש: סיכום יומי</b><br>רוצים לקבל פעם ביום, בצהריים, הודעה אחת עם מה שקורה היום בחיפה? לפי הקטגוריות והמקומות שבחרתם.<br><button type="button" class="notice-go" onclick="this.parentNode.remove();openNotify()">להפעלה ←</button>');
 }
 // רישום ה-Service Worker (ברקע, לא מעכב את האתר)
 if ('serviceWorker' in navigator) {
@@ -5946,6 +5984,18 @@ async function openNotify() {
     else status.textContent = sub ? '✅ ההתראות פעילות במכשיר הזה. אפשר לשנות קטגוריות ולשמור.' : 'קבלו הודעה לטלפון ברגע שמתפרסם אירוע חדש.';
     document.getElementById('nt-on').textContent = sub ? 'שמירת השינויים' : 'הפעלת התראות';
     document.getElementById('nt-off').style.display = sub ? '' : 'none';
+    {   // סיכום יומי: לא למנהלת, ורק אם השרת תומך
+        const row = document.getElementById('nt-daily-row');
+        row.style.display = 'none';
+        document.getElementById('nt-daily').checked = !!sub && ntGetDaily();
+        if (!isAdmin && await ntDailySupported()) {
+            row.style.display = '';
+            // התווית "חדש" מוצגת בפתיחה הראשונה של החלון; הנקודה על הפעמון נעלמת
+            document.getElementById('nt-daily-new').hidden = ntLs('ntDailyPanelSeen') === '1' || ntGetDaily();
+            ntLs('ntDailyPanelSeen', '1');
+            document.getElementById('btn-bell').classList.remove('has-new');
+        }
+    }
 }
 const NT_IOS_HELP = document.getElementById('nt-ios').innerHTML;
 const ntIsAndroid = () => /android/i.test(navigator.userAgent);
@@ -6010,6 +6060,11 @@ async function notifySubscribe() {
         const { error } = await ntRpcSubscribe(j, cats, venues);
         if (error) throw error;
         ntSetCats(cats); ntSetVenues(venues);
+        if (currentRole !== 'admin' && ntDailyOk) {
+            const daily = document.getElementById('nt-daily').checked;
+            const r = await db.rpc('push_set_daily', { p_endpoint: j.endpoint, p_daily: daily });
+            if (!r.error) ntSetDaily(daily);
+        }
         showToast(currentRole === 'admin' ? '🔔 תקבלי התראה על כל אירוע שממתין לאישור' : '🔔 ההתראות הופעלו!');
         closeNotify();
     } catch (e) {
@@ -6026,6 +6081,7 @@ async function notifyUnsubscribe() {
         try { await db.rpc('push_unsubscribe', { p_endpoint: sub.endpoint }); } catch (_) {}
         try { await sub.unsubscribe(); } catch (_) {}
     }
+    ntSetDaily(false);
     showToast('ההתראות בוטלו');
     closeNotify();
     ntRefreshBell();
