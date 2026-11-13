@@ -1090,6 +1090,9 @@ button,input,textarea,select{font-family:'Rubik',sans-serif;}
 .day-solo .day-header{margin-top:0;padding-top:0;font-size:1.08rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block;}
 .day-solo .card{flex:1;}
 .day-solo-first{grid-column-start:1;}
+.day-duo{grid-column:1/-1;}
+.day-duo-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(265px,1fr));gap:1.2rem;flex:1;}
+@media(min-width:700px){.day-duo{grid-column:auto/span 2;}.day-duo.day-solo-first{grid-column:1/span 2;}.day-duo-cards{grid-template-columns:1fr 1fr;}}
 @media(max-width:600px){.day-solo{margin-top:.6rem;}.day-solo .day-header{font-size:1.35rem;white-space:normal;}}
 .card .card-img{aspect-ratio:3/2;margin:7px 7px 0;border-radius:15px;}
 .card .card-body{padding:.65rem .9rem .35rem;}
@@ -2846,10 +2849,15 @@ function render() {
     const groups = [];
     ordered.forEach(e => { const k = groupKey(e); const g = groups[groups.length - 1]; if (g && g.k === k) g.list.push(e); else groups.push({ k, list: [e] }); });
     // ימים רצופים שבכל אחד מהם אירוע בודד מוצגים זה לצד זה באותה שורה (כל יום עם הכותרת שלו), במקום שורה כמעט ריקה לכל יום
-    const solo = i => groups[i] && groups[i].list.length === 1;
+    // ימים "קטנים" (אירוע אחד או שניים) שבאים ברצף חולקים שורה: יום עם אירוע אחד תופס עמודה, יום עם שניים תופס שתי עמודות
+    const small = i => groups[i] && groups[i].list.length <= 2;
     grid.innerHTML = groups.map((g, i) => {
         const head = `<div class="day-header">${dayHeaderLabel(g.k, todayISO)}</div>`;
-        if (solo(i) && (solo(i - 1) || solo(i + 1))) return `<div class="day-solo${solo(i - 1) ? '' : ' day-solo-first'}">${head}${cardHtml(g.list[0])}</div>`;
+        if (small(i) && (small(i - 1) || small(i + 1))) {
+            const first = small(i - 1) ? '' : ' day-solo-first';
+            if (g.list.length === 1) return `<div class="day-solo${first}">${head}${cardHtml(g.list[0])}</div>`;
+            return `<div class="day-solo day-duo${first}">${head}<div class="day-duo-cards">${g.list.map(cardHtml).join('')}</div></div>`;
+        }
         return head + g.list.map(cardHtml).join('');
     }).join('');
 }
@@ -3498,10 +3506,20 @@ function waDayLabel(iso) {
 const waStart = e => { const m = String(e.time || '').match(/(\d{1,2})[:.](\d{2})/); return m ? m[1].padStart(2, '0') + ':' + m[2] : ''; };
 const waMins = e => { const m = String(e.time || '').match(/(\d{1,2})[:.](\d{2})/); return m ? (+m[1] < 5 ? +m[1] + 24 : +m[1]) * 60 + +m[2] : 9999; };
 // אירוע בלוח: שעה / שם / שורת תיאור / מקום (שם + כתובת) / מחיר / קישור — כל פרט בשורה משלו, בלי אייקונים
+// שורת התיאור בלוח: המשפט שמסביר הכי טוב איזה סוג אירוע זה (ולא בהכרח המשפט הראשון).
+// כל משפט מקבל ניקוד לפי מילים שמתארות סוג אירוע; משפטי פרטים טכניים (כרטיסים, מחיר, הרשמה) וקרדיטים יורדים. בשוויון — המשפט המוקדם.
+const WA_KIND_WORDS = ['תיאטרון', 'תאטרון', 'הצגה', 'הצגת', 'מופע', 'הופעה', 'הופעת', 'קונצרט', 'סדנה', 'סדנת', 'הרצאה', 'הרצאת', 'מפגש', 'ערב ', 'מסיבה', 'מסיבת', 'תערוכה', 'תערוכת', 'סיור', 'הקרנה', 'הקרנת', 'סרט', 'פסטיבל', 'שוק ', 'יריד', 'סטנדאפ', 'סטנד-אפ', 'השקה', 'השקת', 'משיק', 'ג׳אם', "ג'אם", 'במה פתוחה', 'שירה', 'ריקוד', 'מחול', 'מוזיקה', 'להקה', 'להקת', 'בובות', 'סיפור', 'קריוקי', 'חידון', 'טריוויה', 'דיג׳יי', "די ג'יי", 'DJ', 'ליין', 'פאנל', 'שיח', 'אימפרוביזציה', 'אימפרו', 'קברט', 'אופרה', 'מיצג', 'פרפורמנס', 'יוגה', 'מדיטציה', 'טעימות', 'ארוחה', 'משחקי', 'קומדיה', 'דראג', 'לייב', 'אקוסטי', 'משלב', 'המשלב', 'משלבת'];
+const WA_TECH_RE = /כרטיסים|מחיר|₪|ש"ח|ש״ח|הרשמה|להרשמה|פתיחת דלתות|לפרטים|להזמנ|טלפון|וואטסאפ|\d{2}:\d{2}|\d{3}-?\d{6,}/;
 function waDescLine(e) {
-    const first = String(e.desc || '').split(/\r?\n/).map(l => l.replace(/https?:\/\/\S+/g, '').replace(/\s+/g, ' ').trim()).find(l => l.length > 1) || '';
-    if (first.length <= 160) return first;
-    const cut = first.slice(0, 160); return cut.slice(0, Math.max(cut.lastIndexOf(' '), 100)).replace(/[\s,.;:–-]+$/, '') + '…';
+    const clean = l => l.replace(/https?:\/\/\S+/g, '').replace(/[\p{Extended_Pictographic}\uFE0F\u200D]/gu, ' ').replace(/^[\s*•·\-–]+/, '').replace(/\s+/g, ' ').trim();   // בלי קישורים, אימוג׳י וסימני רשימה
+    const sents = String(e.desc || '').split(/\r?\n/).flatMap(l => clean(l).split(/(?<=[.!?…])\s+/)).map(x => x.trim()).filter(x => x.length > 1);
+    if (!sents.length) return '';
+    const score = x => { const low = x.toLowerCase();
+        return new Set(WA_KIND_WORDS.filter(w => low.includes(w.toLowerCase()))).size + (WA_TECH_RE.test(x) ? -3 : 0) + (/^(מאת|בביצוע|בהשתתפות|בהנחיית|עם |בימוי|הפקה)/.test(x) ? -1 : 0) + (x.length < 15 ? -1 : 0); };
+    let best = sents[0], bs = score(best);
+    sents.slice(1).forEach(x => { const sc = score(x); if (sc > bs) { best = x; bs = sc; } });
+    if (best.length <= 160) return best;
+    const cut = best.slice(0, 160); return cut.slice(0, Math.max(cut.lastIndexOf(' '), 100)).replace(/[\s,.;:–-]+$/, '') + '…';
 }
 function waPlace(e) {
     const loc = String(e.location || '').replace(/\s+/g, ' ').trim();
