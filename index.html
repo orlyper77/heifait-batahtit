@@ -3481,7 +3481,7 @@ function waLine(e, links) {
     const cat = (e.cats && e.cats[0]) || e.cat;
     const loc = String(e.location || '').replace(/,\s*חיפה\s*$/, '').trim();
     const price = e.price && e.price !== '-' ? String(e.price).trim() : '';
-    return (CAT_EMOJI[cat] || '📌') + ' ' + [waStart(e), String(e.title || '').trim(), loc, price].filter(Boolean).join(' · ') + (links ? '\n🔗 ' + eventUrl(e) : '');
+    return (CAT_EMOJI[cat] || '📌') + ' ' + [waStart(e), String(e.title || '').trim(), loc, price].filter(Boolean).join(' · ') + (links ? '\n' + eventUrl(e) : '');
 }
 function waBuild(kind, links) {
     const from = waIso(kind === 'tomorrow' ? 1 : 0), to = waIso(kind === 'tomorrow' ? 1 : kind === 'week' ? 6 : 0);
@@ -3493,11 +3493,11 @@ function waBuild(kind, links) {
     const sep = links ? '\n\n' : '\n';
     const out = [];
     if (kind === 'week') {
-        out.push(`חיפאית בתחתית - הלוח השבועי\n📅 ${waDayLabel(from).split(' ').pop()}–${waDayLabel(to).split(' ').pop()}`);
-        [...new Set(dated.map(dayOf))].sort().forEach(day => out.push('📅 ' + waDayLabel(day) + '\n' + dated.filter(e => dayOf(e) === day).map(e => waLine(e, links)).join(sep)));
+        out.push(`חיפאית בתחתית - הלוח השבועי\n${waDayLabel(from).split(' ').pop()}–${waDayLabel(to).split(' ').pop()}`);
+        [...new Set(dated.map(dayOf))].sort().forEach(day => out.push(waDayLabel(day) + '\n' + dated.filter(e => dayOf(e) === day).map(e => waLine(e, links)).join(sep)));
         if (ongoing.length) out.push('🗓 לאורך השבוע\n' + ongoing.map(e => waLine(e, links)).join(sep));
     } else {
-        out.push(`חיפאית בתחתית - הלוח היומי\n📅 ${kind === 'tomorrow' ? 'מחר' : 'היום'} · ${waDayLabel(from)}`);
+        out.push(`חיפאית בתחתית - הלוח היומי\n${kind === 'tomorrow' ? 'מחר' : 'היום'} · ${waDayLabel(from)}`);
         if (dated.length) out.push(dated.map(e => waLine(e, links)).join(sep));
         if (ongoing.length) out.push(`🗓 ממשיכים גם ${kind === 'tomorrow' ? 'מחר' : 'היום'}\n` + ongoing.map(e => waLine(e, links)).join(sep));
     }
