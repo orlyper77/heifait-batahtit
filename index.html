@@ -1439,13 +1439,44 @@ a.about-press span{display:block;color:#ffb0d0;font-size:13px;margin-top:4px;}
 .btn-more{font-size:.78rem;}
 #view-modal:focus-visible{outline:none!important;}
 .contact-mail[hidden]{display:none!important;}
-.nt-daily-row{text-align:right;margin:12px 0 4px;}
+.nt-digest{margin-bottom:.6rem;}
+/* העברת דף בין סוגים (ניהול) + הסבר על סוגי הדפים */
+.pg-move{display:inline-block;position:relative;}
+.pg-move>summary{list-style:none;cursor:pointer;display:inline-flex;align-items:center;}
+.pg-move>summary::-webkit-details-marker{display:none;}
+.pg-move-menu{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px;}
+.pg-move-menu .btn-preview{white-space:nowrap;}
+.vd-admin{flex-wrap:wrap;align-items:flex-start;gap:8px;}
+.approval-btns{flex-wrap:wrap;}
+.pg-hint{font-size:13px;line-height:1.5;color:rgba(255,255,255,0.75);margin:6px 2px 12px;}
+.pg-hint b{color:#fff;}
+.pg-hint-in{margin:0 0 8px;}
+/* לוח אירועים לוואטסאפ (ניהול) */
+.wa-card{margin-bottom:12px;}
+.wa-chips{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:10px;}
+.wa-opt{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:rgba(255,255,255,0.85);cursor:pointer;margin-inline-start:6px;}
+#wa-text{display:block;width:100%;box-sizing:border-box;margin-top:12px;background:rgba(0,0,0,0.25);border:1px solid rgba(255,255,255,0.25);border-radius:12px;color:#fff;font-family:inherit;font-size:14px;line-height:1.6;padding:10px 12px;resize:vertical;}
+.wa-btns{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:8px;}
+.wa-btns a.btn-preview{text-decoration:none;display:inline-flex;align-items:center;}
+.wa-count{font-size:12.5px;color:rgba(255,255,255,0.7);}
+.nt-opt-row{text-align:right;margin:0 0 8px;}
+#nt-opts-wrap{margin-bottom:1rem;}
+/* סינון לפי אמן */
+.fbar-quick{position:relative;}
+.fq-artist{max-width:46vw;overflow:hidden;text-overflow:ellipsis;}
+.fq-menu{position:absolute;top:calc(100% + 6px);left:50%;transform:translateX(-50%);z-index:60;width:min(92vw,320px);max-height:50vh;overflow:auto;background:#2a0a0a;border:1px solid rgba(255,255,255,0.25);border-radius:14px;padding:6px;box-shadow:0 10px 30px rgba(0,0,0,.55);}
+.fq-menu[hidden]{display:none;}
+.fq-menu button{display:flex;justify-content:space-between;align-items:center;gap:10px;width:100%;background:none;border:none;color:#f5ede8;font-family:inherit;font-size:14.5px;padding:9px 12px;border-radius:10px;cursor:pointer;text-align:right;}
+.fq-menu button:hover,.fq-menu button:focus-visible{background:rgba(255,255,255,0.1);}
+.fq-n{color:rgba(255,255,255,0.6);font-size:12.5px;white-space:nowrap;}
+.fq-empty{padding:12px;color:rgba(255,255,255,0.7);font-size:14px;text-align:center;}
+@media(max-width:768px){.fbar-quick .fq-btn{padding:6px 2px;font-size:13px;}.fq-artist{flex:1.5 1 0!important;max-width:none;}}
 .nt-new{display:inline-block;background:#d4e034;color:#1a0505;font-size:11px;font-weight:700;border-radius:999px;padding:1px 8px;margin-left:4px;vertical-align:middle;}
 .nt-new[hidden]{display:none;}
 #btn-bell{position:relative;}
 #btn-bell.has-new::after{content:'';position:absolute;top:2px;left:2px;width:10px;height:10px;border-radius:50%;background:#d4e034;border:2px solid #1a0505;}
 .notice-box .notice-go{display:inline-block;margin-top:8px;background:#d4e034;color:#1a0505;border:none;border-radius:999px;font-family:inherit;font-size:13.5px;font-weight:700;padding:6px 16px;cursor:pointer;}
-.nt-daily-row .nt-hint{display:block;margin-top:2px;}
+
 .btn-coffee-top .cof-lbl{white-space:nowrap;}
 .btn-coffee-top .cof-lbl small{font-size:11px;}
 .mail-ok-row{text-align:right;margin-top:6px;}
@@ -1614,6 +1645,7 @@ a.about-press span{display:block;color:#ffb0d0;font-size:13px;margin-top:4px;}
         <input type="search" class="adm-search" id="ar-search" placeholder="🔍 חיפוש אמן, יוצר/ת או להקה…" oninput="renderArtistsDir()">
         <button type="button" class="btn-coffee ar-add" id="ar-add-btn" onclick="openArtistEditor()">＋ יצירת דף אמן</button>
     </div>
+    <p class="pg-hint">דף אמן או מפיק מתאים למי שמופיע, יוצר או מפיק אירועים. לבר, אולם, גלריה או חלל יש <b>דף מקום</b>, ברשימת המקומות.</p>
     <div class="adm-chips" id="ar-kind-chips" style="display:none">
         <button class="adm-chip active" data-k="artist" onclick="setArKind('artist')"><svg class="role-ico ico-in" viewBox="0 0 64 64" aria-hidden="true"><use href="#ri-art"/></svg> אמנים ויוצרים</button>
         <button class="adm-chip" data-k="producer" onclick="setArKind('producer')"><svg class="role-ico ico-in" viewBox="0 0 64 64" aria-hidden="true"><use href="#ri-pro"/></svg> מפיקים</button>
@@ -1674,6 +1706,7 @@ a.about-press span{display:block;color:#ffb0d0;font-size:13px;margin-top:4px;}
         <button class="btn-close-approval" onclick="closeVenuesPanel()">✕ סגור</button>
     </div>
     <div class="adm-tools"><input type="search" class="adm-search" id="vd-search" placeholder="🔍 חיפוש מקום…" oninput="renderVenuesDir()"></div>
+    <p class="pg-hint">דף מקום מתאים לבר, אולם, גלריה או חלל שמתקיימים בו אירועים. לאמנים, להקות ומפיקים יש <b>דף אמן</b> או <b>דף מפיק</b>.</p>
     </div>
     <div class="admin-tab-panel">
         <p class="my-intro">מקומות שמארחים אירועים בחיפה, עם דרכים ליצור איתם קשר — לאמנים שמחפשים במה ולקהל עם שאלות. יש לכם מקום? הוסיפו אותו כשאתם מפרסמים אירוע.</p>
@@ -1699,6 +1732,23 @@ a.about-press span{display:block;color:#ffb0d0;font-size:13px;margin-top:4px;}
     </div>
     <div class="admin-tab-panel" id="tab-overview">
         <div class="ov-kpis" id="ov-kpis"></div>
+        <div class="ov-card wa-card">
+            <h4>📋 לוח אירועים לוואטסאפ ולפייסבוק <small>(לחיצה אחת — מועתק ומוכן להדבקה)</small></h4>
+            <div class="wa-chips">
+                <button type="button" class="adm-chip" data-w="today" onclick="waBoard('today')">היום</button>
+                <button type="button" class="adm-chip" data-w="tomorrow" onclick="waBoard('tomorrow')">מחר</button>
+                <button type="button" class="adm-chip" data-w="week" onclick="waBoard('week')">השבוע</button>
+                <label class="wa-opt"><input type="checkbox" id="wa-links" onchange="waBoard()"> עם קישור לכל אירוע</label>
+            </div>
+            <div id="wa-out" hidden>
+                <textarea id="wa-text" rows="11" dir="rtl" aria-label="הלוח — אפשר לערוך לפני ההעתקה" oninput="waSync()"></textarea>
+                <div class="wa-btns">
+                    <button type="button" class="btn-preview" onclick="waCopy()">📋 העתקה</button>
+                    <a class="btn-preview" id="wa-share" href="#" target="_blank" rel="noopener">שליחה בוואטסאפ</a>
+                    <span class="wa-count" id="wa-count"></span>
+                </div>
+            </div>
+        </div>
         <div class="ov-cols">
             <div class="ov-card"><h4 data-ic="flame" class="h-flame">האירועים הכי נצפים <small>(אירועים קרובים)</small></h4><div id="ov-top"></div></div>
             <div class="ov-card"><h4 data-ic="inbox" class="h-inbox">הודעות אחרונות</h4><div id="ov-msgs"></div><button class="btn-link" onclick="showAdminTab('messages')">לכל ההודעות ←</button></div>
@@ -1780,6 +1830,8 @@ a.about-press span{display:block;color:#ffb0d0;font-size:13px;margin-top:4px;}
     <button type="button" class="fq-btn" data-q="tomorrow" aria-pressed="false" onclick="setQuick('tomorrow')">מחר</button>
     <button type="button" class="fq-btn" data-q="weekend" aria-pressed="false" onclick="setQuick('weekend')">סופ״ש</button>
     <button type="button" class="fq-btn" data-q="week" aria-pressed="false" onclick="setQuick('week')">השבוע</button>
+    <button type="button" class="fq-btn fq-artist" id="fq-artist" aria-haspopup="true" aria-expanded="false" aria-pressed="false" onclick="toggleArtistMenu(event)"><span id="fq-artist-lbl">🎨 אמנים ▾</span></button>
+    <div class="fq-menu" id="fq-artist-menu" role="menu" aria-label="סינון לפי אמן" hidden></div>
   </div>
   <div class="toolbar-cats fbar-cats" id="fbar-cats">
         <button class="filter-btn active" data-cat="all">הכל</button>
@@ -1891,7 +1943,29 @@ function toggleCatsDrawer(force) {
                     <button type="button" onclick="ntAddVenue()">הוספה</button>
                 </div>
                 <div class="nt-cats nt-venues" id="nt-venues"></div>
-                <label class="remember-defaults nt-daily-row" id="nt-daily-row" style="display:none"><input type="checkbox" id="nt-daily"><span><span class="nt-new" id="nt-daily-new" hidden>חדש</span> ☀️ גם סיכום יומי בצהריים: <b>מה קורה היום בחיפה</b> <span class="nt-hint">(הודעה אחת ביום, לפי הקטגוריות והמקומות שבחרתם)</span></span></label>
+                <div id="nt-artists-wrap" style="display:none">
+                    <div class="nt-label" id="nt-artists-label">ואילו אמנים? <span class="nt-hint">(התראה כששם האמן מופיע באירוע חדש)</span></div>
+                    <div class="nt-venue-add" id="nt-artist-add">
+                        <input type="text" id="nt-artist-input" list="nt-artist-list" autocomplete="off" placeholder="הקלידו שם אמן, יוצר/ת או להקה">
+                        <datalist id="nt-artist-list"></datalist>
+                        <button type="button" onclick="ntAddArtist()">הוספה</button>
+                    </div>
+                    <div class="nt-cats nt-venues" id="nt-artists"></div>
+                </div>
+                <div id="nt-digest-wrap" style="display:none">
+                    <div class="nt-label"><span class="nt-new" id="nt-daily-new" hidden>חדש</span> ☀️ וגם סיכום אירועים בהודעה אחת? <span class="nt-hint">(נשלח בצהריים, לפי מה שבחרתם למעלה)</span></div>
+                    <div class="nt-cats nt-digest" id="nt-digest" role="radiogroup" aria-label="סיכום אירועים">
+                        <button type="button" class="cat-pick-btn" role="radio" data-d="" onclick="ntPickDigest('')">בלי סיכום</button>
+                        <button type="button" class="cat-pick-btn" role="radio" data-d="daily" onclick="ntPickDigest('daily')">כל יום: מה קורה היום</button>
+                        <button type="button" class="cat-pick-btn" role="radio" data-d="3days" onclick="ntPickDigest('3days')">כל 3 ימים</button>
+                        <button type="button" class="cat-pick-btn" role="radio" data-d="weekend" onclick="ntPickDigest('weekend')">בחמישי: מה קורה בסופ״ש</button>
+                        <button type="button" class="cat-pick-btn" role="radio" data-d="weekly" onclick="ntPickDigest('weekly')">בראשון: מה קורה השבוע</button>
+                    </div>
+                    <div id="nt-opts-wrap" style="display:none">
+                        <label class="remember-defaults nt-opt-row" id="nt-free-row"><input type="checkbox" id="nt-free"><span>בסיכום: רק אירועים בכניסה חופשית</span></label>
+                        <label class="remember-defaults nt-opt-row"><input type="checkbox" id="nt-remind"><span>❤️ תזכורת לאירועים שסימנתי בלב <span class="nt-hint">(הודעה אחת, סמוך לאירוע)</span></span></label>
+                    </div>
+                </div>
                 <button class="nt-btn" id="nt-on" onclick="notifySubscribe()">הפעלת התראות</button>
                 <button class="nt-btn nt-off" id="nt-off" onclick="notifyUnsubscribe()" style="display:none">ביטול התראות</button>
             </div>
@@ -2006,6 +2080,7 @@ function toggleCatsDrawer(force) {
         <div class="form-group"><label>שם האירוע *</label><input type="text" id="f-title" placeholder="למשל: קונצרט בגן הבהאים"></div>
         <div class="artist-offer" id="artist-offer" style="display:none">
             <div class="vo-state" id="fa-state"></div>
+            <p class="pg-hint pg-hint-in">הדף הזה הוא על מי שמופיע או מפיק, לא על המקום שבו האירוע מתקיים.</p>
             <div id="fa-fields" class="role-box">
                 <div class="role-box-title" id="fa-title"><svg class="role-ico ico-in" viewBox="0 0 64 64" aria-hidden="true"><use href="#ri-art"/></svg> דף האמן שלכם באתר</div>
                 <div class="form-group"><label id="fa-name-lbl">שם האמן / היוצר/ת / הלהקה *</label><input type="text" id="fa-name" maxlength="80" placeholder="כמו שהוא מופיע בשם האירוע"></div>
@@ -2022,6 +2097,7 @@ function toggleCatsDrawer(force) {
         </div>
         <div class="venue-offer" id="venue-offer" style="display:none">
             <div class="vo-state" id="vo-state"></div>
+            <p class="pg-hint pg-hint-in">הדף הזה הוא על המקום עצמו (בר, אולם, גלריה), לא על מי שמופיע בו.</p>
             <div id="vo-offer">
                 <div class="role-box-title vo-title">🏠 דף המקום שלכם ברשימת המקומות: <b id="vo-name2"></b></div>
                 <label class="remember-defaults vo-check" style="display:none"><input type="checkbox" id="vo-add" onchange="toggleVenueFields()"><span>🏠 להוסיף את <b id="vo-name"></b> ל<b>רשימת המקומות</b> באתר, עם פרטי קשר — כדי שאמנים וקהל יוכלו לפנות אליכם</span></label>
@@ -2645,12 +2721,49 @@ function setQuick(k) {
     updQuick(); applyFilter();
 }
 
+// ── סינון לפי אמן: אירועים ששם האמן מופיע בהם (אותו כלל של "דף אמן") ──
+let artistFilterId = 0;
+function artistsWithEvents() {
+    const up = events.filter(e => !eventIsOver(e) && e.status !== 'pending');
+    return artistsDir.filter(a => a.status === 'approved' && kindOf(a) === 'artist')
+        .map(a => ({ a, n: up.filter(e => artistInEvent(a, e)).length })).filter(x => x.n)
+        .sort((x, y) => String(x.a.name).localeCompare(String(y.a.name), 'he'));
+}
+function closeArtistMenu() {
+    const m = document.getElementById('fq-artist-menu'); if (m) m.hidden = true;
+    const b = document.getElementById('fq-artist'); if (b) b.setAttribute('aria-expanded', 'false');
+}
+function toggleArtistMenu(ev) {
+    if (ev) ev.stopPropagation();
+    if (artistFilterId) { setArtistFilter(0); return; }          // כשיש סינון פעיל — לחיצה מבטלת אותו
+    const m = document.getElementById('fq-artist-menu');
+    if (!m.hidden) { closeArtistMenu(); return; }
+    const list = artistsWithEvents();
+    m.innerHTML = list.length
+        ? list.map(x => `<button type="button" role="menuitem" onclick="setArtistFilter(${+x.a.id})"><span>${escHtml(x.a.name)}</span><span class="fq-n">${x.n === 1 ? 'אירוע אחד' : x.n + ' אירועים'}</span></button>`).join('')
+        : '<div class="fq-empty">אין כרגע אמנים עם אירועים קרובים.</div>';
+    m.hidden = false;
+    document.getElementById('fq-artist').setAttribute('aria-expanded', 'true');
+}
+function updArtistChip() {
+    const a = artistFilterId ? artistsDir.find(x => +x.id === artistFilterId) : null;
+    if (!a) artistFilterId = 0;
+    const b = document.getElementById('fq-artist'); if (!b) return;
+    b.classList.toggle('active', !!a); b.setAttribute('aria-pressed', !!a);
+    b.title = a ? 'ביטול הסינון לפי ' + a.name : 'סינון לפי אמן';
+    document.getElementById('fq-artist-lbl').textContent = a ? '🎨 ' + a.name + ' ✕' : '🎨 אמנים ▾';
+}
+function setArtistFilter(id) { artistFilterId = +id || 0; closeArtistMenu(); updArtistChip(); applyFilter(); }
+document.addEventListener('click', e => { if (!e.target.closest || !e.target.closest('#fq-artist-menu')) closeArtistMenu(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeArtistMenu(); });
+
 function applyFilter() {
     const searchVal = (document.getElementById('search-input')?.value || '').trim().toLowerCase();
     let list = events.filter(e => !eventIsOver(e));
     if (activeTab === 'favs') list = list.filter(e => favs.has(String(e.id)));
     if (dateFilter) list = list.filter(e => e.dateRaw === dateFilter || (e.dateEndRaw && e.dateRaw <= dateFilter && e.dateEndRaw >= dateFilter));
     if (quickKey) { const r = quickRange(quickKey); if (r) list = list.filter(e => e.dateRaw && e.dateRaw <= r[1] && (e.dateEndRaw || e.dateRaw) >= r[0]); }
+    if (artistFilterId) { const a = artistsDir.find(x => +x.id === artistFilterId); if (a) list = list.filter(e => artistInEvent(a, e)); }
     if (searchVal) list = list.filter(e =>
         (e.title||'').toLowerCase().includes(searchVal) ||
         (e.desc||'').toLowerCase().includes(searchVal) ||
@@ -2701,7 +2814,7 @@ function render() {
     const grid = document.getElementById('grid');
     document.getElementById('fav-count').textContent = favs.size ? `(${favs.size})` : '';
     if (!filteredEvents.length) {
-        const hasFilter = !!(dateFilter || quickKey || activeCats.size || (document.getElementById('search-input')?.value || '').trim());
+        const hasFilter = !!(dateFilter || quickKey || artistFilterId || activeCats.size || (document.getElementById('search-input')?.value || '').trim());
         const msg = activeTab === 'favs' && !hasFilter ? 'לא שמרת אירועים מועדפים עדיין' : 'לא נמצאו אירועים תואמים';
         const action = hasFilter ? '<button type="button" class="btn-link" onclick="resetFilters()">ניקוי הסינון ←</button>'
             : activeTab === 'favs' ? '<button type="button" class="btn-link" onclick="switchTab(\'all\')">לכל האירועים ←</button>' : '';
@@ -2726,6 +2839,7 @@ function resetFilters() {
     const s = document.getElementById('search-input'); if (s) s.value = '';
     activeCats.clear();
     quickKey = ''; updQuick();
+    artistFilterId = 0; updArtistChip();
     document.querySelectorAll('.filter-btn').forEach(b => b.classList.toggle('active', b.dataset.cat === 'all'));
     clearDate();   // מנקה את התאריך ומרנדר מחדש
 }
@@ -2813,6 +2927,7 @@ function toggleFav(id, ev) {
     try { localStorage.setItem('favs', JSON.stringify([...favs])); } catch (_) {}
     trackEv(id, 'likes', liked ? 1 : -1);
     recordActivity(id, 'like', liked);
+    if (typeof ntFavsChanged === 'function') ntFavsChanged();
     // בלשונית הרגילה מעדכנים רק את הלב עצמו — בלי לצייר מחדש את כל הכרטיסים (אין הבהוב)
     const btn = ev.currentTarget;
     if (activeTab === 'favs' || !btn || !btn.classList || !btn.classList.contains('fav-btn')) applyFilter();
@@ -3180,9 +3295,13 @@ function handleEventDeepLink() {
     if (deepLinkHandled) return;
     deepLinkHandled = true;
     // דף נושא: /?cat=jazz (מגיעים מ־/c/jazz) — מדליק את הסינון של הנושא
-    if (new URLSearchParams(location.search).get('when') === 'today') {
+    const whenQ = new URLSearchParams(location.search).get('when');
+    if (whenQ === 'today' || whenQ === 'weekend' || whenQ === 'week') {
         history.replaceState(null, '', location.pathname);
-        quickKey = ''; setQuick('today');
+        quickKey = ''; setQuick(whenQ);
+    } else if (whenQ === 'favs') {
+        history.replaceState(null, '', location.pathname);
+        if (activeTab !== 'favs') switchTab('favs', document.querySelector('.fbar .tab[onclick*="favs"]') || document.querySelectorAll('.fbar .tab')[1]);
     }
     const catQ = new URLSearchParams(location.search).get('cat');
     if (catQ) {
@@ -3347,6 +3466,67 @@ async function clearReadMessages() {
     if (!confirm('למחוק את כל ההודעות שכבר נקראו?')) return;
     await db.from('admin_messages').delete().eq('read', true);
     loadMessages();
+}
+
+// ══ לוח אירועים לוואטסאפ / פייסבוק (ניהול): היום, מחר או השבוע — טקסט מוכן להדבקה ══
+let waKind = '';
+const waIso = n => { const d = new Date(); return localISO(new Date(d.getFullYear(), d.getMonth(), d.getDate() + n, 12)); };
+function waDayLabel(iso) {
+    const d = new Date(iso + 'T12:00:00');
+    return d.toLocaleDateString('he-IL', { weekday: 'long' }).replace(/^יום\s+/, '') + ' ' + d.getDate() + '.' + (d.getMonth() + 1);
+}
+const waStart = e => { const m = String(e.time || '').match(/(\d{1,2})[:.](\d{2})/); return m ? m[1].padStart(2, '0') + ':' + m[2] : ''; };
+const waMins = e => { const m = String(e.time || '').match(/(\d{1,2})[:.](\d{2})/); return m ? (+m[1] < 5 ? +m[1] + 24 : +m[1]) * 60 + +m[2] : 9999; };
+function waLine(e, links) {
+    const cat = (e.cats && e.cats[0]) || e.cat;
+    const loc = String(e.location || '').replace(/,\s*חיפה\s*$/, '').trim();
+    const price = e.price && e.price !== '-' ? String(e.price).trim() : '';
+    return (CAT_EMOJI[cat] || '📌') + ' ' + [waStart(e), String(e.title || '').trim(), loc, price].filter(Boolean).join(' · ') + (links ? '\n' + eventUrl(e) : '');
+}
+function waBuild(kind, links) {
+    const from = waIso(kind === 'tomorrow' ? 1 : 0), to = waIso(kind === 'tomorrow' ? 1 : kind === 'week' ? 6 : 0);
+    const list = events.filter(e => e.status !== 'pending' && e.dateRaw && e.dateRaw <= to && (e.dateEndRaw || e.dateRaw) >= from && !eventIsOver(e))
+        .sort((a, b) => waMins(a) - waMins(b) || String(a.title).localeCompare(String(b.title), 'he'));
+    const dayOf = e => (e.dateRaw > from ? e.dateRaw : from);
+    const ongoing = list.filter(e => e.dateRaw < from && e.dateEndRaw && e.dateEndRaw > e.dateRaw);       // התחילו לפני — ממשיכים
+    const dated = list.filter(e => !ongoing.includes(e));
+    const sep = links ? '\n\n' : '\n';
+    const out = [];
+    if (kind === 'week') {
+        out.push(`🎶 מה עושים השבוע בחיפה — ${waDayLabel(from).split(' ').pop()}–${waDayLabel(to).split(' ').pop()}`);
+        [...new Set(dated.map(dayOf))].sort().forEach(day => out.push('📅 ' + waDayLabel(day) + '\n' + dated.filter(e => dayOf(e) === day).map(e => waLine(e, links)).join(sep)));
+        if (ongoing.length) out.push('🗓 לאורך השבוע\n' + ongoing.map(e => waLine(e, links)).join(sep));
+    } else {
+        out.push(`🎶 מה עושים ${kind === 'tomorrow' ? 'מחר' : 'היום'} בחיפה — ${waDayLabel(from)}`);
+        if (dated.length) out.push(dated.map(e => waLine(e, links)).join(sep));
+        if (ongoing.length) out.push(`🗓 ממשיכים גם ${kind === 'tomorrow' ? 'מחר' : 'היום'}\n` + ongoing.map(e => waLine(e, links)).join(sep));
+    }
+    out.push('כל הפרטים: heifait-batahtit.co.il');
+    return { text: list.length ? out.join('\n\n') : '', count: list.length };
+}
+async function waCopyText(t) {
+    try { await navigator.clipboard.writeText(t); return true; }
+    catch (_) { try { const ta = document.createElement('textarea'); ta.value = t; document.body.appendChild(ta); ta.select(); const ok = document.execCommand('copy'); ta.remove(); return ok; } catch (_) { return false; } }
+}
+function waSync() {
+    const t = document.getElementById('wa-text').value;
+    document.getElementById('wa-share').href = 'https://wa.me/?text=' + encodeURIComponent(t);
+}
+async function waBoard(kind) {
+    if (kind) waKind = kind;
+    if (!waKind) return;
+    document.querySelectorAll('.wa-chips .adm-chip').forEach(b => b.classList.toggle('active', b.dataset.w === waKind));
+    const { text, count } = waBuild(waKind, document.getElementById('wa-links').checked);
+    const label = { today: 'היום', tomorrow: 'מחר', week: 'השבוע' }[waKind];
+    document.getElementById('wa-out').hidden = !count;
+    if (!count) { showToast(`אין אירועים ${label}`); return; }
+    document.getElementById('wa-text').value = text;
+    document.getElementById('wa-count').textContent = count === 1 ? 'אירוע אחד' : count + ' אירועים';
+    waSync();
+    showToast((await waCopyText(text)) ? `📋 הלוח של ${label} הועתק — אפשר להדביק` : 'הלוח מוכן — לחצו על "העתקה"');
+}
+async function waCopy() {
+    showToast((await waCopyText(document.getElementById('wa-text').value)) ? '📋 הועתק — אפשר להדביק' : 'ההעתקה לא הצליחה — סמנו את הטקסט והעתיקו ידנית');
 }
 
 async function openApprovalPanel() {
@@ -3864,7 +4044,7 @@ function venueCardHtml(v, focus, inner) {
         <div class="vd-contacts">${venueContactHtml(v) || '<span class="users-empty">אין פרטי קשר</span>'}</div>
         ${evs.length ? `<div class="vd-events"><b>📅 אירועים קרובים כאן:</b>${evs.map(e => `<button type="button" class="vd-ev" onclick="openViewModal('${escHtml(String(e.id))}')">${escHtml(formatEventDate(e))} · ${escHtml(e.title)}</button>`).join('')}</div>` : ''}
         <details class="vd-past" hidden data-m="v:${escHtml(v.venue_key)}" ontoggle="pastToggle(this)"><summary>🕰 אירועים קודמים</summary><div class="vd-past-list">טוען…</div></details>
-        ${!inner && currentRole === 'admin' ? `<div class="vd-admin"><button class="btn-reject" onclick="adminDeleteVenue(${v.id})">🗑 הסרה מהרשימה</button></div>` : ''}`;
+        ${!inner && currentRole === 'admin' ? `<div class="vd-admin">${moveMenuHtml('venue', v.id)}<button class="btn-reject" onclick="adminDeleteVenue(${v.id})">🗑 הסרה מהרשימה</button></div>` : ''}`;
     return inner ? body : `<div class="vd-card${focus ? ' focus' : ''}">${body}</div>`;
 }
 // ── אירועים קודמים בדף מקום / אמן / מפיק (נטען רק כשפותחים את הלשונית) ──
@@ -3938,6 +4118,57 @@ function renderVenuesDir() {
         || `<div class="users-empty">${q ? 'לא נמצאו מקומות' : 'עוד אין מקומות ברשימה. מפרסמים יכולים להוסיף את המקום שלהם בטופס הוספת אירוע.'}</div>`;
     markPastTabs(list);
 }
+// ══ ניהול: העברת דף שנוצר בסוג הלא נכון — מקום ↔ אמן ↔ מפיק ══
+// הדף נשאר בבעלות מי שיצר אותו, ובאותו מצב (מאושר / ממתין). מנהלת בלבד (וגם המסד מאפשר את זה רק למנהלת).
+const PAGE_LBL = { venue: 'דף מקום', artist: 'דף אמן', producer: 'דף מפיק' };
+function moveMenuHtml(kind, id) {
+    const opts = { artist: ['venue', 'producer'], producer: ['venue', 'artist'], venue: ['artist', 'producer'] }[kind] || [];
+    return `<details class="pg-move"><summary class="btn-preview" title="הדף נוצר בסוג הלא נכון? אפשר להעביר אותו">↔ העברה</summary><div class="pg-move-menu">${opts.map(to =>
+        `<button type="button" class="btn-preview" onclick="adminMovePage('${kind === 'venue' ? 'venue' : 'artist'}',${+id},'${to}')">ל${PAGE_LBL[to]}</button>`).join('')}</div></details>`;
+}
+async function adminMovePage(src, id, to) {
+    if (currentRole !== 'admin' || !PAGE_LBL[to]) return;
+    const refresh = async () => {
+        await Promise.all([loadVenues(), loadArtists()]);
+        try { renderVenuesDir(); } catch (_) {} try { renderArtistsDir(); } catch (_) {}
+        if (document.getElementById('approval-panel').classList.contains('open')) { try { loadPendingVenues(); } catch (_) {} try { loadPendingArtists(); } catch (_) {} }
+    };
+    const dup = e => /duplicate|unique/i.test((e && e.message) || '');
+    if (src === 'artist') {
+        const a = artistsDir.find(x => +x.id === +id); if (!a) return;
+        if (to !== 'venue') {                                   // אמן ↔ מפיק: רק הסוג משתנה
+            if (!confirm(`להעביר את "${a.name}" ל${PAGE_LBL[to]}?`)) return;
+            const { error } = await db.from('artists').update({ kind: to }).eq('id', a.id);
+            if (error) { showToast('ההעברה לא הצליחה'); return; }
+        } else {                                                // אמן / מפיק → מקום
+            if (!confirm(`להעביר את "${a.name}" לדף מקום?\n\nעוברים: שם, תיאור, פרטי קשר וקישורים.\nלא עוברים: קטגוריות ותמונה (לדף מקום אין כאלה).\nאחרי ההעברה כדאי להוסיף כתובת.`)) return;
+            const links = (a.links || []).map(safeUrl).filter(Boolean);
+            const pick = re => { const i = links.findIndex(u => re.test(u)); return i < 0 ? null : links.splice(i, 1)[0]; };
+            const instagram = pick(/instagram\.com/i), facebook = pick(/facebook\.com|fb\.com|fb\.me/i), website = links.shift() || null;
+            const about = [a.bio, links.length ? 'קישורים נוספים: ' + links.join(' , ') : ''].filter(Boolean).join('\n\n').slice(0, 600) || null;
+            const row = { name: String(a.name).slice(0, 120), address: null, about, contact: a.contact || null, email: a.email || null,
+                form_url: null, website, instagram, facebook, user_id: a.user_id || null, status: a.status || 'pending' };
+            const ins = await db.from('venues').insert(row);
+            if (ins.error) { showToast(dup(ins.error) ? 'כבר יש מקום בשם הזה ברשימת המקומות' : 'ההעברה לא הצליחה'); return; }
+            const del = await db.from('artists').delete().eq('id', a.id);
+            if (del.error) { showToast('דף המקום נוצר, אבל הדף הישן לא נמחק — הסירי אותו ידנית'); await refresh(); return; }
+        }
+    } else {
+        const v = venuesDir.find(x => +x.id === +id); if (!v) return;
+        if (!confirm(`להעביר את "${v.name}" ל${PAGE_LBL[to]}?\n\nעוברים: שם, תיאור, פרטי קשר וקישורים.\nהכתובת תישמר בסוף התיאור (לדף אמן אין שדה כתובת).`)) return;
+        const bio = [v.about, v.address ? 'כתובת: ' + v.address : ''].filter(Boolean).join('\n\n').slice(0, 1200) || null;
+        const row = { name: String(v.name).slice(0, 80), kind: to, cats: [], bio, image: null,
+            links: [v.website, v.instagram, v.facebook, v.form_url].map(safeUrl).filter(Boolean).slice(0, 6),
+            contact: v.contact || null, email: v.email || null, user_id: v.user_id || null, status: v.status || 'pending' };
+        const ins = await db.from('artists').insert(row);
+        if (ins.error) { showToast(dup(ins.error) ? 'כבר יש דף בשם הזה' : 'ההעברה לא הצליחה'); return; }
+        const del = await db.from('venues').delete().eq('id', v.id);
+        if (del.error) { showToast('הדף החדש נוצר, אבל דף המקום הישן לא נמחק — הסירי אותו ידנית'); await refresh(); return; }
+    }
+    showToast(`הועבר ל${PAGE_LBL[to]} ✓`);
+    await refresh();
+}
+
 async function adminDeleteVenue(id) {
     if (!confirm('להסיר את המקום מהרשימה?')) return;
     const { error } = await db.from('venues').delete().eq('id', id);
@@ -4088,7 +4319,7 @@ async function loadPendingVenues() {
     if (error || !data || !data.length) { box.innerHTML = ''; return; }
     box.innerHTML = `<h3 class="pv-title">🏠 מקומות שממתינים לאישור ברשימת המקומות (${data.length})</h3>` + data.map(v => `
         <div class="vd-card pv-card">${venueCardHtml({ ...v, status: 'approved' }, false, true)}
-            <div class="approval-btns"><button class="btn-approve" onclick="approveVenue(${v.id})">${svgIc('check', 18)} אשרי</button><button class="btn-reject" onclick="adminDeleteVenue(${v.id})">${svgIc('x', 18)} דחי</button></div>
+            <div class="approval-btns"><button class="btn-approve" onclick="approveVenue(${v.id})">${svgIc('check', 18)} אשרי</button><button class="btn-reject" onclick="adminDeleteVenue(${v.id})">${svgIc('x', 18)} דחי</button>${moveMenuHtml('venue', v.id)}</div>
         </div>`).join('');
 }
 async function approveVenue(id) {
@@ -4361,7 +4592,7 @@ function artistCardHtml(a, focus, inner) {
         ${contact ? `<div class="vd-contacts"><span class="ar-booking">ליצירת קשר:</span>${contact}</div>` : ''}
         ${evs.length ? `<div class="vd-events"><b>📅 אירועים קרובים:</b>${evs.map(e => `<button type="button" class="vd-ev" onclick="openViewModal('${escHtml(String(e.id))}')">${escHtml(formatEventDate(e))} · ${escHtml(e.title)}</button>`).join('')}</div>` : ''}
         <details class="vd-past" hidden data-m="a:${a.id}" ontoggle="pastToggle(this)"><summary>🕰 אירועים קודמים</summary><div class="vd-past-list">טוען…</div></details>
-        ${!inner && (mine || currentRole === 'admin') ? `<div class="vd-admin">${mine ? `<button class="btn-preview" onclick="openArtistEditor(${a.id})">✏️ עריכה</button>` : ''}${currentRole === 'admin' ? `<button class="btn-reject" onclick="adminDeleteArtist(${a.id})">🗑 הסרה</button>` : ''}</div>` : ''}`;
+        ${!inner && (mine || currentRole === 'admin') ? `<div class="vd-admin">${mine ? `<button class="btn-preview" onclick="openArtistEditor(${a.id})">✏️ עריכה</button>` : ''}${currentRole === 'admin' ? `${moveMenuHtml(kindOf(a), a.id)}<button class="btn-reject" onclick="adminDeleteArtist(${a.id})">🗑 הסרה</button>` : ''}</div>` : ''}`;
     return inner ? body : `<div class="vd-card ar-card${focus ? ' focus' : ''}">${body}</div>`;
 }
 let arFocus = 0;
@@ -4489,7 +4720,7 @@ async function loadPendingArtists() {
     if (error || !data || !data.length) { box.innerHTML = ''; return; }
     box.innerHTML = `<h3 class="pv-title"><svg class="role-ico ico-in" viewBox="0 0 64 64" aria-hidden="true"><use href="#ri-art"/></svg> דפי אמנים ומפיקים שממתינים לאישור (${data.length})</h3>` + data.map(a => `
         <div class="vd-card pv-card"><span class="ue-st pend">${KIND_TXT[kindOf(a)].page}</span>${artistCardHtml({ ...a, status: 'approved' }, false, true)}
-            <div class="approval-btns"><button class="btn-approve" onclick="approveArtist(${a.id})">${svgIc('check', 18)} אשרי</button><button class="btn-reject" onclick="adminDeleteArtist(${a.id})">${svgIc('x', 18)} דחי</button></div>
+            <div class="approval-btns"><button class="btn-approve" onclick="approveArtist(${a.id})">${svgIc('check', 18)} אשרי</button><button class="btn-reject" onclick="adminDeleteArtist(${a.id})">${svgIc('x', 18)} דחי</button>${moveMenuHtml(kindOf(a), a.id)}</div>
         </div>`).join('');
 }
 async function approveArtist(id) {
@@ -5643,7 +5874,7 @@ if (location.hash === '#about') setTimeout(openAbout, 300);
         <li><strong>סוג הפרופיל והפעילות האישית</strong> — סוג הפרופיל שבחרתם (קהל / אמן / מקום / מפיק), והפעילות שלכם באתר כשאתם מחוברים: אירועים שסימנתם ❤️, שהוספתם ליומן, ששיתפתם, ושלחצתם בהם על כרטיסים או קישורים. המטרה: להציג לכם את "האזור האישי". רק אתם רואים את הפעילות האישית שלכם — מפרסמים רואים רק מספרים אנונימיים, בלי שמות.</li>
         <li><strong>דפי אמנים ומפיקים (לא חובה)</strong> — מי שיוצר דף אמן מוסר שם, סגנון, תיאור, תמונה, קישורים ופרטי קשר. הדף מוצג לכל הגולשים לאחר אישור, ואפשר לערוך או למחוק אותו בכל עת.</li>
         <li><strong>"הפרטים הקבועים שלי"</strong> — מקום, שעות, מחיר, קישורים וטלפון שבחרתם לשמור כדי שימולאו אוטומטית. נשמרים בחשבון שלכם ונראים רק לכם.</li>
-        <li><strong>התראות לטלפון (לא חובה)</strong> — אם הפעלתם התראות, נשמרת כתובת טכנית שהדפדפן יוצר לצורך שליחת התראות, יחד עם הקטגוריות והמקומות שבחרתם. אפשר לבטל בכל רגע מכפתור הפעמון.</li>
+        <li><strong>התראות לטלפון (לא חובה)</strong> — אם הפעלתם התראות, נשמרת כתובת טכנית שהדפדפן יוצר לצורך שליחת התראות, יחד עם הקטגוריות, המקומות והאמנים שבחרתם ותדירות הסיכום שביקשתם. אם ביקשתם תזכורת לאירועים שסימנתם בלב, נשמרת גם רשימת האירועים האלה. אפשר לבטל בכל רגע מכפתור הפעמון.</li>
         <li><strong>נתוני צפייה באירועים</strong> — האתר סופר באופן אנונימי כמה פעמים צפו באירוע, סימנו לב, הוסיפו ליומן, לחצו על כרטיסים, קישורים או יצירת קשר, ושיתפו. בספירה הזאת לא נשמר מי לחץ — רק מספרים, והם מוצגים למפרסם של האירוע ולהנהלת האתר בלבד. (למשתמשים מחוברים נשמרת בנפרד "הפעילות האישית" שמתוארת למעלה, ורק הם רואים אותה.)</li>
         <li><strong>מדידת ביקורים באתר</strong> — באמצעות Vercel Web Analytics, שסופר ביקורים ועמודים באופן מצטבר, ללא עוגיות וללא זיהוי אישי.</li>
         <li><strong>פניות אלינו</strong> — אם כתבתם לנו במייל, נשמור את הפנייה כדי לטפל בה.</li>
@@ -5849,13 +6080,20 @@ const ntIsIOS = () => /iphone|ipad|ipod/i.test(navigator.userAgent) || (navigato
 const ntStandalone = () => matchMedia('(display-mode: standalone)').matches || navigator.standalone === true;
 function ntGetCats() { try { return JSON.parse(localStorage.getItem('ntCats') || '[]'); } catch (_) { return []; } }
 function ntSetCats(c) { try { localStorage.setItem('ntCats', JSON.stringify(c)); } catch (_) {} }
-function ntGetDaily() { try { return localStorage.getItem('ntDaily') === '1'; } catch (_) { return false; } }
-function ntSetDaily(on) { try { localStorage.setItem('ntDaily', on ? '1' : '0'); } catch (_) {} }
-// האם השרת כבר תומך בסיכום היומי (daily_today.sql)? בודקים פעם אחת — קריאה שלא משנה כלום
+// סיכום אירועים: '' = בלי, daily = כל יום, 3days = כל שלושה ימים, weekend = ביום חמישי לקראת הסופ"ש, weekly = ביום ראשון לשבוע כולו
+const NT_DIGESTS = ['', 'daily', '3days', 'weekend', 'weekly'];
+function ntGetDaily() { try { const v = localStorage.getItem('ntDigest') || ''; return NT_DIGESTS.includes(v) ? v : ''; } catch (_) { return ''; } }
+function ntSetDaily(v) { try { localStorage.setItem('ntDigest', NT_DIGESTS.includes(v) ? v : ''); } catch (_) {} }
+let ntDigestSel = '';
+function ntPickDigest(v) {
+    ntDigestSel = NT_DIGESTS.includes(v) ? v : '';
+    document.querySelectorAll('#nt-digest .cat-pick-btn').forEach(b => { const on = b.dataset.d === ntDigestSel; b.classList.toggle('selected', on); b.setAttribute('aria-checked', on); });
+}
+// האם השרת כבר תומך בסיכום (notifications_update.sql)? בודקים פעם אחת — קריאה שלא משנה כלום
 let ntDailyOk = null;
 async function ntDailySupported() {
     if (ntDailyOk !== null) return ntDailyOk;
-    try { const r = await db.rpc('push_set_daily', { p_endpoint: '', p_daily: false }); ntDailyOk = !r.error; }
+    try { const r = await db.rpc('push_set_digest', { p_endpoint: '', p_digest: '' }); ntDailyOk = !r.error; }
     catch (_) { ntDailyOk = false; }
     return ntDailyOk;
 }
@@ -5878,6 +6116,32 @@ function ntAddVenue() {
 }
 document.addEventListener('change', ev => { if (ev.target && ev.target.id === 'nt-venue-input' && ev.target.value) ntAddVenue(); });
 document.addEventListener('keydown', ev => { if (ev.target && ev.target.id === 'nt-venue-input' && ev.key === 'Enter') { ev.preventDefault(); ntAddVenue(); } });
+// אמנים להתראות: שם חופשי (לא חייב להיות דף אמן באתר). ההתאמה: השם מופיע בשם האירוע.
+let ntArtistsSel = [];
+function ntGetArtists() { try { return JSON.parse(localStorage.getItem('ntArtists') || '[]'); } catch (_) { return []; } }
+function ntSetArtists(a) { try { localStorage.setItem('ntArtists', JSON.stringify(a)); } catch (_) {} }
+function ntRenderArtists() {
+    document.getElementById('nt-artists').innerHTML = ntArtistsSel.map((v, i) =>
+        `<span class="cat-pick-btn selected nt-venue-chip">🎨 ${escHtml(v)} <button type="button" aria-label="הסרה" onclick="ntArtistsSel.splice(${i},1);ntRenderArtists()">✕</button></span>`).join('');
+}
+function ntAddArtist() {
+    const inp = document.getElementById('nt-artist-input');
+    const name = String(inp.value || '').replace(/\s+/g, ' ').trim().slice(0, 80);
+    if (artistNorm(name).length < 2) return;
+    if (ntArtistsSel.length < 60 && !ntArtistsSel.some(v => artistNorm(v) === artistNorm(name))) ntArtistsSel.push(name);
+    inp.value = '';
+    ntRenderArtists();
+}
+document.addEventListener('change', ev => { if (ev.target && ev.target.id === 'nt-artist-input' && ev.target.value) ntAddArtist(); });
+document.addEventListener('keydown', ev => { if (ev.target && ev.target.id === 'nt-artist-input' && ev.key === 'Enter') { ev.preventDefault(); ntAddArtist(); } });
+// האם השרת כבר תומך באמנים בהתראות (notifications_update.sql)? בודקים פעם אחת — קריאה שלא משנה כלום
+let ntArtistsOk = null;
+async function ntArtistsSupported() {
+    if (ntArtistsOk !== null) return ntArtistsOk;
+    try { const r = await db.rpc('push_set_artists', { p_endpoint: '', p_artists: [] }); ntArtistsOk = !r.error; }
+    catch (_) { ntArtistsOk = false; }
+    return ntArtistsOk;
+}
 // הרשמה בשרת (עם מקומות; אם השרת עוד בגרסה הישנה — בלי מקומות)
 async function ntRpcSubscribe(j, cats, venues) {
     const base = { p_endpoint: j.endpoint, p_p256dh: j.keys.p256dh, p_auth: j.keys.auth, p_cats: cats };
@@ -5906,12 +6170,33 @@ async function ntRefreshBell() {
     document.getElementById('btn-bell').classList.toggle('on', !!sub);
     const bl = document.getElementById('bell-lbl'); if (bl) bl.textContent = sub ? 'התראות פעילות' : 'התראות';
     document.getElementById('btn-bell').title = sub ? 'ההתראות פעילות — לחיצה לשינוי ההגדרות' : 'הפעלת התראות לטלפון על אירועים חדשים';
-    if (sub && !ntAnnounceTried) { ntAnnounceTried = true; setTimeout(ntDailyAnnounce, 4000); }
+    if (sub && !ntAnnounceTried) { ntAnnounceTried = true; setTimeout(ntDailyAnnounce, 4000); setTimeout(() => ntSyncFavs(), 7000); }
 }
-// ── הודעה חד־פעמית למי שכבר רשום להתראות: יש אפשרות חדשה — סיכום יומי ──
+// ── הודעה חד־פעמית למי שכבר רשום להתראות: יש אפשרות חדשה — סיכום אירועים ──
 // מופיעה פעם אחת במכשיר (ועוד נקודה על הפעמון עד שפותחים את חלון ההתראות). לא למנהלת, ולא למי שכבר הפעיל.
 let ntAnnounceTried = false;
 const ntLs = (k, v) => { try { if (v === undefined) return localStorage.getItem(k); localStorage.setItem(k, v); } catch (_) { return null; } };
+// האם השרת תומך ב"רק חינם" ובתזכורות ללבבות (notifications_update.sql)? בודקים פעם אחת
+let ntOptsOk = null;
+async function ntOptsSupported() {
+    if (ntOptsOk !== null) return ntOptsOk;
+    try { const r = await db.rpc('push_set_favs', { p_endpoint: '', p_favs: [] }); ntOptsOk = !r.error; }
+    catch (_) { ntOptsOk = false; }
+    return ntOptsOk;
+}
+// תזכורת ללבבות: המכשיר שולח לשרת את רשימת האירועים שסומנו בלב — רק למי שביקש תזכורת, ורק כשהרשימה השתנתה
+async function ntSyncFavs(force) {
+    if (ntLs('ntRemind') !== '1') return;
+    try {
+        const sub = await ntCurrentSub(); if (!sub) return;
+        const ids = [...favs].map(String).filter(x => x.length <= 64).slice(0, 300), key = ids.join(',');
+        if (!force && ntLs('ntFavsSent') === key) return;
+        const r = await db.rpc('push_set_favs', { p_endpoint: sub.endpoint, p_favs: ids });
+        if (!r.error) ntLs('ntFavsSent', key);
+    } catch (_) {}
+}
+let ntFavTimer = null;
+function ntFavsChanged() { clearTimeout(ntFavTimer); ntFavTimer = setTimeout(() => ntSyncFavs(), 1500); }
 async function ntDailyAnnounce() {
     if (currentRole === 'admin' || ntGetDaily() || ntLs('ntDailyPanelSeen') === '1') return;
     if (!(await ntCurrentSub()) || !(await ntDailySupported())) return;
@@ -5919,7 +6204,15 @@ async function ntDailyAnnounce() {
     if (ntLs('ntDailyNoticeSeen') === '1' || document.getElementById('notice-box')) return;   // לא דורסים הודעה אחרת שמוצגת כרגע
     if (document.querySelector('.auth-overlay.open, .overlay.open, .approval-panel.open')) return;   // לא מעל חלון פתוח — ננסה בביקור הבא
     ntLs('ntDailyNoticeSeen', '1');
-    showNotice('<b>☀️ חדש: סיכום יומי</b><br>רוצים לקבל פעם ביום, בצהריים, הודעה אחת עם מה שקורה היום בחיפה? לפי הקטגוריות והמקומות שבחרתם.<br><button type="button" class="notice-go" onclick="this.parentNode.remove();openNotify()">להפעלה ←</button>');
+    showNotice('<b>☀️ חדש: סיכום אירועים</b><br>רוצים לקבל הודעה אחת עם מה שקורה בחיפה? כל יום, לקראת הסופ״ש או פעם בשבוע, לפי מה שבחרתם בהתראות. אפשר גם לקבל תזכורת לאירועים שסימנתם בלב.<br><button type="button" class="notice-go" onclick="this.parentNode.remove();openNotify()">להפעלה ←</button>');
+}
+// לחיצה על התראה כשהאתר כבר פתוח ברקע: ה-Service Worker מביא את החלון לחזית ומבקש ממנו לעבור לכתובת
+if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.addEventListener('message', ev => {
+        const d = ev.data || {};
+        if (d.type !== 'open-url' || !d.url) return;
+        try { const u = new URL(d.url, location.origin); if (u.origin === location.origin) location.href = u.href; } catch (_) {}
+    });
 }
 // רישום ה-Service Worker (ברקע, לא מעכב את האתר)
 if ('serviceWorker' in navigator) {
@@ -5939,6 +6232,8 @@ async function openNotify() {
         `<span class="cat-pick-btn${chosen.has(k) ? ' selected' : ''}" data-c="${k}" onclick="this.classList.toggle('selected')">${CAT_EMOJI[k] || ''} ${v}</span>`).join('');
     // מקומות: הרשימה הקבועה + מקומות מאירועים באתר
     ntVenuesSel = ntGetVenues();
+    ntArtistsSel = ntGetArtists(); ntRenderArtists();
+    try { document.getElementById('nt-artist-list').innerHTML = [...new Set(artistsDir.filter(a => a.status === 'approved' && kindOf(a) === 'artist').map(a => a.name).filter(Boolean))].map(n => `<option value="${escHtml(n)}"></option>`).join(''); } catch (_) {}
     ntRenderVenues();
     const names = [...new Set(knownVenues().map(venueName).filter(Boolean))].sort((a, b) => a.localeCompare(b, 'he'));
     document.getElementById('nt-venue-list').innerHTML = names.map(n => `<option value="${escHtml(n)}"></option>`).join('');
@@ -5980,14 +6275,18 @@ async function openNotify() {
     document.querySelector('#nt-controls .nt-label').style.display = isAdmin ? 'none' : '';
     document.getElementById('nt-cats').style.display = isAdmin ? 'none' : '';
     ['nt-venues-label', 'nt-venue-add', 'nt-venues'].forEach(id => document.getElementById(id).style.display = isAdmin ? 'none' : '');
+    document.getElementById('nt-artists-wrap').style.display = (!isAdmin && await ntArtistsSupported()) ? '' : 'none';
     if (isAdmin) status.textContent = sub ? '✅ פעיל: תקבלי התראה על כל אירוע שממתין לאישור.' : 'כמנהלת, תקבלי התראה לטלפון על כל אירוע חדש שממתין לאישור.';
     else status.textContent = sub ? '✅ ההתראות פעילות במכשיר הזה. אפשר לשנות קטגוריות ולשמור.' : 'קבלו הודעה לטלפון ברגע שמתפרסם אירוע חדש.';
     document.getElementById('nt-on').textContent = sub ? 'שמירת השינויים' : 'הפעלת התראות';
     document.getElementById('nt-off').style.display = sub ? '' : 'none';
     {   // סיכום יומי: לא למנהלת, ורק אם השרת תומך
-        const row = document.getElementById('nt-daily-row');
+        const row = document.getElementById('nt-digest-wrap');
         row.style.display = 'none';
-        document.getElementById('nt-daily').checked = !!sub && ntGetDaily();
+        ntPickDigest(sub ? ntGetDaily() : '');
+        document.getElementById('nt-free').checked = !!sub && ntLs('ntFree') === '1';
+        document.getElementById('nt-remind').checked = !!sub && ntLs('ntRemind') === '1';
+        document.getElementById('nt-opts-wrap').style.display = (!isAdmin && await ntOptsSupported()) ? '' : 'none';
         if (!isAdmin && await ntDailySupported()) {
             row.style.display = '';
             // התווית "חדש" מוצגת בפתיחה הראשונה של החלון; הנקודה על הפעמון נעלמת
@@ -6060,10 +6359,19 @@ async function notifySubscribe() {
         const { error } = await ntRpcSubscribe(j, cats, venues);
         if (error) throw error;
         ntSetCats(cats); ntSetVenues(venues);
+        if (currentRole !== 'admin' && ntArtistsOk) {
+            if (document.getElementById('nt-artist-input').value) ntAddArtist();
+            const ra = await db.rpc('push_set_artists', { p_endpoint: j.endpoint, p_artists: ntArtistsSel.slice() });
+            if (!ra.error) ntSetArtists(ntArtistsSel.slice());
+        }
         if (currentRole !== 'admin' && ntDailyOk) {
-            const daily = document.getElementById('nt-daily').checked;
-            const r = await db.rpc('push_set_daily', { p_endpoint: j.endpoint, p_daily: daily });
-            if (!r.error) ntSetDaily(daily);
+            const r = await db.rpc('push_set_digest', { p_endpoint: j.endpoint, p_digest: ntDigestSel });
+            if (!r.error) ntSetDaily(ntDigestSel);
+            if (ntOptsOk) {
+                const free = document.getElementById('nt-free').checked, remind = document.getElementById('nt-remind').checked;
+                const ro = await db.rpc('push_set_opts', { p_endpoint: j.endpoint, p_free_only: free, p_remind: remind });
+                if (!ro.error) { ntLs('ntFree', free ? '1' : '0'); ntLs('ntRemind', remind ? '1' : '0'); if (remind) await ntSyncFavs(true); }
+            }
         }
         showToast(currentRole === 'admin' ? '🔔 תקבלי התראה על כל אירוע שממתין לאישור' : '🔔 ההתראות הופעלו!');
         closeNotify();
@@ -6081,7 +6389,7 @@ async function notifyUnsubscribe() {
         try { await db.rpc('push_unsubscribe', { p_endpoint: sub.endpoint }); } catch (_) {}
         try { await sub.unsubscribe(); } catch (_) {}
     }
-    ntSetDaily(false);
+    ntSetDaily(''); ntLs('ntFree', '0'); ntLs('ntRemind', '0'); ntLs('ntFavsSent', '');
     showToast('ההתראות בוטלו');
     closeNotify();
     ntRefreshBell();

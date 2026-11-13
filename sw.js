@@ -1,4 +1,4 @@
-// v3 — Service Worker — מקבל התראות על אירועים חדשים ומציג אותן גם כשהאתר סגור
+// v4 — Service Worker — מקבל התראות על אירועים חדשים ומציג אותן גם כשהאתר סגור
 self.addEventListener('install', () => self.skipWaiting());
 self.addEventListener('activate', e => e.waitUntil(self.clients.claim()));
 
@@ -22,14 +22,24 @@ self.addEventListener('push', event => {
   event.waitUntil(self.registration.showNotification(d.title || 'חיפאית בתחתית', opts));
 });
 
+// לחיצה על התראה: פותחים את האתר בכתובת של ההתראה.
+// v4: קודם מביאים חלון קיים לחזית ורק אחר כך מעבירים אותו לכתובת. בגרסה הקודמת הסדר היה הפוך,
+// וכשהאתר כבר היה פתוח ברקע המעבר נכשל — ההתראה נסגרה ושום דבר לא נפתח.
 self.addEventListener('notificationclick', event => {
   event.notification.close();
   if (event.action === 'close') return;
   const url = new URL((event.notification.data && event.notification.data.url) || '/', self.location.origin).href;
   event.waitUntil((async () => {
-    const all = await self.clients.matchAll({ type: 'window', includeUncontrolled: true });
-    for (const c of all) {
-      if (c.url.startsWith(self.location.origin) && 'navigate' in c) { await c.navigate(url); return c.focus(); }
+    let all = [];
+    try { all = await self.clients.matchAll({ type: 'window', includeUncontrolled: true }); } catch (_) {}
+    const c = all.find(x => x.url.startsWith(self.location.origin));
+    if (c) {
+      try {
+        const win = (await c.focus()) || c;
+        try { await win.navigate(url); }
+        catch (_) { win.postMessage({ type: 'open-url', url }); }   // חלון שה-SW לא שולט בו: הדף עובר לכתובת בעצמו
+        return;
+      } catch (_) { /* לא הצלחנו להביא את החלון לחזית — פותחים חלון חדש */ }
     }
     return self.clients.openWindow(url);
   })());
