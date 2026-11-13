@@ -1895,8 +1895,21 @@ function toggleCatsDrawer(force) {
     const upd = () => { const k = bar.querySelectorAll('.fbar-cats .filter-btn.active:not([data-cat="all"])').length; n.textContent = k ? '(' + k + ')' : ''; document.getElementById('fb-cats-btn').classList.toggle('has-sel', k > 0); };
     new MutationObserver(upd).observe(document.getElementById('fbar-cats'), { subtree: true, attributes: true, attributeFilter: ['class'] });
     upd();
-    // סגירה בלחיצה מחוץ לסרגל
-    document.addEventListener('click', ev => { if (!bar.contains(ev.target)) toggleCatsDrawer(false); });
+    // הקטגוריות פתוחות כברירת מחדל ונסגרות רק בגלילה (כשהסרגל נצמד לראש המסך), ונפתחות שוב כשחוזרים למעלה.
+    // סגירה ידנית בכפתור נשמרת עד לפתיחה ידנית. בטלפון הסרגל נגלל עם הדף, ולכן שם הן פשוט נשארות פתוחות.
+    const mark = document.createElement('div'); mark.setAttribute('aria-hidden', 'true'); bar.parentNode.insertBefore(mark, bar);
+    const drawer = document.getElementById('fbar-cats'), phone = window.matchMedia('(max-width:768px)');
+    let userClosed = false, openedAt = null;
+    document.getElementById('fb-cats-btn').addEventListener('click', () => { const o = drawer.classList.contains('open'); userClosed = !o; openedAt = o ? window.scrollY : null; });
+    toggleCatsDrawer(true);
+    let tick = false;
+    window.addEventListener('scroll', () => { if (tick) return; tick = true; requestAnimationFrame(() => { tick = false;
+        if (phone.matches) return;
+        const top = mark.getBoundingClientRect().top, o = drawer.classList.contains('open');
+        if (o && openedAt !== null) { if (Math.abs(window.scrollY - openedAt) > 60) { toggleCatsDrawer(false); openedAt = null; } }
+        else if (o && top < -60) toggleCatsDrawer(false);
+        else if (!o && !userClosed && top >= 0) toggleCatsDrawer(true);
+    }); }, { passive: true });
 })();
 </script>
 
@@ -4115,6 +4128,8 @@ function closeVenuesPanel(fromBack) {
     el.classList.remove('open');
     if (fromBack !== true) popLayer('venues', true);
 }
+// שם לצורך מיון א"ב: בלי רווחים, מירכאות או סימנים בתחילת השם
+const abName = n => String(n || '').trim().replace(/^[\s"'״׳“”‘’\-–.·!#*()\[\]]+/, '');
 function renderVenuesDir() {
     const list = document.getElementById('vd-list');
     if (!venuesLoaded) { list.innerHTML = '<div class="users-empty">רשימת המקומות תיפתח בקרוב.</div>'; return; }
@@ -4122,7 +4137,7 @@ function renderVenuesDir() {
     const upCount = k => events.filter(e => !eventIsOver(e) && venueKey(e.location) === k).length;
     let arr = venuesDir.filter(v => v.status === 'approved' || (currentUser && v.user_id === currentUser.id) || currentRole === 'admin');
     if (q) arr = arr.filter(v => [v.name, v.address, v.about].join(' ').toLowerCase().includes(q));
-    arr.sort((a, b) => (b.venue_key === vdFocus) - (a.venue_key === vdFocus) || upCount(b.venue_key) - upCount(a.venue_key) || a.name.localeCompare(b.name, 'he'));
+    arr.sort((a, b) => (b.venue_key === vdFocus) - (a.venue_key === vdFocus) || abName(a.name).localeCompare(abName(b.name), 'he'));   // סדר א"ב
     list.innerHTML = arr.map(v => venueCardHtml(v, v.venue_key === vdFocus)).join('')
         || `<div class="users-empty">${q ? 'לא נמצאו מקומות' : 'עוד אין מקומות ברשימה. מפרסמים יכולים להוסיף את המקום שלהם בטופס הוספת אירוע.'}</div>`;
     markPastTabs(list);
@@ -4632,7 +4647,7 @@ function renderArtistsDir() {
     const up = a => events.filter(e => !eventIsOver(e) && inPage(a, e)).length;
     let arr = artistsDir.filter(a => kindOf(a) === arKind && (a.status === 'approved' || (currentUser && a.user_id === currentUser.id) || currentRole === 'admin'));
     if (q) arr = arr.filter(a => artistNorm([a.name, a.bio, (a.cats || []).map(c => CAT_LABEL[c] || c).join(' ')].join(' ')).includes(q));
-    arr.sort((x, y) => (y.id === arFocus) - (x.id === arFocus) || up(y) - up(x) || x.name.localeCompare(y.name, 'he'));
+    arr.sort((x, y) => (y.id === arFocus) - (x.id === arFocus) || abName(x.name).localeCompare(abName(y.name), 'he'));   // סדר א"ב
     list.innerHTML = arr.map(a => artistCardHtml(a, a.id === arFocus)).join('')
         || `<div class="users-empty">${q ? 'לא נמצאו תוצאות' : arKind === 'producer' ? 'עוד אין דפי מפיקים. מפיקים מוזמנים ליצור דף — לחצו "＋ יצירת דף מפיק".' : 'עוד אין דפי אמנים. אמנים ויוצרים מכל תחום מוזמנים ליצור דף — לחצו "＋ יצירת דף אמן".'}</div>`;
     markPastTabs(list);
