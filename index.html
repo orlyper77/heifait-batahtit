@@ -1086,6 +1086,11 @@ button,input,textarea,select{font-family:'Rubik',sans-serif;}
 
 /* כרטיס רחב יותר ונמוך יותר, תמונה גדולה יותר, תיאור עד 2 שורות */
 .events-grid{grid-template-columns:repeat(auto-fill,minmax(265px,1fr));gap:1.2rem;}
+.day-solo{display:flex;flex-direction:column;gap:.7rem;min-width:0;margin-top:.9rem;}
+.day-solo .day-header{margin-top:0;padding-top:0;font-size:1.08rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block;}
+.day-solo .card{flex:1;}
+.day-solo-first{grid-column-start:1;}
+@media(max-width:600px){.day-solo{margin-top:.6rem;}.day-solo .day-header{font-size:1.35rem;white-space:normal;}}
 .card .card-img{aspect-ratio:3/2;margin:7px 7px 0;border-radius:15px;}
 .card .card-body{padding:.65rem .9rem .35rem;}
 .card .card-title{margin-bottom:.25rem;}
@@ -2825,12 +2830,14 @@ function render() {
     const todayISO = localISO(new Date());
     const groupKey = e => !e.dateRaw ? 'zzzz' : (e.dateRaw < todayISO ? todayISO : e.dateRaw);   // אירוע מתמשך שהתחיל — תחת "היום"
     const ordered = [...filteredEvents].sort((a, b) => groupKey(a).localeCompare(groupKey(b)) || (a.time||'').localeCompare(b.time||''));
-    let lastKey = null;
-    grid.innerHTML = ordered.map(e => {
-        const k = groupKey(e);
-        const header = k !== lastKey ? `<div class="day-header">${dayHeaderLabel(k, todayISO)}</div>` : '';
-        lastKey = k;
-        return header + cardHtml(e);
+    const groups = [];
+    ordered.forEach(e => { const k = groupKey(e); const g = groups[groups.length - 1]; if (g && g.k === k) g.list.push(e); else groups.push({ k, list: [e] }); });
+    // ימים רצופים שבכל אחד מהם אירוע בודד מוצגים זה לצד זה באותה שורה (כל יום עם הכותרת שלו), במקום שורה כמעט ריקה לכל יום
+    const solo = i => groups[i] && groups[i].list.length === 1;
+    grid.innerHTML = groups.map((g, i) => {
+        const head = `<div class="day-header">${dayHeaderLabel(g.k, todayISO)}</div>`;
+        if (solo(i) && (solo(i - 1) || solo(i + 1))) return `<div class="day-solo${solo(i - 1) ? '' : ' day-solo-first'}">${head}${cardHtml(g.list[0])}</div>`;
+        return head + g.list.map(cardHtml).join('');
     }).join('');
 }
 
