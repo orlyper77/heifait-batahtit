@@ -1743,7 +1743,7 @@ a.about-press span{display:block;color:#ffb0d0;font-size:13px;margin-top:4px;}
                 <button type="button" class="adm-chip" data-w="today" onclick="waBoard('today')">היום</button>
                 <button type="button" class="adm-chip" data-w="tomorrow" onclick="waBoard('tomorrow')">מחר</button>
                 <button type="button" class="adm-chip" data-w="week" onclick="waBoard('week')">השבוע</button>
-                <label class="wa-opt"><input type="checkbox" id="wa-links" onchange="waBoard()"> עם קישור לכל אירוע</label>
+                <label class="wa-opt"><input type="checkbox" id="wa-links" checked onchange="waBoard()"> עם קישור לכל אירוע</label>
             </div>
             <div id="wa-out" hidden>
                 <textarea id="wa-text" rows="11" dir="rtl" aria-label="הלוח — אפשר לערוך לפני ההעתקה" oninput="waSync()"></textarea>
@@ -3497,11 +3497,23 @@ function waDayLabel(iso) {
 }
 const waStart = e => { const m = String(e.time || '').match(/(\d{1,2})[:.](\d{2})/); return m ? m[1].padStart(2, '0') + ':' + m[2] : ''; };
 const waMins = e => { const m = String(e.time || '').match(/(\d{1,2})[:.](\d{2})/); return m ? (+m[1] < 5 ? +m[1] + 24 : +m[1]) * 60 + +m[2] : 9999; };
+// אירוע בלוח: שעה / שם / שורת תיאור / מקום (שם + כתובת) / מחיר / קישור — כל פרט בשורה משלו, בלי אייקונים
+function waDescLine(e) {
+    const first = String(e.desc || '').split(/\r?\n/).map(l => l.replace(/https?:\/\/\S+/g, '').replace(/\s+/g, ' ').trim()).find(l => l.length > 1) || '';
+    if (first.length <= 160) return first;
+    const cut = first.slice(0, 160); return cut.slice(0, Math.max(cut.lastIndexOf(' '), 100)).replace(/[\s,.;:–-]+$/, '') + '…';
+}
+function waPlace(e) {
+    const loc = String(e.location || '').replace(/\s+/g, ' ').trim();
+    let v = null; try { v = venueByKey(venueKey(loc)); } catch (_) {}
+    const addr = v && String(v.address || '').trim();
+    // אם באירוע כתוב רק שם המקום ויש לו דף מקום עם כתובת — מוסיפים את הכתובת
+    if (addr && !loc.includes(addr.split(',')[0].trim())) return venueName(loc) + ', ' + addr;
+    return loc;
+}
 function waLine(e, links) {
-    const cat = (e.cats && e.cats[0]) || e.cat;
-    const loc = String(e.location || '').replace(/,\s*חיפה\s*$/, '').trim();
-    const price = e.price && e.price !== '-' ? String(e.price).trim() : '';
-    return (CAT_EMOJI[cat] || '📌') + ' ' + [waStart(e), String(e.title || '').trim(), loc, price].filter(Boolean).join(' · ') + (links ? '\n' + eventUrl(e) : '');
+    const price = e.price && e.price !== '-' ? String(e.price).trim() : 'כניסה חופשית';
+    return [waStart(e), String(e.title || '').trim(), waDescLine(e), waPlace(e), price, links ? eventUrl(e) : ''].filter(Boolean).join('\n');
 }
 function waBuild(kind, links) {
     const from = waIso(kind === 'tomorrow' ? 1 : 0), to = waIso(kind === 'tomorrow' ? 1 : kind === 'week' ? 6 : 0);
@@ -3510,16 +3522,16 @@ function waBuild(kind, links) {
     const dayOf = e => (e.dateRaw > from ? e.dateRaw : from);
     const ongoing = list.filter(e => e.dateRaw < from && e.dateEndRaw && e.dateEndRaw > e.dateRaw);       // התחילו לפני — ממשיכים
     const dated = list.filter(e => !ongoing.includes(e));
-    const sep = links ? '\n\n' : '\n';
+    const sep = '\n\n';
     const out = [];
     if (kind === 'week') {
         out.push(`חיפאית בתחתית - הלוח השבועי\n${waDayLabel(from).split(' ').pop()}–${waDayLabel(to).split(' ').pop()}`);
-        [...new Set(dated.map(dayOf))].sort().forEach(day => out.push(waDayLabel(day) + '\n' + dated.filter(e => dayOf(e) === day).map(e => waLine(e, links)).join(sep)));
-        if (ongoing.length) out.push('🗓 לאורך השבוע\n' + ongoing.map(e => waLine(e, links)).join(sep));
+        [...new Set(dated.map(dayOf))].sort().forEach(day => out.push(waDayLabel(day) + '\n\n' + dated.filter(e => dayOf(e) === day).map(e => waLine(e, links)).join(sep)));
+        if (ongoing.length) out.push('לאורך השבוע\n\n' + ongoing.map(e => waLine(e, links)).join(sep));
     } else {
         out.push(`חיפאית בתחתית - הלוח היומי\n${kind === 'tomorrow' ? 'מחר' : 'היום'} · ${waDayLabel(from)}`);
         if (dated.length) out.push(dated.map(e => waLine(e, links)).join(sep));
-        if (ongoing.length) out.push(`🗓 ממשיכים גם ${kind === 'tomorrow' ? 'מחר' : 'היום'}\n` + ongoing.map(e => waLine(e, links)).join(sep));
+        if (ongoing.length) out.push(`ממשיכים גם ${kind === 'tomorrow' ? 'מחר' : 'היום'}\n\n` + ongoing.map(e => waLine(e, links)).join(sep));
     }
     out.push('כל הפרטים: heifait-batahtit.co.il');
     // יישור לימין: כל שורה נפתחת בתו כיוון בלתי־נראה (RLM), כך שגם שורה של קישור או שם באנגלית מתיישרת לימין בוואטסאפ ובפייסבוק
