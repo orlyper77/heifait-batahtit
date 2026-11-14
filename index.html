@@ -4481,8 +4481,10 @@ async function loadMailOk() {
     } catch (_) { mailOkSupported = false; }
     syncMailOkUi();
 }
+// האפשרות להירשם לעדכונים במייל (בהרשמה ובדף הפרופיל) כבויה. להחזרה: לשנות ל-true
+const MAIL_UPDATES_UI = false;
 function syncMailOkUi() {
-    ['ob-mail-row', 'pf-mail-wrap'].forEach(id => { const el = document.getElementById(id); if (el) el.style.display = mailOkSupported ? '' : 'none'; });
+    ['ob-mail-row', 'pf-mail-wrap'].forEach(id => { const el = document.getElementById(id); if (el) el.style.display = MAIL_UPDATES_UI && mailOkSupported ? '' : 'none'; });
     ['ob-mail-ok', 'pf-mail-ok'].forEach(id => { const el = document.getElementById(id); if (el) el.checked = myMailOk; });
 }
 async function saveMailOk(on, quiet) {
@@ -4543,7 +4545,7 @@ async function saveRolesFrom(pre) {
     const { error } = await db.rpc('set_my_roles', { p_roles: roles });
     if (error) { showToast('השמירה לא הצליחה'); return; }
     myRoles = roles; rolesLoaded = true; updateAvatars();
-    if (pre === 'ob' && mailOkSupported && document.getElementById('ob-mail-ok').checked) saveMailOk(true, true);
+    if (MAIL_UPDATES_UI && pre === 'ob' && mailOkSupported && document.getElementById('ob-mail-ok').checked) saveMailOk(true, true);
     if (pre === 'ob') {
         closeRolesOverlay(true);
         showToast(roles.includes('artist') || roles.includes('venue') ? 'מעולה! האזור האישי שלכם מוכן 🎉' : 'מעולה! סמנו ❤️ על אירועים, והם יחכו לכם באזור האישי');
@@ -5994,7 +5996,7 @@ if (location.hash === '#about') setTimeout(openAbout, 300);
       <p>איננו מוכרים מידע ואיננו מעבירים אותו לאף גורם אחר, למעט אם נידרש לכך על פי דין.</p>
 
       <h3>מיילים</h3>
-      <p>נשלח אליכם מייל בנוגע לחשבון שלכם ולאירועים שפרסמתם. עדכונים מהאתר — חדשות והמלצות על אירועים — נשלח רק למי שסימן שהוא מסכים לקבל אותם, בהרשמה או באזור האישי ← "הפרופיל שלי". אנו שומרים את ההסכמה ואת המועד שבו ניתנה. אפשר לבטל אותה באותו מקום בכל רגע, או פשוט להשיב למייל.</p>
+      <p>נשלח אליכם מייל בנוגע לחשבון שלכם ולאירועים שפרסמתם. עדכונים מהאתר — חדשות והמלצות על אירועים — נשלח רק למי שסימן שהוא מסכים לקבל אותם. כרגע האפשרות להירשם לעדכונים כאלה אינה פעילה. מי שסימן הסכמה בעבר — אנו שומרים את ההסכמה ואת המועד שבו ניתנה, ואפשר לבטל אותה בכל רגע בפנייה אלינו דרך "שליחת מייל" שבתחתית האתר, או פשוט להשיב למייל.</p>
 
       <h3>אבטחת מידע</h3>
       <p>הגישה למידע מוגבלת בהרשאות: כל משתמש רואה רק את המידע שלו, והנהלת האתר בלבד ניגשת לפרטי המשתמשים. אנו נוקטים אמצעים סבירים להגנה על המידע, אך אף מערכת אינה חסינה לחלוטין.</p>
