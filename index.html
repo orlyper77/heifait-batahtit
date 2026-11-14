@@ -759,6 +759,12 @@ body:has(#overlay.open),body:has(.auth-overlay.open),body:has(#legal-overlay.ope
 .vd-ev{background:none;border:none;color:#9cc9f0;text-align:right;font-family:inherit;font-size:13.5px;cursor:pointer;padding:2px 0;}
 .vd-ev:hover{color:#d4e034;}
 .vm-venue{padding:0!important;font-size:14px!important;color:#9cc9f0!important;}
+.vm-promo{flex-wrap:wrap;gap:6px 8px;background:rgba(255,221,0,0.10);border:1px dashed rgba(255,221,0,0.55);border-radius:10px;padding:8px 12px;margin-top:6px;color:#fff3b0;}
+.vm-promo-code{font-weight:800;letter-spacing:.5px;color:#ffdd00;font-size:1.05em;user-select:all;}
+.vm-promo-copy{background:none;border:1px solid rgba(255,221,0,0.6);color:#ffdd00;border-radius:999px;padding:4px 12px;font:inherit;font-size:13px;cursor:pointer;min-height:32px;}
+.vm-promo-copy:hover{background:rgba(255,221,0,0.15);}
+.my-support{display:flex;align-items:center;justify-content:space-between;gap:10px 14px;flex-wrap:wrap;background:rgba(255,221,0,0.07);border:1px solid rgba(255,221,0,0.25);border-radius:12px;padding:10px 14px;margin-bottom:12px;font-size:14px;line-height:1.5;}
+.my-support .btn-coffee{padding:6px 14px;font-size:14px;flex:none;}
 .venue-offer{margin:-4px 0 14px;}
 .vo-state{font-size:14px;padding:8px 12px;border-radius:10px;background:rgba(255,255,255,0.05);}
 #overlay .vo-state{background:#fff;border:1.5px solid #9cc9f0;color:#2a0808;}
@@ -2169,6 +2175,8 @@ function toggleCatsDrawer(force) {
             <div class="form-group"><label>שעת סיום (אופציונלי)</label><input type="text" id="f-time-end" class="time-input" inputmode="numeric" maxlength="5" placeholder="23:00" dir="ltr" autocomplete="off"></div>
         </div>
         <div class="form-group"><label>מחיר</label><input type="text" id="f-price" placeholder="₪50 / כניסה חופשית"></div>
+        <div class="form-group" id="f-promo-wrap" hidden><label>🎁 קוד הטבה לגולשי חיפאית בתחתית (אופציונלי)</label><input type="text" id="f-promo" maxlength="40" placeholder="למשל: HEIFAIT10 — 10% הנחה" autocomplete="off">
+            <div class="field-hint">רוצים להוסיף קוד הטבה לגולשי חיפאית בתחתית? כך תפנקו את הקהל וגם תדעו כמה הגיעו דרך האתר. הקוד יוצג בדף האירוע.</div></div>
         <div class="form-group"><label>תיאור</label><textarea id="f-desc" placeholder="תאר את האירוע..."></textarea></div>
         <div class="form-divider">קישורים</div>
         <div class="form-group"><label>🎟 קישור לכרטיסים או לטופס הרשמה</label><input type="url" id="f-tickets" placeholder="https://..." dir="ltr">
@@ -2585,7 +2593,7 @@ async function loadEvents(pre) {
         }).map(rowToEvent).filter(e => !eventIsOver(e));   // אירוע שנגמר (כולל שעת סיום של היום) יורד מהלוח
         applyFilter();
         try { renderFooterTopics(); } catch (_) {}
-        loadVenues(); loadArtists();
+        loadVenues(); loadArtists(); probePromo();
         // רשימות פתוחות מתעדכנות אחרי עריכה / מחיקה
         if (document.getElementById('my-panel')?.classList.contains('open')) loadMyEvents();
         if (document.getElementById('approval-panel')?.classList.contains('open') && adminTab === 'events') renderAdminEvents(true);
@@ -2704,6 +2712,7 @@ function rowToEvent(e) {
         time: e.time || '-',
         location: e.location || 'חיפה',
         price: e.price || 'כניסה חופשית',
+        promo: e.promo || '',
         tickets: e.tickets || '',
         tickets2: e.tickets2 || '',
         materials: e.materials || '',
@@ -2996,7 +3005,7 @@ function openViewModal(id) {
         <div class="meta-item"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" style="opacity:.5;flex-shrink:0;margin-left:6px"><rect x="2" y="3" width="12" height="11" rx="2"/><path d="M2 7h12M5 1v4M11 1v4"/></svg>${formatEventDate(e)}</div>
         <div class="meta-item"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" style="opacity:.5;flex-shrink:0;margin-left:6px"><circle cx="8" cy="8" r="6"/><path d="M8 5v3l2 2"/></svg><bdi dir="ltr">${e.time}</bdi></div>
         <div class="meta-item"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" style="opacity:.5;flex-shrink:0;margin-left:6px"><path d="M8 2C5.8 2 4 3.8 4 6c0 3.5 4 8 4 8s4-4.5 4-8c0-2.2-1.8-4-4-4z"/><circle cx="8" cy="6" r="1.5"/></svg>${e.location}</div>
-        <div class="meta-item"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" style="opacity:.5;flex-shrink:0;margin-left:6px"><path d="M2 4h12v8a2 2 0 01-2 2H4a2 2 0 01-2-2V4zM2 4l2-2h8l2 2"/></svg>${e.price}</div>`;
+        <div class="meta-item"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" style="opacity:.5;flex-shrink:0;margin-left:6px"><path d="M2 4h12v8a2 2 0 01-2 2H4a2 2 0 01-2-2V4zM2 4l2-2h8l2 2"/></svg>${e.price}</div>` + (raw.promo ? `<div class="meta-item vm-promo"><span>🎁 קוד הטבה לגולשי חיפאית בתחתית:</span> <bdi class="vm-promo-code">${escHtml(raw.promo)}</bdi><button type="button" class="vm-promo-copy" onclick="copyPromo(this)" data-code="${escHtml(raw.promo)}">העתקה</button></div>` : '');
     {   // המקום ברשימת המקומות → קישור לפרטי הקשר שלו
         const vv = venueByKey(venueKey(raw.location));
         if (vv && vv.status === 'approved') document.getElementById('view-modal-meta').insertAdjacentHTML('beforeend',
@@ -3529,9 +3538,13 @@ function waPlace(e) {
     if (addr && !loc.includes(addr.split(',')[0].trim())) return venueName(loc) + ', ' + addr;
     return loc;
 }
+// אייקון לפני שם האירוע בלוח — רק לשלושה סוגים: הופעה 🎸, תאטרון 🎭, מסיבה 🪩. לשאר הקטגוריות אין אייקון.
+const WA_ICONS = { music: '🎸', jazz: '🎸', classic: '🎸', theater: '🎭', fringe: '🎭', parties: '🪩', dancing: '🪩' };
+function waIcon(e) { const c = [e.cat, ...(e.cats || [])].find(x => WA_ICONS[x]); return c ? WA_ICONS[c] + ' ' : ''; }
 function waLine(e, links) {
     const price = e.price && e.price !== '-' ? String(e.price).trim() : 'כניסה חופשית';
-    return [waStart(e), String(e.title || '').trim(), waDescLine(e), waPlace(e), price, links ? eventUrl(e) : ''].filter(Boolean).join('\n');
+    const place = waPlace(e);
+    return [waStart(e), waIcon(e) + String(e.title || '').trim(), place ? '🏛️ ' + place : '', price, links ? eventUrl(e) : ''].filter(Boolean).join('\n');
 }
 function waBuild(kind, links) {
     const from = waIso(kind === 'tomorrow' ? 1 : 0), to = waIso(kind === 'tomorrow' ? 1 : kind === 'week' ? 6 : 0);
@@ -3543,11 +3556,11 @@ function waBuild(kind, links) {
     const sep = '\n\n';
     const out = [];
     if (kind === 'week') {
-        out.push(`חיפאית בתחתית - הלוח השבועי\n${waDayLabel(from).split(' ').pop()}–${waDayLabel(to).split(' ').pop()}`);
+        out.push(`חיפאית בתחתית - לוח אירועים\n${waDayLabel(from).split(' ').pop()}–${waDayLabel(to).split(' ').pop()}`);
         [...new Set(dated.map(dayOf))].sort().forEach(day => out.push(waDayLabel(day) + '\n\n' + dated.filter(e => dayOf(e) === day).map(e => waLine(e, links)).join(sep)));
         if (ongoing.length) out.push('לאורך השבוע\n\n' + ongoing.map(e => waLine(e, links)).join(sep));
     } else {
-        out.push(`חיפאית בתחתית - הלוח היומי\n${kind === 'tomorrow' ? 'מחר' : 'היום'} · ${waDayLabel(from)}`);
+        out.push(`חיפאית בתחתית - לוח אירועים\n${kind === 'tomorrow' ? 'מחר' : 'היום'} · ${waDayLabel(from)}`);
         if (dated.length) out.push(dated.map(e => waLine(e, links)).join(sep));
         if (ongoing.length) out.push(`ממשיכים גם ${kind === 'tomorrow' ? 'מחר' : 'היום'}\n\n` + ongoing.map(e => waLine(e, links)).join(sep));
     }
@@ -4017,6 +4030,7 @@ function renderMyEvents() {
     list.style.display = isPubList ? '' : 'none';
     document.querySelector('#my-panel .my-intro').style.display = isPubList ? '' : 'none';
     if (!isPubList) document.getElementById('my-totals').style.display = 'none';
+    { const sup = document.getElementById('my-support'); if (sup) sup.style.display = 'none'; }
     updateMyChips();
     if (myFilter === 'likes') { renderMyLikes(); return; }
     if (myFilter === 'activity') { renderMyActivity(); return; }
@@ -4032,6 +4046,13 @@ function renderMyEvents() {
     const tb = document.getElementById('my-totals');
     tb.style.display = myRows.length ? '' : 'none';
     tb.innerHTML = `<span class="ov-ic">${svgIc('chart', 28)}</span><div class="ov-totals">${statsLine(totals, true)}</div><span>סה"כ בכל האירועים שלך</span>`;
+    {   // בקשת תמיכה עדינה — רק למי שהאירועים שלו כבר נצפו, ולא למנהלת
+        let sup = document.getElementById('my-support');
+        if (!sup) { sup = document.createElement('div'); sup.id = 'my-support'; sup.className = 'my-support'; tb.insertAdjacentElement('afterend', sup); }
+        const show = myRows.length && (totals.views || 0) > 0 && currentRole !== 'admin';
+        sup.style.display = show ? '' : 'none';
+        if (show) sup.innerHTML = `<span>חיפאית בתחתית עזרה לכם להביא קהל? תמיכה קטנה עוזרת לנו להמשיך ולהגדיל את החשיפה לאירועים שלכם.</span><a class="btn-coffee" href="${SUPPORT_URL}" target="_blank" rel="noopener" onclick="trackSupport()">☕ לתמיכה באתר</a>`;
+    }
     if (!myRows.length) { list.innerHTML = '<div class="users-empty">עוד לא פרסמת אירועים. <button class="btn-link" onclick="closeMyPanel();handleAddEvent()">+ להוספת אירוע ראשון</button></div>'; return; }
     list.innerHTML = arr.map(e => {
         const s = admStats[String(e.id)] || {}, id = escHtml(String(e.id)), isPast = myFilter === 'past';
@@ -4439,6 +4460,17 @@ if (document.readyState === 'loading') document.addEventListener('DOMContentLoad
 // ══ הסכמה לקבלת עדכונים במייל (חוק הספאם) ══
 // נשמרת בפרופיל (העמודות mail_ok / mail_ok_at — הקובץ mail_consent.sql). "מייל לכולם" בניהול נשלח רק למי שסימן.
 // עד שמריצים את mail_consent.sql — האפשרות פשוט לא מוצגת, והכול עובד כמו קודם.
+// קוד הטבה: השדה מופיע רק אחרי שהורץ promo_code.sql (העמודה promo בטבלת האירועים)
+let promoSupported = false;
+async function probePromo() {
+    try { const { error } = await db.from('events').select('promo').limit(1); promoSupported = !error; } catch (_) { promoSupported = false; }
+    const w = document.getElementById('f-promo-wrap'); if (w) w.hidden = !promoSupported;
+}
+function copyPromo(btn) {
+    const code = btn.dataset.code || '';
+    const done = () => { btn.textContent = 'הועתק ✓'; setTimeout(() => btn.textContent = 'העתקה', 1800); };
+    try { navigator.clipboard.writeText(code).then(done, () => showToast('הקוד: ' + code)); } catch (_) { showToast('הקוד: ' + code); }
+}
 let myMailOk = false, mailOkSupported = false;
 async function loadMailOk() {
     if (!currentUser) return;
@@ -4893,6 +4925,7 @@ async function repostEvent(id) {
     document.getElementById('f-desc').value = e.desc || '';
     document.getElementById('f-loc').value = e.location || '';
     document.getElementById('f-price').value = e.price && e.price !== 'כניסה חופשית' ? e.price : '';
+    document.getElementById('f-promo').value = e.promo || '';
     const tt = eventTimes(e.time), hhmm = t => t ? String(Math.floor(t[0] % 24)).padStart(2, '0') + ':' + String(t[1]).padStart(2, '0') : '';
     document.getElementById('f-time').value = hhmm(tt[0]); document.getElementById('f-time-end').value = hhmm(tt[1]);
     ['tickets', 'tickets2', 'materials', 'materials2'].forEach(k => document.getElementById('f-' + k).value = e[k] || '');
@@ -5009,7 +5042,7 @@ function openModal(id) {
     if (id === null) {
         document.getElementById('modal-title').textContent = '✦ הוסף אירוע חדש';
         document.getElementById('modal-submit-btn').textContent = 'פרסם אירוע';
-        ['title','desc','date','date-end','time','time-end','loc','price','tickets','tickets2','materials','materials2'].forEach(f => document.getElementById('f-'+f).value = '');
+        ['title','desc','date','date-end','time','time-end','loc','price','promo','tickets','tickets2','materials','materials2'].forEach(f => document.getElementById('f-'+f).value = '');
         document.getElementById('f-time').dataset.orig = '';
         document.querySelectorAll('#f-cats .cat-pick-btn').forEach(b => b.classList.remove('selected'));
         fillContactField('', 'f');
@@ -5035,6 +5068,7 @@ function openModal(id) {
         }
         document.getElementById('f-loc').value = e.location;
         document.getElementById('f-price').value = e.price;
+        document.getElementById('f-promo').value = e.promo || '';
         document.getElementById('f-tickets').value = e.tickets || '';
         document.getElementById('f-tickets2').value = e.tickets2 || '';
         document.getElementById('f-materials').value = e.materials || '';
@@ -5411,6 +5445,7 @@ async function saveEvent() {
         materials: cleanLink(document.getElementById('f-materials').value),
         materials2: cleanLink(document.getElementById('f-materials2').value),
         contact: readContactField('f'),
+        ...(promoSupported ? { promo: document.getElementById('f-promo').value.trim().slice(0, 40) || null } : {}),
         date_end_raw: dateEndRaw || null,
         image: currentImageData || null,
         status: (editingId !== null && currentRole === 'admin')
@@ -5446,6 +5481,7 @@ async function saveEvent() {
             : db.from('events').insert({ ...pl, user_id: currentUser.id });
         let res = await run(payload);
         if (res.error && recRows && /series/i.test(res.error.message || '')) { noSeries = true; res = await run(payload); }   // לפני שהרצתם את recurring.sql
+        if (res.error && 'promo' in payload && /promo/i.test(res.error.message || '')) { delete payload.promo; res = await run(payload); }   // לפני שהרצתם את promo_code.sql
         if (res.error && /contact/i.test(res.error.message || '')) { const { contact, ...rest } = payload; res = await run(rest); }   // לפני שהעמודה הוקמה במסד
         error = res.error;
         if (error) throw error;
@@ -6487,11 +6523,15 @@ function a2hsMaybe(force) {
     const visits = +a2hsStore('visits') || 0;
     let liked = false; try { liked = JSON.parse(localStorage.getItem('favs') || '[]').length > 0; } catch (_) {}
     if (visits < 2 && !liked) return;
+    // כדי לא להציק: מי שהתעלם מההודעה יראה אותה שוב רק אחרי שבועיים, ולכל היותר 3 פעמים בסך הכול
+    if ((+a2hsStore('a2hsShown') || 0) >= 3 || Date.now() - (+a2hsStore('a2hsLast') || 0) < 14 * 864e5) return;
   }
   setTimeout(() => {
     const hs = history.state || {};
     if (!force && Object.values(hs).some(Boolean)) { setTimeout(() => a2hsMaybe(), 15000); return; }   // חלון פתוח — ננסה שוב אחר כך
+    if (!force) { a2hsStore('a2hsShown', String((+a2hsStore('a2hsShown') || 0) + 1)); a2hsStore('a2hsLast', String(Date.now())); }
     a2hsShow();
+    clearTimeout(window._a2hsHide); if (!force) window._a2hsHide = setTimeout(() => a2hsClose(false), 20000);   // נעלמת לבד אחרי 20 שניות
   }, force ? 0 : 8000);
 }
 function a2hsShow() {
