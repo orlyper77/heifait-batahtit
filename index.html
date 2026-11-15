@@ -49,6 +49,11 @@ body{font-family:'Secular One',sans-serif;background:#1a0505;color:#f5ede8;direc
 .auth-overlay.open{display:flex;}
 .auth-modal{background:#2e0c0c;border:1px solid rgba(255,255,255,0.12);border-radius:20px;padding:2rem;width:100%;max-width:400px;position:relative;}
 .auth-modal h2{font-size:1.4rem;font-weight:700;margin-bottom:.8rem;color:#d4e034;text-align:center;}
+.auth-inapp{display:flex;flex-direction:column;gap:8px;background:rgba(255,221,0,0.10);border:1px solid rgba(255,221,0,0.5);border-radius:12px;padding:12px 14px;margin-bottom:14px;font-size:14px;line-height:1.5;color:#fff3b0;text-align:start;}
+.auth-inapp[hidden]{display:none;}
+.auth-inapp b{color:#ffdd00;}
+.auth-inapp-btns{display:flex;gap:8px;flex-wrap:wrap;}
+.auth-inapp-btns .btn-google{flex:1;min-width:130px;margin:0;justify-content:center;text-decoration:none;font-size:14px;}
 .auth-subtitle{font-size:14px;color:rgba(255,255,255,0.6);text-align:center;margin-bottom:1.5rem;}
 .auth-tabs{display:flex;gap:4px;margin-bottom:1.2rem;background:rgba(0,0,0,0.2);border-radius:10px;padding:4px;}
 .auth-tab{flex:1;padding:8px;text-align:center;font-size:13px;border:none;background:transparent;color:rgba(255,255,255,0.5);border-radius:8px;cursor:pointer;transition:all .2s;}
@@ -657,6 +662,9 @@ body:has(#overlay.open),body:has(.auth-overlay.open),body:has(#legal-overlay.ope
 .rec-check{margin:-4px 0 12px;}
 #rec-box{margin-top:-4px;}
 #rec-box select{width:100%;}
+.rec-every{display:flex;gap:8px;align-items:center;}
+#rec-box .rec-every input{width:76px!important;min-width:0;flex:0 0 76px;text-align:center;}
+#rec-box .rec-every select{flex:1 1 0;min-width:0;width:auto!important;}
 .rec-sibs{flex-wrap:wrap;gap:4px;}
 .rec-meta{color:#ffe0ee!important;font-weight:600;}
 .tab-venues{}
@@ -759,6 +767,7 @@ body:has(#overlay.open),body:has(.auth-overlay.open),body:has(#legal-overlay.ope
 .vd-ev{background:none;border:none;color:#9cc9f0;text-align:right;font-family:inherit;font-size:13.5px;cursor:pointer;padding:2px 0;}
 .vd-ev:hover{color:#d4e034;}
 .vm-venue{padding:0!important;font-size:14px!important;color:#9cc9f0!important;}
+.promo-tag{margin-inline-start:6px;background:rgba(255,221,0,0.14);border:1px solid rgba(255,221,0,0.5);color:#ffdd00;border-radius:999px;padding:1px 8px;font-size:12px;font-weight:600;white-space:nowrap;}
 .vm-promo{flex-wrap:wrap;gap:6px 8px;background:rgba(255,221,0,0.10);border:1px dashed rgba(255,221,0,0.55);border-radius:10px;padding:8px 12px;margin-top:6px;color:#fff3b0;}
 .vm-promo-code{font-weight:800;letter-spacing:.5px;color:#ffdd00;font-size:1.05em;user-select:all;}
 .vm-promo-copy{background:none;border:1px solid rgba(255,221,0,0.6);color:#ffdd00;border-radius:999px;padding:4px 12px;font:inherit;font-size:13px;cursor:pointer;min-height:32px;}
@@ -976,6 +985,7 @@ html.a11y-high-contrast :focus-visible{outline-color:#00e5ff!important;}
 a.user-dropdown-item{display:block;text-decoration:none;}
 .support-nudge{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);z-index:2900;display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:center;background:#2e0c0c;border:1px solid rgba(255,221,0,0.5);color:#f5ede8;border-radius:16px;padding:10px 14px;box-shadow:0 10px 30px rgba(0,0,0,.5);width:min(92vw,440px);box-sizing:border-box;font-size:14.5px;animation:nudgeIn .35s ease;}
 .support-nudge .btn-coffee{padding:6px 14px;font-size:14px;}
+@media(max-width:600px){#join-nudge,.sup-periodic{bottom:92px;}}   /* מעל כפתור הנגישות */
 .support-x{background:none;border:none;color:rgba(255,255,255,0.6);font-size:16px;cursor:pointer;padding:4px;}
 @keyframes nudgeIn{from{opacity:0;transform:translate(-50%,12px);}to{opacity:1;transform:translate(-50%,0);}}
 .contact-mail{background:rgba(107,170,220,0.14);border:1px solid rgba(156,201,240,0.5);color:#9cc9f0;font-size:16px;font-weight:700;cursor:pointer;direction:ltr;font-family:inherit;padding:7px 18px;border-radius:20px;margin-top:4px;letter-spacing:.2px;}
@@ -1264,13 +1274,28 @@ button.user-stats:hover{background:rgba(212,224,52,0.22);}
 @keyframes bellRing{0%,100%{transform:rotate(0)}20%{transform:rotate(14deg)}40%{transform:rotate(-12deg)}60%{transform:rotate(8deg)}80%{transform:rotate(-4deg)}}
 .user-bar .btn-bell.on{background:rgba(61,191,154,0.14) !important;border-color:rgba(61,191,154,0.6) !important;color:#9be8cf !important;}
 .user-bar .btn-bell.on::after{top:2px;inset-inline-start:26px;width:9px;height:9px;}
-.btn-links-top{color:#d6efff;border-color:rgba(127,198,240,0.45);background:rgba(127,198,240,0.08);}
+.btn-mail-top{color:#f1f7c9;border-color:rgba(201,223,58,0.45);background:rgba(201,223,58,0.08);cursor:pointer;}
+.btn-mail-top:hover{background:rgba(201,223,58,0.2);border-color:#c9df3a;color:#fff;}
+.top-pop{position:fixed;z-index:3000;width:min(92vw,290px);box-sizing:border-box;background:#2e0c0c;border:1px solid rgba(240,117,168,0.55);border-radius:16px;padding:14px 14px 12px;box-shadow:0 14px 36px rgba(0,0,0,.55);color:#f5ede8;font-family:'Rubik',sans-serif;display:flex;flex-direction:column;gap:8px;animation:tpIn .2s ease;}
+@keyframes tpIn{from{opacity:0;transform:translateY(-6px);}to{opacity:1;transform:none;}}
+.top-pop-x{position:absolute;top:6px;inset-inline-end:8px;min-width:32px;min-height:32px;}
+.tp-title{font-weight:700;font-size:15.5px;padding-inline-end:28px;}
+.tp-sub{font-size:13px;color:rgba(255,255,255,0.7);margin-top:-4px;}
+.tp-way{display:flex;flex-direction:column;gap:2px;align-items:flex-start;text-align:start;width:100%;box-sizing:border-box;text-decoration:none;color:#fff;font:inherit;font-size:14.5px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.14);border-radius:12px;padding:9px 12px;cursor:pointer;min-height:44px;justify-content:center;}
+.tp-way:hover{background:rgba(240,117,168,0.18);border-color:#f075a8;}
+.tp-way small{font-size:12px;color:rgba(255,255,255,0.65);}
+.tp-mail b{font-size:13.5px;word-break:break-all;}
+.btn-coffee-top .ub-lbl{white-space:nowrap;}
+@media(min-width:601px) and (max-width:1080px){.btn-links-top .ub-lbl,.btn-mail-top .ub-lbl{display:none;}.btn-links-top,.btn-mail-top{padding:3px 4px;}}
+@media(min-width:601px) and (max-width:760px){#btn-support-top .ub-lbl{display:none;}#btn-support-top{padding:3px 4px;}}
+.btn-links-top{cursor:pointer;color:#d6efff;border-color:rgba(127,198,240,0.45);background:rgba(127,198,240,0.08);}
 .btn-links-top:hover{background:rgba(127,198,240,0.2);border-color:#7fc6f0;color:#fff;}
 @media(max-width:600px){
   .user-bar .btn-bell{padding:2px !important;width:auto;border-color:transparent !important;background:none !important;}
   .user-bar .btn-bell .bell-ico{width:34px;height:34px;}
   .user-bar .btn-bell.on::after{top:0;inset-inline-start:24px;}
-  .btn-links-top{border-color:transparent;background:none;}
+  .btn-links-top,.btn-mail-top{border-color:transparent;background:none;}
+  .btn-mail-top{padding:3px 4px;}
   .ub-start{gap:4px;}
 }
 /* נושאים פתוחים בתחתית */
@@ -1515,7 +1540,7 @@ a.about-press span{display:block;color:#ffb0d0;font-size:13px;margin-top:4px;}
 </style>
 </head>
 <body>
-<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs><clipPath id="rcClip"><circle cx="32" cy="32" r="30"/></clipPath></defs><symbol id="ri-aud" viewBox="0 0 64 64"><g clip-path="url(#rcClip)"><circle cx="32" cy="32" r="30" fill="#f5d90a"/> <g transform="translate(-9 6) scale(.82)"><path d="M19 24c-2 9-1 20-5 26 5 2 30 2 36 0-4-6-3-17-5-26z" fill="#7a2e3e" stroke="#1a0505" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/> <path d="M8 64c1-12 9-19 24-19s23 7 24 19z" fill="#c9df3a" stroke="#1a0505" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/> <path d="M22 46c3 3 7 4 10 4s7-1 10-4" fill="none" stroke="#1a0505" stroke-width="1.6" stroke-linecap="round"/> <path d="M28 41h8v6c-2 1.6-6 1.6-8 0z" fill="#e3b08f" stroke="#1a0505" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/> <path d="M21 28c0-9 5-14 11-14s11 5 11 14c0 9-5 15-11 15s-11-6-11-15z" fill="#f2c4a4" stroke="#1a0505" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/> <path d="M19 30c-1-12 5-19 13-19s14 7 13 19c-1-5-3-8-5-9-1 3-6 5-12 4-3-1-4-3-4-5-3 2-5 6-5 10z" fill="#7a2e3e" stroke="#1a0505" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/> <path d="M25.2 30c1.3 1.1 3.1 1.1 4.4 0M34.4 30c1.3 1.1 3.1 1.1 4.4 0" fill="none" stroke="#1a0505" stroke-width="1.7" stroke-linecap="round"/> <path d="M28.5 36.5c2 1.6 5 1.6 7 0" fill="none" stroke="#c8243f" stroke-width="2" stroke-linecap="round"/> <circle cx="22" cy="37" r="1.6" fill="#f5d90a" stroke="#1a0505" stroke-width="1.3" stroke-linejoin="round" stroke-linecap="round"/><circle cx="42" cy="37" r="1.6" fill="#f5d90a" stroke="#1a0505" stroke-width="1.3" stroke-linejoin="round" stroke-linecap="round"/></g> <g transform="translate(18 9) scale(.78)"><path d="M8 64c1-12 9-19 24-19s23 7 24 19z" fill="#8ec5e8" stroke="#1a0505" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/> <path d="M27 42h10v6c-2 2-8 2-10 0z" fill="#d9a0b8" stroke="#1a0505" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/> <path d="M20 26c0-9 5-14 12-14s12 5 12 14v6c0 9-6 14-12 14s-12-5-12-14z" fill="#e8b4c8" stroke="#1a0505" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/> <path d="M20 30c1 9 5 16 12 16s11-7 12-16c-2 4-5 6-7 6h-10c-2 0-5-2-7-6z" fill="#4a3a4a" stroke="#1a0505" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/> <path d="M27.5 37.5c2.5 1.6 6.5 1.6 9 0" fill="none" stroke="#e8b4c8" stroke-width="2" stroke-linecap="round"/> <path d="M20 25c0-8 5-13 12-13s12 5 12 13c-2-4-4-6-6-6.5-3 2-9 2-12 0-2 .5-4 2.5-6 6.5z" fill="#3a2e3a" stroke="#1a0505" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/> <path d="M24.5 28.5c1.4 1.2 3.4 1.2 4.8 0M34.7 28.5c1.4 1.2 3.4 1.2 4.8 0" fill="none" stroke="#1a0505" stroke-width="1.8" stroke-linecap="round"/> <path d="M32 29v4.5l-1.6 1" fill="none" stroke="#b07a92" stroke-width="1.5" stroke-linecap="round"/></g> <g transform="translate(30 12) scale(1)"><path d="M0 0v8a2.6 2.6 0 1 1-1.7-2.4V-1.6l5.4-1.4v2z" fill="#fff" stroke="#1a0505" stroke-width="1.3" stroke-linejoin="round" stroke-linecap="round"/></g><g transform="translate(9 26) scale(0.85)"><path d="M0 0v8a2.6 2.6 0 1 1-1.7-2.4V-1.6l5.4-1.4v2z" fill="#fff" stroke="#1a0505" stroke-width="1.3" stroke-linejoin="round" stroke-linecap="round"/></g><g transform="translate(53 22) scale(0.8)"><path d="M0 0v8a2.6 2.6 0 1 1-1.7-2.4V-1.6l5.4-1.4v2z" fill="#fff" stroke="#1a0505" stroke-width="1.3" stroke-linejoin="round" stroke-linecap="round"/></g></g><circle cx="32" cy="32" r="30" fill="none" stroke="#1a0505" stroke-width="2.2"/></symbol><symbol id="ri-art" viewBox="0 0 64 64"><g clip-path="url(#rcClip)"><circle cx="32" cy="32" r="30" fill="#8ec5e8"/> <g opacity=".25" fill="#fff"><circle cx="14" cy="16" r="1.4"/><circle cx="50" cy="12" r="1"/><circle cx="54" cy="44" r="1.2"/></g> <path d="M30 16 L40 14 L40 50 L30 48z" fill="#c8243f" stroke="#1a0505" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/> <g stroke="#1a0505" stroke-width="1.2" opacity=".55"><path d="M32.5 15.5v33M35 15v34.5M37.5 14.6v35"/></g> <rect x="15" y="14" width="15" height="36" rx="2" fill="#a9c7d9" stroke="#1a0505" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/> <g stroke="#1a0505" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round"><rect x="17.5" y="17" width="10" height="3" fill="#f5d90a"/><rect x="17.5" y="21.5" width="10" height="3" fill="#b38ae0"/><rect x="17.5" y="26" width="10" height="3" fill="#f7b6cf"/><rect x="17.5" y="30.5" width="10" height="3" fill="#8ec5e8"/><rect x="17.5" y="35" width="10" height="3" fill="#f5d90a"/><rect x="17.5" y="39.5" width="10" height="3" fill="#b38ae0"/><rect x="17.5" y="44" width="10" height="3" fill="#f7b6cf"/></g> <rect x="40" y="13" width="11" height="38" rx="2" fill="#c8243f" stroke="#1a0505" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/> <rect x="42.3" y="16" width="6.4" height="32" rx="1" fill="#c9df3a" stroke="#1a0505" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round"/> <g fill="none" stroke="#1a0505" stroke-width="1.8" stroke-linecap="round"><path d="M9 26c-1.5 2-1.5 6 0 8"/><path d="M6 23.5c-2.4 3.5-2.4 9.5 0 13"/></g> <path d="M54.5 22v7.5a2.4 2.4 0 1 1-1.6-2.3V20.5l5-1.3v1.8z" fill="#fff" stroke="#1a0505" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round"/></g><circle cx="32" cy="32" r="30" fill="none" stroke="#1a0505" stroke-width="2.2"/></symbol><symbol id="ri-ven" viewBox="0 0 64 64"><g clip-path="url(#rcClip)"><circle cx="32" cy="32" r="30" fill="#b38ae0"/> <g opacity=".3" fill="#fff"><circle cx="14" cy="24" r="1.2"/><circle cx="50" cy="26" r="1"/></g> <path d="M32 18 L22 46 H42Z" fill="#fff6b0" opacity=".85"/> <path d="M8 46h48v6H8z" fill="#c9884a" stroke="#1a0505" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/><path d="M8 52h48v8H8z" fill="#7a4a2a" stroke="#1a0505" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/> <path d="M12 16h3c7 4 8 16 4 30h-7z" fill="#c8243f" stroke="#1a0505" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/><path d="M52 16h-3c-7 4-8 16-4 30h7z" fill="#c8243f" stroke="#1a0505" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/> <path d="M14.5 20c2.5 6 2.5 14 .5 24M49.5 20c-2.5 6-2.5 14-.5 24" fill="none" stroke="#1a0505" stroke-width="1.2" opacity=".5"/> <path d="M8 9h48v8H8z" fill="#c8243f" stroke="#1a0505" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/> <g fill="#f5d90a" stroke="#1a0505" stroke-width="1"><circle cx="15" cy="13" r="1.8"/><circle cx="23.5" cy="13" r="1.8"/><circle cx="32" cy="13" r="1.8"/><circle cx="40.5" cy="13" r="1.8"/><circle cx="49" cy="13" r="1.8"/></g> <path d="M32 27 l2.3 4.8 5.2.7-3.8 3.6 1 5.2-4.7-2.6-4.7 2.6 1-5.2-3.8-3.6 5.2-.7z" fill="#f5d90a" stroke="#1a0505" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"/></g><circle cx="32" cy="32" r="30" fill="none" stroke="#1a0505" stroke-width="2.2"/></symbol><symbol id="ri-bell" viewBox="0 0 64 64"><g clip-path="url(#rcClip)"><circle cx="32" cy="32" r="30" fill="#b48fd6"/><g opacity=".35" fill="#fff"><circle cx="13" cy="18" r="1.4"/><circle cx="52" cy="46" r="1.2"/><circle cx="50" cy="15" r="1"/></g><g fill="none" stroke="#fff5e6" stroke-width="2.6" stroke-linecap="round"><path d="M12 26c-1.5 4-1.5 8 0 12"/><path d="M52 26c1.5 4 1.5 8 0 12"/></g><path d="M32 13c-1.6 0-2.8 1.2-2.8 2.8v1.1C22.6 18.2 19 23.6 19 30v8.2l-3.4 4.6c-.7 1 0 2.2 1.2 2.2h30.4c1.2 0 1.9-1.2 1.2-2.2L45 38.2V30c0-6.4-3.6-11.8-10.2-13.1v-1.1c0-1.6-1.2-2.8-2.8-2.8z" fill="#f5d90a" stroke="#1a0505" stroke-width="2.4" stroke-linejoin="round"/><path d="M25 26c.8-2.6 2.6-4.4 5-5" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" opacity=".8"/><circle cx="32" cy="49.5" r="4" fill="#c8243f" stroke="#1a0505" stroke-width="2.2"/></g><circle cx="32" cy="32" r="30" fill="none" stroke="#1a0505" stroke-width="2.2"/></symbol><symbol id="ri-lnk" viewBox="0 0 64 64"><g clip-path="url(#rcClip)"><circle cx="32" cy="32" r="30" fill="#7fc6f0"/><g opacity=".45" fill="#fff"><circle cx="11" cy="20" r="1.3"/><circle cx="53" cy="20" r="1.2"/></g><ellipse cx="32" cy="59" rx="22" ry="6.5" fill="#9bd36a" stroke="#1a0505" stroke-width="2.2"/><g fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M32 56V36M32 44c-4-3-9-6-14-8M32 40c0-6 0-11 0-16M32 44c4-3 9-6 14-8" stroke="#1a0505" stroke-width="6.6"/><path d="M32 56V36M32 44c-4-3-9-6-14-8M32 40c0-6 0-11 0-16M32 44c4-3 9-6 14-8" stroke="#8a5a33" stroke-width="3.2"/></g><g stroke="#1a0505" stroke-width="1.6" stroke-linejoin="round"><path d="M24 39c-3-1-5-3-5.5-6 3 .2 5.2 2.2 5.5 6z" fill="#3dbf6a"/><path d="M40 39c3-1 5-3 5.5-6-3 .2-5.2 2.2-5.5 6z" fill="#3dbf6a"/><path d="M32 32c-2.6-1.4-3.6-3.8-3.2-6.4 2.6 1 3.6 3.6 3.2 6.4z" fill="#3dbf6a"/></g><g transform="translate(14 31) rotate(-35) scale(1)"><rect x="-8.2" y="-3.6" width="10" height="7.2" rx="3.6" fill="none" stroke="#1a0505" stroke-width="4.6"/><rect x="-1.8" y="-3.6" width="10" height="7.2" rx="3.6" fill="none" stroke="#1a0505" stroke-width="4.6"/><rect x="-8.2" y="-3.6" width="10" height="7.2" rx="3.6" fill="none" stroke="#f075a8" stroke-width="2.2"/><rect x="-1.8" y="-3.6" width="10" height="7.2" rx="3.6" fill="none" stroke="#f075a8" stroke-width="2.2"/></g><g transform="translate(32 17) rotate(90) scale(1)"><rect x="-8.2" y="-3.6" width="10" height="7.2" rx="3.6" fill="none" stroke="#1a0505" stroke-width="4.6"/><rect x="-1.8" y="-3.6" width="10" height="7.2" rx="3.6" fill="none" stroke="#1a0505" stroke-width="4.6"/><rect x="-8.2" y="-3.6" width="10" height="7.2" rx="3.6" fill="none" stroke="#f5d90a" stroke-width="2.2"/><rect x="-1.8" y="-3.6" width="10" height="7.2" rx="3.6" fill="none" stroke="#f5d90a" stroke-width="2.2"/></g><g transform="translate(50 31) rotate(35) scale(1)"><rect x="-8.2" y="-3.6" width="10" height="7.2" rx="3.6" fill="none" stroke="#1a0505" stroke-width="4.6"/><rect x="-1.8" y="-3.6" width="10" height="7.2" rx="3.6" fill="none" stroke="#1a0505" stroke-width="4.6"/><rect x="-8.2" y="-3.6" width="10" height="7.2" rx="3.6" fill="none" stroke="#b48fd6" stroke-width="2.2"/><rect x="-1.8" y="-3.6" width="10" height="7.2" rx="3.6" fill="none" stroke="#b48fd6" stroke-width="2.2"/></g></g><circle cx="32" cy="32" r="30" fill="none" stroke="#1a0505" stroke-width="2.2"/></symbol><symbol id="ri-cof" viewBox="0 0 64 64"><g clip-path="url(#rcClip)"><circle cx="32" cy="32" r="30" fill="#f075a8"/><g opacity=".3" fill="#fff"><circle cx="12" cy="20" r="1.4"/><circle cx="53" cy="44" r="1.2"/></g><ellipse cx="30" cy="50" rx="19" ry="4.5" fill="#f5d90a" stroke="#1a0505" stroke-width="2.4"/><path d="M44 31h3.5a6 6 0 0 1 0 12H43" fill="none" stroke="#1a0505" stroke-width="2.6" stroke-linecap="round"/><path d="M15 29h30v7a13 13 0 0 1-13 13h-4a13 13 0 0 1-13-13z" fill="#fff5e6" stroke="#1a0505" stroke-width="2.4" stroke-linejoin="round"/><ellipse cx="30" cy="29" rx="15" ry="3.2" fill="#7a3b1e" stroke="#1a0505" stroke-width="2.2"/><path d="M30 44.5c-3.6-2.4-5.6-4.3-5.6-6.3a2.8 2.8 0 0 1 5.6-.7 2.8 2.8 0 0 1 5.6.7c0 2-2 3.9-5.6 6.3z" fill="#c8243f" stroke="#1a0505" stroke-width="1.4" stroke-linejoin="round"/><g fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round"><path d="M24 22c-2-2.5 2-4.5 0-7.5"/><path d="M31 21c-2-2.5 2-4.5 0-7.5"/><path d="M38 22c-2-2.5 2-4.5 0-7.5"/></g></g><circle cx="32" cy="32" r="30" fill="none" stroke="#1a0505" stroke-width="2.2"/></symbol><symbol id="ri-pro" viewBox="0 0 64 64"><g clip-path="url(#rcClip)"><circle cx="32" cy="32" r="30" fill="#3dbf9a"/> <g opacity=".25" fill="#fff"><circle cx="13" cy="18" r="1.4"/><circle cx="51" cy="48" r="1.2"/></g> <path d="M14 27h7l17-10v30L21 37h-7z" fill="#f5d90a" stroke="#1a0505" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/> <path d="M14 27h7v10h-7a2 2 0 0 1-2-2v-6a2 2 0 0 1 2-2z" fill="#f075a8" stroke="#1a0505" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/> <path d="M38 17c3 4 3 26 0 30" fill="none" stroke="#1a0505" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/> <path d="M19 37l3 10h5l-2-10" fill="#c8243f" stroke="#1a0505" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/> <path d="M26 20.5l11-6.5" stroke="#fff" stroke-width="1.6" stroke-linecap="round" opacity=".7"/> <g fill="none" stroke="#1a0505" stroke-width="2.2" stroke-linecap="round"><path d="M44 27c1.5 1.8 1.5 8.2 0 10"/><path d="M48.5 23c2.8 3.5 2.8 14.5 0 18"/></g> <path d="M51 12l1.4 3 3.2 1.4-3.2 1.4-1.4 3.2-1.4-3.2-3.2-1.4 3.2-1.4z" fill="#fff" stroke="#1a0505" stroke-width="1.2" stroke-linejoin="round"/></g><circle cx="32" cy="32" r="30" fill="none" stroke="#1a0505" stroke-width="2.2"/></symbol></svg>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs><clipPath id="rcClip"><circle cx="32" cy="32" r="30"/></clipPath></defs><symbol id="ri-aud" viewBox="0 0 64 64"><g clip-path="url(#rcClip)"><circle cx="32" cy="32" r="30" fill="#f5d90a"/> <g transform="translate(-9 6) scale(.82)"><path d="M19 24c-2 9-1 20-5 26 5 2 30 2 36 0-4-6-3-17-5-26z" fill="#7a2e3e" stroke="#1a0505" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/> <path d="M8 64c1-12 9-19 24-19s23 7 24 19z" fill="#c9df3a" stroke="#1a0505" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/> <path d="M22 46c3 3 7 4 10 4s7-1 10-4" fill="none" stroke="#1a0505" stroke-width="1.6" stroke-linecap="round"/> <path d="M28 41h8v6c-2 1.6-6 1.6-8 0z" fill="#e3b08f" stroke="#1a0505" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/> <path d="M21 28c0-9 5-14 11-14s11 5 11 14c0 9-5 15-11 15s-11-6-11-15z" fill="#f2c4a4" stroke="#1a0505" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/> <path d="M19 30c-1-12 5-19 13-19s14 7 13 19c-1-5-3-8-5-9-1 3-6 5-12 4-3-1-4-3-4-5-3 2-5 6-5 10z" fill="#7a2e3e" stroke="#1a0505" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/> <path d="M25.2 30c1.3 1.1 3.1 1.1 4.4 0M34.4 30c1.3 1.1 3.1 1.1 4.4 0" fill="none" stroke="#1a0505" stroke-width="1.7" stroke-linecap="round"/> <path d="M28.5 36.5c2 1.6 5 1.6 7 0" fill="none" stroke="#c8243f" stroke-width="2" stroke-linecap="round"/> <circle cx="22" cy="37" r="1.6" fill="#f5d90a" stroke="#1a0505" stroke-width="1.3" stroke-linejoin="round" stroke-linecap="round"/><circle cx="42" cy="37" r="1.6" fill="#f5d90a" stroke="#1a0505" stroke-width="1.3" stroke-linejoin="round" stroke-linecap="round"/></g> <g transform="translate(18 9) scale(.78)"><path d="M8 64c1-12 9-19 24-19s23 7 24 19z" fill="#8ec5e8" stroke="#1a0505" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/> <path d="M27 42h10v6c-2 2-8 2-10 0z" fill="#d9a0b8" stroke="#1a0505" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/> <path d="M20 26c0-9 5-14 12-14s12 5 12 14v6c0 9-6 14-12 14s-12-5-12-14z" fill="#e8b4c8" stroke="#1a0505" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/> <path d="M20 30c1 9 5 16 12 16s11-7 12-16c-2 4-5 6-7 6h-10c-2 0-5-2-7-6z" fill="#4a3a4a" stroke="#1a0505" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/> <path d="M27.5 37.5c2.5 1.6 6.5 1.6 9 0" fill="none" stroke="#e8b4c8" stroke-width="2" stroke-linecap="round"/> <path d="M20 25c0-8 5-13 12-13s12 5 12 13c-2-4-4-6-6-6.5-3 2-9 2-12 0-2 .5-4 2.5-6 6.5z" fill="#3a2e3a" stroke="#1a0505" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/> <path d="M24.5 28.5c1.4 1.2 3.4 1.2 4.8 0M34.7 28.5c1.4 1.2 3.4 1.2 4.8 0" fill="none" stroke="#1a0505" stroke-width="1.8" stroke-linecap="round"/> <path d="M32 29v4.5l-1.6 1" fill="none" stroke="#b07a92" stroke-width="1.5" stroke-linecap="round"/></g> <g transform="translate(30 12) scale(1)"><path d="M0 0v8a2.6 2.6 0 1 1-1.7-2.4V-1.6l5.4-1.4v2z" fill="#fff" stroke="#1a0505" stroke-width="1.3" stroke-linejoin="round" stroke-linecap="round"/></g><g transform="translate(9 26) scale(0.85)"><path d="M0 0v8a2.6 2.6 0 1 1-1.7-2.4V-1.6l5.4-1.4v2z" fill="#fff" stroke="#1a0505" stroke-width="1.3" stroke-linejoin="round" stroke-linecap="round"/></g><g transform="translate(53 22) scale(0.8)"><path d="M0 0v8a2.6 2.6 0 1 1-1.7-2.4V-1.6l5.4-1.4v2z" fill="#fff" stroke="#1a0505" stroke-width="1.3" stroke-linejoin="round" stroke-linecap="round"/></g></g><circle cx="32" cy="32" r="30" fill="none" stroke="#1a0505" stroke-width="2.2"/></symbol><symbol id="ri-art" viewBox="0 0 64 64"><g clip-path="url(#rcClip)"><circle cx="32" cy="32" r="30" fill="#8ec5e8"/> <g opacity=".25" fill="#fff"><circle cx="14" cy="16" r="1.4"/><circle cx="50" cy="12" r="1"/><circle cx="54" cy="44" r="1.2"/></g> <path d="M30 16 L40 14 L40 50 L30 48z" fill="#c8243f" stroke="#1a0505" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/> <g stroke="#1a0505" stroke-width="1.2" opacity=".55"><path d="M32.5 15.5v33M35 15v34.5M37.5 14.6v35"/></g> <rect x="15" y="14" width="15" height="36" rx="2" fill="#a9c7d9" stroke="#1a0505" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/> <g stroke="#1a0505" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round"><rect x="17.5" y="17" width="10" height="3" fill="#f5d90a"/><rect x="17.5" y="21.5" width="10" height="3" fill="#b38ae0"/><rect x="17.5" y="26" width="10" height="3" fill="#f7b6cf"/><rect x="17.5" y="30.5" width="10" height="3" fill="#8ec5e8"/><rect x="17.5" y="35" width="10" height="3" fill="#f5d90a"/><rect x="17.5" y="39.5" width="10" height="3" fill="#b38ae0"/><rect x="17.5" y="44" width="10" height="3" fill="#f7b6cf"/></g> <rect x="40" y="13" width="11" height="38" rx="2" fill="#c8243f" stroke="#1a0505" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/> <rect x="42.3" y="16" width="6.4" height="32" rx="1" fill="#c9df3a" stroke="#1a0505" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round"/> <g fill="none" stroke="#1a0505" stroke-width="1.8" stroke-linecap="round"><path d="M9 26c-1.5 2-1.5 6 0 8"/><path d="M6 23.5c-2.4 3.5-2.4 9.5 0 13"/></g> <path d="M54.5 22v7.5a2.4 2.4 0 1 1-1.6-2.3V20.5l5-1.3v1.8z" fill="#fff" stroke="#1a0505" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round"/></g><circle cx="32" cy="32" r="30" fill="none" stroke="#1a0505" stroke-width="2.2"/></symbol><symbol id="ri-ven" viewBox="0 0 64 64"><g clip-path="url(#rcClip)"><circle cx="32" cy="32" r="30" fill="#b38ae0"/> <g opacity=".3" fill="#fff"><circle cx="14" cy="24" r="1.2"/><circle cx="50" cy="26" r="1"/></g> <path d="M32 18 L22 46 H42Z" fill="#fff6b0" opacity=".85"/> <path d="M8 46h48v6H8z" fill="#c9884a" stroke="#1a0505" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/><path d="M8 52h48v8H8z" fill="#7a4a2a" stroke="#1a0505" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/> <path d="M12 16h3c7 4 8 16 4 30h-7z" fill="#c8243f" stroke="#1a0505" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/><path d="M52 16h-3c-7 4-8 16-4 30h7z" fill="#c8243f" stroke="#1a0505" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/> <path d="M14.5 20c2.5 6 2.5 14 .5 24M49.5 20c-2.5 6-2.5 14-.5 24" fill="none" stroke="#1a0505" stroke-width="1.2" opacity=".5"/> <path d="M8 9h48v8H8z" fill="#c8243f" stroke="#1a0505" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/> <g fill="#f5d90a" stroke="#1a0505" stroke-width="1"><circle cx="15" cy="13" r="1.8"/><circle cx="23.5" cy="13" r="1.8"/><circle cx="32" cy="13" r="1.8"/><circle cx="40.5" cy="13" r="1.8"/><circle cx="49" cy="13" r="1.8"/></g> <path d="M32 27 l2.3 4.8 5.2.7-3.8 3.6 1 5.2-4.7-2.6-4.7 2.6 1-5.2-3.8-3.6 5.2-.7z" fill="#f5d90a" stroke="#1a0505" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"/></g><circle cx="32" cy="32" r="30" fill="none" stroke="#1a0505" stroke-width="2.2"/></symbol><symbol id="ri-bell" viewBox="0 0 64 64"><g clip-path="url(#rcClip)"><circle cx="32" cy="32" r="30" fill="#b48fd6"/><g opacity=".35" fill="#fff"><circle cx="13" cy="18" r="1.4"/><circle cx="52" cy="46" r="1.2"/><circle cx="50" cy="15" r="1"/></g><g fill="none" stroke="#fff5e6" stroke-width="2.6" stroke-linecap="round"><path d="M12 26c-1.5 4-1.5 8 0 12"/><path d="M52 26c1.5 4 1.5 8 0 12"/></g><path d="M32 13c-1.6 0-2.8 1.2-2.8 2.8v1.1C22.6 18.2 19 23.6 19 30v8.2l-3.4 4.6c-.7 1 0 2.2 1.2 2.2h30.4c1.2 0 1.9-1.2 1.2-2.2L45 38.2V30c0-6.4-3.6-11.8-10.2-13.1v-1.1c0-1.6-1.2-2.8-2.8-2.8z" fill="#f5d90a" stroke="#1a0505" stroke-width="2.4" stroke-linejoin="round"/><path d="M25 26c.8-2.6 2.6-4.4 5-5" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" opacity=".8"/><circle cx="32" cy="49.5" r="4" fill="#c8243f" stroke="#1a0505" stroke-width="2.2"/></g><circle cx="32" cy="32" r="30" fill="none" stroke="#1a0505" stroke-width="2.2"/></symbol><symbol id="ri-lnk" viewBox="0 0 64 64"><g clip-path="url(#rcClip)"><circle cx="32" cy="32" r="30" fill="#7fc6f0"/><g opacity=".45" fill="#fff"><circle cx="11" cy="20" r="1.3"/><circle cx="53" cy="20" r="1.2"/></g><ellipse cx="32" cy="59" rx="22" ry="6.5" fill="#9bd36a" stroke="#1a0505" stroke-width="2.2"/><g fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M32 56V36M32 44c-4-3-9-6-14-8M32 40c0-6 0-11 0-16M32 44c4-3 9-6 14-8" stroke="#1a0505" stroke-width="6.6"/><path d="M32 56V36M32 44c-4-3-9-6-14-8M32 40c0-6 0-11 0-16M32 44c4-3 9-6 14-8" stroke="#8a5a33" stroke-width="3.2"/></g><g stroke="#1a0505" stroke-width="1.6" stroke-linejoin="round"><path d="M24 39c-3-1-5-3-5.5-6 3 .2 5.2 2.2 5.5 6z" fill="#3dbf6a"/><path d="M40 39c3-1 5-3 5.5-6-3 .2-5.2 2.2-5.5 6z" fill="#3dbf6a"/><path d="M32 32c-2.6-1.4-3.6-3.8-3.2-6.4 2.6 1 3.6 3.6 3.2 6.4z" fill="#3dbf6a"/></g><g transform="translate(14 31) rotate(-35) scale(1)"><rect x="-8.2" y="-3.6" width="10" height="7.2" rx="3.6" fill="none" stroke="#1a0505" stroke-width="4.6"/><rect x="-1.8" y="-3.6" width="10" height="7.2" rx="3.6" fill="none" stroke="#1a0505" stroke-width="4.6"/><rect x="-8.2" y="-3.6" width="10" height="7.2" rx="3.6" fill="none" stroke="#f075a8" stroke-width="2.2"/><rect x="-1.8" y="-3.6" width="10" height="7.2" rx="3.6" fill="none" stroke="#f075a8" stroke-width="2.2"/></g><g transform="translate(32 17) rotate(90) scale(1)"><rect x="-8.2" y="-3.6" width="10" height="7.2" rx="3.6" fill="none" stroke="#1a0505" stroke-width="4.6"/><rect x="-1.8" y="-3.6" width="10" height="7.2" rx="3.6" fill="none" stroke="#1a0505" stroke-width="4.6"/><rect x="-8.2" y="-3.6" width="10" height="7.2" rx="3.6" fill="none" stroke="#f5d90a" stroke-width="2.2"/><rect x="-1.8" y="-3.6" width="10" height="7.2" rx="3.6" fill="none" stroke="#f5d90a" stroke-width="2.2"/></g><g transform="translate(50 31) rotate(35) scale(1)"><rect x="-8.2" y="-3.6" width="10" height="7.2" rx="3.6" fill="none" stroke="#1a0505" stroke-width="4.6"/><rect x="-1.8" y="-3.6" width="10" height="7.2" rx="3.6" fill="none" stroke="#1a0505" stroke-width="4.6"/><rect x="-8.2" y="-3.6" width="10" height="7.2" rx="3.6" fill="none" stroke="#b48fd6" stroke-width="2.2"/><rect x="-1.8" y="-3.6" width="10" height="7.2" rx="3.6" fill="none" stroke="#b48fd6" stroke-width="2.2"/></g></g><circle cx="32" cy="32" r="30" fill="none" stroke="#1a0505" stroke-width="2.2"/></symbol><symbol id="ri-hat" viewBox="0 0 64 64"><g clip-path="url(#rcClip)"><circle cx="32" cy="32" r="30" fill="#f075a8"/><g opacity=".35" fill="#fff"><circle cx="10" cy="27" r="1.4"/><circle cx="55" cy="43" r="1.2"/><circle cx="52" cy="13" r="1"/></g><g fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" opacity=".85"><path d="M19 9v3.5"/><path d="M45.5 11.5v3.2"/></g><circle cx="19" cy="19" r="4.3" fill="#fff5e6" stroke="#1a0505" stroke-width="2"/><circle cx="45.5" cy="21" r="3.7" fill="#fff5e6" stroke="#1a0505" stroke-width="2"/><path d="M32 23.6c-4.3-2.9-6.7-5.2-6.7-7.6a3.4 3.4 0 0 1 6.7-.8 3.4 3.4 0 0 1 6.7.8c0 2.4-2.4 4.7-6.7 7.6z" fill="#c8243f" stroke="#1a0505" stroke-width="1.8" stroke-linejoin="round"/><path d="M18.5 34l1.6 18.4a3.4 3.4 0 0 0 3.4 3.1h17a3.4 3.4 0 0 0 3.4-3.1L45.5 34z" fill="#f5d90a" stroke="#1a0505" stroke-width="2.4" stroke-linejoin="round"/><path d="M19 39.6h26l-.45 5H19.45z" fill="#7a2e3e" stroke="#1a0505" stroke-width="1.8" stroke-linejoin="round"/><ellipse cx="32" cy="33" rx="22.5" ry="5.6" fill="#f5d90a" stroke="#1a0505" stroke-width="2.4"/><ellipse cx="32" cy="33" rx="14" ry="3" fill="#7a3b1e" stroke="#1a0505" stroke-width="1.8"/></g><circle cx="32" cy="32" r="30" fill="none" stroke="#1a0505" stroke-width="2.2"/></symbol><symbol id="ri-mail" viewBox="0 0 64 64"><g clip-path="url(#rcClip)"><circle cx="32" cy="32" r="30" fill="#c9df3a"/><g opacity=".5" fill="#fff"><circle cx="11" cy="22" r="1.4"/><circle cx="54" cy="47" r="1.2"/><circle cx="14" cy="46" r="1"/></g><rect x="29" y="43" width="6" height="20" fill="#8a5a33" stroke="#1a0505" stroke-width="2.2"/><path d="M47 28V14.5h8.5v6H47" fill="#c8243f" stroke="#1a0505" stroke-width="2.2" stroke-linejoin="round"/><path d="M11 45V30a11.5 11.5 0 0 1 11.5-11.5H42A10.5 10.5 0 0 1 52.500 29v16z" fill="#f075a8" stroke="#1a0505" stroke-width="2.4" stroke-linejoin="round"/><path d="M11 45V30a11.5 11.5 0 0 1 23 0v15z" fill="#ffd9e8" stroke="#1a0505" stroke-width="2.4" stroke-linejoin="round"/><g transform="rotate(-8 22 34)"><rect x="14.500" y="28.500" width="16" height="11" rx="1.4" fill="#fff5e6" stroke="#1a0505" stroke-width="2"/><path d="M15 29.500l7.5 5.5 7.500-5.500" fill="none" stroke="#1a0505" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/></g><path d="M43.500 37.500c-2.300-1.600-3.600-2.800-3.600-4.100a1.800 1.800 0 0 1 3.600-.4 1.800 1.800 0 0 1 3.600.4c0 1.300-1.300 2.500-3.600 4.100z" fill="#fff5e6" stroke="#1a0505" stroke-width="1.300" stroke-linejoin="round"/></g><circle cx="32" cy="32" r="30" fill="none" stroke="#1a0505" stroke-width="2.2"/></symbol><symbol id="ri-cof" viewBox="0 0 64 64"><g clip-path="url(#rcClip)"><circle cx="32" cy="32" r="30" fill="#f075a8"/><g opacity=".3" fill="#fff"><circle cx="12" cy="20" r="1.4"/><circle cx="53" cy="44" r="1.2"/></g><ellipse cx="30" cy="50" rx="19" ry="4.5" fill="#f5d90a" stroke="#1a0505" stroke-width="2.4"/><path d="M44 31h3.5a6 6 0 0 1 0 12H43" fill="none" stroke="#1a0505" stroke-width="2.6" stroke-linecap="round"/><path d="M15 29h30v7a13 13 0 0 1-13 13h-4a13 13 0 0 1-13-13z" fill="#fff5e6" stroke="#1a0505" stroke-width="2.4" stroke-linejoin="round"/><ellipse cx="30" cy="29" rx="15" ry="3.2" fill="#7a3b1e" stroke="#1a0505" stroke-width="2.2"/><path d="M30 44.5c-3.6-2.4-5.6-4.3-5.6-6.3a2.8 2.8 0 0 1 5.6-.7 2.8 2.8 0 0 1 5.6.7c0 2-2 3.9-5.6 6.3z" fill="#c8243f" stroke="#1a0505" stroke-width="1.4" stroke-linejoin="round"/><g fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round"><path d="M24 22c-2-2.5 2-4.5 0-7.5"/><path d="M31 21c-2-2.5 2-4.5 0-7.5"/><path d="M38 22c-2-2.5 2-4.5 0-7.5"/></g></g><circle cx="32" cy="32" r="30" fill="none" stroke="#1a0505" stroke-width="2.2"/></symbol><symbol id="ri-pro" viewBox="0 0 64 64"><g clip-path="url(#rcClip)"><circle cx="32" cy="32" r="30" fill="#3dbf9a"/> <g opacity=".25" fill="#fff"><circle cx="13" cy="18" r="1.4"/><circle cx="51" cy="48" r="1.2"/></g> <path d="M14 27h7l17-10v30L21 37h-7z" fill="#f5d90a" stroke="#1a0505" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/> <path d="M14 27h7v10h-7a2 2 0 0 1-2-2v-6a2 2 0 0 1 2-2z" fill="#f075a8" stroke="#1a0505" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/> <path d="M38 17c3 4 3 26 0 30" fill="none" stroke="#1a0505" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/> <path d="M19 37l3 10h5l-2-10" fill="#c8243f" stroke="#1a0505" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/> <path d="M26 20.5l11-6.5" stroke="#fff" stroke-width="1.6" stroke-linecap="round" opacity=".7"/> <g fill="none" stroke="#1a0505" stroke-width="2.2" stroke-linecap="round"><path d="M44 27c1.5 1.8 1.5 8.2 0 10"/><path d="M48.5 23c2.8 3.5 2.8 14.5 0 18"/></g> <path d="M51 12l1.4 3 3.2 1.4-3.2 1.4-1.4 3.2-1.4-3.2-3.2-1.4 3.2-1.4z" fill="#fff" stroke="#1a0505" stroke-width="1.2" stroke-linejoin="round"/></g><circle cx="32" cy="32" r="30" fill="none" stroke="#1a0505" stroke-width="2.2"/></symbol></svg>
 <a class="skip-link" href="#grid">דילוג לרשימת האירועים</a>
 <h1 class="sr-only">אירועים בחיפה והופעות בחיפה — חיפאית בתחתית</h1>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><linearGradient id="igg" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#FEDA75"/><stop offset=".35" stop-color="#FA7E1E"/><stop offset=".6" stop-color="#D62976"/><stop offset=".85" stop-color="#962FBF"/><stop offset="1" stop-color="#4F5BD5"/></linearGradient></defs></svg>
@@ -1523,8 +1548,9 @@ a.about-press span{display:block;color:#ffb0d0;font-size:13px;margin-top:4px;}
 <!-- User Bar -->
 <div class="user-bar show" id="user-bar">
     <div class="ub-start">
-        <a class="btn-coffee-top" href="https://buymeacoffee.com/heifait_batahtit" target="_blank" rel="noopener" onclick="trackSupport()" title="תמיכה באתר חיפאית בתחתית" aria-label="תמיכה באתר חיפאית בתחתית"><svg class="cof-ico" viewBox="0 0 64 64" aria-hidden="true"><use href="#ri-cof"/></svg><span class="ub-lbl cof-lbl">תמיכה באתר<small>חיפאית בתחתית</small></span></a>
-        <a class="btn-coffee-top btn-links-top" href="https://linktr.ee/heifait_batahtit" target="_blank" rel="noopener" title="כל הקישורים של חיפאית בתחתית — קבוצות, רשתות ועוד" aria-label="כל הקישורים של חיפאית בתחתית"><svg class="cof-ico" viewBox="0 0 64 64" aria-hidden="true"><use href="#ri-lnk"/></svg><span class="ub-lbl">כל הקישורים</span></a>
+        <a class="btn-coffee-top" id="btn-support-top" href="https://buymeacoffee.com/heifait_batahtit" target="_blank" rel="noopener" onclick="return supportClick(event)" title="תמיכה באתר חיפאית בתחתית" aria-label="תמיכה באתר חיפאית בתחתית"><svg class="cof-ico" viewBox="0 0 64 64" aria-hidden="true"><use href="#ri-hat"/></svg><span class="ub-lbl cof-lbl">תמיכה באתר<small>חיפאית בתחתית</small></span></a>
+        <button type="button" class="btn-coffee-top btn-links-top" id="btn-links-top" onclick="linksPop(this)" aria-haspopup="dialog" title="הקבוצות של חיפאית בתחתית — וואטסאפ ופייסבוק" aria-label="הקבוצות של חיפאית בתחתית"><svg class="cof-ico" viewBox="0 0 64 64" aria-hidden="true"><use href="#ri-lnk"/></svg><span class="ub-lbl">הקבוצות שלנו</span></button>
+        <button type="button" class="btn-coffee-top btn-mail-top" id="btn-mail-top" onclick="mailPop(this)" aria-haspopup="dialog" title="מחשבות, הצעות, חלומות — כתבו לי" aria-label="מחשבות, הצעות, חלומות — יצירת קשר"><svg class="cof-ico" viewBox="0 0 64 64" aria-hidden="true"><use href="#ri-mail"/></svg><span class="ub-lbl cof-lbl">מחשבות, הצעות<small>וחלומות</small></span></button>
     </div>
     <div class="user-bar-actions">
     <button class="btn-bell" id="btn-bell" onclick="openNotify()" title="התראות לטלפון על אירועים חדשים" aria-label="התראות"><svg class="bell-ico" viewBox="0 0 64 64" aria-hidden="true"><use href="#ri-bell"/></svg><span class="ub-lbl" id="bell-lbl">התראות</span><span class="bell-dot" id="bell-dot"></span></button>
@@ -2008,7 +2034,8 @@ function toggleCatsDrawer(force) {
     <div class="auth-modal">
         <button class="btn-close-auth" onclick="closeAuth()">×</button>
         <h2>הצטרפו לקהילה</h2>
-        <p class="auth-subtitle">כדי להוסיף אירוע, היכנסו עם חשבון Google</p>
+        <p class="auth-subtitle" id="auth-sub">שמרו אירועים שאהבתם, עקבו אחרי הפעילות שלכם ופרסמו אירועים משלכם — באזור אישי משלכם. בחינם, עם חשבון Google.</p>
+        <div id="auth-inapp" class="auth-inapp" role="alert" hidden></div>
         <div id="google-btn-wrap" class="google-btn-wrap"></div>
         <button type="button" class="btn-google" id="btn-google-fallback" onclick="signInWithGoogle()"><svg width="18" height="18" viewBox="0 0 48 48" aria-hidden="true"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.4-.4-3.5z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-8l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C37 39.2 44 34 44 24c0-1.3-.1-2.4-.4-3.5z"/></svg><span>המשך עם Google</span></button>
         <p class="auth-google-note">ההרשמה והכניסה לאתר הן דרך חשבון Google בלבד — מהיר, בלי סיסמה חדשה לזכור.</p>
@@ -2158,15 +2185,20 @@ function toggleCatsDrawer(force) {
             <label class="remember-defaults rec-check"><input type="checkbox" id="f-rec" onchange="updateRec()"><span>🔁 אירוע שחוזר על עצמו</span></label>
             <div id="rec-box" class="role-box" style="display:none">
                 <div class="form-row">
-                    <div class="form-group"><label>כל כמה זמן?</label>
-                        <select id="f-rec-freq" onchange="updateRec()">
-                            <option value="w1">כל שבוע</option>
-                            <option value="w2">כל שבועיים</option>
-                            <option value="mN">פעם בחודש, באותו יום בשבוע</option>
-                            <option value="mD">פעם בחודש, באותו תאריך</option>
-                        </select></div>
-                    <div class="form-group"><label>עד תאריך</label><input type="date" id="f-rec-until" onchange="updateRec()"></div>
+                    <div class="form-group"><label for="f-rec-n">חוזר כל</label>
+                        <div class="rec-every"><input type="number" id="f-rec-n" min="1" max="30" value="1" inputmode="numeric" aria-label="כל כמה" oninput="updateRec()">
+                        <select id="f-rec-unit" aria-label="יחידת זמן" onchange="updateRec()">
+                            <option value="d">ימים</option>
+                            <option value="w" selected>שבועות</option>
+                            <option value="m">חודשים</option>
+                        </select></div></div>
+                    <div class="form-group"><label>עד תאריך</label><input type="date" id="f-rec-until" onchange="this.dataset.touched=1;updateRec()"></div>
                 </div>
+                <div class="form-group" id="rec-mode-wrap" style="display:none"><label for="f-rec-mode">באיזה יום בחודש?</label>
+                    <select id="f-rec-mode" onchange="updateRec()">
+                        <option value="N">באותו יום בשבוע</option>
+                        <option value="D">באותו תאריך</option>
+                    </select></div>
                 <div class="field-hint" id="rec-preview"></div>
             </div>
         </div>
@@ -2390,7 +2422,37 @@ function handleAddEvent() {
     openModal(null);
 }
 
-function openAuth() { document.getElementById('auth-overlay').classList.add('open'); pushLayer('auth'); }
+// Google חוסמת התחברות מתוך הדפדפן הפנימי של פייסבוק / אינסטגרם ואפליקציות דומות — מסבירים איך לעבור לדפדפן רגיל
+const authInApp = () => /FBAN|FBAV|FB_IAB|Instagram|Line\/|MicroMessenger|TikTok|musical_ly|; wv\)/i.test(navigator.userAgent);
+function authInAppNote() {
+    const box = document.getElementById('auth-inapp'); if (!box) return;
+    if (!authInApp()) { box.hidden = true; return; }
+    const url = location.origin + location.pathname, android = /Android/i.test(navigator.userAgent);
+    box.innerHTML = `<b>נראה שפתחתם את האתר מתוך אפליקציה (פייסבוק, אינסטגרם…)</b>
+        <span>ההתחברות עם Google לא עובדת משם. פתחו את האתר בדפדפן רגיל: בתפריט ⋮ או ⋯ שלמעלה בחרו "פתיחה בדפדפן", או העתיקו את הכתובת והדביקו ב${android ? 'כרום' : 'ספארי'}.</span>
+        <span class="auth-inapp-btns">${android ? `<a class="btn-google" href="intent://${location.host}${location.pathname}#Intent;scheme=https;package=com.android.chrome;S.browser_fallback_url=${encodeURIComponent(url)};end">פתיחה בכרום</a>` : ''}
+        <button type="button" class="btn-google" data-v="${escHtml(url)}" onclick="copyTopVal(this,'הכתובת הועתקה ✓ הדביקו אותה בדפדפן')">העתקת כתובת האתר</button></span>`;
+    box.hidden = false;
+}
+const AUTH_SUB = { addEvent: 'כדי להוסיף אירוע, היכנסו עם חשבון Google', '': 'שמרו אירועים שאהבתם, עקבו אחרי הפעילות שלכם ופרסמו אירועים משלכם — באזור אישי משלכם. בחינם, עם חשבון Google.' };
+function openAuth() {
+    const sub = document.getElementById('auth-sub'); if (sub) sub.textContent = AUTH_SUB[pendingAction === 'addEvent' ? 'addEvent' : ''];   // הטקסט פונה גם לקהל, לא רק למפרסמים
+    authInAppNote();
+    document.getElementById('auth-overlay').classList.add('open'); pushLayer('auth');
+    const jn = document.getElementById('join-nudge'); if (jn) jn.remove();
+}
+// הצעה עדינה להירשם אחרי ה-❤️ הראשון של מבקר לא מחובר — פעם אחת בלבד, ונעלמת לבד
+function joinNudge() {
+    if (currentUser || document.getElementById('join-nudge') || document.getElementById('support-nudge')) return;
+    try { if (localStorage.getItem('joinNudge')) return; localStorage.setItem('joinNudge', String(Date.now())); } catch (_) { return; }
+    const d = document.createElement('div');
+    d.id = 'join-nudge'; d.className = 'support-nudge'; d.setAttribute('role', 'status');
+    d.innerHTML = `<span>נשמר במועדפים ❤️ רוצים שהמועדפים יחכו לכם בכל מכשיר, באזור אישי משלכם?</span>
+        <button type="button" class="btn-coffee" onclick="pendingAction=null;openAuth()">הרשמה בחינם</button>
+        <button type="button" class="support-x" aria-label="סגירה" onclick="this.parentNode.remove()">✕</button>`;
+    document.body.appendChild(d);
+    setTimeout(() => d.remove(), 7500);
+}
 function closeAuth(fromBack) { const el = document.getElementById('auth-overlay'); const was = el.classList.contains('open'); el.classList.remove('open'); pendingAction = null; clearAuthMessage(); if (was && fromBack !== true) popLayer('auth', false); }
 
 function setAuthTab(tab) {
@@ -2945,7 +3007,7 @@ function cardHtml(e) {
                     <div class="meta-item"><svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" style="opacity:.5;flex-shrink:0"><rect x="2" y="3" width="12" height="11" rx="2"/><path d="M2 7h12M5 1v4M11 1v4"/></svg>${formatEventDate(e)}</div>
                     <div class="meta-item"><svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" style="opacity:.5;flex-shrink:0"><circle cx="8" cy="8" r="6"/><path d="M8 5v3l2 2"/></svg><bdi dir="ltr">${e.time}</bdi></div>
                     <div class="meta-item"><svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" style="opacity:.5;flex-shrink:0"><path d="M8 2C5.8 2 4 3.8 4 6c0 3.5 4 8 4 8s4-4.5 4-8c0-2.2-1.8-4-4-4z"/><circle cx="8" cy="6" r="1.5"/></svg><span>${e.location}</span>${navQuery(raw) ? `<button class="nav-chip" onclick="cardTool('nav','${e.id}',event)" title="ניווט למקום" aria-label="ניווט למקום"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l18-8-8 18-2-8z"/></svg><span class="nav-chip-txt">ניווט</span></button>` : ''}</div>
-                    <div class="meta-item"><svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" style="opacity:.5;flex-shrink:0"><path d="M2 4h12v8a2 2 0 01-2 2H4a2 2 0 01-2-2V4zM2 4l2-2h8l2 2"/></svg>${e.price}</div>
+                    <div class="meta-item"><svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" style="opacity:.5;flex-shrink:0"><path d="M2 4h12v8a2 2 0 01-2 2H4a2 2 0 01-2-2V4zM2 4l2-2h8l2 2"/></svg>${e.price}${raw.promo ? '<span class="promo-tag" title="יש קוד הטבה לגולשי האתר — בדף האירוע">🎁 הטבה</span>' : ''}</div>
                 </div>
             </div>
             <div class="card-links">${eventLinksHtml(e)}<div class="card-tools">
@@ -2975,6 +3037,7 @@ function toggleFav(id, ev) {
         btn.setAttribute('aria-label', (liked ? 'הסרה מהמועדפים' : 'הוספה למועדפים') + ': ' + t);
         document.getElementById('fav-count').textContent = favs.size ? `(${favs.size})` : '';
     }
+    if (liked && !currentUser) joinNudge();
     if (liked && typeof a2hsMaybe === 'function') a2hsMaybe();
 }
 
@@ -3125,6 +3188,62 @@ const SUPPORT_URL = 'https://buymeacoffee.com/heifait_batahtit';
 // כפתורי התמיכה כבויים כרגע. להפעלה מחדש: לשנות ל-true
 const SUPPORT_ENABLED = false;
 if (SUPPORT_ENABLED) document.addEventListener('DOMContentLoaded', () => document.querySelectorAll('[data-support]').forEach(el => el.style.display = ''));
+// ── דרכי תמיכה ──────────────────────────────────────────────
+// כדי להוסיף פייבוקס / ביט: ממלאים את הקישור (url) או את מספר הטלפון (phone) בין המירכאות. דרך בלי פרטים לא מוצגת.
+// כשיש רק דרך אחת — הלחיצה על הכובע פותחת אותה ישר; כשיש כמה — נפתח תפריט קטן לבחירה.
+const SUPPORT_WAYS = [
+    { name: 'Buy Me a Coffee', note: 'בכרטיס אשראי', url: SUPPORT_URL },
+    { name: 'PayBox', note: 'פייבוקס', url: 'https://links.payboxapp.com/ZfW89t9N47b', phone: '' },
+    { name: 'bit', note: 'ביט', url: '', phone: '' },
+];
+const supportWays = () => SUPPORT_WAYS.filter(w => w.url || w.phone);
+function closeTopPop() { const p = document.getElementById('top-pop'); if (p) { const b = p._btn; p.remove(); if (b && b.focus) b.focus(); } }
+function topPop(btn, html, label) {
+    const open = document.getElementById('top-pop'), same = open && open._btn === btn;
+    if (open) open.remove();
+    if (same) return;
+    const p = document.createElement('div'); p.id = 'top-pop'; p.className = 'top-pop'; p.setAttribute('role', 'dialog'); p.setAttribute('aria-label', label); p._btn = btn;
+    p.innerHTML = `<button type="button" class="support-x top-pop-x" aria-label="סגירה" onclick="closeTopPop()">✕</button>` + html;
+    document.body.appendChild(p);
+    const r = btn.getBoundingClientRect(), w = p.offsetWidth, h = p.offsetHeight;
+    let top = r.bottom + 8; if (top + h > window.innerHeight - 8) top = Math.max(8, r.top - h - 8);
+    p.style.top = top + 'px';
+    p.style.left = Math.max(8, Math.min(window.innerWidth - w - 8, r.left + r.width / 2 - w / 2)) + 'px';
+}
+document.addEventListener('click', e => { const p = document.getElementById('top-pop'); if (p && !p.contains(e.target) && !(p._btn && p._btn.contains(e.target))) p.remove(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && document.getElementById('top-pop')) closeTopPop(); });
+function supportClick(ev) {
+    trackSupport();
+    const ways = supportWays();
+    if (ways.length <= 1) return true;   // דרך אחת → הקישור הרגיל נפתח
+    if (ev) { ev.preventDefault(); ev.stopPropagation(); }
+    const row = w => w.url
+        ? `<a class="tp-way" href="${escHtml(w.url)}" target="_blank" rel="noopener" onclick="closeTopPop()"><b>${escHtml(w.name)}</b><small>${escHtml(w.note)}</small></a>`
+        : `<button type="button" class="tp-way" data-v="${escHtml(w.phone)}" onclick="copyTopVal(this,'המספר הועתק ✓')"><b>${escHtml(w.name)}</b><small>${escHtml(w.note)} · <bdi>${escHtml(w.phone)}</bdi> · העתקה</small></button>`;
+    topPop((ev && ev.currentTarget && !ev.currentTarget.closest('.support-nudge') && ev.currentTarget) || document.getElementById('btn-support-top'),
+        `<div class="tp-title">🎩 תמיכה בחיפאית בתחתית</div><div class="tp-sub">האתר מופעל בהתנדבות. כל סכום עוזר — תודה!</div>` + ways.map(row).join(''), 'תמיכה באתר');
+    return false;
+}
+function copyTopVal(btn, msg) {
+    const t = btn.dataset.v || '';
+    try { navigator.clipboard.writeText(t).then(() => showToast(msg), () => showToast(t)); } catch (_) { showToast(t); }
+}
+// ── הקבוצות שלנו: קישורים ישירים (במקום מעבר דרך עמוד קישורים חיצוני) ──
+// להוספת קישור: שורה נוספת ברשימה. הסדר כאן הוא הסדר בתפריט.
+const COMMUNITY_LINKS = [
+    { name: 'קבוצת הוואטסאפ', note: 'לוח האירועים ישר לטלפון, אחת לכמה ימים. קבוצה שקטה — רק הלוח', ico: '💬', url: 'https://chat.whatsapp.com/GKCKD9vntI0BKgNVtrLhp5' },
+    { name: 'קבוצת הפייסבוק', note: 'אירועים בחיפה — אפשר גם לפרסם, באישור מראש', ico: '👥', url: 'https://www.facebook.com/share/g/1M71BTEBxZ/' },
+];
+function linksPop(btn) {
+    topPop(btn, `<div class="tp-title">הקבוצות של חיפאית בתחתית</div><div class="tp-sub">מוזמנים להצטרף:</div>`
+        + COMMUNITY_LINKS.map(l => `<a class="tp-way" href="${escHtml(l.url)}" target="_blank" rel="noopener" onclick="closeTopPop()"><b>${l.ico} ${escHtml(l.name)}</b><small>${escHtml(l.note)}</small></a>`).join(''), 'הקבוצות שלנו');
+}
+function mailPop(btn) {
+    topPop(btn, `<div class="tp-title">מחשבות, הצעות, חלומות?</div><div class="tp-sub">אשמח לשמוע. כתבו לי:</div>
+        <button type="button" class="tp-way tp-mail" data-v="${CONTACT_MAIL}" onclick="copyTopVal(this,'כתובת המייל הועתקה ✓')"><b dir="ltr">${CONTACT_MAIL}</b><small>לחיצה מעתיקה את הכתובת</small></button>
+        <a class="tp-way" href="mailto:${CONTACT_MAIL}?subject=${encodeURIComponent('פנייה מהאתר חיפאית בתחתית')}" onclick="closeTopPop()"><b>✉️ פתיחה בתוכנת המייל</b></a>`, 'יצירת קשר');
+}
+const CONTACT_MAIL = 'heifait.batahtit@gmail.com';
 function trackSupport() { try { localStorage.setItem('supportClicked', Date.now()); } catch (_) {} }
 function supportNudge() {
     if (!SUPPORT_ENABLED) return;
@@ -3136,11 +3255,35 @@ function supportNudge() {
     const d = document.createElement('div');
     d.id = 'support-nudge'; d.className = 'support-nudge'; d.setAttribute('role', 'status');
     d.innerHTML = `<span>נוסף ליומן 🎉 אוהבים את חיפאית בתחתית? אפשר לתמוך בקפה של 5 דולר, פעם אחת או כל חודש</span>
-        <a class="btn-coffee" href="${SUPPORT_URL}" target="_blank" rel="noopener" onclick="trackSupport();this.parentNode.remove()">☕ לתמיכה</a>
+        <a class="btn-coffee" href="${SUPPORT_URL}" target="_blank" rel="noopener" onclick="const r=supportClick(event);this.parentNode.remove();return r">🎩 לתמיכה</a>
         <button type="button" class="support-x" aria-label="סגירה" onclick="this.parentNode.remove()">✕</button>`;
     document.body.appendChild(d);
     setTimeout(() => d.remove(), 12000);
 }
+// ── בקשת תמיכה תקופתית ──
+// פס קטן בתחתית (לא חלון חוסם) שנעלם לבד. רק למי שחוזר לאתר (מהכניסה השלישית), לכל היותר פעם בשבועיים,
+// לא באותה כניסה שבה הופיעה ההצעה למסך הבית או להרשמה, ולא שלושה חודשים אחרי לחיצה על תמיכה. לכיבוי: SUPPORT_PERIODIC = false
+const SUPPORT_PERIODIC = true;
+function supportPeriodic(retry) {
+    if (!SUPPORT_PERIODIC || currentRole === 'admin') return;
+    const get = k => { try { return +localStorage.getItem(k) || 0; } catch (_) { return 0; } }, now = Date.now(), recent = k => now - get(k) < 10 * 60000;
+    if (get('supVisits') < 3 || now - get('supPeriodic') < 14 * 864e5 || now - get('supportClicked') < 90 * 864e5) return;
+    const a2 = document.getElementById('a2hs');
+    if (recent('a2hsLast') || recent('joinNudge') || (a2 && !a2.hidden) || document.getElementById('join-nudge') || document.getElementById('support-nudge')) return;   // הצעה אחרת כבר הופיעה בכניסה הזאת
+    if (Object.values(history.state || {}).some(Boolean) || document.getElementById('top-pop')) { if (!retry) setTimeout(() => supportPeriodic(true), 30000); return; }   // חלון פתוח — מנסים פעם אחת מאוחר יותר
+    try { localStorage.setItem('supPeriodic', String(now)); } catch (_) { return; }
+    const d = document.createElement('div');
+    d.id = 'support-nudge'; d.className = 'support-nudge sup-periodic'; d.setAttribute('role', 'status');
+    d.innerHTML = `<span>נהנים מחיפאית בתחתית? האתר מופעל בהתנדבות, ותמיכה קטנה עוזרת לו להמשיך 💛</span>
+        <a class="btn-coffee" href="${SUPPORT_URL}" target="_blank" rel="noopener" onclick="const r=supportClick(event);this.parentNode.remove();return r">🎩 לתמיכה</a>
+        <button type="button" class="support-x" aria-label="סגירה" onclick="this.parentNode.remove()">✕</button>`;
+    document.body.appendChild(d);
+    setTimeout(() => d.remove(), 12000);
+}
+(function () {   // סופרים כניסה אחת לכל פתיחה של האתר (לא לכל רענון באותה לשונית)
+    try { if (!sessionStorage.getItem('supSeen')) { sessionStorage.setItem('supSeen', '1'); localStorage.setItem('supVisits', String((+localStorage.getItem('supVisits') || 0) + 1)); } } catch (_) {}
+    setTimeout(() => supportPeriodic(false), 25000);
+})();
 function showToast(t, ms) {
     const d = document.createElement('div');
     d.className = 'toast-msg'; d.textContent = t;
@@ -3300,7 +3443,15 @@ function cardTool(kind, id, ev) {
     menu.style.left = left + 'px'; menu.style.top = top + 'px';
 }
 
-function shareText(e) { return `${e.title}\n${formatEventDate(e)}${e.time && e.time !== '-' ? ' | ' + e.time : ''}\n${e.location || ''}`; }
+// טקסט השיתוף: קצר — שם, ואז שורה אחת של יום · שעה · מקום. הפרטים המלאים מופיעים ממילא בתצוגה המקדימה של הקישור.
+function shareText(e) {
+    let when = '';
+    if (e.dateRaw) {
+        when = waDayLabel(e.dateRaw);
+        if (e.dateEndRaw && e.dateEndRaw !== e.dateRaw) { const d = new Date(e.dateEndRaw + 'T12:00:00'); when += '–' + d.getDate() + '.' + (d.getMonth() + 1); }
+    } else when = formatEventDate(e) || '';
+    return String(e.title || '').trim() + '\n' + [when, waStart(e), venueName(e.location)].filter(Boolean).join(' · ');
+}
 async function shareEvent(ev) {
     const e = curViewEvent(); if (!e) return;
     document.getElementById('share-more').style.display = navigator.share ? '' : 'none';
@@ -3544,7 +3695,7 @@ function waIcon(e) { const c = [e.cat, ...(e.cats || [])].find(x => WA_ICONS[x])
 function waLine(e, links) {
     const price = e.price && e.price !== '-' ? String(e.price).trim() : 'כניסה חופשית';
     const place = waPlace(e);
-    return [waStart(e), waIcon(e) + String(e.title || '').trim(), place ? '🏛️ ' + place : '', price, links ? eventUrl(e) : ''].filter(Boolean).join('\n');
+    return [waStart(e), waIcon(e) + String(e.title || '').trim(), place ? '🏛️ ' + place : '', price, e.promo ? 'קוד הטבה: ' + String(e.promo).trim() : '', links ? eventUrl(e) : ''].filter(Boolean).join('\n');
 }
 function waBuild(kind, links) {
     const from = waIso(kind === 'tomorrow' ? 1 : 0), to = waIso(kind === 'tomorrow' ? 1 : kind === 'week' ? 6 : 0);
@@ -3735,17 +3886,23 @@ function mailAllUsers() {
 // ── אירוע חוזר ──
 const REC_MAX = 12;
 const isoOf = d => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+// freq = { unit: 'd' ימים | 'w' שבועות | 'm' חודשים, n: כל כמה, mode: בחודשים — 'D' אותו תאריך / 'N' אותו יום בשבוע ואותו "שבוע בחודש" }
+function recFreq() {
+    const n = Math.min(30, Math.max(1, parseInt(document.getElementById('f-rec-n').value, 10) || 1));
+    return { unit: document.getElementById('f-rec-unit').value, n, mode: document.getElementById('f-rec-mode').value };
+}
 function recDates(start, freq, until) {
     if (!start) return [];
     const s = new Date(start + 'T12:00:00'), end = until ? new Date(until + 'T12:00:00') : null, out = [];
     if (isNaN(s)) return [];
+    const f = freq || { unit: 'w', n: 1 }, n = Math.max(1, f.n || 1);
     const nth = Math.ceil(s.getDate() / 7), wd = s.getDay();
-    for (let i = 0; out.length < REC_MAX && i < 60; i++) {
+    for (let i = 0; out.length < REC_MAX && i < 80; i++) {
         let d;
-        if (freq === 'w1' || freq === 'w2') { d = new Date(s); d.setDate(s.getDate() + i * (freq === 'w1' ? 7 : 14)); }
-        else if (freq === 'mD') { d = new Date(s.getFullYear(), s.getMonth() + i, s.getDate(), 12); if (d.getDate() !== s.getDate()) continue; }
-        else {   // mN: אותו יום בשבוע ואותו "שבוע בחודש" (למשל: יום שלישי השני בחודש)
-            const first = new Date(s.getFullYear(), s.getMonth() + i, 1, 12);
+        if (f.unit === 'd' || f.unit === 'w') { d = new Date(s); d.setDate(s.getDate() + i * n * (f.unit === 'w' ? 7 : 1)); }
+        else if (f.mode === 'D') { d = new Date(s.getFullYear(), s.getMonth() + i * n, s.getDate(), 12); if (d.getDate() !== s.getDate()) continue; }   // חודש בלי התאריך הזה (למשל ה-31) — מדלגים
+        else {   // אותו יום בשבוע ואותו "שבוע בחודש" (למשל: יום שלישי השני בחודש)
+            const first = new Date(s.getFullYear(), s.getMonth() + i * n, 1, 12);
             d = new Date(first); d.setDate(1 + ((wd - first.getDay() + 7) % 7) + (nth - 1) * 7);
             if (d.getMonth() !== first.getMonth()) continue;
         }
@@ -3759,13 +3916,22 @@ function updateRec() {
     document.getElementById('rec-box').style.display = on ? '' : 'none';
     if (!on) return;
     const start = document.getElementById('f-date').value, until = document.getElementById('f-rec-until');
-    if (start && !until.value) { const d = new Date(start + 'T12:00:00'); d.setMonth(d.getMonth() + 2); until.value = isoOf(d); }
-    const opt = document.querySelector('#f-rec-freq option[value="mN"]');
-    if (start) {
-        const s = new Date(start + 'T12:00:00'), n = Math.ceil(s.getDate() / 7);
-        opt.textContent = `פעם בחודש — ${s.toLocaleDateString('he-IL', { weekday: 'long' })} ה${['ראשון', 'שני', 'שלישי', 'רביעי', 'חמישי'][n - 1]} בחודש`;
+    const f = recFreq();
+    // יחיד / רבים לפי המספר: "כל שבוע" מול "כל 3 שבועות"
+    const names = { d: ['יום', 'ימים'], w: ['שבוע', 'שבועות'], m: ['חודש', 'חודשים'] };
+    document.querySelectorAll('#f-rec-unit option').forEach(o => { o.textContent = names[o.value][f.n === 1 ? 0 : 1]; });
+    document.getElementById('rec-mode-wrap').style.display = f.unit === 'm' ? '' : 'none';
+    if (start && !until.dataset.touched) {   // ברירת מחדל ל"עד תאריך" לפי הקצב: מספיק זמן לכמה מועדים
+        const d = new Date(start + 'T12:00:00');
+        if (f.unit === 'd') d.setDate(d.getDate() + Math.min(f.n * 7, 60)); else if (f.unit === 'w') d.setDate(d.getDate() + f.n * 7 * 8); else d.setMonth(d.getMonth() + f.n * 6);
+        until.value = isoOf(d);
     }
-    const list = recDates(start, document.getElementById('f-rec-freq').value, until.value);
+    if (start) {
+        const s = new Date(start + 'T12:00:00'), k = Math.ceil(s.getDate() / 7);
+        document.querySelector('#f-rec-mode option[value="N"]').textContent = `${s.toLocaleDateString('he-IL', { weekday: 'long' })} ה${['ראשון', 'שני', 'שלישי', 'רביעי', 'חמישי'][k - 1]} בחודש`;
+        document.querySelector('#f-rec-mode option[value="D"]').textContent = `ה-${s.getDate()} בחודש`;
+    }
+    const list = recDates(start, f, until.value);
     const pv = document.getElementById('rec-preview');
     if (!start) { pv.textContent = 'בחרו קודם את התאריך הראשון'; return; }
     pv.innerHTML = `ייווצרו <b>${list.length} מועדים</b>: ` + list.map(d => '<bdi>' + new Date(d + 'T12:00:00').toLocaleDateString('he-IL', { day: 'numeric', month: 'numeric' }) + '</bdi>').join(' · ')
@@ -4051,7 +4217,7 @@ function renderMyEvents() {
         if (!sup) { sup = document.createElement('div'); sup.id = 'my-support'; sup.className = 'my-support'; tb.insertAdjacentElement('afterend', sup); }
         const show = myRows.length && (totals.views || 0) > 0 && currentRole !== 'admin';
         sup.style.display = show ? '' : 'none';
-        if (show) sup.innerHTML = `<span>חיפאית בתחתית עזרה לכם להביא קהל? תמיכה קטנה עוזרת לנו להמשיך ולהגדיל את החשיפה לאירועים שלכם.</span><a class="btn-coffee" href="${SUPPORT_URL}" target="_blank" rel="noopener" onclick="trackSupport()">☕ לתמיכה באתר</a>`;
+        if (show) sup.innerHTML = `<span>חיפאית בתחתית עזרה לכם להביא קהל? תמיכה קטנה עוזרת לנו להמשיך ולהגדיל את החשיפה לאירועים שלכם.</span><a class="btn-coffee" href="${SUPPORT_URL}" target="_blank" rel="noopener" onclick="return supportClick(event)">🎩 לתמיכה באתר</a>`;
     }
     if (!myRows.length) { list.innerHTML = '<div class="users-empty">עוד לא פרסמת אירועים. <button class="btn-link" onclick="closeMyPanel();handleAddEvent()">+ להוספת אירוע ראשון</button></div>'; return; }
     list.innerHTML = arr.map(e => {
@@ -5089,7 +5255,7 @@ function openModal(id) {
     prepareNewEventForm();
     document.getElementById('vo-add').checked = false; toggleVenueFields(); resetVenueFields('vo');
     document.querySelectorAll('#overlay .cat-details').forEach(d => d.open = false);
-    document.getElementById('f-rec').checked = false; document.getElementById('f-rec-until').value = ''; document.getElementById('f-rec-freq').value = 'w1'; updateRec();
+    document.getElementById('f-rec').checked = false; { const u = document.getElementById('f-rec-until'); u.value = ''; delete u.dataset.touched; } document.getElementById('f-rec-n').value = '1'; document.getElementById('f-rec-unit').value = 'w'; document.getElementById('f-rec-mode').value = 'N'; updateRec();
     document.getElementById('rec-wrap').style.display = id === null ? '' : 'none';
     setWho(id === null ? (myDefaults && myDefaults.who ? myDefaults.who : myRoles.filter(r => r === 'artist' || r === 'venue' || r === 'producer')) : []);
     ['fa-name', 'fa-bio', 'fa-email'].forEach(x => document.getElementById(x).value = '');
@@ -5465,7 +5631,7 @@ async function saveEvent() {
         // אירוע חוזר: שורה לכל מועד, כולן באותה "סדרה"
         let recRows = null;
         if (editingId === null && document.getElementById('f-rec').checked) {
-            const dates = recDates(payload.date_raw, document.getElementById('f-rec-freq').value, document.getElementById('f-rec-until').value);
+            const dates = recDates(payload.date_raw, recFreq(), document.getElementById('f-rec-until').value);
             if (dates.length > 1) {
                 const sid = 's' + Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
                 const span = payload.date_end_raw ? Math.round((new Date(payload.date_end_raw) - new Date(payload.date_raw)) / 864e5) : 0;
@@ -5853,12 +6019,6 @@ loadA11yPrefs();
       <button type="button" class="ft-btn footer-a2hs" id="footer-a2hs" onclick="a2hsMaybe(true)">📲 הוספה למסך הבית</button>
     </section>
     <section class="ft-col">
-      <h2 class="ft-h">✉️ יצירת קשר</h2>
-      <p class="ft-tag">שאלות, רעיונות או בעיה באתר? כתבו לנו</p>
-      <a class="ft-btn ft-btn-y" id="ft-mail-btn" href="mailto:heifait.batahtit@gmail.com?subject=%D7%A4%D7%A0%D7%99%D7%99%D7%94%20%D7%9E%D7%94%D7%90%D7%AA%D7%A8%20%D7%97%D7%99%D7%A4%D7%90%D7%99%D7%AA%20%D7%91%D7%AA%D7%97%D7%AA%D7%99%D7%AA">שליחת מייל</a>
-      <button type="button" class="contact-mail" id="ft-mail-addr" hidden onclick="copyContactMail(this)" title="העתקת כתובת המייל">heifait.batahtit@gmail.com</button>
-    </section>
-    <section class="ft-col">
       <h2 class="ft-h">🗂 אירועים לפי נושא</h2>
   <nav class="footer-topics" id="footer-topics" aria-label="אירועים בחיפה לפי נושא"><a href="/week">מה עושים בחיפה השבוע</a><a href="/c/music">הופעות בחיפה</a><a href="/c/jazz">ג׳אז בחיפה</a><a href="/c/standup">סטנדאפ בחיפה</a><a href="/c/parties">מסיבות בחיפה</a><a href="/c/theater">תאטרון בחיפה</a><a href="/c/kids">אירועים לילדים</a><a href="/c/lectures">הרצאות בחיפה</a><a href="/c/workshops">סדנאות בחיפה</a><a href="/c/fairs">ירידים בחיפה</a><a href="/c/openstage">במה פתוחה</a><a href="/c/cinema">קולנוע בחיפה</a></nav>
     </section>
@@ -5924,7 +6084,7 @@ loadA11yPrefs();
 
     <h3>✉️ יצירת קשר ותמיכה</h3>
     <p>רעיונות, הערות או שאלות — נשמח לשמוע: <a href="mailto:heifait.batahtit@gmail.com">heifait.batahtit@gmail.com</a></p>
-    <p>האתר מופעל בהתנדבות. אוהבים אותו? <a href="https://buymeacoffee.com/heifait_batahtit" target="_blank" rel="noopener" onclick="trackSupport()">לתמיכה בחיפאית בתחתית</a></p>
+    <p>האתר מופעל בהתנדבות. אוהבים אותו? <a href="https://buymeacoffee.com/heifait_batahtit" target="_blank" rel="noopener" onclick="return supportClick(event)">לתמיכה בחיפאית בתחתית</a></p>
   </div>
 </div>
 <script>
@@ -5996,7 +6156,7 @@ if (location.hash === '#about') setTimeout(openAbout, 300);
       <p>איננו מוכרים מידע ואיננו מעבירים אותו לאף גורם אחר, למעט אם נידרש לכך על פי דין.</p>
 
       <h3>מיילים</h3>
-      <p>נשלח אליכם מייל בנוגע לחשבון שלכם ולאירועים שפרסמתם. עדכונים מהאתר — חדשות והמלצות על אירועים — נשלח רק למי שסימן שהוא מסכים לקבל אותם. כרגע האפשרות להירשם לעדכונים כאלה אינה פעילה. מי שסימן הסכמה בעבר — אנו שומרים את ההסכמה ואת המועד שבו ניתנה, ואפשר לבטל אותה בכל רגע בפנייה אלינו דרך "שליחת מייל" שבתחתית האתר, או פשוט להשיב למייל.</p>
+      <p>נשלח אליכם מייל בנוגע לחשבון שלכם ולאירועים שפרסמתם. עדכונים מהאתר — חדשות והמלצות על אירועים — נשלח רק למי שסימן שהוא מסכים לקבל אותם. כרגע האפשרות להירשם לעדכונים כאלה אינה פעילה. מי שסימן הסכמה בעבר — אנו שומרים את ההסכמה ואת המועד שבו ניתנה, ואפשר לבטל אותה בכל רגע בפנייה אלינו דרך תיבת הדואר שבראש האתר, או פשוט להשיב למייל.</p>
 
       <h3>אבטחת מידע</h3>
       <p>הגישה למידע מוגבלת בהרשאות: כל משתמש רואה רק את המידע שלו, והנהלת האתר בלבד ניגשת לפרטי המשתמשים. אנו נוקטים אמצעים סבירים להגנה על המידע, אך אף מערכת אינה חסינה לחלוטין.</p>
