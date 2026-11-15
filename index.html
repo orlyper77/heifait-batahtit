@@ -1549,7 +1549,7 @@ a.about-press span{display:block;color:#ffb0d0;font-size:13px;margin-top:4px;}
 <div class="user-bar show" id="user-bar">
     <div class="ub-start">
         <a class="btn-coffee-top" id="btn-support-top" href="https://buymeacoffee.com/heifait_batahtit" target="_blank" rel="noopener" onclick="return supportClick(event)" title="תמיכה באתר חיפאית בתחתית" aria-label="תמיכה באתר חיפאית בתחתית"><svg class="cof-ico" viewBox="0 0 64 64" aria-hidden="true"><use href="#ri-hat"/></svg><span class="ub-lbl cof-lbl">תמיכה באתר<small>חיפאית בתחתית</small></span></a>
-        <button type="button" class="btn-coffee-top btn-links-top" id="btn-links-top" onclick="linksPop(this)" aria-haspopup="dialog" title="הקבוצות של חיפאית בתחתית — וואטסאפ ופייסבוק" aria-label="הקבוצות של חיפאית בתחתית"><svg class="cof-ico" viewBox="0 0 64 64" aria-hidden="true"><use href="#ri-lnk"/></svg><span class="ub-lbl">הקבוצות שלנו</span></button>
+        <button type="button" class="btn-coffee-top btn-links-top" id="btn-links-top" onclick="linksPop(this)" aria-haspopup="dialog" title="חיפאית בתחתית בוואטסאפ, בפייסבוק ובאינסטגרם" aria-label="הקבוצות והרשתות של חיפאית בתחתית"><svg class="cof-ico" viewBox="0 0 64 64" aria-hidden="true"><use href="#ri-lnk"/></svg><span class="ub-lbl">הקבוצות שלנו</span></button>
         <button type="button" class="btn-coffee-top btn-mail-top" id="btn-mail-top" onclick="mailPop(this)" aria-haspopup="dialog" title="מחשבות, הצעות, חלומות — כתבו לי" aria-label="מחשבות, הצעות, חלומות — יצירת קשר"><svg class="cof-ico" viewBox="0 0 64 64" aria-hidden="true"><use href="#ri-mail"/></svg><span class="ub-lbl cof-lbl">מחשבות, הצעות<small>וחלומות</small></span></button>
     </div>
     <div class="user-bar-actions">
@@ -3233,9 +3233,10 @@ function copyTopVal(btn, msg) {
 const COMMUNITY_LINKS = [
     { name: 'קבוצת הוואטסאפ', note: 'לוח האירועים ישר לטלפון, אחת לכמה ימים. קבוצה שקטה — רק הלוח', ico: '💬', url: 'https://chat.whatsapp.com/GKCKD9vntI0BKgNVtrLhp5' },
     { name: 'קבוצת הפייסבוק', note: 'אירועים בחיפה — אפשר גם לפרסם, באישור מראש', ico: '👥', url: 'https://www.facebook.com/share/g/1M71BTEBxZ/' },
+    { name: 'אינסטגרם', note: 'heifait_batahtit@ — תמונות ועדכונים', ico: '📷', url: 'https://www.instagram.com/heifait_batahtit' },
 ];
 function linksPop(btn) {
-    topPop(btn, `<div class="tp-title">הקבוצות של חיפאית בתחתית</div><div class="tp-sub">מוזמנים להצטרף:</div>`
+    topPop(btn, `<div class="tp-title">חיפאית בתחתית גם כאן</div><div class="tp-sub">מוזמנים להצטרף ולעקוב:</div>`
         + COMMUNITY_LINKS.map(l => `<a class="tp-way" href="${escHtml(l.url)}" target="_blank" rel="noopener" onclick="closeTopPop()"><b>${l.ico} ${escHtml(l.name)}</b><small>${escHtml(l.note)}</small></a>`).join(''), 'הקבוצות שלנו');
 }
 function mailPop(btn) {
