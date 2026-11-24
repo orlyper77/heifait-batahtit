@@ -78,10 +78,22 @@ module.exports = async (req, res) => {
   ld.image = [img];
   // מחיר: "כניסה חופשית" → 0, "₪50" / "50 ש״ח" / "40-60" → המספר הראשון
   const num = (price.replace(/,/g, '').match(/\d+(?:\.\d+)?/) || [])[0];
-  if (free || num) ld.offers = { '@type': 'Offer', url: tickets || url, availability: 'https://schema.org/InStock',
-    price: free ? 0 : Number(num), priceCurrency: 'ILS', validFrom: (e.date_raw || todayIL()) < todayIL() ? e.date_raw : todayIL() };
-  // מארגן: המקום שבו מתקיים האירוע
-  if (e.location) ld.organizer = { '@type': 'Organization', name: String(e.location).split(',')[0].trim() };
+  // תמיד יש "offers" (גוגל מבקש אותו). מחיר — רק כשאפשר להבין מספר מהטקסט
+  ld.offers = { '@type': 'Offer', url: tickets || url, availability: 'https://schema.org/InStock',
+    priceCurrency: 'ILS', validFrom: (e.date_raw || todayIL()) < todayIL() ? e.date_raw : todayIL() };
+  if (free || num) ld.offers.price = free ? 0 : Number(num);
+  // מארגן: המקום שבו מתקיים האירוע (הקישור — האתר של המקום מדף המקום, אם יש; אחרת דף האירוע)
+  const httpUrl = u => /^https?:\/\//i.test(String(u || '')) ? String(u) : '';
+  if (e.location) ld.organizer = { '@type': 'Organization', name: String(e.location).split(',')[0].trim(), url };
+  try {
+    const vn = s => String(s || '').toLowerCase().replace(/["'״׳.,!?־\-–—:;()]/g, ' ').replace(/\s+/g, ' ').trim();
+    const r = await fetch(`${SUPABASE_URL}/rest/v1/venues?status=eq.approved&select=name,website,instagram,facebook&limit=500`, { headers: { apikey: SUPABASE_ANON_KEY, Authorization: 'Bearer ' + SUPABASE_ANON_KEY } });
+    const vs = r.ok ? await r.json() : [];
+    const loc = ' ' + vn(e.location) + ' ';
+    const v = (vs || []).filter(x => vn(x.name).length >= 2 && loc.includes(' ' + vn(x.name) + ' ')).sort((a, b) => vn(b.name).length - vn(a.name).length)[0];
+    const vu = v && (httpUrl(v.website) || httpUrl(v.instagram) || httpUrl(v.facebook));
+    if (v && ld.organizer) { ld.organizer.name = v.name; if (vu) ld.organizer.url = vu; }
+  } catch (_) {}
   // אמנים: דפי אמן מאושרים שהשם שלהם מופיע בשם האירוע; אחרת — שם האירוע עצמו
   try {
     const r = await fetch(`${SUPABASE_URL}/rest/v1/artists?status=eq.approved&select=*&limit=500`, { headers: { apikey: SUPABASE_ANON_KEY, Authorization: 'Bearer ' + SUPABASE_ANON_KEY } });
@@ -90,7 +102,7 @@ module.exports = async (req, res) => {
     const t = ' ' + norm(title) + ' ';
     const hit = (arts || []).filter(a => a.kind !== 'producer' && norm(a.name).length >= 2 && t.includes(' ' + norm(a.name) + ' ')).slice(0, 5);
     const prod = (arts || []).find(a => a.kind === 'producer' && e.user_id && a.user_id === e.user_id);
-    if (prod) ld.organizer = { '@type': 'Organization', name: prod.name };
+    if (prod) ld.organizer = { '@type': 'Organization', name: prod.name, url: httpUrl((prod.links || [])[0]) || url };
     if (hit.length) ld.performer = hit.map(a => ({ '@type': 'PerformingGroup', name: a.name }));
   } catch (_) {}
   if (!ld.performer) ld.performer = { '@type': 'PerformingGroup', name: title };
