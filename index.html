@@ -197,6 +197,8 @@ body{font-family:'Secular One',sans-serif;background:#1a0505;color:#f5ede8;direc
 .filter-btn[data-cat="laughs"].active{background:rgba(255,200,50,0.9);color:#1a0505;border-color:#ffc820;}
 .filter-btn[data-cat="jazz"]{background:rgba(180,120,60,0.25);color:#f0a060;border-color:rgba(180,120,60,0.5);}
 .filter-btn[data-cat="jazz"].active{background:rgba(180,120,60,0.9);color:#1a0505;border-color:#b47830;}
+.filter-btn[data-cat="jam"]{background:rgba(40,170,160,0.22);color:#7fe3d8;border-color:rgba(40,170,160,0.5);}
+.filter-btn[data-cat="jam"].active{background:rgba(40,170,160,0.9);color:#06201e;border-color:#3cc2b6;}
 .filter-btn[data-cat="dance"]{background:rgba(220,80,160,0.25);color:#f080c0;border-color:rgba(220,80,160,0.5);}
 .filter-btn[data-cat="dance"].active{background:rgba(220,80,160,0.9);color:#fff;border-color:#dc50a0;}
 .filter-btn[data-cat="classic"]{background:rgba(140,100,200,0.25);color:#c090f0;border-color:rgba(140,100,200,0.5);}
@@ -274,6 +276,7 @@ body{font-family:'Secular One',sans-serif;background:#1a0505;color:#f5ede8;direc
 .cat-fringe{background:rgba(255,100,100,0.2);color:#ff8080;border:1px solid rgba(255,100,100,0.25);}
 .cat-festivals{background:rgba(255,180,0,0.2);color:#ffcc40;border:1px solid rgba(255,180,0,0.25);}
 .cat-laughs{background:rgba(255,200,50,0.2);color:#ffd040;border:1px solid rgba(255,200,50,0.25);}
+.cat-jam{background:rgba(40,170,160,0.2);color:#7fe3d8;border:1px solid rgba(40,170,160,0.3);}
 .cat-jazz{background:rgba(180,120,60,0.2);color:#f0a060;border:1px solid rgba(180,120,60,0.25);}
 .cat-dance{background:rgba(220,80,160,0.2);color:#f080c0;border:1px solid rgba(220,80,160,0.25);}
 .cat-classic{background:rgba(140,100,200,0.2);color:#c090f0;border:1px solid rgba(140,100,200,0.25);}
@@ -336,6 +339,7 @@ body{font-family:'Secular One',sans-serif;background:#1a0505;color:#f5ede8;direc
 .cat-pick-btn[data-c="fringe"].selected{background:rgba(255,100,100,0.3);color:#ff8080;border-color:rgba(255,100,100,0.6);}
 .cat-pick-btn[data-c="festivals"].selected{background:rgba(255,180,0,0.3);color:#ffcc40;border-color:rgba(255,180,0,0.6);}
 .cat-pick-btn[data-c="laughs"].selected{background:rgba(255,200,50,0.25);color:#ffd040;border-color:rgba(255,200,50,0.6);}
+.cat-pick-btn[data-c="jam"].selected{background:rgba(40,170,160,0.3);color:#7fe3d8;border-color:rgba(40,170,160,0.6);}
 .cat-pick-btn[data-c="jazz"].selected{background:rgba(180,120,60,0.3);color:#f0a060;border-color:rgba(180,120,60,0.6);}
 .cat-pick-btn[data-c="dance"].selected{background:rgba(220,80,160,0.3);color:#f080c0;border-color:rgba(220,80,160,0.6);}
 .cat-pick-btn[data-c="classic"].selected{background:rgba(140,100,200,0.3);color:#c090f0;border-color:rgba(140,100,200,0.6);}
@@ -387,6 +391,7 @@ body{font-family:'Secular One',sans-serif;background:#1a0505;color:#f5ede8;direc
 .card[data-cat="fringe"] .card-img{background:linear-gradient(135deg,#2d0808,#5a1010);}
 .card[data-cat="festivals"] .card-img{background:linear-gradient(135deg,#2d1a00,#5a3500);}
 .card[data-cat="laughs"] .card-img{background:linear-gradient(135deg,#2d2000,#5a4400);}
+.card[data-cat="jam"] .card-img{background:linear-gradient(135deg,#032522,#0b4a44);}
 .card[data-cat="jazz"] .card-img{background:linear-gradient(135deg,#2d1500,#5a3000);}
 .card[data-cat="dance"] .card-img{background:linear-gradient(135deg,#2d0020,#5a0040);}
 .card[data-cat="classic"] .card-img{background:linear-gradient(135deg,#1a0a2d,#3a1a5a);}
@@ -1497,6 +1502,14 @@ a.about-press span{display:block;color:#ffb0d0;font-size:13px;margin-top:4px;}
 #wa-text{display:block;width:100%;box-sizing:border-box;margin-top:12px;background:rgba(0,0,0,0.25);border:1px solid rgba(255,255,255,0.25);border-radius:12px;color:#fff;font-family:inherit;font-size:14px;line-height:1.6;padding:10px 12px;resize:vertical;}
 .wa-btns{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:8px;}
 .wa-btns a.btn-preview{text-decoration:none;display:inline-flex;align-items:center;}
+.dsl-out{margin-top:10px;font-size:14px;line-height:1.6;}
+.dsl-out:empty{display:none;}
+.dsl-sum{background:rgba(255,255,255,0.05);border-radius:10px;padding:8px 12px;margin-bottom:8px;}
+.dsl-list{list-style:none;margin:0;padding:0;max-height:420px;overflow:auto;}
+.dsl-list li{padding:6px 2px;border-bottom:1px solid rgba(255,255,255,0.07);}
+.dsl-list li b{display:block;font-weight:600;}
+.dsl-list li span{font-size:13px;color:rgba(255,255,255,0.75);}
+.dsl-note{font-size:13px;color:rgba(255,255,255,0.7);}
 .wa-count{font-size:12.5px;color:rgba(255,255,255,0.7);}
 .nt-opt-row{text-align:right;margin:0 0 8px;}
 #nt-opts-wrap{margin-bottom:1rem;}
@@ -1778,6 +1791,7 @@ a.about-press span{display:block;color:#ffb0d0;font-size:13px;margin-top:4px;}
                 <button type="button" class="adm-chip" data-w="today" onclick="waBoard('today')">היום</button>
                 <button type="button" class="adm-chip" data-w="tomorrow" onclick="waBoard('tomorrow')">מחר</button>
                 <button type="button" class="adm-chip" data-w="week" onclick="waBoard('week')">השבוע</button>
+                <label class="wa-opt">תאריך אחר: <input type="date" id="wa-date" onchange="waBoard('date')"></label>
                 <label class="wa-opt"><input type="checkbox" id="wa-links" checked onchange="waBoard()"> עם קישור לכל אירוע</label>
             </div>
             <div id="wa-out" hidden>
@@ -1788,6 +1802,15 @@ a.about-press span{display:block;color:#ffb0d0;font-size:13px;margin-top:4px;}
                     <span class="wa-count" id="wa-count"></span>
                 </div>
             </div>
+        </div>
+        <div class="ov-card dsl-card">
+            <h4>📊 נתוני צפייה לפי יום <small>(כמו הסיכום של הערב — לכל האירועים באתר)</small></h4>
+            <div class="wa-chips">
+                <label class="wa-opt">תאריך: <input type="date" id="dsl-date" onchange="dslLoad('day')"></label>
+                <button type="button" class="adm-chip" data-d="week" onclick="dslLoad('week')">7 הימים האחרונים</button>
+                <button type="button" class="adm-chip" data-d="month" onclick="dslLoad('month')">30 הימים האחרונים</button>
+            </div>
+            <div id="dsl-out" class="dsl-out"></div>
         </div>
         <div class="ov-cols">
             <div class="ov-card"><h4 data-ic="flame" class="h-flame">האירועים הכי נצפים <small>(אירועים קרובים)</small></h4><div id="ov-top"></div></div>
@@ -1879,16 +1902,17 @@ a.about-press span{display:block;color:#ffb0d0;font-size:13px;margin-top:4px;}
         <button class="filter-btn" data-cat="openstage">🗣️ במה פתוחה</button>
         <button class="filter-btn" data-cat="pride">🏳️‍🌈 גאווה</button>
         <button class="filter-btn" data-cat="jazz">🎷 ג'אז</button>
-        <button class="filter-btn" data-cat="lectures">🎤 הרצאות</button>
+        <button class="filter-btn" data-cat="jam">🥁 ג'אם</button>
+        <button class="filter-btn" data-cat="lectures">👨‍🏫 הרצאות</button>
         <button class="filter-btn" data-cat="secondhand">♻️ יד 2</button>
         <button class="filter-btn" data-cat="kids">🧒 ילדים</button>
         <button class="filter-btn" data-cat="fairs">🏪 ירידים</button>
         <button class="filter-btn" data-cat="music">🎵 מוזיקה</button>
         <button class="filter-btn" data-cat="dance">💃 מחול</button>
         <button class="filter-btn" data-cat="parties">🎉 מסיבות</button>
-        <button class="filter-btn" data-cat="games">🎮 משחקים</button>
+        <button class="filter-btn" data-cat="games">🎲 משחקים</button>
         <button class="filter-btn" data-cat="workshops">🛠️ סדנאות</button>
-        <button class="filter-btn" data-cat="standup">🎙️ סטנדאפ</button>
+        <button class="filter-btn" data-cat="standup">😆 סטנדאפ</button>
         <button class="filter-btn" data-cat="tours">🗺️ סיורים</button>
         <button class="filter-btn" data-cat="spokenword">🗯️ ספוקן וורד</button>
         <button class="filter-btn" data-cat="literature">📚 ספרות</button>
@@ -1899,8 +1923,8 @@ a.about-press span{display:block;color:#ffb0d0;font-size:13px;margin-top:4px;}
         <button class="filter-btn" data-cat="laughs">😂 צחוקים</button>
         <button class="filter-btn" data-cat="community">🤝 קהילתי</button>
         <button class="filter-btn" data-cat="cinema">🎬 קולנוע</button>
-        <button class="filter-btn" data-cat="classic">🎻 קלאסי</button>
-        <button class="filter-btn" data-cat="karaoke">🎶 קריוקי</button>
+        <button class="filter-btn" data-cat="classic">🎼 קלאסי</button>
+        <button class="filter-btn" data-cat="karaoke">👩‍🎤 קריוקי</button>
         <button class="filter-btn" data-cat="spirit">✨ רוח</button>
         <button class="filter-btn" data-cat="dancing">🪩 רוקדים</button>
         <button class="filter-btn" data-cat="poetry">✒️ שירה</button>
@@ -2074,7 +2098,7 @@ function toggleCatsDrawer(force) {
         <h2 id="modal-title">✦ הוסף אירוע חדש</h2>
         <div class="defaults-note" id="defaults-note" style="display:none">✨ מילאנו בשבילך את הפרטים הקבועים שלך. אפשר לשנות כל שדה. <button type="button" class="btn-link" onclick="clearDefaultsFromForm()">לנקות</button></div>
         <div class="form-group">
-            <label>תמונה לאירוע</label>
+            <label>תמונה לאירוע *</label>
             <div class="img-upload-area" id="upload-area">
                 <input type="file" accept="image/*" id="f-image" onchange="handleImageUpload(event)">
                 <button class="btn-remove-img" onclick="removeImage(event)">×</button>
@@ -2102,16 +2126,17 @@ function toggleCatsDrawer(force) {
                 <button type="button" class="cat-pick-btn" data-c="openstage" onclick="toggleCatPick(this)">🗣️ במה פתוחה</button>
                 <button type="button" class="cat-pick-btn" data-c="pride" onclick="toggleCatPick(this)">🏳️‍🌈 גאווה</button>
                 <button type="button" class="cat-pick-btn" data-c="jazz" onclick="toggleCatPick(this)">🎷 ג'אז</button>
-                <button type="button" class="cat-pick-btn" data-c="lectures" onclick="toggleCatPick(this)">🎤 הרצאות</button>
+                <button type="button" class="cat-pick-btn" data-c="jam" onclick="toggleCatPick(this)">🥁 ג'אם</button>
+                <button type="button" class="cat-pick-btn" data-c="lectures" onclick="toggleCatPick(this)">👨‍🏫 הרצאות</button>
                 <button type="button" class="cat-pick-btn" data-c="secondhand" onclick="toggleCatPick(this)">♻️ יד 2</button>
                 <button type="button" class="cat-pick-btn" data-c="kids" onclick="toggleCatPick(this)">🧒 ילדים</button>
                 <button type="button" class="cat-pick-btn" data-c="fairs" onclick="toggleCatPick(this)">🏪 ירידים</button>
                 <button type="button" class="cat-pick-btn" data-c="music" onclick="toggleCatPick(this)">🎵 מוזיקה</button>
                 <button type="button" class="cat-pick-btn" data-c="dance" onclick="toggleCatPick(this)">💃 מחול</button>
                 <button type="button" class="cat-pick-btn" data-c="parties" onclick="toggleCatPick(this)">🎉 מסיבות</button>
-                <button type="button" class="cat-pick-btn" data-c="games" onclick="toggleCatPick(this)">🎮 משחקים</button>
+                <button type="button" class="cat-pick-btn" data-c="games" onclick="toggleCatPick(this)">🎲 משחקים</button>
                 <button type="button" class="cat-pick-btn" data-c="workshops" onclick="toggleCatPick(this)">🛠️ סדנאות</button>
-                <button type="button" class="cat-pick-btn" data-c="standup" onclick="toggleCatPick(this)">🎙️ סטנדאפ</button>
+                <button type="button" class="cat-pick-btn" data-c="standup" onclick="toggleCatPick(this)">😆 סטנדאפ</button>
                 <button type="button" class="cat-pick-btn" data-c="tours" onclick="toggleCatPick(this)">🗺️ סיורים</button>
                 <button type="button" class="cat-pick-btn" data-c="spokenword" onclick="toggleCatPick(this)">🗯️ ספוקן וורד</button>
                 <button type="button" class="cat-pick-btn" data-c="literature" onclick="toggleCatPick(this)">📚 ספרות</button>
@@ -2122,8 +2147,8 @@ function toggleCatsDrawer(force) {
                 <button type="button" class="cat-pick-btn" data-c="laughs" onclick="toggleCatPick(this)">😂 צחוקים</button>
                 <button type="button" class="cat-pick-btn" data-c="community" onclick="toggleCatPick(this)">🤝 קהילתי</button>
                 <button type="button" class="cat-pick-btn" data-c="cinema" onclick="toggleCatPick(this)">🎬 קולנוע</button>
-                <button type="button" class="cat-pick-btn" data-c="classic" onclick="toggleCatPick(this)">🎻 קלאסי</button>
-                <button type="button" class="cat-pick-btn" data-c="karaoke" onclick="toggleCatPick(this)">🎶 קריוקי</button>
+                <button type="button" class="cat-pick-btn" data-c="classic" onclick="toggleCatPick(this)">🎼 קלאסי</button>
+                <button type="button" class="cat-pick-btn" data-c="karaoke" onclick="toggleCatPick(this)">👩‍🎤 קריוקי</button>
                 <button type="button" class="cat-pick-btn" data-c="spirit" onclick="toggleCatPick(this)">✨ רוח</button>
                 <button type="button" class="cat-pick-btn" data-c="dancing" onclick="toggleCatPick(this)">🪩 רוקדים</button>
                 <button type="button" class="cat-pick-btn" data-c="poetry" onclick="toggleCatPick(this)">✒️ שירה</button>
@@ -2245,7 +2270,7 @@ function toggleCatsDrawer(force) {
             </label>
             <label class="rules-check-item">
                 <input type="checkbox" id="check-rules">
-                <span>קראתי ואני מאשר/ת שהאירוע עומד בכללי הפרסום שלמעלה.</span>
+                <span>קראתי ואני מאשר/ת שהאירוע עומד בכללי הפרסום שלמעלה, ומאשר/ת לחיפאית בתחתית לשתף את האירוע, כולל התמונה, בקבוצת הווטסאפ, בקבוצת הפייסבוק ובאינסטגרם.</span>
             </label>
         </div>
         <div class="form-errors" id="form-errors" role="alert" aria-live="assertive" style="display:none"></div>
@@ -2320,8 +2345,8 @@ function renderFooterTopics() {
 }
 document.addEventListener('DOMContentLoaded', () => { try { renderFooterTopics(); } catch (_) {} });
 window.addEventListener('load', () => { try { renderFooterTopics(); } catch (_) {} });
-const CAT_EMOJI = {music:'🎵',theater:'🎭',cinema:'🎬',lectures:'🎤',kids:'🧒',spirit:'✨',workshops:'🛠️',literature:'📚',art:'🎨',parties:'🎉',games:'🎮',fairs:'🏪',community:'🤝',standup:'🎙️',tours:'🗺️',performance:'💃',fringe:'🌀',festivals:'🎪',laughs:'😂',jazz:'🎷',dance:'💃',classic:'🎻',poetry:'✒️',openstage:'🗣️',pubquiz:'🧠',karaoke:'🎶',secondhand:'♻️',pride:'🏳️‍🌈',dancing:'🪩',spokenword:'🗯️',other:'📌',general:'📌'};
-const CAT_LABEL = {music:'מוזיקה',theater:'תאטרון',cinema:'קולנוע',lectures:'הרצאות',kids:'ילדים',spirit:'רוח',workshops:'סדנאות',literature:'ספרות',art:'אמנות',parties:'מסיבות',games:'משחקים',fairs:'ירידים',community:'קהילתי',standup:'סטנדאפ',tours:'סיורים',performance:'פרפורמנס',fringe:"פרינג'",festivals:'פסטיבלים',laughs:'צחוקים',jazz:"ג'אז",dance:'מחול',classic:'קלאסי',poetry:'שירה',openstage:'במה פתוחה',pubquiz:'פאב קוויז',karaoke:'קריוקי',secondhand:'יד 2',pride:'גאווה',dancing:'רוקדים',spokenword:'ספוקן וורד',other:'אחר',general:'אחר'};
+const CAT_EMOJI = {music:'🎵',theater:'🎭',cinema:'🎬',lectures:'👨‍🏫',kids:'🧒',spirit:'✨',workshops:'🛠️',literature:'📚',art:'🎨',parties:'🎉',games:'🎲',fairs:'🏪',community:'🤝',standup:'😆',tours:'🗺️',performance:'💃',fringe:'🌀',festivals:'🎪',laughs:'😂',jazz:'🎷',jam:'🥁',dance:'💃',classic:'🎼',poetry:'✒️',openstage:'🗣️',pubquiz:'🧠',karaoke:'👩‍🎤',secondhand:'♻️',pride:'🏳️‍🌈',dancing:'🪩',spokenword:'🗯️',other:'📌',general:'📌'};
+const CAT_LABEL = {music:'מוזיקה',theater:'תאטרון',cinema:'קולנוע',lectures:'הרצאות',kids:'ילדים',spirit:'רוח',workshops:'סדנאות',literature:'ספרות',art:'אמנות',parties:'מסיבות',games:'משחקים',fairs:'ירידים',community:'קהילתי',standup:'סטנדאפ',tours:'סיורים',performance:'פרפורמנס',fringe:"פרינג'",festivals:'פסטיבלים',laughs:'צחוקים',jazz:"ג'אז",jam:"ג'אם",dance:'מחול',classic:'קלאסי',poetry:'שירה',openstage:'במה פתוחה',pubquiz:'פאב קוויז',karaoke:'קריוקי',secondhand:'יד 2',pride:'גאווה',dancing:'רוקדים',spokenword:'ספוקן וורד',other:'אחר',general:'אחר'};
 
 // מיילים של מנהלות האתר
 const ADMIN_EMAILS = ['heifait.batahtit@gmail.com'];
@@ -3691,16 +3716,17 @@ function waPlace(e) {
     return loc;
 }
 // אייקון לפני שם האירוע בלוח — רק לשלושה סוגים: הופעה 🎸, תאטרון 🎭, מסיבה 🪩. לשאר הקטגוריות אין אייקון.
-const WA_ICONS = { music: '🎸', jazz: '🎸', classic: '🎸', theater: '🎭', fringe: '🎭', parties: '🪩', dancing: '🪩' };
+const WA_ICONS = { music: '🎸', jazz: '🎸', jam: '🥁', classic: '🎼', lectures: '👨‍🏫', standup: '😆', theater: '🎭', fringe: '🎭', literature: '📚', karaoke: '👩‍🎤', games: '🎲', parties: '🪩', dancing: '🪩' };
 function waIcon(e) { const c = [e.cat, ...(e.cats || [])].find(x => WA_ICONS[x]); return c ? WA_ICONS[c] + ' ' : ''; }
 function waLine(e, links) {
     const price = e.price && e.price !== '-' ? String(e.price).trim() : 'כניסה חופשית';
     const place = waPlace(e);
     return [waStart(e), waIcon(e) + String(e.title || '').trim(), place ? '🏛️ ' + place : '', price, e.promo ? 'קוד הטבה: ' + String(e.promo).trim() : '', links ? eventUrl(e) : ''].filter(Boolean).join('\n');
 }
-function waBuild(kind, links) {
-    const from = waIso(kind === 'tomorrow' ? 1 : 0), to = waIso(kind === 'tomorrow' ? 1 : kind === 'week' ? 6 : 0);
-    const list = events.filter(e => e.status !== 'pending' && e.dateRaw && e.dateRaw <= to && (e.dateEndRaw || e.dateRaw) >= from && !eventIsOver(e))
+function waBuild(kind, links, day, rows) {
+    // kind 'date': לוח של תאריך שנבחר (גם בדיעבד) — מהאירועים שנשלפו מהמסד לאותו יום
+    const from = kind === 'date' ? day : waIso(kind === 'tomorrow' ? 1 : 0), to = kind === 'date' ? day : waIso(kind === 'tomorrow' ? 1 : kind === 'week' ? 6 : 0);
+    const list = (kind === 'date' ? rows : events).filter(e => e.status !== 'pending' && e.status !== 'rejected' && e.dateRaw && e.dateRaw <= to && (e.dateEndRaw || e.dateRaw) >= from && (kind === 'date' || !eventIsOver(e)))
         .sort((a, b) => waMins(a) - waMins(b) || String(a.title).localeCompare(String(b.title), 'he'));
     const dayOf = e => (e.dateRaw > from ? e.dateRaw : from);
     const ongoing = list.filter(e => e.dateRaw < from && e.dateEndRaw && e.dateEndRaw > e.dateRaw);       // התחילו לפני — ממשיכים
@@ -3708,13 +3734,14 @@ function waBuild(kind, links) {
     const sep = '\n\n';
     const out = [];
     if (kind === 'week') {
-        out.push(`חיפאית בתחתית - לוח אירועים\n${waDayLabel(from).split(' ').pop()}–${waDayLabel(to).split(' ').pop()}`);
+        out.push(`חיפאית בתחתית\n${waDayLabel(from).split(' ').pop()}–${waDayLabel(to).split(' ').pop()}`);
         [...new Set(dated.map(dayOf))].sort().forEach(day => out.push(waDayLabel(day) + '\n\n' + dated.filter(e => dayOf(e) === day).map(e => waLine(e, links)).join(sep)));
         if (ongoing.length) out.push('לאורך השבוע\n\n' + ongoing.map(e => waLine(e, links)).join(sep));
     } else {
-        out.push(`חיפאית בתחתית - לוח אירועים\n${kind === 'tomorrow' ? 'מחר' : 'היום'} · ${waDayLabel(from)}`);
+        const rel = kind === 'tomorrow' ? 'מחר' : kind === 'date' ? '' : 'היום';
+        out.push(`חיפאית בתחתית\n${waDayLabel(from)}`);
         if (dated.length) out.push(dated.map(e => waLine(e, links)).join(sep));
-        if (ongoing.length) out.push(`ממשיכים גם ${kind === 'tomorrow' ? 'מחר' : 'היום'}\n\n` + ongoing.map(e => waLine(e, links)).join(sep));
+        if (ongoing.length) out.push(`ממשיכים גם ${rel || 'באותו יום'}\n\n` + ongoing.map(e => waLine(e, links)).join(sep));
     }
     out.push('כל הפרטים: heifait-batahtit.co.il');
     // יישור לימין: כל שורה נפתחת בתו כיוון בלתי־נראה (RLM), כך שגם שורה של קישור או שם באנגלית מתיישרת לימין בוואטסאפ ובפייסבוק
@@ -3729,18 +3756,51 @@ function waSync() {
     const t = document.getElementById('wa-text').value;
     document.getElementById('wa-share').href = 'https://wa.me/?text=' + encodeURIComponent(t);
 }
+let waDayRows = { day: '', rows: [] };
 async function waBoard(kind) {
     if (kind) waKind = kind;
     if (!waKind) return;
     document.querySelectorAll('.wa-chips .adm-chip').forEach(b => b.classList.toggle('active', b.dataset.w === waKind));
-    const { text, count } = waBuild(waKind, document.getElementById('wa-links').checked);
-    const label = { today: 'היום', tomorrow: 'מחר', week: 'השבוע' }[waKind];
+    const day = document.getElementById('wa-date').value;
+    if (waKind !== 'date') document.getElementById('wa-date').value = '';
+    else {
+        if (!day) return;
+        if (waDayRows.day !== day) {   // שולפים מהמסד את האירועים של אותו יום — גם כאלה שכבר עברו
+            const { data, error } = await db.from('events').select('*').lte('date_raw', day).or(`date_end_raw.gte.${day},date_raw.eq.${day}`);
+            if (error) { showToast('לא הצלחנו לטעון את האירועים של התאריך הזה'); return; }
+            waDayRows = { day, rows: (data || []).map(rowToEvent) };
+        }
+    }
+    const { text, count } = waBuild(waKind, document.getElementById('wa-links').checked, day, waDayRows.rows);
+    const label = waKind === 'date' ? 'ב-' + waDayLabel(day) : { today: 'היום', tomorrow: 'מחר', week: 'השבוע' }[waKind];
     document.getElementById('wa-out').hidden = !count;
     if (!count) { showToast(`אין אירועים ${label}`); return; }
     document.getElementById('wa-text').value = text;
     document.getElementById('wa-count').textContent = count === 1 ? 'אירוע אחד' : count + ' אירועים';
     waSync();
-    showToast((await waCopyText(text)) ? `📋 הלוח של ${label} הועתק — אפשר להדביק` : 'הלוח מוכן — לחצו על "העתקה"');
+    showToast((await waCopyText(text)) ? `📋 הלוח ${waKind === 'date' ? 'של ' + waDayLabel(day) : 'של ' + label} הועתק — אפשר להדביק` : 'הלוח מוכן — לחצו על "העתקה"');
+}
+// ══ נתוני צפייה לפי יום (ניהול): מהטבלה daily_stats_log שנשמרת כל ערב עם הסיכום היומי (daily_stats_log.sql) ══
+const DSL_KINDS = [['d_views', 'צפיות'], ['d_likes', '❤️'], ['d_tickets', 'כרטיסים / הרשמה'], ['d_calendar', 'ליומן'], ['d_links', 'קישורים'], ['d_shares', 'שיתופים']];
+const dslLine = r => DSL_KINDS.filter(([k]) => r[k]).map(([k, l]) => k === 'd_likes' ? r[k] + ' ' + l : r[k] + ' ' + l).join(' · ') || '—';
+async function dslLoad(mode) {
+    const out = document.getElementById('dsl-out'), inp = document.getElementById('dsl-date');
+    document.querySelectorAll('.dsl-card .adm-chip').forEach(b => b.classList.toggle('active', b.dataset.d === mode));
+    let from, to, label;
+    if (mode === 'day') { if (!inp.value) return; from = to = inp.value; label = waDayLabel(inp.value); }
+    else { inp.value = ''; const n = mode === 'week' ? 7 : 30; from = waIso(-(n - 1)); to = waIso(0); label = n + ' הימים האחרונים'; }
+    out.innerHTML = '<div class="dsl-note">טוען…</div>';
+    const { data, error } = await db.from('daily_stats_log').select('*').gte('day', from).lte('day', to);
+    if (error) { out.innerHTML = '<div class="dsl-note">' + (/daily_stats_log|does not exist|schema cache/i.test(error.message || '') ? 'כדי להפעיל את זה צריך להריץ פעם אחת את הקובץ daily_stats_log.sql ב-Supabase. הנתונים נשמרים מהערב שאחרי ההרצה.' : 'לא הצלחנו לטעון את הנתונים') + '</div>'; return; }
+    // מאחדים לפי אירוע (בטווח של כמה ימים)
+    const by = new Map();
+    (data || []).forEach(r => { const k = r.event_id; const o = by.get(k) || { title: r.title, event_id: k, days: 0 }; o.days++; DSL_KINDS.forEach(([c]) => o[c] = (o[c] || 0) + (r[c] || 0)); if (r.title) o.title = r.title; by.set(k, o); });
+    const list = [...by.values()].sort((a, b) => b.d_views - a.d_views || b.d_tickets - a.d_tickets);
+    if (!list.length) { out.innerHTML = `<div class="dsl-note">אין נתונים ל${mode === 'day' ? '-' : ''}${escHtml(label)}. הנתונים נשמרים כל ערב בשעה 20:00, מהערב שאחרי הרצת ה-SQL.</div>`; return; }
+    const sum = {}; DSL_KINDS.forEach(([c]) => sum[c] = list.reduce((t, r) => t + (r[c] || 0), 0));
+    out.innerHTML = `<div class="dsl-sum"><b>${escHtml(label)}</b> · ${list.length} אירועים<br>${dslLine(sum)}</div>
+        <ul class="dsl-list">${list.map(r => `<li><b>${escHtml(r.title || 'אירוע שנמחק')}</b><span>${dslLine(r)}</span></li>`).join('')}</ul>
+        <div class="dsl-note">כל יום = מ-20:00 בערב הקודם עד 20:00 (שעת הסיכום).</div>`;
 }
 async function waCopy() {
     showToast((await waCopyText(document.getElementById('wa-text').value)) ? '📋 הועתק — אפשר להדביק' : 'ההעתקה לא הצליחה — סמנו את הטקסט והעתיקו ידנית');
@@ -5553,6 +5613,7 @@ function validateEventForm() {
     else if (v('f-time') && !validTime(v('f-time'))) { msgs.push('שעת התחלה לא תקינה — למשל 20:00'); ids.push('f-time'); }
     if (v('f-time-end') && !validTime(v('f-time-end'))) { msgs.push('שעת סיום לא תקינה — למשל 23:00'); ids.push('f-time-end'); }
     if (!v('f-loc') || v('f-loc') === 'חיפה') { msgs.push('מקום האירוע (שם המקום, רחוב ומספר)'); ids.push('f-loc'); }
+    if (!currentImageData && currentRole !== 'admin') { msgs.push('תמונה לאירוע'); ids.push('upload-area'); }   // תמונה חובה (מנהלת פטורה)
     if (!document.getElementById('check-accurate').checked) { msgs.push('סימון ✓ באישור שהפרטים נכונים'); ids.push('check-accurate'); }
     if (!document.getElementById('check-rules').checked) { msgs.push('סימון ✓ באישור כללי הפרסום'); ids.push('check-rules'); }
     showFormErrors(msgs, ids);

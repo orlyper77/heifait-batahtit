@@ -3,7 +3,7 @@
 const { rpc } = require('./_db');
 
 const SITE = 'https://heifait-batahtit.co.il';
-const CAT_LABEL = { music: 'מוזיקה', theater: 'תאטרון', cinema: 'קולנוע', lectures: 'הרצאות', kids: 'ילדים', spirit: 'רוח', workshops: 'סדנאות', literature: 'ספרות', art: 'אמנות', parties: 'מסיבות', games: 'משחקים', fairs: 'ירידים', community: 'קהילתי', standup: 'סטנדאפ', tours: 'סיורים', performance: 'פרפורמנס', fringe: "פרינג'", festivals: 'פסטיבלים', laughs: 'צחוקים', jazz: "ג'אז", dance: 'מחול', classic: 'קלאסי', poetry: 'שירה', openstage: 'במה פתוחה', pubquiz: 'פאב קוויז', karaoke: 'קריוקי', secondhand: 'יד 2', pride: 'גאווה', other: 'אחר', general: 'אחר' };
+const CAT_LABEL = { music: 'מוזיקה', theater: 'תאטרון', cinema: 'קולנוע', lectures: 'הרצאות', kids: 'ילדים', spirit: 'רוח', workshops: 'סדנאות', literature: 'ספרות', art: 'אמנות', parties: 'מסיבות', games: 'משחקים', fairs: 'ירידים', community: 'קהילתי', standup: 'סטנדאפ', tours: 'סיורים', performance: 'פרפורמנס', fringe: "פרינג'", festivals: 'פסטיבלים', laughs: 'צחוקים', jazz: "ג'אז", jam: "ג'אם", dance: 'מחול', classic: 'קלאסי', poetry: 'שירה', openstage: 'במה פתוחה', pubquiz: 'פאב קוויז', karaoke: 'קריוקי', secondhand: 'יד 2', pride: 'גאווה', other: 'אחר', general: 'אחר' };
 
 const env = k => (process.env[k] || '').trim();
 const escHtml = s => String(s == null ? '' : s).replace(/[&<>]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]));
@@ -202,7 +202,7 @@ function dailyMessages(events, day) {
   const today = events.filter(e => !(e.date_end_raw && e.date_end_raw > e.date_raw));
   const ongoing = events.filter(e => e.date_end_raw && e.date_end_raw > e.date_raw);
   const item = e => {
-    const emoji = { music: '🎵', theater: '🎭', cinema: '🎬', lectures: '🎤', kids: '🧒', spirit: '✨', workshops: '🛠', literature: '📚', art: '🎨', parties: '🎉', games: '🎮', fairs: '🏪', community: '🤝', standup: '🎙', tours: '🗺', performance: '💃', fringe: '🌀', festivals: '🎪', laughs: '😂', jazz: '🎷', dance: '💃', classic: '🎻', poetry: '✒️', openstage: '🗣', pubquiz: '🧠', karaoke: '🎶', secondhand: '♻️', pride: '🏳️‍🌈', other: '📌' }[eventCats(e)[0]] || '📌';
+    const emoji = { music: '🎵', theater: '🎭', cinema: '🎬', lectures: '👨‍🏫', kids: '🧒', spirit: '✨', workshops: '🛠', literature: '📚', art: '🎨', parties: '🎉', games: '🎲', fairs: '🏪', community: '🤝', standup: '😆', tours: '🗺', performance: '💃', fringe: '🌀', festivals: '🎪', laughs: '😂', jazz: '🎷', jam: '🥁', dance: '💃', classic: '🎼', poetry: '✒️', openstage: '🗣', pubquiz: '🧠', karaoke: '👩‍🎤', secondhand: '♻️', pride: '🏳️‍🌈', other: '📌' }[eventCats(e)[0]] || '📌';
     const time = e.time && e.time !== '-' ? `<b>${escHtml(e.time)}</b> · ` : '';
     return `${emoji} ${time}<a href="${eventLink(e)}">${escHtml(e.title)}</a>` + (e.location ? `\n      📍 ${escHtml(String(e.location).replace(/,\s*חיפה\s*$/, ''))}` : '');
   };
