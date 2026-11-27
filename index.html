@@ -1815,6 +1815,11 @@ a.about-press span{display:block;color:#ffb0d0;font-size:13px;margin-top:4px;}
                 </div>
             </div>
         </div>
+        <div class="ov-card bk-card">
+            <h4>💾 גיבוי <small>(כל האירועים, האמנים, המפיקים והמקומות — לקובץ במחשב)</small></h4>
+            <div class="wa-chips"><button type="button" class="adm-chip" id="bk-btn" onclick="backupDownload()">הורדת גיבוי עכשיו</button>
+                <span class="wa-count" id="bk-last"></span></div>
+        </div>
         <div class="ov-card dsl-card">
             <h4>📊 נתוני צפייה לפי יום <small>(כמו הסיכום של הערב — לכל האירועים באתר)</small></h4>
             <div class="wa-chips">
@@ -3798,6 +3803,40 @@ async function waBoard(kind) {
     waSync();
     showToast((await waCopyText(text)) ? `📋 הלוח ${waKind === 'date' ? 'של ' + waDayLabel(day) : 'של ' + label} הועתק — אפשר להדביק` : 'הלוח מוכן — לחצו על "העתקה"');
 }
+// ══ גיבוי (ניהול): הורדת כל התוכן לקובץ JSON. קריאה אחת לכל טבלה — כמעט לא מעמיס על המסד ══
+const BK_TABLES = ['events', 'artists', 'venues', 'event_stats', 'daily_stats_log'];
+function bkShowLast() {
+    const el = document.getElementById('bk-last'); if (!el) return;
+    let t = 0; try { t = +localStorage.getItem('bkLast') || 0; } catch (_) {}
+    const days = t ? Math.floor((Date.now() - t) / 864e5) : null;
+    el.textContent = t ? `גיבוי אחרון מהמחשב הזה: ${new Date(t).toLocaleDateString('he-IL')}${days >= 14 ? ' — הגיע הזמן לגיבוי חדש' : ''}` : 'עוד לא גיבית מהמחשב הזה. מומלץ פעם בשבוע-שבועיים.';
+    el.style.color = !t || days >= 14 ? '#ffb4b4' : '';
+}
+async function backupDownload() {
+    const btn = document.getElementById('bk-btn'); btn.disabled = true; btn.textContent = 'מכין גיבוי…';
+    const out = { site: 'heifait-batahtit.co.il', created_at: new Date().toISOString(), tables: {} }, missing = [];
+    try {
+        for (const t of BK_TABLES) {
+            let rows = [], from = 0, failed = false;
+            while (true) {
+                const { data, error } = await db.from(t).select('*').range(from, from + 999);
+                if (error) { failed = true; break; }
+                rows = rows.concat(data || []); if (!data || data.length < 1000) break; from += 1000;
+            }
+            if (failed) { missing.push(t); continue; }
+            out.tables[t] = rows;
+        }
+        if (!out.tables.events) { showToast('הגיבוי לא הצליח — נסי שוב בעוד כמה דקות'); return; }
+        const d = new Date(), stamp = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+        const blob = new Blob([JSON.stringify(out, null, 1)], { type: 'application/json' });
+        const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `heifait-backup-${stamp}.json`;
+        document.body.appendChild(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 1500);
+        try { localStorage.setItem('bkLast', String(Date.now())); } catch (_) {}
+        const n = Object.entries(out.tables).map(([k, v]) => v.length).reduce((x, y) => x + y, 0);
+        showToast(`💾 הגיבוי ירד (${out.tables.events.length} אירועים, ${n} שורות בסך הכול)`, 4000);
+    } catch (_) { showToast('הגיבוי לא הצליח — נסי שוב בעוד כמה דקות'); }
+    finally { btn.disabled = false; btn.textContent = 'הורדת גיבוי עכשיו'; bkShowLast(); }
+}
 // ══ נתוני צפייה לפי יום (ניהול): מהטבלה daily_stats_log שנשמרת כל ערב עם הסיכום היומי (daily_stats_log.sql) ══
 const DSL_KINDS = [['d_views', 'צפיות'], ['d_likes', '❤️'], ['d_tickets', 'כרטיסים / הרשמה'], ['d_calendar', 'ליומן'], ['d_links', 'קישורים'], ['d_shares', 'שיתופים']];
 const dslLine = r => DSL_KINDS.filter(([k]) => r[k]).map(([k, l]) => k === 'd_likes' ? r[k] + ' ' + l : r[k] + ' ' + l).join(' · ') || '—';
@@ -3829,7 +3868,7 @@ async function openApprovalPanel() {
     document.getElementById('approval-panel').classList.add('open');
     pushLayer('panel');
     showAdminTab(adminTab || 'overview');
-    checkMigrateNeeded();
+    checkMigrateNeeded(); bkShowLast();
     await loadPendingEvents();
     await loadAllUsers();
 }
