@@ -2396,14 +2396,18 @@ async function init() {
     } else if (pa === 'approvals' && currentRole === 'admin') openApprovalPanel();
 }
 
-let rtTimer = null;
+let rtTimer = null, rtDirty = false;
+document.addEventListener('visibilitychange', () => { if (!document.hidden && rtDirty) { rtDirty = false; loadEvents(); } });
 function setupRealtime() {
     // האזנה לאירועים חדשים/שינויים בזמן אמת
     db.channel('events-changes')
         .on('postgres_changes', { event: '*', schema: 'public', table: 'events' }, () => {
             // כמה שינויים ברצף (למשל אירוע חוזר עם 12 מועדים) = טעינה אחת, לא 12
             clearTimeout(rtTimer);
+            // חיסכון בעומס על המסד: לשונית ברקע לא טוענת מחדש — רק מסמנת, ותטען כשיחזרו אליה
+            if (document.hidden) { rtDirty = true; return; }
             rtTimer = setTimeout(async () => {
+                rtDirty = false;
                 await loadEvents();
                 if (currentRole === 'admin') {
                     await updateApprovalBadge();
