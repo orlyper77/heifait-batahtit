@@ -2403,7 +2403,11 @@ async function init() {
 
 let rtTimer = null, rtDirty = false;
 document.addEventListener('visibilitychange', () => { if (!document.hidden && rtDirty) { rtDirty = false; loadEvents(); } });
+let rtStarted = false;
 function setupRealtime() {
+    // עדכון חי — רק למנהלת (חיסכון במשאבי המסד). גולשים מקבלים רשימה עדכנית בכל כניסה, ובחזרה ללשונית אחרי 15 דקות
+    if (rtStarted || currentRole !== 'admin') return;
+    rtStarted = true;
     // האזנה לאירועים חדשים/שינויים בזמן אמת
     db.channel('events-changes')
         .on('postgres_changes', { event: '*', schema: 'public', table: 'events' }, () => {
@@ -2546,6 +2550,7 @@ async function handleAuth() {
         const action = pendingAction;
         await checkAuth();
         closeAuth();
+        setupRealtime();
         await loadEvents();
         if (action === 'addEvent' && !currentBlocked) openModal(null);
         if (action === 'approvals' && currentRole === 'admin') openApprovalPanel();
@@ -2598,6 +2603,7 @@ async function handleGoogleCredential(response) {
         if (error) throw error;
         await checkAuth();
         closeAuth();
+        setupRealtime();
         await loadEvents();
         if (action === 'addEvent' && !currentBlocked) openModal(null);
         if (action === 'approvals' && currentRole === 'admin') openApprovalPanel();
@@ -2677,7 +2683,10 @@ async function logout() {
 
 // ── Events ──
 // רק אירועים רלוונטיים (מאתמול והלאה — אתמול בשביל אירועים שנמשכים אחרי חצות). אירועים ישנים לא נטענים בכלל.
+let evLoadedAt = Date.now();
+document.addEventListener('visibilitychange', () => { if (!document.hidden && !rtStarted && Date.now() - evLoadedAt > 15 * 60 * 1000) loadEvents(); });
 function queryEvents() {
+    evLoadedAt = Date.now();
     const _y = new Date(Date.now() - 864e5);
     const since = `${_y.getFullYear()}-${String(_y.getMonth()+1).padStart(2,'0')}-${String(_y.getDate()).padStart(2,'0')}`;
     return db.from('events').select('*')
